@@ -1,24 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/jobs/evaluate-alerts",
-      "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/jobs/generate-scheduled-reports",
-      "schedule": "15 9 * * *"
-    },
-    {
-      "path": "/api/jobs/enqueue-scheduled-crawls",
-      "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/jobs/process-crawl-queue",
-      "schedule": "*/10 * * * *"
-    },
-    {
-      "path": "/api/jobs/cleanup-snapshots",
-      "schedule": "30 3 * * *"
+      "path": "/api/jobs/private-beta-daily",
+      "schedule": "15 3 * * *"
     }
   ]
 }
