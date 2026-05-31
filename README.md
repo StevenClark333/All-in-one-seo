@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# All In One SEO
 
-## Getting Started
+Agency-ready continuous SEO monitoring SaaS.
 
-First, run the development server:
+## Source Of Truth
+
+`PRODUCT_REQUIREMENTS.md` is the product source of truth. Implementation maps back to the MVP boundary and complete SaaS roadmap defined there.
+
+`PRODUCTION_TASK_LIST.md` is the execution source of truth. The production checklist is complete; use it for verification, release review, and future scope changes.
+
+## Current State
+
+The project is a Next.js App Router application with:
+
+- TypeScript
+- Tailwind CSS
+- ESLint
+- Geist font setup
+- Agency and business dashboard flows
+- Product requirements route at `/product-requirements`
+- Production task list route at `/production-task-list`
+- Prisma/PostgreSQL schema for the production SaaS model
+- Database-backed dashboard reads with empty, loading, and error states
+- Domain verification, crawler queue, rendered crawl foundations, SEO analyzer rules, AI recommendations, reporting, alerts, billing, integrations, and launch-readiness documentation
+
+## Run Locally
+
+Copy the example environment file and set `DATABASE_URL`:
+
+```bash
+cp .env.example .env
+```
+
+Start Postgres with Docker:
+
+```bash
+docker compose up -d
+```
+
+Create the database schema and seed the first agency workspace:
+
+```bash
+npm run db:migrate
+npm run db:seed
+```
+
+Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Seeded Access
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The local seed creates one production-style agency workspace:
 
-## Learn More
+- Workspace: `All In One SEO Agency`
+- Product Owner: `keccc@gmail.com` / `KEman321!`
+- Agency Admin: `agency-admin@allinoneseo.local` / `DemoPass123!`
+- SEO Operator: `seo-operator@allinoneseo.local` / `DemoPass123!`
+- Client Viewer: `client-viewer@allinoneseo.local` / `DemoPass123!`
 
-To learn more about Next.js, take a look at the following resources:
+Role meanings are documented in [docs/ROLES_AND_PERMISSIONS.md](docs/ROLES_AND_PERMISSIONS.md).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Useful Commands
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run check
+npm run validate:env
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+npm run db:generate
+npm run db:migrate
+npm run db:seed
+npm run db:studio
+```
 
-## Deploy on Vercel
+Install local pre-commit checks:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+./scripts/install-git-hooks.ps1
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) and [docs/PRODUCTION_ARCHITECTURE.md](docs/PRODUCTION_ARCHITECTURE.md).
+
+## Production Readiness
+
+The production task list is fully checked and the project currently passes:
+
+```bash
+npm run check
+npm run launch:handoff
+npm run release:readiness
+npm run secret:generate -- encryption hex
+npm run security:audit
+npx prisma migrate status
+```
+
+Before launch, configure production secrets, connect managed services, provision preview and production databases, seed a demo workspace, run the manual `Production Preflight` GitHub workflow, and complete the provider, secret, and launch-readiness checklists in [docs/PROVIDER_LAUNCH_CHECKLIST.md](docs/PROVIDER_LAUNCH_CHECKLIST.md), [docs/SECRET_OPERATIONS.md](docs/SECRET_OPERATIONS.md), and [docs/LAUNCH_READINESS.md](docs/LAUNCH_READINESS.md).

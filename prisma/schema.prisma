@@ -1,0 +1,987 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkspaceType {
+  BUSINESS
+  AGENCY
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum WorkspaceInvitationStatus {
+  PENDING
+  ACCEPTED
+  REVOKED
+  EXPIRED
+}
+
+enum DomainPlatform {
+  WORDPRESS
+  SHOPIFY
+  WEBFLOW
+  WIX
+  SQUARESPACE
+  CUSTOM
+  UNKNOWN
+}
+
+enum VerificationMethod {
+  DNS_TXT
+  HTML_FILE
+  META_TAG
+  GSC_OAUTH
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  FAILED
+  EXPIRED
+}
+
+enum ScriptStatus {
+  NOT_INSTALLED
+  DETECTED
+  DISABLED
+}
+
+enum CrawlFrequency {
+  MANUAL
+  WEEKLY
+  DAILY
+  CUSTOM
+}
+
+enum CrawlStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum CrawlTrigger {
+  MANUAL
+  SCHEDULED
+  SYSTEM
+}
+
+enum CrawlArtifactType {
+  ROBOTS_TXT
+  SITEMAP
+}
+
+enum PageImportance {
+  CRITICAL
+  IMPORTANT
+  NORMAL
+  IGNORED
+}
+
+enum IssueSeverity {
+  CRITICAL
+  WARNING
+  SUGGESTION
+}
+
+enum IssueStatus {
+  OPEN
+  IGNORED
+  IN_PROGRESS
+  FIXED
+  REAPPEARED
+}
+
+enum IssueNoteVisibility {
+  INTERNAL
+  CLIENT_VISIBLE
+}
+
+enum RecommendationType {
+  TITLE
+  META_DESCRIPTION
+  H1
+  ISSUE_EXPLANATION
+  FIX_BRIEF
+  CMS_FIX_BRIEF
+  INTERNAL_LINKING
+  SCHEMA
+  CONTENT_GAP
+}
+
+enum ReportStatus {
+  DRAFT
+  GENERATED
+  PUBLISHED
+  FAILED
+}
+
+enum ReportScheduleFrequency {
+  WEEKLY
+  MONTHLY
+}
+
+enum WhiteLabelDomainStatus {
+  PENDING
+  VERIFIED
+  FAILED
+}
+
+enum AlertChannel {
+  EMAIL
+  SLACK
+  TEAMS
+  WEBHOOK
+}
+
+enum AlertStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum WorkerJobType {
+  CRAWL_RUN
+  DOMAIN_VERIFICATION
+  SCHEDULED_REPORT
+  AI_RECOMMENDATION
+}
+
+enum WorkerJobStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  DEAD_LETTER
+}
+
+enum AuthTokenPurpose {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+model User {
+  id               String                @id @default(cuid())
+  email            String                @unique
+  name             String?
+  passwordHash     String?
+  emailVerifiedAt  DateTime?
+  failedLoginCount Int                   @default(0)
+  lockedUntil      DateTime?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  auditLogs        AuditLog[]
+  authSessions     AuthSession[]
+  authTokens       AuthToken[]
+  sentInvitations  WorkspaceInvitation[] @relation("WorkspaceInvitationInviter")
+  workspaceMembers WorkspaceMember[]
+  assignedIssues   SeoIssue[]            @relation("AssignedIssues")
+  issueNotes       SeoIssueNote[]
+
+  @@map("users")
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("auth_sessions")
+}
+
+model AuthToken {
+  id        String           @id @default(cuid())
+  userId    String
+  purpose   AuthTokenPurpose
+  tokenHash String           @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose, usedAt])
+  @@index([expiresAt])
+  @@map("auth_tokens")
+}
+
+model Workspace {
+  id                      String                   @id @default(cuid())
+  name                    String
+  type                    WorkspaceType
+  plan                    String                   @default("starter")
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  alertRules              AlertRule[]
+  alerts                  Alert[]
+  aiUsageEvents           AiUsageEvent[]
+  auditLogs               AuditLog[]
+  clients                 Client[]
+  deploymentChecks        DeploymentCheck[]
+  domains                 Domain[]
+  integrations            Integration[]
+  issues                  SeoIssue[]
+  invitations             WorkspaceInvitation[]
+  members                 WorkspaceMember[]
+  reports                 Report[]
+  reportSchedules         ReportSchedule[]
+  reportTemplates         ReportTemplate[]
+  reportWhiteLabelDomains ReportWhiteLabelDomain[]
+  subscriptions           WorkspaceSubscription[]
+  workerJobs              WorkerJob[]
+
+  @@map("workspaces")
+}
+
+model AiUsageEvent {
+  id               String    @id @default(cuid())
+  workspaceId      String
+  provider         String
+  model            String
+  feature          String
+  inputHash        String
+  promptTokens     Int       @default(0)
+  completionTokens Int       @default(0)
+  estimatedCostUsd Decimal?  @db.Decimal(10, 6)
+  createdAt        DateTime  @default(now())
+  workspace        Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([workspaceId, feature])
+  @@map("ai_usage_events")
+}
+
+model BillingPlan {
+  id                    String                  @id @default(cuid())
+  key                   String                  @unique
+  name                  String
+  description           String
+  billingProvider       String                  @default("STRIPE")
+  monthlyPriceCents     Int
+  stripePriceId         String?
+  trialDays             Int                     @default(14)
+  domainLimit           Int
+  pageCrawlLimit        Int
+  crawlFrequency        String
+  aiRecommendationLimit Int
+  teamSeatLimit         Int
+  reportLimit           Int
+  whiteLabelReports     Boolean                 @default(false)
+  renderedCrawling      Boolean                 @default(false)
+  active                Boolean                 @default(true)
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  subscriptions         WorkspaceSubscription[]
+
+  @@index([active])
+  @@map("billing_plans")
+}
+
+model WorkspaceSubscription {
+  id                   String      @id @default(cuid())
+  workspaceId          String
+  planId               String
+  status               String      @default("TRIALING")
+  billingProvider      String      @default("STRIPE")
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  trialEndsAt          DateTime?
+  currentPeriodEndsAt  DateTime?
+  cancelAtPeriodEnd    Boolean     @default(false)
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  plan                 BillingPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+  workspace            Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, status])
+  @@index([planId])
+  @@index([stripeCustomerId])
+  @@index([stripeSubscriptionId])
+  @@map("workspace_subscriptions")
+}
+
+model AuditLog {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  userId       String?
+  action       String
+  entityType   String?
+  entityId     String?
+  metadataJson Json?
+  createdAt    DateTime  @default(now())
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([userId])
+  @@map("audit_logs")
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole @default(MEMBER)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+  @@map("workspace_members")
+}
+
+model WorkspaceInvitation {
+  id          String                    @id @default(cuid())
+  workspaceId String
+  email       String
+  role        WorkspaceRole             @default(MEMBER)
+  status      WorkspaceInvitationStatus @default(PENDING)
+  tokenHash   String                    @unique
+  expiresAt   DateTime
+  invitedById String?
+  acceptedAt  DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+  invitedBy   User?                     @relation("WorkspaceInvitationInviter", fields: [invitedById], references: [id], onDelete: SetNull)
+  workspace   Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, status])
+  @@index([email])
+  @@index([expiresAt])
+  @@map("workspace_invitations")
+}
+
+model WorkerJob {
+  id          String          @id @default(cuid())
+  workspaceId String
+  type        WorkerJobType
+  status      WorkerJobStatus @default(QUEUED)
+  resourceId  String?
+  payloadJson Json?
+  attempts    Int             @default(0)
+  maxAttempts Int             @default(5)
+  availableAt DateTime        @default(now())
+  lockedAt    DateTime?
+  lockedBy    String?
+  completedAt DateTime?
+  failedAt    DateTime?
+  lastError   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  workspace   Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([status, availableAt])
+  @@index([workspaceId, type, status])
+  @@index([lockedAt])
+  @@map("worker_jobs")
+}
+
+model Client {
+  id                      String                   @id @default(cuid())
+  workspaceId             String
+  name                    String
+  logoUrl                 String?
+  contactEmail            String?
+  notes                   String?
+  tags                    String?
+  crawlFrequency          CrawlFrequency           @default(WEEKLY)
+  archivedAt              DateTime?
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  alertRules              AlertRule[]
+  domains                 Domain[]
+  integrations            Integration[]
+  issues                  SeoIssue[]
+  reports                 Report[]
+  reportSchedules         ReportSchedule[]
+  reportTemplates         ReportTemplate[]
+  reportWhiteLabelDomains ReportWhiteLabelDomain[]
+  workspace               Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([workspaceId, archivedAt])
+  @@map("clients")
+}
+
+model Domain {
+  id                 String                    @id @default(cuid())
+  workspaceId        String
+  clientId           String?
+  domain             String
+  platform           DomainPlatform            @default(UNKNOWN)
+  verificationStatus VerificationStatus        @default(PENDING)
+  scriptStatus       ScriptStatus              @default(NOT_INSTALLED)
+  crawlFrequency     CrawlFrequency            @default(WEEKLY)
+  lastCrawledAt      DateTime?
+  healthScore        Int?
+  archivedAt         DateTime?
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
+  alertRules         AlertRule[]
+  alerts             Alert[]
+  changeEvents       ChangeEvent[]
+  client             Client?                   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  crawlRuns          CrawlRun[]
+  deploymentChecks   DeploymentCheck[]
+  artifacts          CrawlArtifact[]
+  integrations       Integration[]
+  gscMetrics         GscSearchMetric[]
+  gaMetrics          GaTrafficMetric[]
+  issues             SeoIssue[]
+  links              PageLink[]
+  pages              Page[]
+  reports            Report[]
+  reportSchedules    ReportSchedule[]
+  scriptEvents       ScriptEvent[]
+  scoreHistory       SiteScore[]
+  verificationChecks DomainVerificationCheck[]
+  verifications      DomainVerification[]
+  workspace          Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, domain])
+  @@index([clientId])
+  @@index([verificationStatus])
+  @@index([workspaceId, verificationStatus])
+  @@index([workspaceId, lastCrawledAt])
+  @@index([workspaceId, archivedAt])
+  @@map("domains")
+}
+
+model SiteScore {
+  id          String    @id @default(cuid())
+  domainId    String
+  crawlRunId  String?
+  score       Int
+  reasonsJson Json
+  createdAt   DateTime  @default(now())
+  crawlRun    CrawlRun? @relation(fields: [crawlRunId], references: [id], onDelete: SetNull)
+  domain      Domain    @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId, createdAt])
+  @@index([crawlRunId])
+  @@map("site_scores")
+}
+
+model DomainVerification {
+  id            String                    @id @default(cuid())
+  domainId      String
+  method        VerificationMethod        @default(DNS_TXT)
+  token         String                    @unique
+  status        VerificationStatus        @default(PENDING)
+  attemptCount  Int                       @default(0)
+  lastCheckedAt DateTime?
+  nextRetryAt   DateTime?
+  failureReason String?
+  expiresAt     DateTime
+  verifiedAt    DateTime?
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+  checks        DomainVerificationCheck[]
+  domain        Domain                    @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId, status])
+  @@map("domain_verifications")
+}
+
+model DomainVerificationCheck {
+  id             String             @id @default(cuid())
+  verificationId String
+  domainId       String
+  method         VerificationMethod
+  status         VerificationStatus
+  message        String?
+  createdAt      DateTime           @default(now())
+  domain         Domain             @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  verification   DomainVerification @relation(fields: [verificationId], references: [id], onDelete: Cascade)
+
+  @@index([domainId, createdAt])
+  @@index([verificationId, createdAt])
+  @@map("domain_verification_checks")
+}
+
+model CrawlRun {
+  id               String                @id @default(cuid())
+  domainId         String
+  status           CrawlStatus           @default(QUEUED)
+  trigger          CrawlTrigger          @default(MANUAL)
+  startedAt        DateTime?
+  completedAt      DateTime?
+  pagesDiscovered  Int                   @default(0)
+  pagesCrawled     Int                   @default(0)
+  pagesFailed      Int                   @default(0)
+  errorMessage     String?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  changeEvents     ChangeEvent[]
+  domain           Domain                @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  links            PageLink[]
+  artifacts        CrawlArtifact[]
+  renderedCaptures RenderedPageCapture[]
+  siteScores       SiteScore[]
+  snapshots        PageSnapshot[]
+
+  @@index([domainId, status])
+  @@index([status, createdAt])
+  @@index([createdAt])
+  @@map("crawl_runs")
+}
+
+model CrawlArtifact {
+  id           String            @id @default(cuid())
+  crawlRunId   String
+  domainId     String
+  type         CrawlArtifactType
+  url          String
+  statusCode   Int?
+  contentHash  String?
+  metadataJson Json?
+  createdAt    DateTime          @default(now())
+  crawlRun     CrawlRun          @relation(fields: [crawlRunId], references: [id], onDelete: Cascade)
+  domain       Domain            @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([crawlRunId, type])
+  @@index([domainId, type])
+  @@map("crawl_artifacts")
+}
+
+model Page {
+  id               String                @id @default(cuid())
+  domainId         String
+  url              String
+  normalizedUrl    String
+  pageType         String?
+  importance       PageImportance        @default(NORMAL)
+  firstSeenAt      DateTime              @default(now())
+  lastSeenAt       DateTime?
+  lastCrawledAt    DateTime?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  alerts           Alert[]
+  changeEvents     ChangeEvent[]
+  domain           Domain                @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  outgoingLinks    PageLink[]            @relation("SourcePageLinks")
+  incomingLinks    PageLink[]            @relation("TargetPageLinks")
+  issues           SeoIssue[]
+  recommendations  SeoRecommendation[]
+  renderedCaptures RenderedPageCapture[]
+  snapshots        PageSnapshot[]
+
+  @@unique([domainId, normalizedUrl])
+  @@index([domainId, importance])
+  @@index([domainId, lastCrawledAt])
+  @@map("pages")
+}
+
+model PageLink {
+  id            String   @id @default(cuid())
+  domainId      String
+  crawlRunId    String
+  sourcePageId  String
+  targetPageId  String?
+  href          String
+  normalizedUrl String
+  anchorText    String?
+  isInternal    Boolean  @default(true)
+  statusCode    Int?
+  createdAt     DateTime @default(now())
+  crawlRun      CrawlRun @relation(fields: [crawlRunId], references: [id], onDelete: Cascade)
+  domain        Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  sourcePage    Page     @relation("SourcePageLinks", fields: [sourcePageId], references: [id], onDelete: Cascade)
+  targetPage    Page?    @relation("TargetPageLinks", fields: [targetPageId], references: [id], onDelete: SetNull)
+
+  @@index([domainId, crawlRunId])
+  @@index([sourcePageId])
+  @@index([targetPageId])
+  @@index([normalizedUrl])
+  @@map("page_links")
+}
+
+model PageSnapshot {
+  id              String   @id @default(cuid())
+  pageId          String
+  crawlRunId      String
+  statusCode      Int
+  htmlObjectKey   String?
+  title           String?
+  metaDescription String?
+  h1              String?
+  canonical       String?
+  robotsDirective String?
+  wordCount       Int?
+  contentHash     String?
+  metadataJson    Json?
+  createdAt       DateTime @default(now())
+  crawlRun        CrawlRun @relation(fields: [crawlRunId], references: [id], onDelete: Cascade)
+  page            Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId, createdAt])
+  @@index([crawlRunId])
+  @@map("page_snapshots")
+}
+
+model RenderedPageCapture {
+  id                  String                @id @default(cuid())
+  pageId              String
+  crawlRunId          String
+  status              String
+  provider            String
+  screenshotObjectKey String?
+  domObjectKey        String?
+  visualHash          String?
+  previousCaptureId   String?
+  diffScore           Float?
+  metadataJson        Json?
+  createdAt           DateTime              @default(now())
+  crawlRun            CrawlRun              @relation(fields: [crawlRunId], references: [id], onDelete: Cascade)
+  page                Page                  @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  previousCapture     RenderedPageCapture?  @relation("VisualDiffBaseline", fields: [previousCaptureId], references: [id], onDelete: SetNull)
+  nextCaptures        RenderedPageCapture[] @relation("VisualDiffBaseline")
+
+  @@index([pageId, createdAt])
+  @@index([crawlRunId])
+  @@map("rendered_page_captures")
+}
+
+model SeoIssue {
+  id              String              @id @default(cuid())
+  workspaceId     String
+  clientId        String?
+  domainId        String
+  pageId          String?
+  templateId      String?
+  issueType       String
+  severity        IssueSeverity
+  priorityScore   Int                 @default(0)
+  status          IssueStatus         @default(OPEN)
+  title           String
+  description     String
+  recommendation  String?
+  firstDetectedAt DateTime            @default(now())
+  lastDetectedAt  DateTime            @default(now())
+  resolvedAt      DateTime?
+  assignedToId    String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  assignedTo      User?               @relation("AssignedIssues", fields: [assignedToId], references: [id], onDelete: SetNull)
+  client          Client?             @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  domain          Domain              @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  notes           SeoIssueNote[]
+  page            Page?               @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  recommendations SeoRecommendation[]
+  workspace       Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, status, severity])
+  @@index([workspaceId, status, priorityScore])
+  @@index([clientId])
+  @@index([domainId])
+  @@index([pageId])
+  @@map("seo_issues")
+}
+
+model SeoIssueNote {
+  id         String              @id @default(cuid())
+  issueId    String
+  authorId   String?
+  visibility IssueNoteVisibility @default(INTERNAL)
+  body       String
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  author     User?               @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  issue      SeoIssue            @relation(fields: [issueId], references: [id], onDelete: Cascade)
+
+  @@index([issueId, createdAt])
+  @@index([authorId])
+  @@map("seo_issue_notes")
+}
+
+model SeoRecommendation {
+  id                 String             @id @default(cuid())
+  issueId            String?
+  pageId             String?
+  type               RecommendationType
+  inputHash          String
+  recommendationJson Json
+  createdAt          DateTime           @default(now())
+  issue              SeoIssue?          @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  page               Page?              @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([issueId])
+  @@index([pageId])
+  @@map("seo_recommendations")
+}
+
+model ChangeEvent {
+  id            String        @id @default(cuid())
+  domainId      String
+  pageId        String?
+  crawlRunId    String?
+  changeType    String
+  severity      IssueSeverity
+  previousValue String?
+  newValue      String?
+  createdAt     DateTime      @default(now())
+  crawlRun      CrawlRun?     @relation(fields: [crawlRunId], references: [id], onDelete: SetNull)
+  domain        Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  page          Page?         @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  alerts        Alert[]
+
+  @@index([domainId, createdAt])
+  @@index([pageId])
+  @@map("change_events")
+}
+
+model ScriptEvent {
+  id          String   @id @default(cuid())
+  domainId    String
+  pageUrl     String
+  eventType   String
+  payloadJson Json
+  createdAt   DateTime @default(now())
+  domain      Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId, createdAt])
+  @@map("script_events")
+}
+
+model Integration {
+  id          String    @id @default(cuid())
+  workspaceId String
+  clientId    String?
+  domainId    String?
+  provider    String
+  status      String
+  configJson  Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  client      Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  domain      Domain?   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, provider])
+  @@index([domainId])
+  @@map("integrations")
+}
+
+model DeploymentCheck {
+  id            String    @id @default(cuid())
+  workspaceId   String
+  domainId      String?
+  provider      String
+  eventType     String
+  status        String
+  projectId     String?
+  projectName   String?
+  deploymentId  String?
+  deploymentUrl String?
+  target        String?
+  commitSha     String?
+  payloadJson   Json?
+  receivedAt    DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  domain        Domain?   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  workspace     Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, provider, receivedAt])
+  @@index([domainId, receivedAt])
+  @@index([projectId])
+  @@map("deployment_checks")
+}
+
+model GscSearchMetric {
+  id          String   @id @default(cuid())
+  domainId    String
+  date        DateTime
+  query       String
+  pageUrl     String
+  country     String?
+  device      String?
+  clicks      Int      @default(0)
+  impressions Int      @default(0)
+  ctr         Float    @default(0)
+  position    Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  domain      Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([domainId, date, query, pageUrl, country, device])
+  @@index([domainId, date])
+  @@index([domainId, pageUrl])
+  @@map("gsc_search_metrics")
+}
+
+model GaTrafficMetric {
+  id              String   @id @default(cuid())
+  domainId        String
+  date            DateTime
+  pagePath        String
+  sessions        Int      @default(0)
+  activeUsers     Int      @default(0)
+  screenPageViews Int      @default(0)
+  conversions     Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  domain          Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([domainId, date, pagePath])
+  @@index([domainId, date])
+  @@index([domainId, pagePath])
+  @@map("ga_traffic_metrics")
+}
+
+model Report {
+  id           String          @id @default(cuid())
+  workspaceId  String
+  clientId     String?
+  domainId     String?
+  title        String
+  status       ReportStatus    @default(DRAFT)
+  periodStart  DateTime
+  periodEnd    DateTime
+  pdfObjectKey String?
+  shareToken   String?         @unique
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  client       Client?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  domain       Domain?         @relation(fields: [domainId], references: [id], onDelete: SetNull)
+  templateId   String?
+  template     ReportTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  workspace    Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([clientId])
+  @@index([templateId])
+  @@map("reports")
+}
+
+model ReportSchedule {
+  id          String                  @id @default(cuid())
+  workspaceId String
+  clientId    String?
+  domainId    String?
+  templateId  String?
+  title       String
+  frequency   ReportScheduleFrequency @default(WEEKLY)
+  enabled     Boolean                 @default(true)
+  lastRunAt   DateTime?
+  nextRunAt   DateTime
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  client      Client?                 @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  domain      Domain?                 @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  template    ReportTemplate?         @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  workspace   Workspace               @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, enabled, nextRunAt])
+  @@index([clientId])
+  @@index([domainId])
+  @@index([templateId])
+  @@map("report_schedules")
+}
+
+model ReportTemplate {
+  id           String           @id @default(cuid())
+  workspaceId  String
+  clientId     String?
+  name         String
+  description  String?
+  sectionsJson Json
+  brandingJson Json?
+  isDefault    Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  client       Client?          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  reports      Report[]
+  schedules    ReportSchedule[]
+  workspace    Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, isDefault])
+  @@index([clientId])
+  @@map("report_templates")
+}
+
+model ReportWhiteLabelDomain {
+  id                String                 @id @default(cuid())
+  workspaceId       String
+  clientId          String?
+  hostname          String                 @unique
+  status            WhiteLabelDomainStatus @default(PENDING)
+  verificationToken String                 @unique
+  verifiedAt        DateTime?
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  client            Client?                @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  workspace         Workspace              @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, status])
+  @@index([clientId])
+  @@map("report_white_label_domains")
+}
+
+model AlertRule {
+  id                    String        @id @default(cuid())
+  workspaceId           String
+  clientId              String?
+  domainId              String?
+  name                  String
+  eventType             String
+  severityThreshold     IssueSeverity @default(WARNING)
+  channel               AlertChannel  @default(EMAIL)
+  targetEmail           String?
+  targetUrl             String?
+  escalationChannel     AlertChannel?
+  escalationTargetEmail String?
+  escalationTargetUrl   String?
+  enabled               Boolean       @default(true)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  alerts                Alert[]
+  client                Client?       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  domain                Domain?       @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  workspace             Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, enabled])
+  @@index([domainId])
+  @@map("alert_rules")
+}
+
+model Alert {
+  id          String       @id @default(cuid())
+  alertRuleId String
+  workspaceId String
+  domainId    String
+  pageId      String?
+  eventId     String?
+  status      AlertStatus  @default(PENDING)
+  sentAt      DateTime?
+  escalatedAt DateTime?
+  createdAt   DateTime     @default(now())
+  alertRule   AlertRule    @relation(fields: [alertRuleId], references: [id], onDelete: Cascade)
+  changeEvent ChangeEvent? @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  domain      Domain       @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  page        Page?        @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, status])
+  @@index([domainId, createdAt])
+  @@map("alerts")
+}

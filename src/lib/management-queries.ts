@@ -1,0 +1,358 @@
+import { Prisma } from "@prisma/client";
+import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
+import {
+  type PageTemplateSummary,
+  summarizeTemplateGroups,
+} from "@/lib/template-detection";
+import { getPrimaryWorkspace } from "@/lib/workspace";
+
+const pageInventoryInclude = Prisma.validator<Prisma.PageInclude>()({
+  domain: { include: { client: true } },
+  snapshots: {
+    orderBy: { createdAt: "desc" },
+    take: 1,
+  },
+  issues: {
+    where: { status: { not: "FIXED" } },
+    select: { severity: true, status: true },
+  },
+  incomingLinks: { select: { id: true } },
+  outgoingLinks: { select: { id: true } },
+});
+
+const pageDetailInclude = Prisma.validator<Prisma.PageInclude>()({
+  domain: { include: { client: true } },
+  snapshots: {
+    orderBy: { createdAt: "desc" },
+    take: 5,
+    include: { crawlRun: true },
+  },
+  issues: {
+    include: { assignedTo: true },
+    orderBy: [
+      { status: "asc" },
+      { severity: "asc" },
+      { priorityScore: "desc" },
+    ],
+  },
+  recommendations: {
+    orderBy: { createdAt: "desc" },
+    take: 12,
+  },
+  changeEvents: {
+    orderBy: { createdAt: "desc" },
+    take: 12,
+  },
+  incomingLinks: {
+    include: { sourcePage: true },
+    orderBy: { createdAt: "desc" },
+    take: 25,
+  },
+  outgoingLinks: {
+    include: { targetPage: true },
+    orderBy: { createdAt: "desc" },
+    take: 25,
+  },
+});
+
+type PrimaryWorkspace = Awaited<ReturnType<typeof getPrimaryWorkspace>>;
+type PageInventoryItem = Prisma.PageGetPayload<{
+  include: typeof pageInventoryInclude;
+}>;
+type PageDetail = Prisma.PageGetPayload<{ include: typeof pageDetailInclude }>;
+
+export async function getClientManagementData() {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, clients: [] };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, clients: [] };
+  }
+
+  const clients = await getPrisma().client.findMany({
+    where: { archivedAt: null, workspaceId: workspace.id },
+    include: {
+      domains: {
+        select: {
+          id: true,
+          domain: true,
+          verificationStatus: true,
+          healthScore: true,
+        },
+      },
+      issues: {
+        where: { status: { not: "FIXED" } },
+        select: { severity: true },
+      },
+      reports: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        select: { title: true, status: true, createdAt: true },
+      },
+    },
+    orderBy: { name: "asc" },
+  });
+
+  return { workspace, clients };
+}
+
+export async function getDomainManagementData() {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, clients: [], domains: [] };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, clients: [], domains: [] };
+  }
+
+  const [clients, domains] = await Promise.all([
+    getPrisma().client.findMany({
+      where: { archivedAt: null, workspaceId: workspace.id },
+      orderBy: { name: "asc" },
+    }),
+    getPrisma().domain.findMany({
+      where: { archivedAt: null, workspaceId: workspace.id },
+      include: {
+        client: true,
+        scoreHistory: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+        crawlRuns: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          select: { status: true, completedAt: true, createdAt: true },
+        },
+        issues: {
+          where: { status: { not: "FIXED" } },
+          select: { severity: true },
+        },
+        pages: { select: { id: true } },
+      },
+      orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
+    }),
+  ]);
+
+  return { workspace, clients, domains };
+}
+
+export async function getClientDetailData(clientId: string) {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, client: null };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, client: null };
+  }
+
+  const client = await getPrisma().client.findFirst({
+    where: { id: clientId, workspaceId: workspace.id },
+    include: {
+      domains: {
+        where: { archivedAt: null },
+        include: {
+          scoreHistory: {
+            orderBy: { createdAt: "desc" },
+            take: 6,
+          },
+          crawlRuns: {
+            orderBy: { createdAt: "desc" },
+            take: 3,
+          },
+          issues: {
+            where: { status: { not: "FIXED" } },
+            select: { severity: true, status: true },
+          },
+          pages: { select: { id: true } },
+        },
+        orderBy: { domain: "asc" },
+      },
+      issues: {
+        where: { status: { not: "FIXED" } },
+        include: { domain: true, page: true, assignedTo: true },
+        orderBy: [
+          { severity: "asc" },
+          { priorityScore: "desc" },
+          { lastDetectedAt: "desc" },
+        ],
+        take: 10,
+      },
+      reports: {
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      },
+    },
+  });
+
+  return { workspace, client };
+}
+
+export async function getDomainDetailData(domainId: string) {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, clients: [], domain: null };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, clients: [], domain: null };
+  }
+
+  const [clients, domain] = await Promise.all([
+    getPrisma().client.findMany({
+      where: { archivedAt: null, workspaceId: workspace.id },
+      orderBy: { name: "asc" },
+    }),
+    getPrisma().domain.findFirst({
+      where: { archivedAt: null, id: domainId, workspaceId: workspace.id },
+      include: {
+        client: true,
+        verifications: {
+          orderBy: { createdAt: "desc" },
+          take: 3,
+        },
+        scoreHistory: {
+          orderBy: { createdAt: "desc" },
+          take: 10,
+        },
+        crawlRuns: {
+          orderBy: { createdAt: "desc" },
+          take: 8,
+        },
+        artifacts: {
+          orderBy: { createdAt: "desc" },
+          take: 8,
+        },
+        pages: {
+          include: {
+            snapshots: {
+              orderBy: { createdAt: "desc" },
+              take: 1,
+            },
+            issues: {
+              where: { status: { not: "FIXED" } },
+              select: { severity: true },
+            },
+          },
+          orderBy: [{ importance: "asc" }, { updatedAt: "desc" }],
+          take: 25,
+        },
+        issues: {
+          where: { status: { not: "FIXED" } },
+          include: { page: true, assignedTo: true },
+          orderBy: [
+            { severity: "asc" },
+            { priorityScore: "desc" },
+            { lastDetectedAt: "desc" },
+          ],
+          take: 10,
+        },
+      },
+    }),
+  ]);
+
+  return { workspace, clients, domain };
+}
+
+export async function getPageInventoryData(): Promise<{
+  workspace: PrimaryWorkspace;
+  pages: PageInventoryItem[];
+  templateGroups: PageTemplateSummary[];
+}> {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, pages: [], templateGroups: [] };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, pages: [], templateGroups: [] };
+  }
+
+  const pages = await getPrisma().page.findMany({
+    where: { domain: { archivedAt: null, workspaceId: workspace.id } },
+    include: pageInventoryInclude,
+    orderBy: [{ lastCrawledAt: "desc" }, { updatedAt: "desc" }],
+    take: 200,
+  });
+
+  return { workspace, pages, templateGroups: summarizeTemplateGroups(pages) };
+}
+
+export async function getPageDetailData(pageId: string): Promise<{
+  workspace: PrimaryWorkspace;
+  page: PageDetail | null;
+}> {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, page: null };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, page: null };
+  }
+
+  const page = await getPrisma().page.findFirst({
+    where: { id: pageId, domain: { workspaceId: workspace.id } },
+    include: pageDetailInclude,
+  });
+
+  return { workspace, page };
+}
+
+export async function getIntegrationSettingsData() {
+  if (!hasDatabaseUrl()) {
+    return {
+      workspace: null,
+      clients: [],
+      domains: [],
+      integrations: [],
+      deploymentChecks: [],
+    };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return {
+      workspace: null,
+      clients: [],
+      domains: [],
+      integrations: [],
+      deploymentChecks: [],
+    };
+  }
+
+  const [clients, domains, integrations, deploymentChecks] = await Promise.all([
+    getPrisma().client.findMany({
+      where: { workspaceId: workspace.id },
+      orderBy: { name: "asc" },
+    }),
+    getPrisma().domain.findMany({
+      where: { workspaceId: workspace.id },
+      include: { client: true },
+      orderBy: { domain: "asc" },
+    }),
+    getPrisma().integration.findMany({
+      where: { workspaceId: workspace.id },
+      include: { client: true, domain: true },
+      orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
+    }),
+    getPrisma().deploymentCheck.findMany({
+      where: { workspaceId: workspace.id },
+      include: { domain: true },
+      orderBy: { receivedAt: "desc" },
+      take: 10,
+    }),
+  ]);
+
+  return { workspace, clients, domains, integrations, deploymentChecks };
+}

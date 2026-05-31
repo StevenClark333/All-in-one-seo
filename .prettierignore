@@ -1,0 +1,7 @@
+.next
+.storage
+node_modules
+coverage
+package-lock.json
+prisma/migrations
+integrations/wordpress/**/*.php
