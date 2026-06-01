@@ -114,7 +114,7 @@ export function getLocalSnapshotRoot(
     return serverlessStorageRoot;
   }
 
-  return path.join(process.cwd(), localStorageRoot);
+  return path.join(/* turbopackIgnore: true */ process.cwd(), localStorageRoot);
 }
 
 function hasVercelBlobToken() {
