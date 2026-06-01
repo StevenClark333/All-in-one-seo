@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Pencil, ShieldCheck } from "lucide-react";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import {
   HTML_VERIFICATION_PATH,
@@ -52,6 +52,8 @@ export default async function DomainVerificationPage({
   const { domainId } = await params;
   const query = searchParams ? await searchParams : {};
   const error = getSingle(query.error);
+  const isEditing = getSingle(query.edit) === "1";
+  const selectedMethodParam = getSingle(query.method);
   const status = getSingle(query.status);
   const domain = await getPrisma().domain.findUnique({
     where: { id: domainId },
@@ -78,6 +80,21 @@ export default async function DomainVerificationPage({
       verification,
     ]),
   );
+  const verifiedVerification = domain.verifications.find(
+    (verification) => verification.status === "VERIFIED",
+  );
+  const availableMethods = verificationMethods.filter(
+    (item) => item.method !== verifiedVerification?.method,
+  );
+  const selectedMethod =
+    availableMethods.find((item) => item.method === selectedMethodParam) ??
+    availableMethods[0] ??
+    verificationMethods[0];
+  const selectedVerification = latestByMethod.get(selectedMethod.method);
+  const selectedVerificationValue = selectedVerification
+    ? formatVerificationValue(selectedVerification.token)
+    : "";
+  const showMethodSetup = domain.verificationStatus !== "VERIFIED" || isEditing;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-6 text-slate-950 sm:px-8 lg:px-10">
@@ -128,10 +145,36 @@ export default async function DomainVerificationPage({
               <div>
                 <h2 className="font-semibold">Domain ownership verified</h2>
                 <p className="mt-1 text-sm leading-6">
-                  Full production crawls can run for this domain. The other
-                  verification methods below are optional fallbacks, not extra
-                  required steps.
+                  Full production crawls can run for this domain
+                  {verifiedVerification
+                    ? ` through ${getMethodName(verifiedVerification.method)}.`
+                    : "."}
                 </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {verifiedVerification ? (
+                    <form
+                      action="/api/domains/verification/check"
+                      method="post"
+                    >
+                      <input type="hidden" name="domainId" value={domain.id} />
+                      <input
+                        type="hidden"
+                        name="method"
+                        value={verifiedVerification.method}
+                      />
+                      <button className="inline-flex h-9 items-center rounded-md border border-emerald-300 bg-white px-3 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50">
+                        Re-check ownership
+                      </button>
+                    </form>
+                  ) : null}
+                  <Link
+                    href={`/domains/${domain.id}/verification?edit=1`}
+                    className="inline-flex h-9 items-center gap-2 rounded-md border border-emerald-300 bg-white px-3 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50"
+                  >
+                    <Pencil className="size-4" aria-hidden="true" />
+                    Edit verification
+                  </Link>
+                </div>
               </div>
             </div>
           ) : null}
@@ -152,111 +195,133 @@ export default async function DomainVerificationPage({
             />
           ) : null}
 
-          <div className="mt-6 grid gap-4">
-            {verificationMethods.map((item) => {
-              const verification = latestByMethod.get(item.method);
-              const isVerifiedMethod = verification?.status === "VERIFIED";
-              const isOptionalFallback =
-                domain.verificationStatus === "VERIFIED" && !isVerifiedMethod;
-              const verificationValue = verification
-                ? formatVerificationValue(verification.token)
-                : "";
+          {showMethodSetup ? (
+            <section className="mt-6 rounded-md border border-slate-200 bg-slate-50 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h2 className="font-semibold">
+                    <HelpLabel help="Choose one ownership method. Once any method passes, the domain is verified.">
+                      Choose verification method
+                    </HelpLabel>
+                  </h2>
+                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                    Pick the method that matches how you control this website.
+                    You only need one successful method.
+                  </p>
+                </div>
+                {domain.verificationStatus === "VERIFIED" ? (
+                  <Link
+                    href={`/domains/${domain.id}/verification`}
+                    className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                  >
+                    Done editing
+                  </Link>
+                ) : null}
+              </div>
 
-              return (
-                <section
-                  key={item.method}
-                  className="rounded-md border border-slate-200 bg-slate-50 p-4"
+              <form className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+                {isEditing ? (
+                  <input type="hidden" name="edit" value="1" />
+                ) : null}
+                <select
+                  name="method"
+                  defaultValue={selectedMethod.method}
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-700">
-                        <HelpLabel help={item.help}>{item.name}</HelpLabel>
-                      </p>
-                      <p className="mt-1 text-sm leading-6 text-slate-500">
-                        {item.description}
-                      </p>
-                    </div>
-                    <span className="inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600">
-                      {isOptionalFallback
-                        ? "Optional"
-                        : verification
-                          ? formatEnum(verification.status)
-                          : "Not generated"}
-                    </span>
-                  </div>
+                  {availableMethods.map((item) => (
+                    <option key={item.method} value={item.method}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+                <button className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
+                  Use method
+                </button>
+              </form>
 
-                  {verification ? (
-                    <div className="mt-4 grid gap-3">
-                      {isOptionalFallback ? (
-                        <p className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm leading-6 text-slate-600">
-                          This method is only needed if you want to verify the
-                          domain another way. Since the domain is already
-                          verified, you can leave this alone.
-                        </p>
-                      ) : null}
-                      <VerificationInstructions
-                        domain={domain.domain}
-                        method={item.method}
-                        token={verification.token}
-                        value={verificationValue}
-                      />
-                      {verification.failureReason ? (
-                        <p className="text-sm text-red-700">
-                          {verification.failureReason}
-                        </p>
-                      ) : null}
-                      {verification.nextRetryAt ? (
-                        <p className="text-xs font-medium text-slate-500">
-                          Next retry after{" "}
-                          {verification.nextRetryAt.toLocaleString()}
-                        </p>
-                      ) : null}
-                      <form
-                        action="/api/domains/verification/check"
-                        method="post"
-                      >
-                        <input
-                          type="hidden"
-                          name="domainId"
-                          value={domain.id}
-                        />
-                        <input
-                          type="hidden"
-                          name="method"
-                          value={item.method}
-                        />
-                        <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                          Check {item.name}
-                          <InfoTooltip
-                            label="Run this ownership check now and update the domain verification status."
-                            passive
-                            side="left"
-                          />
-                        </button>
-                      </form>
-                    </div>
-                  ) : (
+              <div className="mt-4 rounded-md border border-slate-200 bg-white p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-700">
+                      <HelpLabel help={selectedMethod.help}>
+                        {selectedMethod.name}
+                      </HelpLabel>
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                      {selectedMethod.description}
+                    </p>
+                  </div>
+                  <span className="inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600">
+                    {selectedVerification
+                      ? formatEnum(selectedVerification.status)
+                      : "Not generated"}
+                  </span>
+                </div>
+
+                {selectedVerification ? (
+                  <div className="mt-4 grid gap-3">
+                    <VerificationInstructions
+                      domain={domain.domain}
+                      method={selectedMethod.method}
+                      token={selectedVerification.token}
+                      value={selectedVerificationValue}
+                    />
+                    {selectedVerification.failureReason ? (
+                      <p className="text-sm text-red-700">
+                        {selectedVerification.failureReason}
+                      </p>
+                    ) : null}
+                    {selectedVerification.nextRetryAt ? (
+                      <p className="text-xs font-medium text-slate-500">
+                        Next retry after{" "}
+                        {selectedVerification.nextRetryAt.toLocaleString()}
+                      </p>
+                    ) : null}
                     <form
-                      action="/api/domains/verification/generate"
+                      action="/api/domains/verification/check"
                       method="post"
-                      className="mt-4"
                     >
                       <input type="hidden" name="domainId" value={domain.id} />
-                      <input type="hidden" name="method" value={item.method} />
-                      <button className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                        Generate {item.name} token
+                      <input
+                        type="hidden"
+                        name="method"
+                        value={selectedMethod.method}
+                      />
+                      <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                        Check {selectedMethod.name}
                         <InfoTooltip
-                          label="Create a fresh ownership token and show setup instructions for this method."
+                          label="Run this ownership check now and update the domain verification status."
                           passive
                           side="left"
                         />
                       </button>
                     </form>
-                  )}
-                </section>
-              );
-            })}
-          </div>
+                  </div>
+                ) : (
+                  <form
+                    action="/api/domains/verification/generate"
+                    method="post"
+                    className="mt-4"
+                  >
+                    <input type="hidden" name="domainId" value={domain.id} />
+                    <input
+                      type="hidden"
+                      name="method"
+                      value={selectedMethod.method}
+                    />
+                    <button className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
+                      Generate {selectedMethod.name} token
+                      <InfoTooltip
+                        label="Create a fresh ownership token and show setup instructions for this method."
+                        passive
+                        side="left"
+                      />
+                    </button>
+                  </form>
+                )}
+              </div>
+            </section>
+          ) : null}
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <h2 className="font-semibold">
@@ -367,6 +432,13 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getMethodName(method: string) {
+  return (
+    verificationMethods.find((item) => item.method === method)?.name ??
+    formatEnum(method)
+  );
 }
 
 function getSingle(value: string | string[] | undefined) {

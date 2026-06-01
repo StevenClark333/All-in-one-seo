@@ -173,7 +173,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                               value="/domains"
                             />
                             <button
-                              disabled={domain.verificationStatus !== "VERIFIED"}
+                              disabled={
+                                domain.verificationStatus !== "VERIFIED"
+                              }
                               className="inline-flex h-9 min-w-28 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
                             >
                               <Play className="size-4" aria-hidden="true" />
