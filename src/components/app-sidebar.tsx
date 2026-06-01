@@ -43,7 +43,6 @@ const navHelp: Record<string, string> = {
     "Manage plan limits, usage, subscriptions, trials, and billing portal access.",
   Settings:
     "Manage workspace members, roles, invitations, and account settings.",
-  Roadmap: "The production source-of-truth checklist for what has been built.",
 };
 
 export async function AppSidebar({ active }: { active: string }) {

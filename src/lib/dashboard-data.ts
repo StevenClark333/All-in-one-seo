@@ -2,7 +2,6 @@ import {
   AlertTriangle,
   Bell,
   Bot,
-  CheckCircle2,
   Clock3,
   ClipboardList,
   CreditCard,
@@ -107,5 +106,4 @@ export const navItems = [
   { label: "Integrations", icon: PlugZap },
   { label: "Billing", icon: CreditCard },
   { label: "Settings", icon: Settings },
-  { label: "Roadmap", icon: CheckCircle2 },
 ];
