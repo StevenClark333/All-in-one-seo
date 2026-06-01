@@ -265,29 +265,57 @@ export async function getDomainDetailData(domainId: string) {
   return { workspace, clients, domain };
 }
 
-export async function getPageInventoryData(): Promise<{
+export async function getPageInventoryData({
+  domainId,
+}: {
+  domainId?: string;
+} = {}): Promise<{
+  domains: Array<{
+    client: { name: string } | null;
+    domain: string;
+    id: string;
+  }>;
   workspace: PrimaryWorkspace;
   pages: PageInventoryItem[];
   templateGroups: PageTemplateSummary[];
 }> {
   if (!hasDatabaseUrl()) {
-    return { workspace: null, pages: [], templateGroups: [] };
+    return { workspace: null, domains: [], pages: [], templateGroups: [] };
   }
 
   const workspace = await getPrimaryWorkspace();
 
   if (!workspace) {
-    return { workspace: null, pages: [], templateGroups: [] };
+    return { workspace: null, domains: [], pages: [], templateGroups: [] };
   }
 
-  const pages = await getPrisma().page.findMany({
-    where: { domain: { archivedAt: null, workspaceId: workspace.id } },
-    include: pageInventoryInclude,
-    orderBy: [{ lastCrawledAt: "desc" }, { updatedAt: "desc" }],
-    take: 200,
-  });
+  const [domains, pages] = await Promise.all([
+    getPrisma().domain.findMany({
+      where: { archivedAt: null, workspaceId: workspace.id },
+      include: { client: { select: { name: true } } },
+      orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
+    }),
+    getPrisma().page.findMany({
+      where: {
+        domain: { archivedAt: null, workspaceId: workspace.id },
+        ...(domainId ? { domainId } : {}),
+      },
+      include: pageInventoryInclude,
+      orderBy: [
+        { domain: { domain: "asc" } },
+        { lastCrawledAt: "desc" },
+        { updatedAt: "desc" },
+      ],
+      take: 200,
+    }),
+  ]);
 
-  return { workspace, pages, templateGroups: summarizeTemplateGroups(pages) };
+  return {
+    workspace,
+    domains,
+    pages,
+    templateGroups: summarizeTemplateGroups(pages),
+  };
 }
 
 export async function getPageDetailData(pageId: string): Promise<{

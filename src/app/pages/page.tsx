@@ -6,8 +6,20 @@ import { getTemplateLabel, inferPageTemplate } from "@/lib/template-detection";
 
 export const dynamic = "force-dynamic";
 
-export default async function PagesPage() {
-  const { workspace, pages, templateGroups } = await getPageInventoryData();
+type PagesPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function PagesPage({ searchParams }: PagesPageProps) {
+  const params = searchParams ? await searchParams : {};
+  const selectedDomainId = getSingle(params.domainId);
+  const { workspace, domains, pages, templateGroups } =
+    await getPageInventoryData({
+      domainId: selectedDomainId,
+    });
+  const selectedDomain = domains.find(
+    (domain) => domain.id === selectedDomainId,
+  );
 
   const criticalPages = pages.filter((page) =>
     page.issues.some((issue) => issue.severity === "CRITICAL"),
@@ -87,69 +99,111 @@ export default async function PagesPage() {
           </section>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">Page inventory</h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Crawl-backed page list across all agency clients and domains.
-              </p>
+            <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-end xl:justify-between">
+              <div>
+                <h3 className="text-lg font-semibold">Page inventory</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  {selectedDomain
+                    ? `Focused on ${selectedDomain.domain}.`
+                    : "Crawl-backed page list across all agency clients and domains."}
+                </p>
+              </div>
+
+              <form className="grid gap-2 sm:grid-cols-[minmax(0,260px)_auto_auto]">
+                <label className="grid gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                    Site
+                  </span>
+                  <select
+                    name="domainId"
+                    defaultValue={selectedDomainId ?? ""}
+                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                  >
+                    <option value="">All sites</option>
+                    {domains.map((domain) => (
+                      <option key={domain.id} value={domain.id}>
+                        {domain.domain}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="flex items-end">
+                  <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                    Filter
+                  </button>
+                </div>
+                {selectedDomainId ? (
+                  <div className="flex items-end">
+                    <Link
+                      href="/pages"
+                      className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                    >
+                      Clear
+                    </Link>
+                  </div>
+                ) : null}
+              </form>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[980px] text-left text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
-                  <tr>
-                    <th className="px-5 py-3 font-semibold">Page</th>
-                    <th className="px-5 py-3 font-semibold">Client</th>
-                    <th className="px-5 py-3 font-semibold">Domain</th>
-                    <th className="px-5 py-3 font-semibold">Template</th>
-                    <th className="px-5 py-3 font-semibold">Status</th>
-                    <th className="px-5 py-3 font-semibold">Issues</th>
-                    <th className="px-5 py-3 font-semibold">Links</th>
-                    <th className="px-5 py-3 font-semibold">Last crawl</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {pages.length ? (
-                    pages.map((page) => {
-                      const snapshot = page.snapshots.at(0);
-                      const critical = page.issues.filter(
-                        (issue) => issue.severity === "CRITICAL",
-                      ).length;
-                      const warnings = page.issues.filter(
-                        (issue) => issue.severity === "WARNING",
-                      ).length;
+            <div className="divide-y divide-slate-100">
+              {pages.length ? (
+                <>
+                  <div className="hidden grid-cols-[minmax(0,1fr)_150px_90px_90px_120px_120px] gap-4 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 xl:grid">
+                    <span>Page</span>
+                    <span>Template</span>
+                    <span>Status</span>
+                    <span>Issues</span>
+                    <span>Links</span>
+                    <span>Last crawl</span>
+                  </div>
 
-                      return (
-                        <tr key={page.id}>
-                          <td className="px-5 py-4">
-                            <Link
-                              href={`/pages/${page.id}`}
-                              className="font-medium underline-offset-4 hover:underline"
-                            >
-                              {page.url}
-                            </Link>
-                            <p className="mt-1 max-w-[420px] truncate text-xs text-slate-500">
-                              {snapshot?.title ?? "Missing title"}
-                            </p>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {page.domain.client?.name ?? "Unassigned"}
-                          </td>
-                          <td className="px-5 py-4">
+                  {pages.map((page) => {
+                    const snapshot = page.snapshots.at(0);
+                    const critical = page.issues.filter(
+                      (issue) => issue.severity === "CRITICAL",
+                    ).length;
+                    const warnings = page.issues.filter(
+                      (issue) => issue.severity === "WARNING",
+                    ).length;
+
+                    return (
+                      <article
+                        key={page.id}
+                        className="grid gap-4 px-5 py-4 text-sm xl:grid-cols-[minmax(0,1fr)_150px_90px_90px_120px_120px] xl:items-center"
+                      >
+                        <div className="min-w-0">
+                          <Link
+                            href={`/pages/${page.id}`}
+                            className="font-medium underline-offset-4 hover:underline"
+                          >
+                            {page.url}
+                          </Link>
+                          <p className="mt-1 text-xs leading-5 text-slate-500">
+                            {snapshot?.title ?? "Missing title"}
+                          </p>
+                          <p className="mt-1 text-xs leading-5 text-slate-500">
+                            {page.domain.client?.name ?? "Unassigned"} -{" "}
                             <Link
                               href={`/domains/${page.domain.id}`}
-                              className="text-slate-700 underline-offset-4 hover:underline"
+                              className="font-medium text-slate-700 underline-offset-4 hover:underline"
                             >
                               {page.domain.domain}
                             </Link>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {getTemplateLabel(inferPageTemplate(page))}
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
+                          </p>
+                        </div>
+
+                        <MetaBlock label="Template">
+                          {getTemplateLabel(inferPageTemplate(page))}
+                        </MetaBlock>
+
+                        <MetaBlock label="Status">
+                          <span className="whitespace-nowrap">
                             {snapshot?.statusCode ?? "Pending"}
-                          </td>
-                          <td className="px-5 py-4">
+                          </span>
+                        </MetaBlock>
+
+                        <MetaBlock label="Issues">
+                          <span className="whitespace-nowrap">
                             <span className="font-medium text-red-600">
                               {critical}
                             </span>
@@ -157,35 +211,34 @@ export default async function PagesPage() {
                             <span className="font-medium text-amber-600">
                               {warnings}
                             </span>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            <span className="inline-flex items-center gap-1">
-                              <Link2 className="size-4" aria-hidden="true" />
-                              {page.incomingLinks.length} in /{" "}
-                              {page.outgoingLinks.length} out
-                            </span>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
+                          </span>
+                        </MetaBlock>
+
+                        <MetaBlock label="Links">
+                          <span className="inline-flex items-center gap-1 whitespace-nowrap">
+                            <Link2 className="size-4" aria-hidden="true" />
+                            {page.incomingLinks.length} in /{" "}
+                            {page.outgoingLinks.length} out
+                          </span>
+                        </MetaBlock>
+
+                        <MetaBlock label="Last crawl">
+                          <span className="whitespace-nowrap">
                             {page.lastCrawledAt
                               ? page.lastCrawledAt.toLocaleDateString()
                               : "Pending"}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td
-                        className="px-5 py-8 text-center text-slate-500"
-                        colSpan={8}
-                      >
-                        No pages yet. Run a verified domain crawl to populate
-                        the page inventory.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                          </span>
+                        </MetaBlock>
+                      </article>
+                    );
+                  })}
+                </>
+              ) : (
+                <div className="px-5 py-8 text-center text-sm text-slate-500">
+                  No pages yet. Run a verified domain crawl to populate the page
+                  inventory.
+                </div>
+              )}
             </div>
           </section>
         </section>
@@ -203,4 +256,25 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );
+}
+
+function MetaBlock({
+  children,
+  label,
+}: {
+  children: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="text-slate-600">
+      <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400 xl:hidden">
+        {label}
+      </p>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function getSingle(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }
