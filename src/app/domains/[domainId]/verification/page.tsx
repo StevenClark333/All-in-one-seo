@@ -25,8 +25,9 @@ const verificationMethods = [
     name: "DNS TXT",
   },
   {
-    description: "Upload a verification file for hosts where DNS is slow.",
-    help: "Upload the generated file contents to the specified well-known URL on the website.",
+    description:
+      "Optional fallback: create this file on your website only if you cannot use DNS TXT.",
+    help: "Create a text file at the specified path on your website and paste in the generated file contents.",
     method: "HTML_FILE",
     name: "HTML file",
   },
@@ -127,7 +128,9 @@ export default async function DomainVerificationPage({
               <div>
                 <h2 className="font-semibold">Domain ownership verified</h2>
                 <p className="mt-1 text-sm leading-6">
-                  Full production crawls can run for this domain.
+                  Full production crawls can run for this domain. The other
+                  verification methods below are optional fallbacks, not extra
+                  required steps.
                 </p>
               </div>
             </div>
@@ -152,6 +155,9 @@ export default async function DomainVerificationPage({
           <div className="mt-6 grid gap-4">
             {verificationMethods.map((item) => {
               const verification = latestByMethod.get(item.method);
+              const isVerifiedMethod = verification?.status === "VERIFIED";
+              const isOptionalFallback =
+                domain.verificationStatus === "VERIFIED" && !isVerifiedMethod;
               const verificationValue = verification
                 ? formatVerificationValue(verification.token)
                 : "";
@@ -171,14 +177,23 @@ export default async function DomainVerificationPage({
                       </p>
                     </div>
                     <span className="inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600">
-                      {verification
-                        ? formatEnum(verification.status)
-                        : "Not generated"}
+                      {isOptionalFallback
+                        ? "Optional"
+                        : verification
+                          ? formatEnum(verification.status)
+                          : "Not generated"}
                     </span>
                   </div>
 
                   {verification ? (
                     <div className="mt-4 grid gap-3">
+                      {isOptionalFallback ? (
+                        <p className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm leading-6 text-slate-600">
+                          This method is only needed if you want to verify the
+                          domain another way. Since the domain is already
+                          verified, you can leave this alone.
+                        </p>
+                      ) : null}
                       <VerificationInstructions
                         domain={domain.domain}
                         method={item.method}
