@@ -67,163 +67,134 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
               </p>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[820px] text-left text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
-                  <tr>
-                    <th className="px-5 py-3 font-semibold">Domain</th>
-                    <th className="px-5 py-3 font-semibold">Client</th>
-                    <th className="px-5 py-3 font-semibold">Platform</th>
-                    <th className="px-5 py-3 font-semibold">
-                      <HelpLabel help="Ownership state. Verified domains can run full production crawls.">
-                        Verification
-                      </HelpLabel>
-                    </th>
-                    <th className="px-5 py-3 font-semibold">
-                      <HelpLabel help="Pages discovered or crawled for this domain.">
-                        Pages
-                      </HelpLabel>
-                    </th>
-                    <th className="px-5 py-3 font-semibold">
-                      <HelpLabel help="Critical issue count followed by warning count.">
-                        Issues
-                      </HelpLabel>
-                    </th>
-                    <th className="px-5 py-3 font-semibold">
-                      <HelpLabel help="Latest crawl run status for this domain.">
-                        Last crawl
-                      </HelpLabel>
-                    </th>
-                    <th className="px-5 py-3 font-semibold">
-                      <HelpLabel help="Verify ownership or manually start a crawl.">
-                        Actions
-                      </HelpLabel>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {domains.length ? (
-                    domains.map((domain) => {
-                      const latestCrawl = domain.crawlRuns.at(0);
-                      const critical = domain.issues.filter(
-                        (issue) => issue.severity === "CRITICAL",
-                      ).length;
-                      const warnings = domain.issues.filter(
-                        (issue) => issue.severity === "WARNING",
-                      ).length;
+            <div className="divide-y divide-slate-100">
+              {domains.length ? (
+                <>
+                  <div className="hidden grid-cols-[minmax(0,1fr)_120px_90px_90px_130px_220px] gap-4 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 xl:grid">
+                    <span>Domain</span>
+                    <HelpLabel help="Ownership state. Verified domains can run full production crawls.">
+                      Verification
+                    </HelpLabel>
+                    <HelpLabel help="Pages discovered or crawled for this domain.">
+                      Pages
+                    </HelpLabel>
+                    <HelpLabel help="Critical issue count followed by warning count.">
+                      Issues
+                    </HelpLabel>
+                    <HelpLabel help="Latest crawl run status for this domain.">
+                      Last crawl
+                    </HelpLabel>
+                    <HelpLabel help="Verify ownership or manually start a crawl.">
+                      Actions
+                    </HelpLabel>
+                  </div>
 
-                      return (
-                        <tr key={domain.id}>
-                          <td className="px-5 py-4">
-                            <div className="flex items-center gap-3">
-                              <div className="flex size-9 items-center justify-center rounded-md bg-slate-100 text-slate-600">
-                                <Globe2 className="size-4" aria-hidden="true" />
-                              </div>
-                              <div>
-                                <Link
-                                  href={`/domains/${domain.id}`}
-                                  className="font-medium underline-offset-4 hover:underline"
-                                >
-                                  {domain.domain}
-                                </Link>
-                                <p className="text-xs text-slate-500">
-                                  Score {domain.healthScore ?? "pending"}
-                                  {domain.scoreHistory.at(0)
-                                    ? " - updated after latest crawl"
-                                    : ""}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {domain.client?.name ?? "Unassigned"}
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {formatEnum(domain.platform)}
-                          </td>
-                          <td className="px-5 py-4">
-                            <span
-                              className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${
-                                domain.verificationStatus === "VERIFIED"
-                                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                                  : "border-amber-200 bg-amber-50 text-amber-700"
-                              }`}
-                            >
-                              {formatEnum(domain.verificationStatus)}
-                            </span>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {domain.pages.length.toLocaleString()}
-                          </td>
-                          <td className="px-5 py-4">
-                            <span className="font-medium text-red-600">
-                              {critical}
-                            </span>
-                            <span className="text-slate-400"> / </span>
-                            <span className="font-medium text-amber-600">
-                              {warnings}
-                            </span>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {latestCrawl
-                              ? formatEnum(latestCrawl.status)
-                              : "Not started"}
-                          </td>
-                          <td className="px-5 py-4">
-                            <div className="flex gap-2">
-                              <Link
-                                href={`/domains/${domain.id}/verification`}
-                                className="inline-flex h-9 items-center rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-                              >
-                                Verify
-                              </Link>
-                              <form
-                                action="/api/domains/start-crawl"
-                                method="post"
-                              >
-                                <input
-                                  type="hidden"
-                                  name="domainId"
-                                  value={domain.id}
-                                />
-                                <input
-                                  type="hidden"
-                                  name="returnTo"
-                                  value="/domains"
-                                />
-                                <button
-                                  disabled={
-                                    domain.verificationStatus !== "VERIFIED"
-                                  }
-                                  className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-                                >
-                                  <Play className="size-4" aria-hidden="true" />
-                                  Crawl
-                                  <InfoTooltip
-                                    label="Start a crawler pass for this verified domain and generate fresh SEO findings."
-                                    passive
-                                    side="left"
-                                  />
-                                </button>
-                              </form>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td
-                        className="px-5 py-8 text-center text-slate-500"
-                        colSpan={8}
+                  {domains.map((domain) => {
+                    const latestCrawl = domain.crawlRuns.at(0);
+                    const critical = domain.issues.filter(
+                      (issue) => issue.severity === "CRITICAL",
+                    ).length;
+                    const warnings = domain.issues.filter(
+                      (issue) => issue.severity === "WARNING",
+                    ).length;
+
+                    return (
+                      <article
+                        key={domain.id}
+                        className="grid gap-4 px-5 py-4 text-sm xl:grid-cols-[minmax(0,1fr)_120px_90px_90px_130px_220px] xl:items-center"
                       >
-                        No domains yet. Add a domain to start ownership
-                        verification.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-600">
+                            <Globe2 className="size-4" aria-hidden="true" />
+                          </div>
+                          <div className="min-w-0">
+                            <Link
+                              href={`/domains/${domain.id}`}
+                              className="font-medium underline-offset-4 hover:underline"
+                            >
+                              {domain.domain}
+                            </Link>
+                            <p className="mt-1 text-xs leading-5 text-slate-500">
+                              {domain.client?.name ?? "Unassigned"} -{" "}
+                              {formatEnum(domain.platform)} - Score{" "}
+                              {domain.healthScore ?? "pending"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <MetaBlock label="Verification">
+                          <span
+                            className={`inline-flex w-fit rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                              domain.verificationStatus === "VERIFIED"
+                                ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                : "border-amber-200 bg-amber-50 text-amber-700"
+                            }`}
+                          >
+                            {formatEnum(domain.verificationStatus)}
+                          </span>
+                        </MetaBlock>
+
+                        <MetaBlock label="Pages">
+                          {domain.pages.length.toLocaleString()}
+                        </MetaBlock>
+
+                        <MetaBlock label="Issues">
+                          <span className="font-medium text-red-600">
+                            {critical}
+                          </span>
+                          <span className="text-slate-400"> / </span>
+                          <span className="font-medium text-amber-600">
+                            {warnings}
+                          </span>
+                        </MetaBlock>
+
+                        <MetaBlock label="Last crawl">
+                          {latestCrawl
+                            ? formatEnum(latestCrawl.status)
+                            : "Not started"}
+                        </MetaBlock>
+
+                        <div className="flex flex-wrap gap-2 xl:flex-nowrap">
+                          <Link
+                            href={`/domains/${domain.id}/verification`}
+                            className="inline-flex h-9 min-w-20 items-center justify-center whitespace-nowrap rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                          >
+                            Verify
+                          </Link>
+                          <form action="/api/domains/start-crawl" method="post">
+                            <input
+                              type="hidden"
+                              name="domainId"
+                              value={domain.id}
+                            />
+                            <input
+                              type="hidden"
+                              name="returnTo"
+                              value="/domains"
+                            />
+                            <button
+                              disabled={domain.verificationStatus !== "VERIFIED"}
+                              className="inline-flex h-9 min-w-28 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                            >
+                              <Play className="size-4" aria-hidden="true" />
+                              Crawl
+                              <InfoTooltip
+                                label="Start a crawler pass for this verified domain and generate fresh SEO findings."
+                                passive
+                                side="left"
+                              />
+                            </button>
+                          </form>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </>
+              ) : (
+                <div className="px-5 py-8 text-center text-sm text-slate-500">
+                  No domains yet. Add a domain to start ownership verification.
+                </div>
+              )}
             </div>
           </section>
 
@@ -291,6 +262,23 @@ function getDomainErrorMessage(error: string) {
   };
 
   return messages[error] ?? "Please try again or inspect the domain settings.";
+}
+
+function MetaBlock({
+  children,
+  label,
+}: {
+  children: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="text-slate-600">
+      <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400 xl:hidden">
+        {label}
+      </p>
+      <div>{children}</div>
+    </div>
+  );
 }
 
 function StatusNotice({
