@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, LogOut, Search } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
 import { switchWorkspaceAction } from "@/app/actions";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { navItems } from "@/lib/dashboard-data";
@@ -121,29 +121,6 @@ export async function AppSidebar({ active }: { active: string }) {
           </button>
         </form>
       ) : null}
-
-      <div className="mt-8 border-t border-slate-200 pt-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-          <span className="inline-flex items-center gap-1.5">
-            Source of truth
-            <InfoTooltip label="Planning and implementation documents used to keep the product roadmap honest." />
-          </span>
-        </p>
-        <Link
-          href="/product-requirements"
-          className="mt-3 flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-medium text-slate-700"
-        >
-          PRD and roadmap
-          <ArrowUpRight className="size-4" aria-hidden="true" />
-        </Link>
-        <Link
-          href="/production-task-list"
-          className="mt-2 flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-3 text-sm font-medium text-slate-700"
-        >
-          Production tasks
-          <ArrowUpRight className="size-4" aria-hidden="true" />
-        </Link>
-      </div>
 
       <form action="/api/auth/logout" method="post" className="mt-4">
         <button className="flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950">
