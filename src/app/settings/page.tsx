@@ -77,7 +77,7 @@ export default async function SettingsPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Settings" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -121,7 +121,7 @@ export default async function SettingsPage() {
                 {members.map((member) => (
                   <article
                     key={member.id}
-                    className="grid gap-4 p-5 lg:grid-cols-[1fr_180px_120px]"
+                    className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_180px_120px]"
                   >
                     <div>
                       <p className="font-semibold">

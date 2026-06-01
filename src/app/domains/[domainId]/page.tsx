@@ -56,7 +56,7 @@ export default async function DomainDetailPage({
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Sites" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -167,7 +167,7 @@ export default async function DomainDetailPage({
             </section>
           ) : null}
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_360px]">
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
             <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-200 p-5">
                 <h3 className="text-lg font-semibold">

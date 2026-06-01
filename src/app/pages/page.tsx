@@ -18,7 +18,7 @@ export default async function PagesPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Pages" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">

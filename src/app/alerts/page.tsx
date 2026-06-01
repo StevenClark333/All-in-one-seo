@@ -22,7 +22,7 @@ export default async function AlertsPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Alerts" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -52,7 +52,7 @@ export default async function AlertsPage() {
 
             <form
               action={createAlertRuleAction}
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -102,7 +102,7 @@ export default async function AlertsPage() {
                   </option>
                 ))}
               </Select>
-              <label className="grid gap-2 md:col-span-2 xl:col-span-3">
+              <label className="grid gap-2 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                   Email recipient
                 </span>
@@ -113,7 +113,7 @@ export default async function AlertsPage() {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
-              <label className="grid gap-2 md:col-span-2 xl:col-span-3">
+              <label className="grid gap-2 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                   Slack/Teams/Webhook URL
                 </span>
@@ -132,7 +132,7 @@ export default async function AlertsPage() {
                   </option>
                 ))}
               </Select>
-              <label className="grid gap-2 md:col-span-2 xl:col-span-2">
+              <label className="grid gap-2 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                   Escalation email
                 </span>
@@ -143,7 +143,7 @@ export default async function AlertsPage() {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
-              <label className="grid gap-2 md:col-span-2 xl:col-span-3">
+              <label className="grid gap-2 md:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                   Escalation URL
                 </span>
@@ -154,7 +154,7 @@ export default async function AlertsPage() {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
-              <div className="md:col-span-2 xl:col-span-6">
+              <div className="md:col-span-2 2xl:col-span-4">
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
                   Create rule
                 </button>
@@ -162,7 +162,7 @@ export default async function AlertsPage() {
             </form>
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_420px]">
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
             <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-200 p-5">
                 <h3 className="text-lg font-semibold">Alert rules</h3>
@@ -175,7 +175,7 @@ export default async function AlertsPage() {
                   rules.map((rule) => (
                     <article
                       key={rule.id}
-                      className="grid gap-4 p-5 md:grid-cols-[1fr_120px_120px_120px_120px_100px]"
+                      className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_120px_120px_120px_120px_100px]"
                     >
                       <div>
                         <p className="font-semibold">{rule.name}</p>

@@ -27,7 +27,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Pages" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -68,7 +68,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
             />
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_380px]">
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
             <div className="grid gap-6">
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <h3 className="text-lg font-semibold">Latest SEO snapshot</h3>
@@ -116,7 +116,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                       <Link
                         key={issue.id}
                         href={`/issues/${issue.id}`}
-                        className="grid gap-3 p-5 transition hover:bg-slate-50 md:grid-cols-[1fr_120px_130px]"
+                        className="grid gap-3 p-5 transition hover:bg-slate-50 md:grid-cols-[minmax(0,1fr)_120px_130px]"
                       >
                         <div>
                           <p className="font-semibold">{issue.title}</p>

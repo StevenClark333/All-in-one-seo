@@ -92,7 +92,7 @@ export default async function IntegrationsPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Integrations" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -129,7 +129,7 @@ export default async function IntegrationsPage() {
 
             <form
               action={createIntegrationAction}
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
             >
               <Select
                 help="External system or channel this portal should connect to."
@@ -187,7 +187,7 @@ export default async function IntegrationsPage() {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
-              <div className="md:col-span-2 xl:col-span-6">
+              <div className="md:col-span-2 2xl:col-span-4">
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
                   Save integration
                   <InfoTooltip
@@ -260,7 +260,7 @@ export default async function IntegrationsPage() {
                     return (
                       <article
                         key={site.siteUrl}
-                        className="grid gap-4 p-4 lg:grid-cols-[1fr_160px_260px]"
+                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_160px_260px]"
                       >
                         <div>
                           <p className="font-semibold">{site.siteUrl}</p>
@@ -274,7 +274,7 @@ export default async function IntegrationsPage() {
                         />
                         <form
                           action={mapGoogleSearchConsolePropertyAction}
-                          className="grid gap-2 sm:grid-cols-[1fr_auto]"
+                          className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]"
                         >
                           <input
                             type="hidden"
@@ -313,7 +313,7 @@ export default async function IntegrationsPage() {
                     {mappedSearchConsoleProperties.map((integration) => (
                       <article
                         key={integration.id}
-                        className="grid gap-4 py-4 lg:grid-cols-[1fr_160px_auto]"
+                        className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_160px_auto]"
                       >
                         <div>
                           <p className="font-semibold">
@@ -398,7 +398,7 @@ export default async function IntegrationsPage() {
                   {analyticsProperties.map((property) => (
                     <article
                       key={property.property}
-                      className="grid gap-4 p-4 lg:grid-cols-[1fr_180px_260px]"
+                      className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_260px]"
                     >
                       <div>
                         <p className="font-semibold">{property.displayName}</p>
@@ -409,7 +409,7 @@ export default async function IntegrationsPage() {
                       <Meta label="Source" value="GA4 property" />
                       <form
                         action={mapGoogleAnalyticsPropertyAction}
-                        className="grid gap-2 sm:grid-cols-[1fr_auto]"
+                        className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]"
                       >
                         <input
                           type="hidden"
@@ -446,7 +446,7 @@ export default async function IntegrationsPage() {
                     {mappedAnalyticsProperties.map((integration) => (
                       <article
                         key={integration.id}
-                        className="grid gap-4 py-4 lg:grid-cols-[1fr_160px_auto]"
+                        className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_160px_auto]"
                       >
                         <div>
                           <p className="font-semibold">
@@ -511,7 +511,7 @@ export default async function IntegrationsPage() {
                   {wordpressDomains.map((domain) => (
                     <article
                       key={domain.id}
-                      className="grid gap-4 p-4 lg:grid-cols-[1fr_220px_180px]"
+                      className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_220px_180px]"
                     >
                       <div>
                         <p className="font-semibold">{domain.domain}</p>
@@ -562,7 +562,7 @@ export default async function IntegrationsPage() {
             <div className="grid gap-5 p-5">
               <form
                 action="/api/integrations/shopify/start"
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-[1fr_1fr_auto]"
+                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-[minmax(0,1fr)_1fr_auto]"
               >
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -610,7 +610,7 @@ export default async function IntegrationsPage() {
                   {shopifyIntegrations.map((integration) => (
                     <article
                       key={integration.id}
-                      className="grid gap-4 p-4 lg:grid-cols-[1fr_180px_180px]"
+                      className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
                     >
                       <div>
                         <p className="font-semibold">
@@ -692,7 +692,7 @@ export default async function IntegrationsPage() {
                     return (
                       <article
                         key={site.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[1fr_180px_260px]"
+                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_260px]"
                       >
                         <div>
                           <p className="font-semibold">{site.displayName}</p>
@@ -710,7 +710,7 @@ export default async function IntegrationsPage() {
                         />
                         <form
                           action={mapWebflowSiteAction}
-                          className="grid gap-2 sm:grid-cols-[1fr_auto]"
+                          className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]"
                         >
                           <input type="hidden" name="siteId" value={site.id} />
                           <select
@@ -745,7 +745,7 @@ export default async function IntegrationsPage() {
                     {mappedWebflowSites.map((integration) => (
                       <article
                         key={integration.id}
-                        className="grid gap-4 py-4 lg:grid-cols-[1fr_160px]"
+                        className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_160px]"
                       >
                         <div>
                           <p className="font-semibold">
@@ -783,7 +783,7 @@ export default async function IntegrationsPage() {
             <div className="grid gap-5 p-5">
               <form
                 action={connectSlackIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-[1fr_2fr_auto]"
+                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto]"
               >
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -850,7 +850,7 @@ export default async function IntegrationsPage() {
             <div className="grid gap-5 p-5">
               <form
                 action={connectVercelIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 xl:grid-cols-[1fr_1fr_1fr_1fr_auto]"
+                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
               >
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -927,7 +927,7 @@ export default async function IntegrationsPage() {
                     return (
                       <article
                         key={integration.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[1fr_180px_180px]"
+                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
                       >
                         <div>
                           <p className="font-semibold">
@@ -958,7 +958,7 @@ export default async function IntegrationsPage() {
                       .map((check) => (
                         <article
                           key={check.id}
-                          className="grid gap-4 py-4 lg:grid-cols-[1fr_140px_160px]"
+                          className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_140px_160px]"
                         >
                           <div>
                             <p className="font-semibold">
@@ -995,7 +995,7 @@ export default async function IntegrationsPage() {
             <div className="grid gap-5 p-5">
               <form
                 action={connectNetlifyIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 xl:grid-cols-[1fr_1fr_1fr_1fr_auto]"
+                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
               >
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -1072,7 +1072,7 @@ export default async function IntegrationsPage() {
                     return (
                       <article
                         key={integration.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[1fr_180px_180px]"
+                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
                       >
                         <div>
                           <p className="font-semibold">
@@ -1105,7 +1105,7 @@ export default async function IntegrationsPage() {
                       .map((check) => (
                         <article
                           key={check.id}
-                          className="grid gap-4 py-4 lg:grid-cols-[1fr_140px_160px]"
+                          className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_140px_160px]"
                         >
                           <div>
                             <p className="font-semibold">
@@ -1146,7 +1146,7 @@ export default async function IntegrationsPage() {
             <div className="grid gap-5 p-5">
               <form
                 action={connectAutomationIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-[160px_1fr_2fr_auto]"
+                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[160px_minmax(0,1fr)_minmax(0,2fr)_auto]"
               >
                 <Select label="Provider" name="provider">
                   <option value="ZAPIER">Zapier</option>
@@ -1191,7 +1191,7 @@ export default async function IntegrationsPage() {
                     return (
                       <article
                         key={integration.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[1fr_160px_160px]"
+                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_160px_160px]"
                       >
                         <div>
                           <p className="font-semibold">
@@ -1239,7 +1239,7 @@ export default async function IntegrationsPage() {
                 integrations.map((integration) => (
                   <article
                     key={integration.id}
-                    className="grid gap-4 p-5 lg:grid-cols-[1fr_150px_150px_140px]"
+                    className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_150px_150px_140px]"
                   >
                     <div>
                       <p className="font-semibold">

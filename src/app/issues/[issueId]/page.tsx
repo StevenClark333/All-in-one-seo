@@ -70,7 +70,7 @@ export default async function IssueDetailPage({
           Issues
         </Link>
 
-        <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_360px]">
+        <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
           <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone={issue.severity === "CRITICAL" ? "red" : "amber"}>

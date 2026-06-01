@@ -29,7 +29,7 @@ export function InfoTooltip({
       )}
       <span
         role="tooltip"
-        className={`pointer-events-none absolute top-6 z-30 w-64 scale-95 rounded-md border border-slate-200 bg-slate-950 px-3 py-2 text-left text-xs font-medium leading-5 text-white opacity-0 shadow-lg transition group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100 ${sideClass}`}
+        className={`pointer-events-none absolute top-6 z-30 w-[min(18rem,calc(100vw-2rem))] scale-95 rounded-md border border-slate-200 bg-slate-950 px-3 py-2 text-left text-xs font-medium leading-5 text-white opacity-0 shadow-lg transition group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100 ${sideClass}`}
       >
         {label}
       </span>

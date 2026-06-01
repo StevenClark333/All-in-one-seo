@@ -22,7 +22,7 @@ export default async function RecommendationsPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="AI" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -56,7 +56,7 @@ export default async function RecommendationsPage() {
                   pages.map((page) => (
                     <article
                       key={page.id}
-                      className="grid gap-4 p-5 md:grid-cols-[1fr_150px]"
+                      className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_150px]"
                     >
                       <div>
                         <Link
@@ -103,7 +103,7 @@ export default async function RecommendationsPage() {
                   issues.map((issue) => (
                     <article
                       key={issue.id}
-                      className="grid gap-4 p-5 md:grid-cols-[1fr_150px]"
+                      className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_150px]"
                     >
                       <div>
                         <Link
@@ -150,7 +150,7 @@ export default async function RecommendationsPage() {
                 templateIssueGroups.map((group) => (
                   <article
                     key={`${group.domainId}:${group.templateKey}`}
-                    className="grid gap-4 p-5 md:grid-cols-[1fr_170px]"
+                    className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_170px]"
                   >
                     <div>
                       <div className="flex flex-wrap items-center gap-2">

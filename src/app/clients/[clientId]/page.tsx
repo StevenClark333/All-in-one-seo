@@ -47,7 +47,7 @@ export default async function ClientDetailPage({
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Clients" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -88,7 +88,7 @@ export default async function ClientDetailPage({
             />
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_360px]">
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
             <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-200 p-5">
                 <h3 className="text-lg font-semibold">Client domains</h3>
@@ -105,7 +105,7 @@ export default async function ClientDetailPage({
                     return (
                       <article
                         key={domain.id}
-                        className="grid gap-4 p-5 md:grid-cols-[1fr_120px_130px_130px]"
+                        className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_120px_130px_130px]"
                       >
                         <div className="flex gap-3">
                           <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">

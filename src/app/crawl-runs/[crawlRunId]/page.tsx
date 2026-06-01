@@ -146,7 +146,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
               crawlRun.changeEvents.map((event) => (
                 <article
                   key={event.id}
-                  className="grid gap-4 p-5 lg:grid-cols-[1fr_1fr_1fr]"
+                  className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_1fr_1fr]"
                 >
                   <div>
                     <span

@@ -36,7 +36,7 @@ export default async function ReportsPage() {
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Reports" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -73,7 +73,7 @@ export default async function ReportsPage() {
 
             <form
               action={generateReport}
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -144,7 +144,7 @@ export default async function ReportsPage() {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
-              <div className="md:col-span-2 xl:col-span-6">
+              <div className="md:col-span-2 2xl:col-span-4">
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
                   Generate report
                   <InfoTooltip
@@ -172,7 +172,7 @@ export default async function ReportsPage() {
 
             <form
               action={scheduleReport}
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -245,7 +245,7 @@ export default async function ReportsPage() {
 
             <form
               action={createCustomReportTemplate}
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -276,7 +276,7 @@ export default async function ReportsPage() {
                   </option>
                 ))}
               </Select>
-              <fieldset className="grid gap-2 md:col-span-2 xl:col-span-6">
+              <fieldset className="grid gap-2 md:col-span-2 2xl:col-span-4">
                 <legend className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
                   <HelpLabel help="Select which report blocks should be included when this template is used.">
                     Sections
@@ -300,7 +300,7 @@ export default async function ReportsPage() {
                   ))}
                 </div>
               </fieldset>
-              <div className="md:col-span-2 xl:col-span-6">
+              <div className="md:col-span-2 2xl:col-span-4">
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
                   Create template
                   <InfoTooltip
@@ -330,7 +330,7 @@ export default async function ReportsPage() {
                 templates.map((template) => (
                   <article
                     key={template.id}
-                    className="grid gap-4 p-5 lg:grid-cols-[1fr_180px_130px]"
+                    className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_180px_130px]"
                   >
                     <div>
                       <p className="font-semibold">{template.name}</p>
@@ -368,7 +368,7 @@ export default async function ReportsPage() {
 
             <form
               action={createReportWhiteLabelDomainAction}
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_220px_auto]"
+              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_220px_auto]"
             >
               <label className="grid gap-2">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -408,7 +408,7 @@ export default async function ReportsPage() {
                 whiteLabelDomains.map((domain) => (
                   <article
                     key={domain.id}
-                    className="grid gap-4 py-5 lg:grid-cols-[1fr_120px_180px_170px]"
+                    className="grid gap-4 py-5 lg:grid-cols-[minmax(0,1fr)_120px_180px_170px]"
                   >
                     <div>
                       <p className="font-semibold">{domain.hostname}</p>
@@ -495,7 +495,7 @@ export default async function ReportsPage() {
                 schedules.map((schedule) => (
                   <article
                     key={schedule.id}
-                    className="grid gap-4 p-5 lg:grid-cols-[1fr_130px_150px_120px_130px]"
+                    className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_130px_150px_120px_130px]"
                   >
                     <div>
                       <p className="font-semibold">{schedule.title}</p>
@@ -548,7 +548,7 @@ export default async function ReportsPage() {
                 reports.map((report) => (
                   <article
                     key={report.id}
-                    className="grid gap-4 p-5 lg:grid-cols-[1fr_130px_130px_180px_130px]"
+                    className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_130px_130px_180px_130px]"
                   >
                     <div>
                       <Link

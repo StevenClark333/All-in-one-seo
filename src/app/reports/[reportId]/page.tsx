@@ -29,7 +29,7 @@ export default async function ReportDetailPage({
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Reports" />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
@@ -108,7 +108,7 @@ export default async function ReportDetailPage({
             ) : null}
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_380px]">
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
             <div className="grid gap-6">
               {summary.sections.changeSummary ? (
                 <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
