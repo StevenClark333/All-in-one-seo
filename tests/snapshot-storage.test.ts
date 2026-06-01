@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildHtmlSnapshotKey,
+  getLocalSnapshotRoot,
   getSnapshotRetentionDays,
 } from "@/lib/snapshot-storage";
 
@@ -26,4 +27,12 @@ test("reads html snapshot retention from environment", () => {
     90,
   );
   assert.equal(getSnapshotRetentionDays({}), 90);
+});
+
+test("uses temp storage for local snapshots in serverless runtimes", () => {
+  assert.match(
+    getLocalSnapshotRoot({ VERCEL: "1" }),
+    /all-in-one-seo$/,
+  );
+  assert.match(getLocalSnapshotRoot({}), /\.storage$/);
 });
