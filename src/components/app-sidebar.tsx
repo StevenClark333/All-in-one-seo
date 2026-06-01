@@ -18,7 +18,6 @@ const hrefs: Record<string, string> = {
   Integrations: "/integrations",
   Billing: "/billing",
   Settings: "/settings",
-  Roadmap: "/production-task-list",
 };
 
 const navHelp: Record<string, string> = {
