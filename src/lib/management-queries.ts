@@ -128,6 +128,10 @@ export async function getDomainManagementData() {
           take: 1,
           select: { status: true, completedAt: true, createdAt: true },
         },
+        verifications: {
+          where: { status: "VERIFIED" },
+          take: 1,
+        },
         issues: {
           where: { status: { not: "FIXED" } },
           select: { severity: true },
@@ -216,7 +220,7 @@ export async function getDomainDetailData(domainId: string) {
         client: true,
         verifications: {
           orderBy: { createdAt: "desc" },
-          take: 3,
+          take: 12,
         },
         scoreHistory: {
           orderBy: { createdAt: "desc" },

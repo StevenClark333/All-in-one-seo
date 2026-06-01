@@ -32,6 +32,18 @@ export function calculateNextVerificationRetry(attemptCount: number) {
   return new Date(Date.now() + retryMinutes * 60_000);
 }
 
+export function resolveDomainVerificationStatus({
+  hasOtherVerifiedMethod,
+  resultStatus,
+}: {
+  hasOtherVerifiedMethod: boolean;
+  resultStatus: VerificationStatus;
+}) {
+  return hasOtherVerifiedMethod && resultStatus !== "VERIFIED"
+    ? "VERIFIED"
+    : resultStatus;
+}
+
 export async function createDomainVerification(
   domainId: string,
   method: VerificationMethod = "DNS_TXT",
@@ -197,7 +209,7 @@ async function recordVerificationResult({
   const attemptCount = nextAttempt.attemptCount + 1;
   const verifiedAt = result.status === "VERIFIED" ? new Date() : null;
 
-  await prisma.domainVerification.update({
+  const updatedVerification = await prisma.domainVerification.update({
     where: { id: verificationId },
     data: {
       attemptCount,
@@ -212,6 +224,17 @@ async function recordVerificationResult({
     },
   });
 
+  const hasOtherVerifiedMethod =
+    result.status !== "VERIFIED"
+      ? (await prisma.domainVerification.count({
+          where: {
+            domainId,
+            id: { not: verificationId },
+            status: "VERIFIED",
+          },
+        })) > 0
+      : false;
+
   await prisma.domainVerificationCheck.create({
     data: {
       domainId,
@@ -224,7 +247,12 @@ async function recordVerificationResult({
 
   await prisma.domain.update({
     where: { id: domainId },
-    data: { verificationStatus: result.status },
+    data: {
+      verificationStatus: resolveDomainVerificationStatus({
+        hasOtherVerifiedMethod,
+        resultStatus: updatedVerification.status,
+      }),
+    },
   });
 
   return result.status === "VERIFIED";

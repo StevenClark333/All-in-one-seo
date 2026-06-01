@@ -248,14 +248,23 @@ export async function assertCanUseCrawlFrequency({
 export async function assertCanStartCrawl(domainId: string) {
   const domain = await getPrisma().domain.findUnique({
     where: { id: domainId },
-    include: { pages: { select: { id: true } } },
+    include: {
+      pages: { select: { id: true } },
+      verifications: {
+        where: { status: "VERIFIED" },
+        take: 1,
+      },
+    },
   });
 
   if (!domain) {
     throw new Error("Domain not found.");
   }
 
-  if (domain.verificationStatus !== "VERIFIED") {
+  if (
+    domain.verificationStatus !== "VERIFIED" &&
+    domain.verifications.length === 0
+  ) {
     throw new BillingLimitError(
       "Domain must be verified before running a full crawl.",
       "DOMAIN_NOT_VERIFIED",

@@ -44,6 +44,11 @@ export default async function DomainDetailPage({
 
   const latestCrawl = domain.crawlRuns.at(0);
   const latestVerification = domain.verifications.at(0);
+  const isVerified =
+    domain.verificationStatus === "VERIFIED" ||
+    domain.verifications.some(
+      (verification) => verification.status === "VERIFIED",
+    );
   const latestScore = domain.scoreHistory.at(0);
   const scriptSrc = process.env.NEXT_PUBLIC_SCRIPT_URL ?? "/seo.js";
   const scriptSnippet = `<script async src="${scriptSrc}" data-site-id="${domain.id}"></script>`;
@@ -101,7 +106,7 @@ export default async function DomainDetailPage({
                 value={`/domains/${domain.id}`}
               />
               <button
-                disabled={domain.verificationStatus !== "VERIFIED"}
+                disabled={!isVerified}
                 className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
               >
                 <Play className="size-4" aria-hidden="true" />
@@ -327,7 +332,11 @@ export default async function DomainDetailPage({
                   <Meta
                     help="Whether ownership has been confirmed for this domain."
                     label="Verification"
-                    value={formatEnum(domain.verificationStatus)}
+                    value={
+                      isVerified
+                        ? "Verified"
+                        : formatEnum(domain.verificationStatus)
+                    }
                   />
                   <Meta
                     help="Whether the JavaScript monitoring snippet has reported data."

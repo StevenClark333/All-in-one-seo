@@ -97,6 +97,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     const warnings = domain.issues.filter(
                       (issue) => issue.severity === "WARNING",
                     ).length;
+                    const isVerified =
+                      domain.verificationStatus === "VERIFIED" ||
+                      domain.verifications.length > 0;
 
                     return (
                       <article
@@ -125,12 +128,14 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                         <MetaBlock label="Verification">
                           <span
                             className={`inline-flex w-fit rounded-full border px-2.5 py-1 text-xs font-semibold ${
-                              domain.verificationStatus === "VERIFIED"
+                              isVerified
                                 ? "border-emerald-200 bg-emerald-50 text-emerald-700"
                                 : "border-amber-200 bg-amber-50 text-amber-700"
                             }`}
                           >
-                            {formatEnum(domain.verificationStatus)}
+                            {isVerified
+                              ? "Verified"
+                              : formatEnum(domain.verificationStatus)}
                           </span>
                         </MetaBlock>
 
@@ -173,9 +178,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                               value="/domains"
                             />
                             <button
-                              disabled={
-                                domain.verificationStatus !== "VERIFIED"
-                              }
+                              disabled={!isVerified}
                               className="inline-flex h-9 min-w-28 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
                             >
                               <Play className="size-4" aria-hidden="true" />

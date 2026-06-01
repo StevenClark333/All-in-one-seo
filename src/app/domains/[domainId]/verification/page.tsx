@@ -83,6 +83,8 @@ export default async function DomainVerificationPage({
   const verifiedVerification = domain.verifications.find(
     (verification) => verification.status === "VERIFIED",
   );
+  const isDomainVerified =
+    domain.verificationStatus === "VERIFIED" || Boolean(verifiedVerification);
   const availableMethods = verificationMethods.filter(
     (item) => item.method !== verifiedVerification?.method,
   );
@@ -94,7 +96,7 @@ export default async function DomainVerificationPage({
   const selectedVerificationValue = selectedVerification
     ? formatVerificationValue(selectedVerification.token)
     : "";
-  const showMethodSetup = domain.verificationStatus !== "VERIFIED" || isEditing;
+  const showMethodSetup = !isDomainVerified || isEditing;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-6 text-slate-950 sm:px-8 lg:px-10">
@@ -125,18 +127,20 @@ export default async function DomainVerificationPage({
 
             <span
               className={`inline-flex h-8 items-center rounded-full border px-3 text-xs font-semibold ${
-                domain.verificationStatus === "VERIFIED"
+                isDomainVerified
                   ? "border-emerald-200 bg-emerald-50 text-emerald-700"
                   : domain.verificationStatus === "FAILED"
                     ? "border-red-200 bg-red-50 text-red-700"
                     : "border-amber-200 bg-amber-50 text-amber-700"
               }`}
             >
-              {formatEnum(domain.verificationStatus)}
+              {isDomainVerified
+                ? "Verified"
+                : formatEnum(domain.verificationStatus)}
             </span>
           </div>
 
-          {domain.verificationStatus === "VERIFIED" ? (
+          {isDomainVerified ? (
             <div className="mt-6 flex items-start gap-3 rounded-md border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
               <CheckCircle2
                 className="mt-0.5 size-5 shrink-0"
@@ -209,7 +213,7 @@ export default async function DomainVerificationPage({
                     You only need one successful method.
                   </p>
                 </div>
-                {domain.verificationStatus === "VERIFIED" ? (
+                {isDomainVerified ? (
                   <Link
                     href={`/domains/${domain.id}/verification`}
                     className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"

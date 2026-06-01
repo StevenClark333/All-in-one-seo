@@ -5,6 +5,7 @@ import {
   calculateNextVerificationRetry,
   formatHtmlVerificationUrl,
   formatVerificationValue,
+  resolveDomainVerificationStatus,
 } from "@/lib/domain-verification";
 
 test("formats verification values for DNS and file checks", () => {
@@ -26,4 +27,21 @@ test("calculates bounded exponential verification retry windows", () => {
   assert.ok(firstRetry >= now + 60_000 - 1_000);
   assert.ok(firstRetry <= now + 60_000 + 1_000);
   assert.ok(cappedRetry <= now + 60 * 60_000 + 1_000);
+});
+
+test("preserves domain verification when another method is already verified", () => {
+  assert.equal(
+    resolveDomainVerificationStatus({
+      hasOtherVerifiedMethod: true,
+      resultStatus: "FAILED",
+    }),
+    "VERIFIED",
+  );
+  assert.equal(
+    resolveDomainVerificationStatus({
+      hasOtherVerifiedMethod: false,
+      resultStatus: "FAILED",
+    }),
+    "FAILED",
+  );
 });

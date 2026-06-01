@@ -50,7 +50,16 @@ export async function runHomepageCrawl(crawlRunId: string) {
   const prisma = getPrisma();
   const crawlRun = await prisma.crawlRun.findUnique({
     where: { id: crawlRunId },
-    include: { domain: true },
+    include: {
+      domain: {
+        include: {
+          verifications: {
+            where: { status: "VERIFIED" },
+            take: 1,
+          },
+        },
+      },
+    },
   });
 
   if (!crawlRun) {
@@ -61,7 +70,10 @@ export async function runHomepageCrawl(crawlRunId: string) {
     return crawlRun;
   }
 
-  if (crawlRun.domain.verificationStatus !== "VERIFIED") {
+  if (
+    crawlRun.domain.verificationStatus !== "VERIFIED" &&
+    crawlRun.domain.verifications.length === 0
+  ) {
     return prisma.crawlRun.update({
       where: { id: crawlRun.id },
       data: {
