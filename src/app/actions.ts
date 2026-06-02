@@ -74,6 +74,7 @@ import {
 } from "@/lib/issue-workflow";
 import {
   generateLinkFixSuggestions,
+  sendLinkFixToAutomation,
   updateLinkFixSuggestion,
 } from "@/lib/link-fixes";
 import {
@@ -1018,6 +1019,16 @@ export async function updateLinkFixAction(formData: FormData) {
     status,
     suggestedUrl,
   });
+
+  revalidatePath("/fix-center");
+  redirect("/fix-center");
+}
+
+export async function sendLinkFixToAutomationAction(formData: FormData) {
+  const fixId = getRequiredString(formData, "fixId");
+  const integrationId = getRequiredString(formData, "integrationId");
+
+  await sendLinkFixToAutomation({ fixId, integrationId });
 
   revalidatePath("/fix-center");
   redirect("/fix-center");

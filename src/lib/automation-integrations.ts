@@ -140,6 +140,47 @@ export function buildAutomationWebhookPayload({
   };
 }
 
+export function buildLinkFixAutomationPayload({
+  anchorText,
+  brokenUrl,
+  domain,
+  fixId,
+  manualInstructions,
+  provider,
+  sourceUrl,
+  status,
+  suggestedUrl,
+}: {
+  anchorText?: string | null;
+  brokenUrl?: string | null;
+  domain: string;
+  fixId: string;
+  manualInstructions: string;
+  provider: AutomationProvider;
+  sourceUrl: string;
+  status: string;
+  suggestedUrl: string;
+}) {
+  return {
+    eventType: "link_fix.ready",
+    provider,
+    resourceId: fixId,
+    source: "all-in-one-seo",
+    summary: brokenUrl
+      ? `Replace broken internal link on ${domain}`
+      : `Add internal link on ${domain}`,
+    linkFix: {
+      anchorText: anchorText ?? "",
+      brokenUrl: brokenUrl ?? "",
+      domain,
+      manualInstructions,
+      sourceUrl,
+      status,
+      suggestedUrl,
+    },
+  };
+}
+
 function readString(value: unknown) {
   return typeof value === "string" ? value : "";
 }

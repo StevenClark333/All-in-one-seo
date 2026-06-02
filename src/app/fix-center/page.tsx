@@ -2,7 +2,11 @@ import Link from "next/link";
 import type React from "react";
 import type { LinkFixStatus } from "@prisma/client";
 import { CheckCircle2, Download, Hammer, Pencil, Play, X } from "lucide-react";
-import { generateLinkFixesAction, updateLinkFixAction } from "@/app/actions";
+import {
+  generateLinkFixesAction,
+  sendLinkFixToAutomationAction,
+  updateLinkFixAction,
+} from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { getLinkFixCenterData } from "@/lib/link-fixes";
@@ -25,10 +29,11 @@ export default async function FixCenterPage({
   const params = (await searchParams) ?? {};
   const selectedDomainId = getSingle(params.domainId);
   const selectedStatus = getSingle(params.status);
-  const { domains, suggestions, counts } = await getLinkFixCenterData({
-    domainId: selectedDomainId,
-    status: isLinkFixStatus(selectedStatus) ? selectedStatus : undefined,
-  });
+  const { automationIntegrations, domains, suggestions, counts } =
+    await getLinkFixCenterData({
+      domainId: selectedDomainId,
+      status: isLinkFixStatus(selectedStatus) ? selectedStatus : undefined,
+    });
   const selectedDomain = domains.find(
     (domain) => domain.id === selectedDomainId,
   );
@@ -80,6 +85,16 @@ export default async function FixCenterPage({
                   value={counts[status]}
                 />
               ))}
+            </div>
+            <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+              <span className="font-semibold text-slate-800">
+                Automation handoff:
+              </span>{" "}
+              {automationIntegrations.length
+                ? `${automationIntegrations.length} Zapier/Make workflow${
+                    automationIntegrations.length === 1 ? "" : "s"
+                  } connected for sending approved fixes.`
+                : "Connect Zapier or Make in Integrations to send fixes into a CMS, project board, or client workflow."}
             </div>
           </section>
 
@@ -267,6 +282,42 @@ export default async function FixCenterPage({
                         subtle
                       />
                     </div>
+                    {automationIntegrations.length ? (
+                      <form
+                        action={sendLinkFixToAutomationAction}
+                        className="mt-3 grid gap-2 rounded-md border border-slate-200 bg-white p-3 sm:grid-cols-[minmax(0,1fr)_auto]"
+                      >
+                        <input
+                          type="hidden"
+                          name="fixId"
+                          value={suggestion.id}
+                        />
+                        <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                          Send to workflow
+                          <select
+                            name="integrationId"
+                            className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
+                          >
+                            {automationIntegrations.map((integration) => (
+                              <option
+                                key={integration.id}
+                                value={integration.id}
+                              >
+                                {integration.label} ({integration.provider})
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                          <Download className="size-4" aria-hidden="true" />
+                          Send payload
+                          <InfoTooltip
+                            label="Posts this fix as JSON to the selected Zapier or Make webhook and marks it exported."
+                            passive
+                          />
+                        </button>
+                      </form>
+                    ) : null}
                   </article>
                 ))
               ) : (

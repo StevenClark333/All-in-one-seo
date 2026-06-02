@@ -1,5 +1,10 @@
 import { createHash } from "node:crypto";
 import type { LinkFixStatus, Prisma } from "@prisma/client";
+import {
+  buildLinkFixAutomationPayload,
+  readAutomationIntegrationConfig,
+  type AutomationProvider,
+} from "@/lib/automation-integrations";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
@@ -17,6 +22,7 @@ export type LinkFixFilters = {
 export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
   if (!hasDatabaseUrl()) {
     return {
+      automationIntegrations: [],
       workspace: null,
       domains: [],
       suggestions: [],
@@ -28,6 +34,7 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
 
   if (!workspace) {
     return {
+      automationIntegrations: [],
       workspace: null,
       domains: [],
       suggestions: [],
@@ -41,35 +48,53 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
     ...(filters.status ? { status: filters.status } : {}),
   } satisfies Prisma.LinkFixSuggestionWhereInput;
 
-  const [domains, suggestions, groupedCounts] = await Promise.all([
-    getPrisma().domain.findMany({
-      where: { archivedAt: null, workspaceId: workspace.id },
-      include: { client: { select: { name: true } } },
-      orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
-    }),
-    getPrisma().linkFixSuggestion.findMany({
-      where,
-      include: {
-        domain: { include: { client: { select: { name: true } } } },
-        issue: true,
-        sourcePage: true,
-        targetPage: true,
-      },
-      orderBy: [
-        { status: "asc" },
-        { confidenceScore: "desc" },
-        { updatedAt: "desc" },
-      ],
-      take: 100,
-    }),
-    getPrisma().linkFixSuggestion.groupBy({
-      by: ["status"],
-      where: { workspaceId: workspace.id },
-      _count: { _all: true },
-    }),
-  ]);
+  const [domains, suggestions, groupedCounts, automationIntegrations] =
+    await Promise.all([
+      getPrisma().domain.findMany({
+        where: { archivedAt: null, workspaceId: workspace.id },
+        include: { client: { select: { name: true } } },
+        orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
+      }),
+      getPrisma().linkFixSuggestion.findMany({
+        where,
+        include: {
+          domain: { include: { client: { select: { name: true } } } },
+          issue: true,
+          sourcePage: true,
+          targetPage: true,
+        },
+        orderBy: [
+          { status: "asc" },
+          { confidenceScore: "desc" },
+          { updatedAt: "desc" },
+        ],
+        take: 100,
+      }),
+      getPrisma().linkFixSuggestion.groupBy({
+        by: ["status"],
+        where: { workspaceId: workspace.id },
+        _count: { _all: true },
+      }),
+      getPrisma().integration.findMany({
+        where: {
+          provider: { in: ["MAKE", "ZAPIER"] },
+          status: "CONNECTED",
+          workspaceId: workspace.id,
+        },
+        orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
+      }),
+    ]);
 
   return {
+    automationIntegrations: automationIntegrations.map((integration) => {
+      const config = readAutomationIntegrationConfig(integration.configJson);
+
+      return {
+        id: integration.id,
+        label: config.label || `${integration.provider} workflow`,
+        provider: integration.provider as AutomationProvider,
+      };
+    }),
     workspace,
     domains,
     suggestions,
@@ -215,6 +240,76 @@ export async function updateLinkFixSuggestion(input: {
       ...(input.anchorText !== undefined ? { anchorText: nextAnchorText } : {}),
       manualInstructions,
       ...statusDates,
+    },
+  });
+}
+
+export async function sendLinkFixToAutomation(input: {
+  fixId: string;
+  integrationId: string;
+}) {
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    throw new Error("Create a workspace before sending fixes.");
+  }
+
+  const [fix, integration] = await Promise.all([
+    getPrisma().linkFixSuggestion.findFirst({
+      where: { id: input.fixId, workspaceId: workspace.id },
+      include: { domain: true },
+    }),
+    getPrisma().integration.findFirst({
+      where: {
+        id: input.integrationId,
+        provider: { in: ["MAKE", "ZAPIER"] },
+        status: "CONNECTED",
+        workspaceId: workspace.id,
+      },
+    }),
+  ]);
+
+  if (!fix) {
+    throw new Error("Fix suggestion not found.");
+  }
+
+  if (!integration) {
+    throw new Error("Connect a Zapier or Make automation first.");
+  }
+
+  const config = readAutomationIntegrationConfig(integration.configJson);
+
+  if (!config.webhookUrl) {
+    throw new Error("Automation webhook URL was not found.");
+  }
+
+  const provider = integration.provider as AutomationProvider;
+  const payload = buildLinkFixAutomationPayload({
+    anchorText: fix.anchorText,
+    brokenUrl: fix.brokenUrl,
+    domain: fix.domain.domain,
+    fixId: fix.id,
+    manualInstructions: fix.manualInstructions,
+    provider,
+    sourceUrl: fix.sourceUrl,
+    status: fix.status,
+    suggestedUrl: fix.suggestedUrl,
+  });
+  const response = await fetch(config.webhookUrl, {
+    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error("Automation webhook did not accept the fix payload.");
+  }
+
+  await getPrisma().linkFixSuggestion.update({
+    where: { id: fix.id },
+    data: {
+      exportedAt: new Date(),
+      status: "EXPORTED",
     },
   });
 }
