@@ -91,10 +91,10 @@ export default async function FixCenterPage({
                 Automation handoff:
               </span>{" "}
               {automationIntegrations.length
-                ? `${automationIntegrations.length} Zapier/Make workflow${
+                ? `${automationIntegrations.length} delivery workflow${
                     automationIntegrations.length === 1 ? "" : "s"
                   } connected for sending approved fixes.`
-                : "Connect Zapier or Make in Integrations to send fixes into a CMS, project board, or client workflow."}
+                : "Connect WordPress, Zapier, or Make in Integrations to send fixes into a CMS, project board, or client workflow."}
             </div>
           </section>
 
@@ -156,136 +156,78 @@ export default async function FixCenterPage({
 
             <div className="mt-5 grid gap-4">
               {suggestions.length ? (
-                suggestions.map((suggestion) => (
-                  <article
-                    key={suggestion.id}
-                    className="rounded-lg border border-slate-200 bg-white p-4"
-                  >
-                    <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span
-                            className={`rounded-full px-2.5 py-1 text-xs font-semibold ${getStatusClass(
-                              suggestion.status,
-                            )}`}
-                          >
-                            {formatStatus(suggestion.status)}
-                          </span>
-                          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                            {suggestion.confidenceScore}% confidence
-                          </span>
-                          <span className="text-xs font-medium text-slate-500">
-                            {suggestion.domain.client?.name
-                              ? `${suggestion.domain.client.name} - `
-                              : ""}
-                            {suggestion.domain.domain}
-                          </span>
-                        </div>
-                        <h4 className="mt-3 text-base font-semibold">
-                          {suggestion.brokenUrl
-                            ? "Replace broken internal link"
-                            : "Add contextual internal link"}
-                        </h4>
-                        <p className="mt-2 text-sm leading-6 text-slate-600">
-                          {suggestion.reason}
-                        </p>
-                      </div>
-                      {suggestion.issue ? (
-                        <Link
-                          href={`/issues/${suggestion.issue.id}`}
-                          className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline"
-                        >
-                          View issue
-                        </Link>
-                      ) : null}
-                    </div>
+                suggestions.map((suggestion) => {
+                  const fixDestinations = automationIntegrations.filter(
+                    (integration) =>
+                      integration.provider !== "WORDPRESS_RECEIVER" ||
+                      integration.domainId === suggestion.domainId,
+                  );
 
-                    <div className="mt-4 grid gap-3 lg:grid-cols-3">
-                      <DetailBlock
-                        label="Source page"
-                        value={suggestion.sourceUrl}
-                      />
-                      {suggestion.brokenUrl ? (
-                        <DetailBlock
-                          label="Broken URL"
-                          value={suggestion.brokenUrl}
-                          danger
-                        />
-                      ) : null}
-                      <DetailBlock
-                        label="Suggested URL"
-                        value={suggestion.suggestedUrl}
-                      />
-                    </div>
-
-                    <form
-                      action={updateLinkFixAction}
-                      className="mt-4 grid gap-3 rounded-md bg-slate-50 p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,260px)_auto]"
+                  return (
+                    <article
+                      key={suggestion.id}
+                      className="rounded-lg border border-slate-200 bg-white p-4"
                     >
-                      <input type="hidden" name="fixId" value={suggestion.id} />
-                      <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Suggested URL
-                        <input
-                          name="suggestedUrl"
-                          defaultValue={suggestion.suggestedUrl}
-                          className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
-                        />
-                      </label>
-                      <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Anchor text
-                        <input
-                          name="anchorText"
-                          defaultValue={suggestion.anchorText ?? ""}
-                          className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
-                        />
-                      </label>
-                      <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md border border-slate-300 px-4 text-sm font-semibold text-slate-700 transition hover:bg-white">
-                        <Pencil className="size-4" aria-hidden="true" />
-                        Save
-                      </button>
-                    </form>
+                      <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span
+                              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${getStatusClass(
+                                suggestion.status,
+                              )}`}
+                            >
+                              {formatStatus(suggestion.status)}
+                            </span>
+                            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                              {suggestion.confidenceScore}% confidence
+                            </span>
+                            <span className="text-xs font-medium text-slate-500">
+                              {suggestion.domain.client?.name
+                                ? `${suggestion.domain.client.name} - `
+                                : ""}
+                              {suggestion.domain.domain}
+                            </span>
+                          </div>
+                          <h4 className="mt-3 text-base font-semibold">
+                            {suggestion.brokenUrl
+                              ? "Replace broken internal link"
+                              : "Add contextual internal link"}
+                          </h4>
+                          <p className="mt-2 text-sm leading-6 text-slate-600">
+                            {suggestion.reason}
+                          </p>
+                        </div>
+                        {suggestion.issue ? (
+                          <Link
+                            href={`/issues/${suggestion.issue.id}`}
+                            className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline"
+                          >
+                            View issue
+                          </Link>
+                        ) : null}
+                      </div>
 
-                    <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3">
-                      <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                        Manual fix instruction
-                        <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client workflow." />
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-slate-700">
-                        {suggestion.manualInstructions}
-                      </p>
-                    </div>
+                      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                        <DetailBlock
+                          label="Source page"
+                          value={suggestion.sourceUrl}
+                        />
+                        {suggestion.brokenUrl ? (
+                          <DetailBlock
+                            label="Broken URL"
+                            value={suggestion.brokenUrl}
+                            danger
+                          />
+                        ) : null}
+                        <DetailBlock
+                          label="Suggested URL"
+                          value={suggestion.suggestedUrl}
+                        />
+                      </div>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <StatusButton
-                        fixId={suggestion.id}
-                        status="APPROVED"
-                        label="Approve"
-                        icon={<CheckCircle2 className="size-4" />}
-                      />
-                      <StatusButton
-                        fixId={suggestion.id}
-                        status="EXPORTED"
-                        label="Mark exported"
-                        icon={<Download className="size-4" />}
-                      />
-                      <StatusButton
-                        fixId={suggestion.id}
-                        status="APPLIED"
-                        label="Mark applied"
-                        icon={<Hammer className="size-4" />}
-                      />
-                      <StatusButton
-                        fixId={suggestion.id}
-                        status="DISMISSED"
-                        label="Dismiss"
-                        icon={<X className="size-4" />}
-                        subtle
-                      />
-                    </div>
-                    {automationIntegrations.length ? (
                       <form
-                        action={sendLinkFixToAutomationAction}
-                        className="mt-3 grid gap-2 rounded-md border border-slate-200 bg-white p-3 sm:grid-cols-[minmax(0,1fr)_auto]"
+                        action={updateLinkFixAction}
+                        className="mt-4 grid gap-3 rounded-md bg-slate-50 p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,260px)_auto]"
                       >
                         <input
                           type="hidden"
@@ -293,33 +235,103 @@ export default async function FixCenterPage({
                           value={suggestion.id}
                         />
                         <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                          Send to workflow
-                          <select
-                            name="integrationId"
+                          Suggested URL
+                          <input
+                            name="suggestedUrl"
+                            defaultValue={suggestion.suggestedUrl}
                             className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
-                          >
-                            {automationIntegrations.map((integration) => (
-                              <option
-                                key={integration.id}
-                                value={integration.id}
-                              >
-                                {integration.label} ({integration.provider})
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
-                          <Download className="size-4" aria-hidden="true" />
-                          Send payload
-                          <InfoTooltip
-                            label="Posts this fix as JSON to the selected Zapier or Make webhook and marks it exported."
-                            passive
                           />
+                        </label>
+                        <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                          Anchor text
+                          <input
+                            name="anchorText"
+                            defaultValue={suggestion.anchorText ?? ""}
+                            className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
+                          />
+                        </label>
+                        <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md border border-slate-300 px-4 text-sm font-semibold text-slate-700 transition hover:bg-white">
+                          <Pencil className="size-4" aria-hidden="true" />
+                          Save
                         </button>
                       </form>
-                    ) : null}
-                  </article>
-                ))
+
+                      <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3">
+                        <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                          Manual fix instruction
+                          <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client workflow." />
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-700">
+                          {suggestion.manualInstructions}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        <StatusButton
+                          fixId={suggestion.id}
+                          status="APPROVED"
+                          label="Approve"
+                          icon={<CheckCircle2 className="size-4" />}
+                        />
+                        <StatusButton
+                          fixId={suggestion.id}
+                          status="EXPORTED"
+                          label="Mark exported"
+                          icon={<Download className="size-4" />}
+                        />
+                        <StatusButton
+                          fixId={suggestion.id}
+                          status="APPLIED"
+                          label="Mark applied"
+                          icon={<Hammer className="size-4" />}
+                        />
+                        <StatusButton
+                          fixId={suggestion.id}
+                          status="DISMISSED"
+                          label="Dismiss"
+                          icon={<X className="size-4" />}
+                          subtle
+                        />
+                      </div>
+                      {fixDestinations.length ? (
+                        <form
+                          action={sendLinkFixToAutomationAction}
+                          className="mt-3 grid gap-2 rounded-md border border-slate-200 bg-white p-3 sm:grid-cols-[minmax(0,1fr)_auto]"
+                        >
+                          <input
+                            type="hidden"
+                            name="fixId"
+                            value={suggestion.id}
+                          />
+                          <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                            Send to workflow
+                            <select
+                              name="integrationId"
+                              className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
+                            >
+                              {fixDestinations.map((integration) => (
+                                <option
+                                  key={integration.id}
+                                  value={integration.id}
+                                >
+                                  {integration.label} ({integration.provider})
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                            <Download className="size-4" aria-hidden="true" />
+                            Send payload
+                            <InfoTooltip
+                              label="Posts this fix as JSON to the selected WordPress, Zapier, or Make receiver and marks it exported."
+                              passive
+                            />
+                          </button>
+                        </form>
+                      ) : null}
+                    </article>
+                  );
+                })
               ) : (
                 <div className="rounded-lg border border-dashed border-slate-300 p-8 text-center">
                   <h4 className="text-base font-semibold">

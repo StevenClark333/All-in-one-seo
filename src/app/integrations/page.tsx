@@ -4,6 +4,7 @@ import {
   connectNetlifyIntegrationAction,
   connectSlackIntegrationAction,
   connectVercelIntegrationAction,
+  connectWordPressReceiverAction,
   createIntegrationAction,
   importGoogleAnalyticsMetricsAction,
   importGoogleSearchConsoleMetricsAction,
@@ -21,6 +22,7 @@ import { getIntegrationSettingsData } from "@/lib/management-queries";
 import { readSlackIntegrationConfig } from "@/lib/slack";
 import { readShopifyShop } from "@/lib/shopify";
 import { findMatchingWebflowSite, readWebflowSites } from "@/lib/webflow";
+import { readWordPressReceiverConfig } from "@/lib/wordpress";
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +65,9 @@ export default async function IntegrationsPage() {
   );
   const wordpressDomains = domains.filter(
     (domain) => domain.platform === "WORDPRESS",
+  );
+  const wordpressReceiverIntegrations = integrations.filter(
+    (integration) => integration.provider === "WORDPRESS_RECEIVER",
   );
   const shopifyIntegrations = integrations.filter(
     (integration) => integration.provider === "SHOPIFY",
@@ -508,25 +513,84 @@ export default async function IntegrationsPage() {
 
               {wordpressDomains.length ? (
                 <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
-                  {wordpressDomains.map((domain) => (
-                    <article
-                      key={domain.id}
-                      className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_220px_180px]"
-                    >
-                      <div>
-                        <p className="font-semibold">{domain.domain}</p>
-                        <p className="mt-1 text-sm text-slate-500">
-                          Enter this Site ID in Settings &gt; All In One SEO
-                          after activating the plugin.
-                        </p>
-                      </div>
-                      <Meta label="Site ID" value={domain.id} />
-                      <Meta
-                        label="Script"
-                        value={formatEnum(domain.scriptStatus)}
-                      />
-                    </article>
-                  ))}
+                  {wordpressDomains.map((domain) => {
+                    const receiverIntegration =
+                      wordpressReceiverIntegrations.find(
+                        (integration) => integration.domainId === domain.id,
+                      );
+                    const receiverConfig = readWordPressReceiverConfig(
+                      receiverIntegration?.configJson,
+                    );
+
+                    return (
+                      <article key={domain.id} className="grid gap-4 p-4">
+                        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px_180px_180px]">
+                          <div>
+                            <p className="font-semibold">{domain.domain}</p>
+                            <p className="mt-1 text-sm text-slate-500">
+                              Enter this Site ID in Settings &gt; All In One SEO
+                              after activating the plugin.
+                            </p>
+                          </div>
+                          <Meta label="Site ID" value={domain.id} />
+                          <Meta
+                            label="Script"
+                            value={formatEnum(domain.scriptStatus)}
+                          />
+                          <Meta
+                            label="Fix receiver"
+                            value={
+                              receiverIntegration
+                                ? formatEnum(receiverIntegration.status)
+                                : "Not connected"
+                            }
+                          />
+                        </div>
+                        <form
+                          action={connectWordPressReceiverAction}
+                          className="grid gap-3 rounded-md border border-slate-200 bg-white p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,260px)_auto]"
+                        >
+                          <input
+                            type="hidden"
+                            name="domainId"
+                            value={domain.id}
+                          />
+                          <label className="grid gap-2">
+                            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                              Receiver endpoint
+                            </span>
+                            <input
+                              name="receiverUrl"
+                              type="url"
+                              defaultValue={receiverConfig.receiverUrl}
+                              placeholder={`https://${domain.domain}/wp-json/all-in-one-seo/v1/link-fixes`}
+                              className="h-10 min-w-0 rounded-md border border-slate-200 px-3 text-sm"
+                              required
+                            />
+                          </label>
+                          <label className="grid gap-2">
+                            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                              Receiver API key
+                            </span>
+                            <input
+                              name="receiverKey"
+                              type="password"
+                              placeholder={
+                                receiverIntegration
+                                  ? "Leave blank to keep current key"
+                                  : "Paste plugin receiver key"
+                              }
+                              className="h-10 min-w-0 rounded-md border border-slate-200 px-3 text-sm"
+                              required={!receiverIntegration}
+                            />
+                          </label>
+                          <button className="inline-flex h-10 items-center justify-center self-end rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                            Save receiver
+                          </button>
+                        </form>
+                      </article>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">

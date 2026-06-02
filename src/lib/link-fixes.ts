@@ -6,6 +6,7 @@ import {
   type AutomationProvider,
 } from "@/lib/automation-integrations";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
+import { readWordPressReceiverConfig } from "@/lib/wordpress";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
 const FIXABLE_LINK_ISSUE_PREFIXES = [
@@ -77,10 +78,11 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
       }),
       getPrisma().integration.findMany({
         where: {
-          provider: { in: ["MAKE", "ZAPIER"] },
+          provider: { in: ["MAKE", "ZAPIER", "WORDPRESS_RECEIVER"] },
           status: "CONNECTED",
           workspaceId: workspace.id,
         },
+        include: { domain: true },
         orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
       }),
     ]);
@@ -88,11 +90,20 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
   return {
     automationIntegrations: automationIntegrations.map((integration) => {
       const config = readAutomationIntegrationConfig(integration.configJson);
+      const wordpressConfig =
+        integration.provider === "WORDPRESS_RECEIVER"
+          ? readWordPressReceiverConfig(integration.configJson)
+          : null;
 
       return {
+        domainId: integration.domainId,
         id: integration.id,
-        label: config.label || `${integration.provider} workflow`,
-        provider: integration.provider as AutomationProvider,
+        label:
+          wordpressConfig?.receiverUrl ||
+          config.label ||
+          integration.domain?.domain ||
+          `${integration.provider} workflow`,
+        provider: integration.provider,
       };
     }),
     workspace,
@@ -262,7 +273,7 @@ export async function sendLinkFixToAutomation(input: {
     getPrisma().integration.findFirst({
       where: {
         id: input.integrationId,
-        provider: { in: ["MAKE", "ZAPIER"] },
+        provider: { in: ["MAKE", "ZAPIER", "WORDPRESS_RECEIVER"] },
         status: "CONNECTED",
         workspaceId: workspace.id,
       },
@@ -274,16 +285,31 @@ export async function sendLinkFixToAutomation(input: {
   }
 
   if (!integration) {
-    throw new Error("Connect a Zapier or Make automation first.");
+    throw new Error("Connect a Zapier, Make, or WordPress receiver first.");
   }
 
-  const config = readAutomationIntegrationConfig(integration.configJson);
-
-  if (!config.webhookUrl) {
-    throw new Error("Automation webhook URL was not found.");
+  if (
+    integration.provider === "WORDPRESS_RECEIVER" &&
+    integration.domainId !== fix.domainId
+  ) {
+    throw new Error("WordPress receiver does not belong to this fix domain.");
   }
 
-  const provider = integration.provider as AutomationProvider;
+  const automationConfig = readAutomationIntegrationConfig(
+    integration.configJson,
+  );
+  const wordpressConfig =
+    integration.provider === "WORDPRESS_RECEIVER"
+      ? readWordPressReceiverConfig(integration.configJson)
+      : null;
+  const webhookUrl =
+    wordpressConfig?.receiverUrl || automationConfig.webhookUrl;
+
+  if (!webhookUrl) {
+    throw new Error("Fix delivery URL was not found.");
+  }
+
+  const provider = integration.provider as AutomationProvider | string;
   const payload = buildLinkFixAutomationPayload({
     anchorText: fix.anchorText,
     brokenUrl: fix.brokenUrl,
@@ -295,9 +321,12 @@ export async function sendLinkFixToAutomation(input: {
     status: fix.status,
     suggestedUrl: fix.suggestedUrl,
   });
-  const response = await fetch(config.webhookUrl, {
+  const response = await fetch(webhookUrl, {
     body: JSON.stringify(payload),
-    headers: { "Content-Type": "application/json" },
+    headers: buildDeliveryHeaders({
+      provider: integration.provider,
+      receiverKey: wordpressConfig?.receiverKey,
+    }),
     method: "POST",
   });
 
@@ -312,6 +341,24 @@ export async function sendLinkFixToAutomation(input: {
       status: "EXPORTED",
     },
   });
+}
+
+function buildDeliveryHeaders({
+  provider,
+  receiverKey,
+}: {
+  provider: string;
+  receiverKey?: string;
+}) {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (provider === "WORDPRESS_RECEIVER" && receiverKey) {
+    headers["X-All-In-One-SEO-Key"] = receiverKey;
+  }
+
+  return headers;
 }
 
 function buildSuggestionForIssue(input: {

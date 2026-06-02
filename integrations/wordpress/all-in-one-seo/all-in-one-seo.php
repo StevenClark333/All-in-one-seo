@@ -2,8 +2,8 @@
 /**
  * Plugin Name: All In One SEO
  * Plugin URI: https://app.example.com/integrations
- * Description: Installs the All In One SEO monitoring script on WordPress sites.
- * Version: 0.1.0
+ * Description: Installs the All In One SEO monitoring script and receives approved fix tasks from the All In One SEO portal.
+ * Version: 0.2.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: All In One SEO
@@ -16,7 +16,10 @@ if (!defined('ABSPATH')) {
 }
 
 const ALL_IN_ONE_SEO_OPTION_NAME = 'all_in_one_seo_settings';
+const ALL_IN_ONE_SEO_FIX_QUEUE_OPTION_NAME = 'all_in_one_seo_fix_queue';
 const ALL_IN_ONE_SEO_SCRIPT_HANDLE = 'all-in-one-seo-monitor';
+const ALL_IN_ONE_SEO_REST_NAMESPACE = 'all-in-one-seo/v1';
+const ALL_IN_ONE_SEO_FIX_ROUTE = '/link-fixes';
 
 function all_in_one_seo_default_settings(): array
 {
@@ -24,6 +27,7 @@ function all_in_one_seo_default_settings(): array
         'enabled' => '1',
         'app_url' => '',
         'site_id' => '',
+        'receiver_key' => '',
     ];
 }
 
@@ -42,11 +46,13 @@ function all_in_one_seo_sanitize_settings(array $input): array
 {
     $app_url = isset($input['app_url']) ? esc_url_raw(trim((string) $input['app_url'])) : '';
     $site_id = isset($input['site_id']) ? sanitize_text_field((string) $input['site_id']) : '';
+    $receiver_key = isset($input['receiver_key']) ? sanitize_text_field((string) $input['receiver_key']) : '';
 
     return [
         'enabled' => !empty($input['enabled']) ? '1' : '0',
         'app_url' => untrailingslashit($app_url),
         'site_id' => $site_id,
+        'receiver_key' => $receiver_key,
     ];
 }
 
@@ -91,6 +97,21 @@ function all_in_one_seo_register_settings(): void
         'all_in_one_seo_render_site_id_field',
         'all-in-one-seo',
         'all_in_one_seo_connection'
+    );
+
+    add_settings_section(
+        'all_in_one_seo_fix_receiver',
+        __('Fix receiver', 'all-in-one-seo'),
+        '__return_false',
+        'all-in-one-seo'
+    );
+
+    add_settings_field(
+        'all_in_one_seo_receiver_key',
+        __('Receiver API key', 'all-in-one-seo'),
+        'all_in_one_seo_render_receiver_key_field',
+        'all-in-one-seo',
+        'all_in_one_seo_fix_receiver'
     );
 }
 add_action('admin_init', 'all_in_one_seo_register_settings');
@@ -159,6 +180,28 @@ function all_in_one_seo_render_site_id_field(): void
     <?php
 }
 
+function all_in_one_seo_render_receiver_key_field(): void
+{
+    $settings = all_in_one_seo_get_settings();
+    ?>
+    <input
+        type="password"
+        class="regular-text"
+        name="<?php echo esc_attr(ALL_IN_ONE_SEO_OPTION_NAME); ?>[receiver_key]"
+        value="<?php echo esc_attr($settings['receiver_key']); ?>"
+        autocomplete="new-password"
+        placeholder="Paste a long secret from All In One SEO"
+    />
+    <p class="description">
+        <?php esc_html_e('Used to authenticate approved fix payloads sent from the All In One SEO portal.', 'all-in-one-seo'); ?>
+    </p>
+    <p class="description">
+        <?php esc_html_e('Receiver endpoint:', 'all-in-one-seo'); ?>
+        <code><?php echo esc_html(rest_url(ALL_IN_ONE_SEO_REST_NAMESPACE . ALL_IN_ONE_SEO_FIX_ROUTE)); ?></code>
+    </p>
+    <?php
+}
+
 function all_in_one_seo_render_settings_page(): void
 {
     if (!current_user_can('manage_options')) {
@@ -177,7 +220,59 @@ function all_in_one_seo_render_settings_page(): void
             submit_button(__('Save settings', 'all-in-one-seo'));
             ?>
         </form>
+        <?php all_in_one_seo_render_fix_queue(); ?>
     </div>
+    <?php
+}
+
+function all_in_one_seo_render_fix_queue(): void
+{
+    $fixes = all_in_one_seo_get_fix_queue();
+    ?>
+    <hr />
+    <h2><?php esc_html_e('Received fix tasks', 'all-in-one-seo'); ?></h2>
+    <p>
+        <?php esc_html_e('Approved link fixes sent from All In One SEO appear here for review before any WordPress content is edited.', 'all-in-one-seo'); ?>
+    </p>
+    <?php if (empty($fixes)) : ?>
+        <p><?php esc_html_e('No fix tasks received yet.', 'all-in-one-seo'); ?></p>
+        <?php return; ?>
+    <?php endif; ?>
+    <table class="widefat striped">
+        <thead>
+            <tr>
+                <th><?php esc_html_e('Status', 'all-in-one-seo'); ?></th>
+                <th><?php esc_html_e('Source URL', 'all-in-one-seo'); ?></th>
+                <th><?php esc_html_e('Suggested URL', 'all-in-one-seo'); ?></th>
+                <th><?php esc_html_e('Instructions', 'all-in-one-seo'); ?></th>
+                <th><?php esc_html_e('Received', 'all-in-one-seo'); ?></th>
+                <th><?php esc_html_e('Action', 'all-in-one-seo'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($fixes as $fix) : ?>
+                <tr>
+                    <td><?php echo esc_html($fix['status']); ?></td>
+                    <td><code><?php echo esc_html($fix['source_url']); ?></code></td>
+                    <td><code><?php echo esc_html($fix['suggested_url']); ?></code></td>
+                    <td><?php echo esc_html($fix['manual_instructions']); ?></td>
+                    <td><?php echo esc_html($fix['received_at']); ?></td>
+                    <td>
+                        <?php if ($fix['status'] !== 'REVIEWED') : ?>
+                            <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+                                <?php wp_nonce_field('all_in_one_seo_mark_fix_reviewed'); ?>
+                                <input type="hidden" name="action" value="all_in_one_seo_mark_fix_reviewed" />
+                                <input type="hidden" name="fix_id" value="<?php echo esc_attr($fix['id']); ?>" />
+                                <?php submit_button(__('Mark reviewed', 'all-in-one-seo'), 'secondary small', 'submit', false); ?>
+                            </form>
+                        <?php else : ?>
+                            <?php esc_html_e('Reviewed', 'all-in-one-seo'); ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
     <?php
 }
 
@@ -218,6 +313,132 @@ function all_in_one_seo_add_site_id_attribute(string $tag, string $handle, strin
     return '<script async src="' . $src . '" data-site-id="' . $site_id . '"></script>' . "\n";
 }
 add_filter('script_loader_tag', 'all_in_one_seo_add_site_id_attribute', 10, 3);
+
+function all_in_one_seo_register_rest_routes(): void
+{
+    register_rest_route(
+        ALL_IN_ONE_SEO_REST_NAMESPACE,
+        ALL_IN_ONE_SEO_FIX_ROUTE,
+        [
+            'methods' => 'POST',
+            'callback' => 'all_in_one_seo_receive_link_fix',
+            'permission_callback' => '__return_true',
+        ]
+    );
+}
+add_action('rest_api_init', 'all_in_one_seo_register_rest_routes');
+
+function all_in_one_seo_receive_link_fix(WP_REST_Request $request)
+{
+    $settings = all_in_one_seo_get_settings();
+    $receiver_key = (string) $settings['receiver_key'];
+    $provided_key = (string) $request->get_header('x-all-in-one-seo-key');
+
+    if ($receiver_key === '' || $provided_key === '' || !hash_equals($receiver_key, $provided_key)) {
+        return new WP_Error(
+            'all_in_one_seo_unauthorized',
+            __('Invalid All In One SEO receiver key.', 'all-in-one-seo'),
+            ['status' => 401]
+        );
+    }
+
+    $payload = $request->get_json_params();
+
+    if (!is_array($payload) || !isset($payload['linkFix']) || !is_array($payload['linkFix'])) {
+        return new WP_Error(
+            'all_in_one_seo_invalid_payload',
+            __('Expected a linkFix payload.', 'all-in-one-seo'),
+            ['status' => 400]
+        );
+    }
+
+    $fix = all_in_one_seo_sanitize_link_fix_payload($payload);
+    all_in_one_seo_store_link_fix($fix);
+
+    return new WP_REST_Response(
+        [
+            'accepted' => true,
+            'fixId' => $fix['id'],
+        ],
+        202
+    );
+}
+
+function all_in_one_seo_sanitize_link_fix_payload(array $payload): array
+{
+    $link_fix = $payload['linkFix'];
+    $resource_id = isset($payload['resourceId']) ? sanitize_text_field((string) $payload['resourceId']) : '';
+
+    return [
+        'id' => $resource_id !== '' ? $resource_id : wp_generate_uuid4(),
+        'status' => 'RECEIVED',
+        'source_url' => isset($link_fix['sourceUrl']) ? esc_url_raw((string) $link_fix['sourceUrl']) : '',
+        'broken_url' => isset($link_fix['brokenUrl']) ? esc_url_raw((string) $link_fix['brokenUrl']) : '',
+        'suggested_url' => isset($link_fix['suggestedUrl']) ? esc_url_raw((string) $link_fix['suggestedUrl']) : '',
+        'anchor_text' => isset($link_fix['anchorText']) ? sanitize_text_field((string) $link_fix['anchorText']) : '',
+        'manual_instructions' => isset($link_fix['manualInstructions']) ? sanitize_textarea_field((string) $link_fix['manualInstructions']) : '',
+        'received_at' => current_time('mysql'),
+    ];
+}
+
+function all_in_one_seo_store_link_fix(array $fix): void
+{
+    $queue = all_in_one_seo_get_fix_queue();
+    $queue = array_values(
+        array_filter(
+            $queue,
+            static function (array $item) use ($fix): bool {
+                return $item['id'] !== $fix['id'];
+            }
+        )
+    );
+    array_unshift($queue, $fix);
+    update_option(ALL_IN_ONE_SEO_FIX_QUEUE_OPTION_NAME, array_slice($queue, 0, 100), false);
+}
+
+function all_in_one_seo_get_fix_queue(): array
+{
+    $queue = get_option(ALL_IN_ONE_SEO_FIX_QUEUE_OPTION_NAME, []);
+
+    if (!is_array($queue)) {
+        return [];
+    }
+
+    return array_values(
+        array_filter(
+            $queue,
+            static function ($item): bool {
+                return is_array($item) && isset($item['id']);
+            }
+        )
+    );
+}
+
+function all_in_one_seo_mark_fix_reviewed(): void
+{
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('You do not have permission to review fixes.', 'all-in-one-seo'));
+    }
+
+    check_admin_referer('all_in_one_seo_mark_fix_reviewed');
+
+    $fix_id = isset($_POST['fix_id']) ? sanitize_text_field((string) wp_unslash($_POST['fix_id'])) : '';
+    $queue = all_in_one_seo_get_fix_queue();
+
+    foreach ($queue as &$fix) {
+        if ($fix['id'] === $fix_id) {
+            $fix['status'] = 'REVIEWED';
+            $fix['reviewed_at'] = current_time('mysql');
+            break;
+        }
+    }
+    unset($fix);
+
+    update_option(ALL_IN_ONE_SEO_FIX_QUEUE_OPTION_NAME, $queue, false);
+    wp_safe_redirect(admin_url('options-general.php?page=all-in-one-seo'));
+    exit;
+}
+add_action('admin_post_all_in_one_seo_mark_fix_reviewed', 'all_in_one_seo_mark_fix_reviewed');
 
 function all_in_one_seo_settings_link(array $links): array
 {

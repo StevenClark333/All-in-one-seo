@@ -156,7 +156,7 @@ export function buildLinkFixAutomationPayload({
   domain: string;
   fixId: string;
   manualInstructions: string;
-  provider: AutomationProvider;
+  provider: string;
   sourceUrl: string;
   status: string;
   suggestedUrl: string;
