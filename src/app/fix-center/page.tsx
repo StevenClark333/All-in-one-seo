@@ -29,11 +29,16 @@ export default async function FixCenterPage({
   const params = (await searchParams) ?? {};
   const selectedDomainId = getSingle(params.domainId);
   const selectedStatus = getSingle(params.status);
-  const { automationIntegrations, domains, suggestions, counts } =
-    await getLinkFixCenterData({
-      domainId: selectedDomainId,
-      status: isLinkFixStatus(selectedStatus) ? selectedStatus : undefined,
-    });
+  const {
+    automationIntegrations,
+    domains,
+    suggestions,
+    counts,
+    verificationCounts,
+  } = await getLinkFixCenterData({
+    domainId: selectedDomainId,
+    status: isLinkFixStatus(selectedStatus) ? selectedStatus : undefined,
+  });
   const selectedDomain = domains.find(
     (domain) => domain.id === selectedDomainId,
   );
@@ -85,6 +90,24 @@ export default async function FixCenterPage({
                   value={counts[status]}
                 />
               ))}
+            </div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-4">
+              <Metric
+                label="Verification pending"
+                value={verificationCounts.PENDING}
+              />
+              <Metric
+                label="Verified fixed"
+                value={verificationCounts.VERIFIED_FIXED}
+              />
+              <Metric
+                label="Still failing"
+                value={verificationCounts.STILL_FAILING}
+              />
+              <Metric
+                label="Not checked"
+                value={verificationCounts.NOT_CHECKED}
+              />
             </div>
             <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
               <span className="font-semibold text-slate-800">
@@ -181,6 +204,15 @@ export default async function FixCenterPage({
                             <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
                               {suggestion.confidenceScore}% confidence
                             </span>
+                            <span
+                              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${getVerificationClass(
+                                suggestion.verificationStatus,
+                              )}`}
+                            >
+                              {formatVerificationStatus(
+                                suggestion.verificationStatus,
+                              )}
+                            </span>
                             <span className="text-xs font-medium text-slate-500">
                               {suggestion.domain.client?.name
                                 ? `${suggestion.domain.client.name} - `
@@ -264,6 +296,12 @@ export default async function FixCenterPage({
                         <p className="mt-2 text-sm leading-6 text-slate-700">
                           {suggestion.manualInstructions}
                         </p>
+                        {suggestion.verificationMessage ? (
+                          <p className="mt-2 text-sm leading-6 text-slate-600">
+                            <span className="font-semibold">Verification:</span>{" "}
+                            {suggestion.verificationMessage}
+                          </p>
+                        ) : null}
                       </div>
 
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -433,6 +471,22 @@ function formatStatus(value: string) {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
+function formatVerificationStatus(value: string) {
+  if (value === "VERIFIED_FIXED") {
+    return "Verified fixed";
+  }
+
+  if (value === "STILL_FAILING") {
+    return "Still failing";
+  }
+
+  if (value === "PENDING") {
+    return "Verification pending";
+  }
+
+  return "Not checked";
+}
+
 function getStatusClass(status: string) {
   if (status === "APPROVED") {
     return "bg-blue-50 text-blue-700";
@@ -451,4 +505,20 @@ function getStatusClass(status: string) {
   }
 
   return "bg-violet-50 text-violet-700";
+}
+
+function getVerificationClass(status: string) {
+  if (status === "VERIFIED_FIXED") {
+    return "bg-emerald-50 text-emerald-700";
+  }
+
+  if (status === "STILL_FAILING") {
+    return "bg-red-50 text-red-700";
+  }
+
+  if (status === "PENDING") {
+    return "bg-amber-50 text-amber-700";
+  }
+
+  return "bg-slate-100 text-slate-500";
 }

@@ -1,5 +1,9 @@
 import { createHash } from "node:crypto";
-import type { LinkFixStatus, Prisma } from "@prisma/client";
+import type {
+  LinkFixStatus,
+  LinkFixVerificationStatus,
+  Prisma,
+} from "@prisma/client";
 import {
   buildLinkFixAutomationPayload,
   readAutomationIntegrationConfig,
@@ -29,6 +33,7 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
       domains: [],
       suggestions: [],
       counts: buildEmptyCounts(),
+      verificationCounts: buildEmptyVerificationCounts(),
     };
   }
 
@@ -41,6 +46,7 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
       domains: [],
       suggestions: [],
       counts: buildEmptyCounts(),
+      verificationCounts: buildEmptyVerificationCounts(),
     };
   }
 
@@ -50,43 +56,53 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
     ...(filters.status ? { status: filters.status } : {}),
   } satisfies Prisma.LinkFixSuggestionWhereInput;
 
-  const [domains, suggestions, groupedCounts, automationIntegrations] =
-    await Promise.all([
-      getPrisma().domain.findMany({
-        where: { archivedAt: null, workspaceId: workspace.id },
-        include: { client: { select: { name: true } } },
-        orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
-      }),
-      getPrisma().linkFixSuggestion.findMany({
-        where,
-        include: {
-          domain: { include: { client: { select: { name: true } } } },
-          issue: true,
-          sourcePage: true,
-          targetPage: true,
-        },
-        orderBy: [
-          { status: "asc" },
-          { confidenceScore: "desc" },
-          { updatedAt: "desc" },
-        ],
-        take: 100,
-      }),
-      getPrisma().linkFixSuggestion.groupBy({
-        by: ["status"],
-        where: { workspaceId: workspace.id },
-        _count: { _all: true },
-      }),
-      getPrisma().integration.findMany({
-        where: {
-          provider: { in: ["MAKE", "ZAPIER", "WORDPRESS_RECEIVER"] },
-          status: "CONNECTED",
-          workspaceId: workspace.id,
-        },
-        include: { domain: true },
-        orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
-      }),
-    ]);
+  const [
+    domains,
+    suggestions,
+    groupedCounts,
+    groupedVerificationCounts,
+    automationIntegrations,
+  ] = await Promise.all([
+    getPrisma().domain.findMany({
+      where: { archivedAt: null, workspaceId: workspace.id },
+      include: { client: { select: { name: true } } },
+      orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
+    }),
+    getPrisma().linkFixSuggestion.findMany({
+      where,
+      include: {
+        domain: { include: { client: { select: { name: true } } } },
+        issue: true,
+        sourcePage: true,
+        targetPage: true,
+      },
+      orderBy: [
+        { status: "asc" },
+        { confidenceScore: "desc" },
+        { updatedAt: "desc" },
+      ],
+      take: 100,
+    }),
+    getPrisma().linkFixSuggestion.groupBy({
+      by: ["status"],
+      where: { workspaceId: workspace.id },
+      _count: { _all: true },
+    }),
+    getPrisma().linkFixSuggestion.groupBy({
+      by: ["verificationStatus"],
+      where: { workspaceId: workspace.id },
+      _count: { _all: true },
+    }),
+    getPrisma().integration.findMany({
+      where: {
+        provider: { in: ["MAKE", "ZAPIER", "WORDPRESS_RECEIVER"] },
+        status: "CONNECTED",
+        workspaceId: workspace.id,
+      },
+      include: { domain: true },
+      orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
+    }),
+  ]);
 
   return {
     automationIntegrations: automationIntegrations.map((integration) => {
@@ -111,6 +127,10 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
     domains,
     suggestions,
     counts: groupedCounts.reduce(buildCountsFromGroup, buildEmptyCounts()),
+    verificationCounts: groupedVerificationCounts.reduce(
+      buildVerificationCountsFromGroup,
+      buildEmptyVerificationCounts(),
+    ),
   };
 }
 
@@ -248,6 +268,15 @@ export async function updateLinkFixSuggestion(input: {
     where: { id: existing.id },
     data: {
       ...(input.status ? { status: input.status } : {}),
+      ...(input.status === "APPLIED"
+        ? {
+            verificationCheckedAt: null,
+            verificationCrawlRunId: null,
+            verificationMessage:
+              "Waiting for the next crawl to verify this fix.",
+            verificationStatus: "PENDING" as const,
+          }
+        : {}),
       ...(input.suggestedUrl ? { suggestedUrl: nextSuggestedUrl } : {}),
       ...(input.anchorText !== undefined ? { anchorText: nextAnchorText } : {}),
       manualInstructions,
@@ -396,6 +425,10 @@ export async function confirmWordPressLinkFixStatus(input: {
     data: {
       appliedAt: new Date(),
       status: "APPLIED",
+      verificationCheckedAt: null,
+      verificationCrawlRunId: null,
+      verificationMessage: "Waiting for the next crawl to verify this fix.",
+      verificationStatus: "PENDING",
     },
   });
 
@@ -428,6 +461,54 @@ export async function confirmWordPressLinkFixStatus(input: {
   return { crawlRunId: crawlRun.id, updated: true };
 }
 
+export async function reconcileLinkFixVerificationForCrawlRun(
+  crawlRunId: string,
+) {
+  const crawlRun = await getPrisma().crawlRun.findUnique({
+    where: { id: crawlRunId },
+    select: { domainId: true, id: true, status: true },
+  });
+
+  if (!crawlRun || crawlRun.status !== "COMPLETED") {
+    return { checked: 0 };
+  }
+
+  const fixes = await getPrisma().linkFixSuggestion.findMany({
+    where: {
+      domainId: crawlRun.domainId,
+      status: "APPLIED",
+      verificationStatus: "PENDING",
+    },
+  });
+  let checked = 0;
+
+  for (const fix of fixes) {
+    const result = await verifyAppliedLinkFix({
+      brokenUrl: fix.brokenUrl,
+      crawlRunId: crawlRun.id,
+      sourcePageId: fix.sourcePageId,
+      suggestedUrl: fix.suggestedUrl,
+    });
+
+    if (!result) {
+      continue;
+    }
+
+    await getPrisma().linkFixSuggestion.update({
+      where: { id: fix.id },
+      data: {
+        verificationCheckedAt: new Date(),
+        verificationCrawlRunId: crawlRun.id,
+        verificationMessage: result.message,
+        verificationStatus: result.status,
+      },
+    });
+    checked += 1;
+  }
+
+  return { checked };
+}
+
 function buildDeliveryHeaders({
   provider,
   receiverKey,
@@ -444,6 +525,96 @@ function buildDeliveryHeaders({
   }
 
   return headers;
+}
+
+async function verifyAppliedLinkFix({
+  brokenUrl,
+  crawlRunId,
+  sourcePageId,
+  suggestedUrl,
+}: {
+  brokenUrl: string | null;
+  crawlRunId: string;
+  sourcePageId: string | null;
+  suggestedUrl: string;
+}): Promise<{
+  message: string;
+  status: LinkFixVerificationStatus;
+} | null> {
+  if (!sourcePageId) {
+    return {
+      message: "Source page is no longer mapped, so verification needs review.",
+      status: "STILL_FAILING",
+    };
+  }
+
+  const crawledSource = await getPrisma().pageLink.findFirst({
+    where: { crawlRunId, sourcePageId },
+    select: { id: true },
+  });
+
+  if (!crawledSource) {
+    return null;
+  }
+
+  if (brokenUrl) {
+    const brokenLink = await getPrisma().pageLink.findFirst({
+      where: {
+        crawlRunId,
+        normalizedUrl: brokenUrl,
+        sourcePageId,
+      },
+      select: { statusCode: true },
+    });
+
+    if (!brokenLink) {
+      return {
+        message:
+          "The previous broken URL was not found on the crawled source page.",
+        status: "VERIFIED_FIXED",
+      };
+    }
+
+    if (brokenLink.statusCode && brokenLink.statusCode < 400) {
+      return {
+        message: "The previous URL is now returning a healthy status.",
+        status: "VERIFIED_FIXED",
+      };
+    }
+
+    return {
+      message: `The broken URL still appears on the source page${
+        brokenLink.statusCode ? ` with HTTP ${brokenLink.statusCode}` : ""
+      }.`,
+      status: "STILL_FAILING",
+    };
+  }
+
+  const suggestedLink = await getPrisma().pageLink.findFirst({
+    where: {
+      crawlRunId,
+      normalizedUrl: suggestedUrl,
+      sourcePageId,
+    },
+    select: { id: true, statusCode: true },
+  });
+
+  if (
+    suggestedLink &&
+    (!suggestedLink.statusCode || suggestedLink.statusCode < 400)
+  ) {
+    return {
+      message:
+        "The suggested internal link was found on the crawled source page.",
+      status: "VERIFIED_FIXED",
+    };
+  }
+
+  return {
+    message:
+      "The suggested internal link was not found on the crawled source page.",
+    status: "STILL_FAILING",
+  };
 }
 
 function buildWordPressStatusCallbackUrl(origin?: string) {
@@ -775,10 +946,30 @@ function buildEmptyCounts() {
   } satisfies Record<LinkFixStatus, number>;
 }
 
+function buildEmptyVerificationCounts() {
+  return {
+    NOT_CHECKED: 0,
+    PENDING: 0,
+    STILL_FAILING: 0,
+    VERIFIED_FIXED: 0,
+  } satisfies Record<LinkFixVerificationStatus, number>;
+}
+
 function buildCountsFromGroup(
   counts: Record<LinkFixStatus, number>,
   group: { status: LinkFixStatus; _count: { _all: number } },
 ) {
   counts[group.status] = group._count._all;
+  return counts;
+}
+
+function buildVerificationCountsFromGroup(
+  counts: Record<LinkFixVerificationStatus, number>,
+  group: {
+    verificationStatus: LinkFixVerificationStatus;
+    _count: { _all: number };
+  },
+) {
+  counts[group.verificationStatus] = group._count._all;
   return counts;
 }

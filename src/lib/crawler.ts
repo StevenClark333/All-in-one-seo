@@ -12,6 +12,7 @@ import {
   shouldPersistDiscoveredLinkDepth,
 } from "@/lib/crawler-policy";
 import { analyzeInternalLinkGraph } from "@/lib/link-graph-analyzer";
+import { reconcileLinkFixVerificationForCrawlRun } from "@/lib/link-fixes";
 import { logger } from "@/lib/logger";
 import { calculateSiteScore } from "@/lib/site-scoring";
 import { analyzeCrawlArtifacts, analyzeSnapshot } from "@/lib/seo-analyzer";
@@ -220,7 +221,7 @@ export async function runHomepageCrawl(crawlRunId: string) {
       data: { lastCrawledAt: new Date() },
     });
 
-    return prisma.crawlRun.update({
+    const completedRun = await prisma.crawlRun.update({
       where: { id: crawlRun.id },
       data: {
         status: response.ok ? "COMPLETED" : "FAILED",
@@ -233,6 +234,10 @@ export async function runHomepageCrawl(crawlRunId: string) {
           : `Homepage returned HTTP ${response.status}.`,
       },
     });
+
+    await reconcileLinkFixVerificationForCrawlRun(completedRun.id);
+
+    return completedRun;
   } catch (error) {
     logger.error("Homepage crawl failed.", {
       crawlRunId: crawlRun.id,

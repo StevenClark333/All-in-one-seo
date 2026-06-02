@@ -72,6 +72,8 @@ test("builds link fix automation payloads", () => {
     buildLinkFixAutomationPayload({
       anchorText: "Services",
       brokenUrl: "https://example.com/old-services",
+      callbackUrl:
+        "https://app.example.com/api/integrations/wordpress/link-fix-status",
       domain: "example.com",
       fixId: "fix_123",
       manualInstructions:
@@ -86,7 +88,8 @@ test("builds link fix automation payloads", () => {
       linkFix: {
         anchorText: "Services",
         brokenUrl: "https://example.com/old-services",
-        callbackUrl: "",
+        callbackUrl:
+          "https://app.example.com/api/integrations/wordpress/link-fix-status",
         domain: "example.com",
         manualInstructions:
           "Replace the old link with the current services page.",
