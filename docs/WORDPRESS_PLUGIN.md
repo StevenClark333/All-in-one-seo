@@ -19,8 +19,9 @@ integrations/wordpress/all-in-one-seo/
 5. Open **Settings > All In One SEO**.
 6. Set the All In One SEO app URL, for example `https://app.example.com`.
 7. Set the domain Site ID from the All In One SEO domain install panel.
-8. Add a long Receiver API key.
-9. Save settings and visit a public page.
+8. In All In One SEO, save the WordPress receiver endpoint for this domain. Leave the Receiver API key blank to let the portal generate one.
+9. Copy the generated Receiver API key from the Integrations page into WordPress.
+10. Save settings and visit a public page.
 
 Manual install is also supported by copying `integrations/wordpress/all-in-one-seo` to `wp-content/plugins/all-in-one-seo`.
 
@@ -32,7 +33,7 @@ The plugin exposes a WordPress REST endpoint:
 /wp-json/all-in-one-seo/v1/link-fixes
 ```
 
-In **All In One SEO > Integrations > WordPress plugin**, save this endpoint and the same Receiver API key for the matching domain. Fix Center can then send approved link fixes directly into WordPress.
+In **All In One SEO > Integrations > WordPress plugin**, save this endpoint for the matching domain. The portal generates a Receiver API key if one is not supplied. Copy that key into the WordPress plugin settings. Fix Center can then send approved link fixes directly into WordPress.
 
 Incoming requests must:
 

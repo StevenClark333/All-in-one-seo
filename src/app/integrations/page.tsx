@@ -588,6 +588,26 @@ export default async function IntegrationsPage() {
                             }
                           />
                         </div>
+                        <div className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                          <Meta
+                            help="Paste this value into the Receiver API key field inside the WordPress plugin settings."
+                            label="Generated receiver key"
+                            value={
+                              receiverConfig.receiverKey ? (
+                                <code className="block break-all rounded-md bg-white px-3 py-2 font-mono text-xs text-slate-700">
+                                  {receiverConfig.receiverKey}
+                                </code>
+                              ) : (
+                                "Generated when receiver is saved"
+                              )
+                            }
+                          />
+                          <Meta
+                            help="The plugin sends applied-fix callbacks to this portal after a WordPress admin applies a fix."
+                            label="Callback"
+                            value={`${appUrl}/api/integrations/wordpress/link-fix-status`}
+                          />
+                        </div>
                         <form
                           action={connectWordPressReceiverAction}
                           className="grid gap-3 rounded-md border border-slate-200 bg-white p-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,260px)_auto]"
@@ -620,10 +640,9 @@ export default async function IntegrationsPage() {
                               placeholder={
                                 receiverIntegration
                                   ? "Leave blank to keep current key"
-                                  : "Paste plugin receiver key"
+                                  : "Leave blank to generate a key"
                               }
                               className="h-10 min-w-0 rounded-md border border-slate-200 px-3 text-sm"
-                              required={!receiverIntegration}
                             />
                           </label>
                           <button className="inline-flex h-10 items-center justify-center self-end rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">

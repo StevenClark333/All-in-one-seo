@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { assertCrawlUrlIsSafe } from "@/lib/crawler-security";
 import {
@@ -47,11 +47,8 @@ export async function upsertWordPressReceiver({
   const existingConfig = readWordPressReceiverConfig(
     existingIntegration?.configJson,
   );
-  const nextReceiverKey = receiverKey || existingConfig.receiverKey;
-
-  if (!nextReceiverKey) {
-    throw new Error("Receiver API key is required.");
-  }
+  const nextReceiverKey =
+    receiverKey || existingConfig.receiverKey || generateWordPressReceiverKey();
 
   const configJson = encryptIntegrationConfig({
     connectedAt: existingConfig.connectedAt || new Date().toISOString(),
@@ -117,6 +114,10 @@ export function readWordPressReceiverConfig(value: unknown) {
     receiverKey: readString(config.receiverKey),
     receiverUrl: readString(config.receiverUrl),
   };
+}
+
+export function generateWordPressReceiverKey() {
+  return `aioseo_wp_${randomBytes(24).toString("base64url")}`;
 }
 
 function readString(value: unknown) {

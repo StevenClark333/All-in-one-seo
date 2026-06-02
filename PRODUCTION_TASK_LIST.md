@@ -514,6 +514,7 @@ Work should move through these batches in order. At the start of each batch, rer
 - [x] Add Zapier or Make integration.
 - [x] Add WordPress contextual internal-link application from Fix Center.
 - [x] Add WordPress plugin ZIP packaging and portal download.
+- [x] Add generated WordPress receiver API keys.
 
 ## 22. Billing And Plans
 

@@ -10,8 +10,9 @@ This plugin installs the All In One SEO browser monitoring script on public Word
 4. Open **Settings > All In One SEO**.
 5. Enter the All In One SEO app URL that serves `/seo.js`.
 6. Enter the domain Site ID from the All In One SEO domain install panel.
-7. Enter a long Receiver API key.
-8. Save settings.
+7. In All In One SEO, save the receiver endpoint for this WordPress domain. Leave the Receiver API key blank to let the portal generate one.
+8. Copy the generated Receiver API key from All In One SEO into this plugin.
+9. Save settings.
 
 Manual install is also supported by copying the `all-in-one-seo` folder into `wp-content/plugins/`.
 
@@ -23,7 +24,7 @@ The plugin displays a receiver endpoint in **Settings > All In One SEO**:
 /wp-json/all-in-one-seo/v1/link-fixes
 ```
 
-Copy that endpoint and the Receiver API key into the matching WordPress domain in the All In One SEO Integrations page. Approved Fix Center tasks can then be sent to WordPress and reviewed under **Received fix tasks**.
+Copy that endpoint into the matching WordPress domain in the All In One SEO Integrations page. The portal can generate the Receiver API key for you; paste the generated value back into this plugin. Approved Fix Center tasks can then be sent to WordPress and reviewed under **Received fix tasks**.
 
 Broken internal-link replacements can be applied from the WordPress settings screen when the source URL maps to an editable post and the exact broken URL exists in post content.
 
