@@ -217,6 +217,78 @@ export function generateWordPressReceiverKey() {
   return `aioseo_wp_${randomBytes(24).toString("base64url")}`;
 }
 
+export type WordPressOnboardingStepStatus =
+  | "COMPLETE"
+  | "NEEDS_ACTION"
+  | "READY"
+  | "WARNING";
+
+export function buildWordPressOnboardingSteps(input: {
+  lastTestMessage?: string;
+  lastTestStatus?: string;
+  receiverKey?: string;
+  receiverUrl?: string;
+  scriptStatus: string;
+}) {
+  const hasReceiverEndpoint = Boolean(input.receiverUrl);
+  const hasReceiverKey = Boolean(input.receiverKey);
+  const receiverTestPassed = input.lastTestStatus === "PASSED";
+  const receiverTestFailed = input.lastTestStatus === "FAILED";
+  const scriptDetected = input.scriptStatus === "DETECTED";
+  const fixesEnabled = hasReceiverEndpoint && hasReceiverKey && receiverTestPassed;
+
+  return [
+    {
+      detail: "Download the ZIP from this panel and upload it in WordPress admin.",
+      label: "Plugin package ready",
+      status: "READY" as const,
+    },
+    {
+      detail: scriptDetected
+        ? "The monitoring script has reported from this WordPress site."
+        : "Install and activate the plugin, then visit a public page.",
+      label: "Monitoring script detected",
+      status: scriptDetected ? ("COMPLETE" as const) : ("NEEDS_ACTION" as const),
+    },
+    {
+      detail: hasReceiverEndpoint
+        ? "A WordPress receiver endpoint is saved for this domain."
+        : "Paste the plugin receiver endpoint and save it here.",
+      label: "Receiver endpoint saved",
+      status: hasReceiverEndpoint
+        ? ("COMPLETE" as const)
+        : ("NEEDS_ACTION" as const),
+    },
+    {
+      detail: hasReceiverKey
+        ? "A receiver API key is available for the WordPress plugin."
+        : "Save the receiver endpoint to generate a key.",
+      label: "Receiver key generated",
+      status: hasReceiverKey ? ("COMPLETE" as const) : ("NEEDS_ACTION" as const),
+    },
+    {
+      detail: receiverTestPassed
+        ? "The WordPress site accepted a signed test event."
+        : receiverTestFailed
+          ? input.lastTestMessage || "The latest receiver test failed."
+          : "Run Test receiver after saving endpoint and key.",
+      label: "Receiver tested",
+      status: receiverTestPassed
+        ? ("COMPLETE" as const)
+        : receiverTestFailed
+          ? ("WARNING" as const)
+          : ("NEEDS_ACTION" as const),
+    },
+    {
+      detail: fixesEnabled
+        ? "Fix Center can send approved link fixes to this WordPress site."
+        : "Complete endpoint, key, and receiver test before sending fixes.",
+      label: "Fix delivery enabled",
+      status: fixesEnabled ? ("COMPLETE" as const) : ("NEEDS_ACTION" as const),
+    },
+  ];
+}
+
 function readString(value: unknown) {
   return typeof value === "string" ? value : "";
 }

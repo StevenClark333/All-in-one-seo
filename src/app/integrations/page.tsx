@@ -23,7 +23,10 @@ import { getIntegrationSettingsData } from "@/lib/management-queries";
 import { readSlackIntegrationConfig } from "@/lib/slack";
 import { readShopifyShop } from "@/lib/shopify";
 import { findMatchingWebflowSite, readWebflowSites } from "@/lib/webflow";
-import { readWordPressReceiverConfig } from "@/lib/wordpress";
+import {
+  buildWordPressOnboardingSteps,
+  readWordPressReceiverConfig,
+} from "@/lib/wordpress";
 
 export const dynamic = "force-dynamic";
 
@@ -564,6 +567,13 @@ export default async function IntegrationsPage() {
                     const receiverConfig = readWordPressReceiverConfig(
                       receiverIntegration?.configJson,
                     );
+                    const onboardingSteps = buildWordPressOnboardingSteps({
+                      lastTestMessage: receiverConfig.lastTestMessage,
+                      lastTestStatus: receiverConfig.lastTestStatus,
+                      receiverKey: receiverConfig.receiverKey,
+                      receiverUrl: receiverConfig.receiverUrl,
+                      scriptStatus: domain.scriptStatus,
+                    });
 
                     return (
                       <article key={domain.id} className="grid gap-4 p-4">
@@ -654,6 +664,42 @@ export default async function IntegrationsPage() {
                               "Run a receiver test after saving endpoint and key."
                             }
                           />
+                        </div>
+                        <div className="rounded-md border border-slate-200 bg-white p-3">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold">
+                              WordPress setup checklist
+                            </p>
+                            <InfoTooltip
+                              label="Tracks the setup signals needed before this WordPress domain can receive fixes from Fix Center."
+                              passive
+                              side="right"
+                            />
+                          </div>
+                          <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+                            {onboardingSteps.map((step) => (
+                              <div
+                                key={step.label}
+                                className="rounded-md border border-slate-200 bg-slate-50 p-3"
+                              >
+                                <div className="flex items-start justify-between gap-3">
+                                  <p className="text-sm font-semibold text-slate-800">
+                                    {step.label}
+                                  </p>
+                                  <span
+                                    className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${getOnboardingStepClass(
+                                      step.status,
+                                    )}`}
+                                  >
+                                    {formatEnum(step.status)}
+                                  </span>
+                                </div>
+                                <p className="mt-2 text-xs leading-5 text-slate-500">
+                                  {step.detail}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                         <form
                           action={connectWordPressReceiverAction}
@@ -1523,4 +1569,20 @@ function getReceiverTestClass(status: string) {
   }
 
   return "border-slate-200 bg-slate-50 text-slate-600";
+}
+
+function getOnboardingStepClass(status: string) {
+  if (status === "COMPLETE") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (status === "READY") {
+    return "border-blue-200 bg-blue-50 text-blue-700";
+  }
+
+  if (status === "WARNING") {
+    return "border-amber-200 bg-amber-50 text-amber-700";
+  }
+
+  return "border-slate-200 bg-white text-slate-600";
 }

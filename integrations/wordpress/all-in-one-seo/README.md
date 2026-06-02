@@ -29,6 +29,8 @@ Copy that endpoint into the matching WordPress domain in the All In One SEO Inte
 
 The receiver accepts signed test events from the All In One SEO portal. Test events validate the endpoint and Receiver API key without creating a fix task.
 
+The All In One SEO Integrations page also shows a setup checklist for each WordPress domain. Fix delivery is ready when the script is detected, the endpoint is saved, the key is generated, and the receiver test passes.
+
 Broken internal-link replacements can be applied from the WordPress settings screen when the source URL maps to an editable post and the exact broken URL exists in post content.
 
 Contextual internal-link opportunities can also be applied from the settings screen. The plugin finds the first matching anchor text outside existing links and HTML tags, then wraps it with the suggested internal link. If the suggested URL already exists in the post, the task is treated as applied.

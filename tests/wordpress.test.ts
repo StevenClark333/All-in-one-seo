@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  buildWordPressOnboardingSteps,
   generateWordPressReceiverKey,
   normalizeWordPressReceiverUrl,
   readWordPressReceiverConfig,
@@ -51,5 +52,47 @@ test("reads WordPress receiver test status from config", () => {
       receiverKey: "aioseo_wp_example",
       receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     },
+  );
+});
+
+test("builds WordPress onboarding checklist states", () => {
+  const completeSteps = buildWordPressOnboardingSteps({
+    lastTestStatus: "PASSED",
+    receiverKey: "aioseo_wp_example",
+    receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    scriptStatus: "DETECTED",
+  });
+
+  assert.deepEqual(
+    completeSteps.map((step) => [step.label, step.status]),
+    [
+      ["Plugin package ready", "READY"],
+      ["Monitoring script detected", "COMPLETE"],
+      ["Receiver endpoint saved", "COMPLETE"],
+      ["Receiver key generated", "COMPLETE"],
+      ["Receiver tested", "COMPLETE"],
+      ["Fix delivery enabled", "COMPLETE"],
+    ],
+  );
+
+  const pendingSteps = buildWordPressOnboardingSteps({
+    lastTestMessage: "Unauthorized",
+    lastTestStatus: "FAILED",
+    receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    scriptStatus: "NOT_INSTALLED",
+  });
+
+  assert.equal(
+    pendingSteps.find((step) => step.label === "Monitoring script detected")
+      ?.status,
+    "NEEDS_ACTION",
+  );
+  assert.equal(
+    pendingSteps.find((step) => step.label === "Receiver tested")?.status,
+    "WARNING",
+  );
+  assert.equal(
+    pendingSteps.find((step) => step.label === "Fix delivery enabled")?.status,
+    "NEEDS_ACTION",
   );
 });

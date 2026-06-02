@@ -68,6 +68,19 @@ public/downloads/all-in-one-seo-wordpress.zip
 
 The Integrations page links to this public artifact so agencies can download and install the plugin without touching the repository. The plugin is intentionally small so agencies can install it through WordPress admin upload, SFTP, or managed hosting tools.
 
+## Portal Checklist
+
+Each WordPress domain on the Integrations page shows a setup checklist:
+
+- Plugin package ready.
+- Monitoring script detected.
+- Receiver endpoint saved.
+- Receiver key generated.
+- Receiver tested.
+- Fix delivery enabled.
+
+The checklist uses portal-observable signals. For example, script detection is complete only after the plugin loads `/seo.js` on a public page, and fix delivery is enabled only after the endpoint, key, and receiver test are all complete.
+
 ## Security And Privacy
 
 - Settings are restricted to administrators with `manage_options`.
@@ -89,6 +102,7 @@ The Integrations page links to this public artifact so agencies can download and
 - Confirm the app URL serves `/seo.js`.
 - Confirm the receiver endpoint and API key are saved in the portal.
 - Run **Test receiver** and confirm it passes.
+- Confirm the WordPress setup checklist shows fix delivery enabled.
 - Send a test Fix Center payload and confirm it appears in **Received fix tasks**.
 - Apply a replacement or contextual-link task and confirm Fix Center moves it to verification pending.
 - Visit a public page and check that the domain script status changes to `DETECTED`.
