@@ -11,6 +11,7 @@ import {
   mapGoogleAnalyticsPropertyAction,
   mapGoogleSearchConsolePropertyAction,
   mapWebflowSiteAction,
+  testWordPressReceiverAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
@@ -602,10 +603,56 @@ export default async function IntegrationsPage() {
                               )
                             }
                           />
+                          <div className="grid gap-3">
+                            <Meta
+                              help="The plugin sends applied-fix callbacks to this portal after a WordPress admin applies a fix."
+                              label="Callback"
+                              value={`${appUrl}/api/integrations/wordpress/link-fix-status`}
+                            />
+                            {receiverIntegration ? (
+                              <form action={testWordPressReceiverAction}>
+                                <input
+                                  type="hidden"
+                                  name="integrationId"
+                                  value={receiverIntegration.id}
+                                />
+                                <button className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
+                                  Test receiver
+                                  <InfoTooltip
+                                    label="Send a harmless signed test event to the WordPress receiver endpoint."
+                                    passive
+                                    side="left"
+                                  />
+                                </button>
+                              </form>
+                            ) : null}
+                          </div>
                           <Meta
-                            help="The plugin sends applied-fix callbacks to this portal after a WordPress admin applies a fix."
-                            label="Callback"
-                            value={`${appUrl}/api/integrations/wordpress/link-fix-status`}
+                            help="Latest portal-side test of the WordPress receiver endpoint and API key."
+                            label="Last receiver test"
+                            value={
+                              receiverConfig.lastTestStatus ? (
+                                <span
+                                  className={`inline-flex rounded-full border px-2 py-1 text-xs font-semibold ${getReceiverTestClass(
+                                    receiverConfig.lastTestStatus,
+                                  )}`}
+                                >
+                                  {formatEnum(receiverConfig.lastTestStatus)}
+                                  {receiverConfig.lastTestStatusCode
+                                    ? ` - HTTP ${receiverConfig.lastTestStatusCode}`
+                                    : ""}
+                                </span>
+                              ) : (
+                                "Not tested"
+                              )
+                            }
+                          />
+                          <Meta
+                            label="Test detail"
+                            value={
+                              receiverConfig.lastTestMessage ||
+                              "Run a receiver test after saving endpoint and key."
+                            }
                           />
                         </div>
                         <form
@@ -1464,4 +1511,16 @@ function readConfigString(value: unknown, key: string) {
   const item = (value as Record<string, unknown>)[key];
 
   return typeof item === "string" ? item : "";
+}
+
+function getReceiverTestClass(status: string) {
+  if (status === "PASSED") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (status === "FAILED") {
+    return "border-red-200 bg-red-50 text-red-700";
+  }
+
+  return "border-slate-200 bg-slate-50 text-slate-600";
 }

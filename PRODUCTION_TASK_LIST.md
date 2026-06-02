@@ -515,6 +515,7 @@ Work should move through these batches in order. At the start of each batch, rer
 - [x] Add WordPress contextual internal-link application from Fix Center.
 - [x] Add WordPress plugin ZIP packaging and portal download.
 - [x] Add generated WordPress receiver API keys.
+- [x] Add WordPress receiver test action.
 
 ## 22. Billing And Plans
 

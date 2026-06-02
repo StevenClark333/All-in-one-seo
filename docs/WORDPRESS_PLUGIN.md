@@ -21,7 +21,8 @@ integrations/wordpress/all-in-one-seo/
 7. Set the domain Site ID from the All In One SEO domain install panel.
 8. In All In One SEO, save the WordPress receiver endpoint for this domain. Leave the Receiver API key blank to let the portal generate one.
 9. Copy the generated Receiver API key from the Integrations page into WordPress.
-10. Save settings and visit a public page.
+10. Click **Test receiver** in All In One SEO to confirm the endpoint and key are accepted.
+11. Save settings and visit a public page.
 
 Manual install is also supported by copying `integrations/wordpress/all-in-one-seo` to `wp-content/plugins/all-in-one-seo`.
 
@@ -40,6 +41,8 @@ Incoming requests must:
 - Use `POST`.
 - Send JSON with a `linkFix` object.
 - Include the API key in the `X-All-In-One-SEO-Key` header.
+
+The receiver also accepts signed test events with `eventType: wordpress.receiver.test`. These test events are not stored in the fix queue; they only prove the endpoint and API key are working.
 
 Received fixes are stored in the WordPress option `all_in_one_seo_fix_queue` and displayed under **Settings > All In One SEO > Received fix tasks**. Administrators can mark each task reviewed.
 
@@ -85,6 +88,7 @@ The Integrations page links to this public artifact so agencies can download and
 - Confirm the Site ID matches the domain ID.
 - Confirm the app URL serves `/seo.js`.
 - Confirm the receiver endpoint and API key are saved in the portal.
+- Run **Test receiver** and confirm it passes.
 - Send a test Fix Center payload and confirm it appears in **Received fix tasks**.
 - Apply a replacement or contextual-link task and confirm Fix Center moves it to verification pending.
 - Visit a public page and check that the domain script status changes to `DETECTED`.

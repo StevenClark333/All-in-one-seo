@@ -31,6 +31,8 @@ test("WordPress plugin exposes the monitoring script through WordPress APIs", ()
   assert.match(source, /all-in-one-seo\/v1/);
   assert.match(source, /X-All-In-One-SEO-Key|x-all-in-one-seo-key/);
   assert.match(source, /all_in_one_seo_receive_link_fix/);
+  assert.match(source, /wordpress\.receiver\.test/);
+  assert.match(source, /All In One SEO receiver test accepted/);
   assert.match(source, /all_in_one_seo_fix_queue/);
   assert.match(source, /all_in_one_seo_apply_link_fix/);
   assert.match(source, /all_in_one_seo_insert_contextual_link/);

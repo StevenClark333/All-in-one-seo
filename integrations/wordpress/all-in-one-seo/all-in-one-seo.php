@@ -3,7 +3,7 @@
  * Plugin Name: All In One SEO
  * Plugin URI: https://app.example.com/integrations
  * Description: Installs the All In One SEO monitoring script and receives approved fix tasks from the All In One SEO portal.
- * Version: 0.3.0
+ * Version: 0.4.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: All In One SEO
@@ -416,6 +416,17 @@ function all_in_one_seo_receive_link_fix(WP_REST_Request $request)
     }
 
     $payload = $request->get_json_params();
+
+    if (is_array($payload) && isset($payload['eventType']) && $payload['eventType'] === 'wordpress.receiver.test') {
+        return new WP_REST_Response(
+            [
+                'accepted' => true,
+                'message' => __('All In One SEO receiver test accepted.', 'all-in-one-seo'),
+                'receivedAt' => current_time('mysql'),
+            ],
+            200
+        );
+    }
 
     if (!is_array($payload) || !isset($payload['linkFix']) || !is_array($payload['linkFix'])) {
         return new WP_Error(

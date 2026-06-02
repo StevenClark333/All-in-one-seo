@@ -103,7 +103,10 @@ import {
   updateWorkspaceMemberRole,
 } from "@/lib/team";
 import { mapWebflowSite } from "@/lib/webflow";
-import { upsertWordPressReceiver } from "@/lib/wordpress";
+import {
+  testWordPressReceiver,
+  upsertWordPressReceiver,
+} from "@/lib/wordpress";
 import {
   getPrimaryWorkspace,
   getWorkspacePlanForType,
@@ -899,6 +902,15 @@ export async function connectWordPressReceiverAction(formData: FormData) {
   const receiverKey = getOptionalString(formData, "receiverKey");
 
   await upsertWordPressReceiver({ domainId, receiverKey, receiverUrl });
+
+  revalidatePath("/integrations");
+  redirect("/integrations");
+}
+
+export async function testWordPressReceiverAction(formData: FormData) {
+  const integrationId = getRequiredString(formData, "integrationId");
+
+  await testWordPressReceiver(integrationId);
 
   revalidatePath("/integrations");
   redirect("/integrations");

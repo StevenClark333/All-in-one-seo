@@ -52,6 +52,10 @@ export async function upsertWordPressReceiver({
 
   const configJson = encryptIntegrationConfig({
     connectedAt: existingConfig.connectedAt || new Date().toISOString(),
+    lastTestAt: existingConfig.lastTestAt,
+    lastTestMessage: existingConfig.lastTestMessage,
+    lastTestStatus: existingConfig.lastTestStatus,
+    lastTestStatusCode: existingConfig.lastTestStatusCode,
     receiverKey: nextReceiverKey,
     receiverUrl: normalizedReceiverUrl,
     receiverUrlHash: hashValue(normalizedReceiverUrl),
@@ -74,6 +78,87 @@ export async function upsertWordPressReceiver({
       workspaceId: workspace.id,
     },
   });
+}
+
+export async function testWordPressReceiver(integrationId: string) {
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    throw new Error("Create a workspace before testing WordPress.");
+  }
+
+  const integration = await getPrisma().integration.findFirst({
+    where: {
+      id: integrationId,
+      provider: "WORDPRESS_RECEIVER",
+      workspaceId: workspace.id,
+    },
+    include: { domain: true },
+  });
+
+  if (!integration) {
+    throw new Error("WordPress receiver was not found.");
+  }
+
+  const config = readWordPressReceiverConfig(integration.configJson);
+
+  if (!config.receiverUrl || !config.receiverKey) {
+    throw new Error("Save the receiver endpoint and key before testing.");
+  }
+
+  const testedAt = new Date();
+  let status = "FAILED";
+  let statusCode = 0;
+  let message = "Receiver test failed before the request completed.";
+
+  try {
+    const response = await fetch(config.receiverUrl, {
+      body: JSON.stringify({
+        domain: integration.domain?.domain ?? "",
+        eventType: "wordpress.receiver.test",
+        sentAt: testedAt.toISOString(),
+        source: "all-in-one-seo",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "X-All-In-One-SEO-Key": config.receiverKey,
+      },
+      method: "POST",
+    });
+
+    statusCode = response.status;
+    status = response.ok ? "PASSED" : "FAILED";
+    message = response.ok
+      ? "WordPress receiver accepted the test payload."
+      : `WordPress receiver returned HTTP ${response.status}.`;
+  } catch (error) {
+    message =
+      error instanceof Error
+        ? `Receiver test failed: ${error.message}`
+        : "Receiver test failed with an unknown error.";
+  }
+
+  const configJson = encryptIntegrationConfig({
+    connectedAt: config.connectedAt,
+    lastTestAt: testedAt.toISOString(),
+    lastTestMessage: message,
+    lastTestStatus: status,
+    lastTestStatusCode: statusCode,
+    receiverKey: config.receiverKey,
+    receiverUrl: config.receiverUrl,
+    receiverUrlHash: hashValue(config.receiverUrl),
+    updatedAt: new Date().toISOString(),
+  } satisfies Prisma.InputJsonObject);
+
+  await getPrisma().integration.update({
+    where: { id: integration.id },
+    data: {
+      configJson,
+      status: status === "PASSED" ? "CONNECTED" : "ERROR",
+    },
+  });
+
+  return { message, status, statusCode };
 }
 
 export async function normalizeWordPressReceiverUrl(receiverUrl: string) {
@@ -104,13 +189,25 @@ export function readWordPressReceiverConfig(value: unknown) {
     typeof decryptedValue !== "object" ||
     Array.isArray(decryptedValue)
   ) {
-    return { connectedAt: "", receiverKey: "", receiverUrl: "" };
+    return {
+      connectedAt: "",
+      lastTestAt: "",
+      lastTestMessage: "",
+      lastTestStatus: "",
+      lastTestStatusCode: 0,
+      receiverKey: "",
+      receiverUrl: "",
+    };
   }
 
   const config = decryptedValue as Record<string, unknown>;
 
   return {
     connectedAt: readString(config.connectedAt),
+    lastTestAt: readString(config.lastTestAt),
+    lastTestMessage: readString(config.lastTestMessage),
+    lastTestStatus: readString(config.lastTestStatus),
+    lastTestStatusCode: readNumber(config.lastTestStatusCode),
     receiverKey: readString(config.receiverKey),
     receiverUrl: readString(config.receiverUrl),
   };
@@ -122,6 +219,10 @@ export function generateWordPressReceiverKey() {
 
 function readString(value: unknown) {
   return typeof value === "string" ? value : "";
+}
+
+function readNumber(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }
 
 function hashValue(value: string) {
