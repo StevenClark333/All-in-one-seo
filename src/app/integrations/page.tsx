@@ -1,4 +1,4 @@
-import { PlugZap } from "lucide-react";
+import { Download, PlugZap } from "lucide-react";
 import {
   connectAutomationIntegrationAction,
   connectNetlifyIntegrationAction,
@@ -45,6 +45,8 @@ export default async function IntegrationsPage() {
   const { workspace, clients, domains, integrations, deploymentChecks } =
     await getIntegrationSettingsData();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const wordpressPluginDownloadPath = "/downloads/all-in-one-seo-wordpress.zip";
+  const wordpressPluginDownloadUrl = `${appUrl}${wordpressPluginDownloadPath}`;
   const searchConsoleIntegration = integrations.find(
     (integration) => integration.provider === "GOOGLE_SEARCH_CONSOLE",
   );
@@ -503,12 +505,52 @@ export default async function IntegrationsPage() {
 
             <div className="grid gap-5 p-5">
               <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
-                <Meta label="Plugin package" value="integrations/wordpress" />
+                <Meta
+                  help="Installable WordPress plugin ZIP served from this portal."
+                  label="Plugin package"
+                  value={
+                    <a
+                      className="inline-flex items-center gap-2 text-slate-950 underline decoration-slate-300 underline-offset-4 hover:decoration-slate-950"
+                      href={wordpressPluginDownloadPath}
+                    >
+                      all-in-one-seo-wordpress.zip
+                    </a>
+                  }
+                />
                 <Meta label="App URL" value={appUrl} />
                 <Meta
                   label="Eligible domains"
                   value={wordpressDomains.length}
                 />
+              </div>
+
+              <div className="grid gap-4 rounded-md border border-slate-200 p-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                <div>
+                  <p className="font-semibold">
+                    Download the WordPress plugin
+                  </p>
+                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                    Upload this ZIP in WordPress admin under Plugins &gt; Add
+                    Plugin &gt; Upload Plugin, then save the App URL, Site ID,
+                    and Receiver API key below.
+                  </p>
+                  <p className="mt-2 break-all rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-600">
+                    {wordpressPluginDownloadUrl}
+                  </p>
+                </div>
+                <a
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800"
+                  download
+                  href={wordpressPluginDownloadPath}
+                >
+                  <Download className="size-4" aria-hidden="true" />
+                  Download plugin
+                  <InfoTooltip
+                    label="Download the installable WordPress ZIP for client sites."
+                    passive
+                    side="left"
+                  />
+                </a>
               </div>
 
               {wordpressDomains.length ? (
@@ -600,11 +642,11 @@ export default async function IntegrationsPage() {
               )}
 
               <div className="rounded-md border border-slate-200 p-4 text-sm leading-6 text-slate-600">
-                Copy the <span className="font-medium">all-in-one-seo</span>{" "}
-                plugin folder to{" "}
-                <span className="font-medium">wp-content/plugins</span>,
-                activate it, then save the App URL and Site ID from this panel.
-                Full install notes live in{" "}
+                Upload the plugin ZIP through WordPress admin or copy the{" "}
+                <span className="font-medium">all-in-one-seo</span> folder to{" "}
+                <span className="font-medium">wp-content/plugins</span>. After
+                activation, save the App URL and Site ID from this panel. Full
+                install notes live in{" "}
                 <span className="font-medium">docs/WORDPRESS_PLUGIN.md</span>.
               </div>
             </div>

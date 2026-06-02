@@ -13,6 +13,7 @@
     "secret:generate": "tsx scripts/generate-secret.ts",
     "smoke:test": "tsx scripts/smoke-test.ts",
     "perf:load": "tsx scripts/load-test.ts",
+    "plugin:wordpress:package": "tsx scripts/package-wordpress-plugin.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "node --import tsx --test tests/**/*.test.ts",

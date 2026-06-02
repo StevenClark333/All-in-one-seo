@@ -3,12 +3,19 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 
+const packagePath = path.join(process.cwd(), "package.json");
 const pluginPath = path.join(
   process.cwd(),
   "integrations",
   "wordpress",
   "all-in-one-seo",
   "all-in-one-seo.php",
+);
+const pluginZipPath = path.join(
+  process.cwd(),
+  "public",
+  "downloads",
+  "all-in-one-seo-wordpress.zip",
 );
 
 test("WordPress plugin exposes the monitoring script through WordPress APIs", () => {
@@ -35,4 +42,20 @@ test("WordPress plugin exposes the monitoring script through WordPress APIs", ()
   assert.match(source, /wp_remote_post/);
   assert.match(source, /current_user_can\('manage_options'\)/);
   assert.match(source, /current_user_can\('edit_posts'\)/);
+});
+
+test("WordPress plugin package is downloadable from the portal", () => {
+  const packageJson = JSON.parse(readFileSync(packagePath, "utf8")) as {
+    scripts: Record<string, string>;
+  };
+  const zip = readFileSync(pluginZipPath);
+  const zipText = zip.toString("latin1");
+
+  assert.equal(
+    packageJson.scripts["plugin:wordpress:package"],
+    "tsx scripts/package-wordpress-plugin.ts",
+  );
+  assert.equal(zip.subarray(0, 2).toString("utf8"), "PK");
+  assert.match(zipText, /all-in-one-seo\/all-in-one-seo\.php/);
+  assert.match(zipText, /all-in-one-seo\/README\.md/);
 });

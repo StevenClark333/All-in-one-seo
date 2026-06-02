@@ -4,13 +4,16 @@ This plugin installs the All In One SEO browser monitoring script on public Word
 
 ## Install
 
-1. Copy the `all-in-one-seo` folder into `wp-content/plugins/`.
-2. Activate **All In One SEO** in WordPress admin.
-3. Open **Settings > All In One SEO**.
-4. Enter the All In One SEO app URL that serves `/seo.js`.
-5. Enter the domain Site ID from the All In One SEO domain install panel.
-6. Enter a long Receiver API key.
-7. Save settings.
+1. Download `all-in-one-seo-wordpress.zip` from **Integrations > WordPress plugin** in All In One SEO.
+2. In WordPress admin, open **Plugins > Add Plugin > Upload Plugin**.
+3. Upload the ZIP and activate **All In One SEO**.
+4. Open **Settings > All In One SEO**.
+5. Enter the All In One SEO app URL that serves `/seo.js`.
+6. Enter the domain Site ID from the All In One SEO domain install panel.
+7. Enter a long Receiver API key.
+8. Save settings.
+
+Manual install is also supported by copying the `all-in-one-seo` folder into `wp-content/plugins/`.
 
 ## Fix Receiver
 

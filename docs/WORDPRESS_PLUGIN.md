@@ -12,13 +12,17 @@ integrations/wordpress/all-in-one-seo/
 
 ## Installation
 
-1. Copy `integrations/wordpress/all-in-one-seo` to `wp-content/plugins/all-in-one-seo`.
-2. Activate **All In One SEO** in WordPress admin.
-3. Open **Settings > All In One SEO**.
-4. Set the All In One SEO app URL, for example `https://app.example.com`.
-5. Set the domain Site ID from the All In One SEO domain install panel.
-6. Add a long Receiver API key.
-7. Save settings and visit a public page.
+1. Open **Integrations > WordPress plugin** in All In One SEO.
+2. Download `all-in-one-seo-wordpress.zip`.
+3. In WordPress admin, open **Plugins > Add Plugin > Upload Plugin**.
+4. Upload the ZIP and activate **All In One SEO**.
+5. Open **Settings > All In One SEO**.
+6. Set the All In One SEO app URL, for example `https://app.example.com`.
+7. Set the domain Site ID from the All In One SEO domain install panel.
+8. Add a long Receiver API key.
+9. Save settings and visit a public page.
+
+Manual install is also supported by copying `integrations/wordpress/all-in-one-seo` to `wp-content/plugins/all-in-one-seo`.
 
 ## Fix Receiver
 
@@ -46,7 +50,19 @@ After a successful apply, the plugin posts status back to All In One SEO with th
 
 ## Production Packaging
 
-Before distribution, package the folder as `all-in-one-seo.zip` and publish it through the customer dashboard or agency onboarding flow. The plugin is intentionally small so agencies can install it manually, via SFTP, or through WordPress admin upload.
+Build the installable ZIP with:
+
+```txt
+npm run plugin:wordpress:package
+```
+
+The command writes:
+
+```txt
+public/downloads/all-in-one-seo-wordpress.zip
+```
+
+The Integrations page links to this public artifact so agencies can download and install the plugin without touching the repository. The plugin is intentionally small so agencies can install it through WordPress admin upload, SFTP, or managed hosting tools.
 
 ## Security And Privacy
 
@@ -64,6 +80,7 @@ Before distribution, package the folder as `all-in-one-seo.zip` and publish it t
 ## Operational Checklist
 
 - Confirm the domain is verified in All In One SEO.
+- Download the plugin ZIP from **Integrations > WordPress plugin**.
 - Confirm the Site ID matches the domain ID.
 - Confirm the app URL serves `/seo.js`.
 - Confirm the receiver endpoint and API key are saved in the portal.
