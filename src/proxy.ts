@@ -8,6 +8,7 @@ const publicPrefixes = [
   "/signup",
   "/share",
   "/seo.js",
+  "/downloads",
   "/_next",
   "/favicon.ico",
 ];
@@ -28,7 +29,7 @@ export function proxy(request: NextRequest) {
     );
   }
 
-  if (publicPrefixes.some((prefix) => pathname.startsWith(prefix))) {
+  if (isPublicPortalPath(pathname)) {
     return NextResponse.next();
   }
 
@@ -44,3 +45,7 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: ["/((?!api).*)"],
 };
+
+export function isPublicPortalPath(pathname: string) {
+  return publicPrefixes.some((prefix) => pathname.startsWith(prefix));
+}

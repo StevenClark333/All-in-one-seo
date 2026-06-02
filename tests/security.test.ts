@@ -6,6 +6,7 @@ import {
   isMutatingMethod,
   isTrustedRequestOrigin,
 } from "@/lib/security";
+import { isPublicPortalPath } from "@/proxy";
 
 test("workspace isolation filters cannot be overridden by caller input", () => {
   assert.deepEqual(
@@ -55,4 +56,13 @@ test("classifies unsafe HTTP methods as mutating", () => {
   assert.equal(isMutatingMethod("POST"), true);
   assert.equal(isMutatingMethod("PATCH"), true);
   assert.equal(isMutatingMethod("GET"), false);
+});
+
+test("allows public portal assets without an app session", () => {
+  assert.equal(
+    isPublicPortalPath("/downloads/all-in-one-seo-wordpress.zip"),
+    true,
+  );
+  assert.equal(isPublicPortalPath("/seo.js"), true);
+  assert.equal(isPublicPortalPath("/integrations"), false);
 });
