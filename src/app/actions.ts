@@ -1039,8 +1039,13 @@ export async function updateLinkFixAction(formData: FormData) {
 export async function sendLinkFixToAutomationAction(formData: FormData) {
   const fixId = getRequiredString(formData, "fixId");
   const integrationId = getRequiredString(formData, "integrationId");
+  const origin = await getRequestOrigin();
 
-  await sendLinkFixToAutomation({ fixId, integrationId });
+  await sendLinkFixToAutomation({
+    callbackOrigin: origin,
+    fixId,
+    integrationId,
+  });
 
   revalidatePath("/fix-center");
   redirect("/fix-center");

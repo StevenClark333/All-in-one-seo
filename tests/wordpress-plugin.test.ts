@@ -26,8 +26,10 @@ test("WordPress plugin exposes the monitoring script through WordPress APIs", ()
   assert.match(source, /all_in_one_seo_receive_link_fix/);
   assert.match(source, /all_in_one_seo_fix_queue/);
   assert.match(source, /all_in_one_seo_apply_link_fix/);
+  assert.match(source, /all_in_one_seo_report_link_fix_status/);
   assert.match(source, /url_to_postid/);
   assert.match(source, /wp_update_post/);
+  assert.match(source, /wp_remote_post/);
   assert.match(source, /current_user_can\('manage_options'\)/);
   assert.match(source, /current_user_can\('edit_posts'\)/);
 });

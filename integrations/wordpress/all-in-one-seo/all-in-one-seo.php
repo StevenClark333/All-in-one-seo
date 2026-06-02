@@ -436,6 +436,7 @@ function all_in_one_seo_sanitize_link_fix_payload(array $payload): array
         'source_url' => isset($link_fix['sourceUrl']) ? esc_url_raw((string) $link_fix['sourceUrl']) : '',
         'broken_url' => isset($link_fix['brokenUrl']) ? esc_url_raw((string) $link_fix['brokenUrl']) : '',
         'suggested_url' => isset($link_fix['suggestedUrl']) ? esc_url_raw((string) $link_fix['suggestedUrl']) : '',
+        'callback_url' => isset($link_fix['callbackUrl']) ? esc_url_raw((string) $link_fix['callbackUrl']) : '',
         'anchor_text' => isset($link_fix['anchorText']) ? sanitize_text_field((string) $link_fix['anchorText']) : '',
         'manual_instructions' => isset($link_fix['manualInstructions']) ? sanitize_textarea_field((string) $link_fix['manualInstructions']) : '',
         'received_at' => current_time('mysql'),
@@ -525,6 +526,7 @@ function all_in_one_seo_apply_link_fix(): void
             $fix['status'] = 'APPLIED';
             $fix['applied_at'] = current_time('mysql');
             $fix['post_id'] = (string) $result['post_id'];
+            all_in_one_seo_report_link_fix_status($fix);
         }
 
         break;
@@ -542,6 +544,38 @@ function all_in_one_seo_apply_link_fix(): void
     exit;
 }
 add_action('admin_post_all_in_one_seo_apply_link_fix', 'all_in_one_seo_apply_link_fix');
+
+function all_in_one_seo_report_link_fix_status(array $fix): void
+{
+    if (empty($fix['callback_url'])) {
+        return;
+    }
+
+    $settings = all_in_one_seo_get_settings();
+    $receiver_key = (string) $settings['receiver_key'];
+
+    if ($receiver_key === '') {
+        return;
+    }
+
+    wp_remote_post(
+        esc_url_raw((string) $fix['callback_url']),
+        [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-All-In-One-SEO-Key' => $receiver_key,
+            ],
+            'timeout' => 5,
+            'body' => wp_json_encode(
+                [
+                    'fixId' => $fix['id'],
+                    'postId' => $fix['post_id'] ?? '',
+                    'status' => $fix['status'],
+                ]
+            ),
+        ]
+    );
+}
 
 function all_in_one_seo_apply_link_fix_to_post(array $fix): array
 {

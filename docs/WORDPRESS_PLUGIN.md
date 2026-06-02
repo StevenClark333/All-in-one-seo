@@ -40,6 +40,8 @@ Received fixes are stored in the WordPress option `all_in_one_seo_fix_queue` and
 
 For broken internal-link replacements, administrators can click **Apply replacement**. The plugin resolves the source URL to a WordPress post with `url_to_postid`, checks edit permissions, and replaces the exact broken URL in `post_content` with the suggested URL. Contextual “add a new link” tasks remain manual review tasks for now.
 
+After a successful apply, the plugin posts status back to All In One SEO with the same `X-All-In-One-SEO-Key`. The portal marks the fix `APPLIED` and queues a system crawl so the next crawl can confirm the broken-link issue is gone.
+
 ## Production Packaging
 
 Before distribution, package the folder as `all-in-one-seo.zip` and publish it through the customer dashboard or agency onboarding flow. The plugin is intentionally small so agencies can install it manually, via SFTP, or through WordPress admin upload.

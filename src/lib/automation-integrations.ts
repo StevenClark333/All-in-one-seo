@@ -143,6 +143,7 @@ export function buildAutomationWebhookPayload({
 export function buildLinkFixAutomationPayload({
   anchorText,
   brokenUrl,
+  callbackUrl,
   domain,
   fixId,
   manualInstructions,
@@ -153,6 +154,7 @@ export function buildLinkFixAutomationPayload({
 }: {
   anchorText?: string | null;
   brokenUrl?: string | null;
+  callbackUrl?: string;
   domain: string;
   fixId: string;
   manualInstructions: string;
@@ -172,6 +174,7 @@ export function buildLinkFixAutomationPayload({
     linkFix: {
       anchorText: anchorText ?? "",
       brokenUrl: brokenUrl ?? "",
+      callbackUrl: callbackUrl ?? "",
       domain,
       manualInstructions,
       sourceUrl,

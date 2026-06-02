@@ -24,6 +24,8 @@ Copy that endpoint and the Receiver API key into the matching WordPress domain i
 
 Broken internal-link replacements can be applied from the WordPress settings screen when the source URL maps to an editable post and the exact broken URL exists in post content. Contextual “add a new link” tasks stay in the review queue for manual placement.
 
+When a replacement is applied, WordPress reports the status back to All In One SEO so the portal can mark the fix applied and queue a verification crawl.
+
 ## Behavior
 
 - Uses the WordPress Settings API for configuration.

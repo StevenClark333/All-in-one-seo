@@ -5,6 +5,7 @@ import {
   readAutomationIntegrationConfig,
   type AutomationProvider,
 } from "@/lib/automation-integrations";
+import { enqueueCrawlRunJob } from "@/lib/crawler-scheduling";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { readWordPressReceiverConfig } from "@/lib/wordpress";
 import { getPrimaryWorkspace } from "@/lib/workspace";
@@ -256,6 +257,7 @@ export async function updateLinkFixSuggestion(input: {
 }
 
 export async function sendLinkFixToAutomation(input: {
+  callbackOrigin?: string;
   fixId: string;
   integrationId: string;
 }) {
@@ -313,6 +315,10 @@ export async function sendLinkFixToAutomation(input: {
   const payload = buildLinkFixAutomationPayload({
     anchorText: fix.anchorText,
     brokenUrl: fix.brokenUrl,
+    callbackUrl:
+      integration.provider === "WORDPRESS_RECEIVER"
+        ? buildWordPressStatusCallbackUrl(input.callbackOrigin)
+        : undefined,
     domain: fix.domain.domain,
     fixId: fix.id,
     manualInstructions: fix.manualInstructions,
@@ -343,6 +349,85 @@ export async function sendLinkFixToAutomation(input: {
   });
 }
 
+export async function confirmWordPressLinkFixStatus(input: {
+  fixId: string;
+  postId?: string;
+  receiverKey: string;
+  status: string;
+}) {
+  const fix = await getPrisma().linkFixSuggestion.findUnique({
+    where: { id: input.fixId },
+    include: {
+      domain: {
+        include: {
+          integrations: {
+            where: { provider: "WORDPRESS_RECEIVER", status: "CONNECTED" },
+          },
+        },
+      },
+    },
+  });
+
+  if (!fix) {
+    throw new Error("Fix suggestion not found.");
+  }
+
+  const receiver = fix.domain.integrations.find(
+    (integration) => integration.domainId === fix.domainId,
+  );
+  const receiverConfig = readWordPressReceiverConfig(receiver?.configJson);
+
+  if (
+    !receiver ||
+    !receiverConfig.receiverKey ||
+    receiverConfig.receiverKey !== input.receiverKey
+  ) {
+    throw new Error("WordPress callback was not authorized.");
+  }
+
+  const normalizedStatus = input.status.toUpperCase();
+
+  if (normalizedStatus !== "APPLIED") {
+    return { crawlRunId: null, updated: false };
+  }
+
+  await getPrisma().linkFixSuggestion.update({
+    where: { id: fix.id },
+    data: {
+      appliedAt: new Date(),
+      status: "APPLIED",
+    },
+  });
+
+  const existingPendingRun = await getPrisma().crawlRun.findFirst({
+    where: {
+      domainId: fix.domainId,
+      status: { in: ["QUEUED", "RUNNING"] },
+    },
+    select: { id: true },
+  });
+
+  if (existingPendingRun) {
+    return { crawlRunId: existingPendingRun.id, updated: true };
+  }
+
+  const crawlRun = await getPrisma().crawlRun.create({
+    data: {
+      domainId: fix.domainId,
+      status: "QUEUED",
+      trigger: "SYSTEM",
+    },
+    select: { id: true },
+  });
+
+  await enqueueCrawlRunJob({
+    crawlRunId: crawlRun.id,
+    workspaceId: fix.workspaceId,
+  });
+
+  return { crawlRunId: crawlRun.id, updated: true };
+}
+
 function buildDeliveryHeaders({
   provider,
   receiverKey,
@@ -359,6 +444,19 @@ function buildDeliveryHeaders({
   }
 
   return headers;
+}
+
+function buildWordPressStatusCallbackUrl(origin?: string) {
+  const appOrigin =
+    origin ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`);
+
+  if (!appOrigin) {
+    return "";
+  }
+
+  return `${appOrigin.replace(/\/$/, "")}/api/integrations/wordpress/link-fix-status`;
 }
 
 function buildSuggestionForIssue(input: {

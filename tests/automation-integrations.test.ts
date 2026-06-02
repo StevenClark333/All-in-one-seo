@@ -86,6 +86,7 @@ test("builds link fix automation payloads", () => {
       linkFix: {
         anchorText: "Services",
         brokenUrl: "https://example.com/old-services",
+        callbackUrl: "",
         domain: "example.com",
         manualInstructions:
           "Replace the old link with the current services page.",
