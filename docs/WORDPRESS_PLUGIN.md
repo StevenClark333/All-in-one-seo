@@ -38,9 +38,11 @@ Incoming requests must:
 
 Received fixes are stored in the WordPress option `all_in_one_seo_fix_queue` and displayed under **Settings > All In One SEO > Received fix tasks**. Administrators can mark each task reviewed.
 
-For broken internal-link replacements, administrators can click **Apply replacement**. The plugin resolves the source URL to a WordPress post with `url_to_postid`, checks edit permissions, and replaces the exact broken URL in `post_content` with the suggested URL. Contextual “add a new link” tasks remain manual review tasks for now.
+For broken internal-link replacements, administrators can click **Apply replacement**. The plugin resolves the source URL to a WordPress post with `url_to_postid`, checks edit permissions, and replaces the exact broken URL in `post_content` with the suggested URL.
 
-After a successful apply, the plugin posts status back to All In One SEO with the same `X-All-In-One-SEO-Key`. The portal marks the fix `APPLIED` and queues a system crawl so the next crawl can confirm the broken-link issue is gone.
+For contextual internal-link opportunities, administrators can click **Add internal link**. The plugin resolves the source URL to an editable post, finds the first matching anchor-text occurrence outside existing links and HTML tags, and wraps it with the suggested internal link. If the suggested URL is already present, the task is treated as applied so the portal can verify it on the next crawl.
+
+After a successful apply, the plugin posts status back to All In One SEO with the same `X-All-In-One-SEO-Key`. The portal marks the fix `APPLIED` and queues a system crawl so the next crawl can confirm the broken-link issue is gone or the suggested internal link is present.
 
 ## Production Packaging
 
@@ -53,7 +55,8 @@ Before distribution, package the folder as `all-in-one-seo.zip` and publish it t
 - Fix receiver requests require the configured `X-All-In-One-SEO-Key` header.
 - Received fix task fields are sanitized before storage and escaped before admin output.
 - Applying a fix requires `edit_posts`, then `edit_post` permission for the matched source post.
-- Automatic application only performs exact URL replacement in `post_content`.
+- Automatic replacement only performs exact URL replacement in `post_content`.
+- Automatic contextual insertion only links the first matching anchor text outside existing links and HTML tags.
 - The script is not loaded in WordPress admin.
 - The browser script only sends the allowlisted SEO fields documented in `docs/WEBSITE_SCRIPT.md`.
 - No cookies, form values, local storage, payment fields, or full DOM HTML are collected.
@@ -65,4 +68,5 @@ Before distribution, package the folder as `all-in-one-seo.zip` and publish it t
 - Confirm the app URL serves `/seo.js`.
 - Confirm the receiver endpoint and API key are saved in the portal.
 - Send a test Fix Center payload and confirm it appears in **Received fix tasks**.
+- Apply a replacement or contextual-link task and confirm Fix Center moves it to verification pending.
 - Visit a public page and check that the domain script status changes to `DETECTED`.

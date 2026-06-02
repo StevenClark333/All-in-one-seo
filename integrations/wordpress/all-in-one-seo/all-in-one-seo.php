@@ -3,7 +3,7 @@
  * Plugin Name: All In One SEO
  * Plugin URI: https://app.example.com/integrations
  * Description: Installs the All In One SEO monitoring script and receives approved fix tasks from the All In One SEO portal.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: All In One SEO
@@ -237,6 +237,8 @@ function all_in_one_seo_render_admin_notice(): void
     $messages = [
         'applied' => __('Link replacement applied to the matching WordPress post.', 'all-in-one-seo'),
         'cannot_edit_post' => __('The matching post exists, but your account cannot edit it.', 'all-in-one-seo'),
+        'anchor_not_found' => __('The matching post was found, but the suggested anchor text was not present in editable content.', 'all-in-one-seo'),
+        'link_already_present' => __('The suggested link already exists on the matching WordPress post.', 'all-in-one-seo'),
         'link_not_found' => __('The matching post was found, but the exact broken URL was not present in post content.', 'all-in-one-seo'),
         'missing' => __('Fix task was not found in the queue.', 'all-in-one-seo'),
         'source_not_found' => __('No WordPress post matched the source URL.', 'all-in-one-seo'),
@@ -249,7 +251,8 @@ function all_in_one_seo_render_admin_notice(): void
         return;
     }
 
-    $class = $notice === 'applied' ? 'notice notice-success' : 'notice notice-warning';
+    $success_notices = ['applied', 'link_already_present'];
+    $class = in_array($notice, $success_notices, true) ? 'notice notice-success' : 'notice notice-warning';
     ?>
     <div class="<?php echo esc_attr($class); ?>">
         <p><?php echo esc_html($message); ?></p>
@@ -295,7 +298,7 @@ function all_in_one_seo_render_fix_queue(): void
                                 <?php wp_nonce_field('all_in_one_seo_apply_link_fix'); ?>
                                 <input type="hidden" name="action" value="all_in_one_seo_apply_link_fix" />
                                 <input type="hidden" name="fix_id" value="<?php echo esc_attr($fix['id']); ?>" />
-                                <?php submit_button(__('Apply replacement', 'all-in-one-seo'), 'primary small', 'submit', false); ?>
+                                <?php submit_button(all_in_one_seo_get_apply_button_label($fix), 'primary small', 'submit', false); ?>
                             </form>
                         <?php endif; ?>
                         <?php if ($fix['status'] !== 'REVIEWED' && $fix['status'] !== 'APPLIED') : ?>
@@ -319,9 +322,18 @@ function all_in_one_seo_render_fix_queue(): void
 function all_in_one_seo_fix_can_be_applied(array $fix): bool
 {
     return !empty($fix['source_url'])
-        && !empty($fix['broken_url'])
         && !empty($fix['suggested_url'])
+        && (!empty($fix['broken_url']) || !empty($fix['anchor_text']))
         && $fix['status'] !== 'APPLIED';
+}
+
+function all_in_one_seo_get_apply_button_label(array $fix): string
+{
+    if (!empty($fix['broken_url'])) {
+        return __('Apply replacement', 'all-in-one-seo');
+    }
+
+    return __('Add internal link', 'all-in-one-seo');
 }
 
 function all_in_one_seo_format_fix_status(string $status): string
@@ -603,15 +615,49 @@ function all_in_one_seo_apply_link_fix_to_post(array $fix): array
     $broken_url = (string) $fix['broken_url'];
     $suggested_url = (string) $fix['suggested_url'];
 
-    if ($broken_url === '' || $suggested_url === '' || strpos($content, $broken_url) === false) {
+    if ($suggested_url === '') {
         return [
             'applied' => false,
-            'notice' => 'link_not_found',
+            'notice' => 'unchanged',
             'post_id' => $post_id,
         ];
     }
 
-    $updated_content = str_replace($broken_url, $suggested_url, $content);
+    if ($broken_url !== '') {
+        if (strpos($content, $broken_url) === false) {
+            return [
+                'applied' => false,
+                'notice' => 'link_not_found',
+                'post_id' => $post_id,
+            ];
+        }
+
+        $updated_content = str_replace($broken_url, $suggested_url, $content);
+    } else {
+        $insertion = all_in_one_seo_insert_contextual_link(
+            $content,
+            $suggested_url,
+            (string) $fix['anchor_text']
+        );
+
+        if ($insertion['already_present']) {
+            return [
+                'applied' => true,
+                'notice' => 'link_already_present',
+                'post_id' => $post_id,
+            ];
+        }
+
+        if (!$insertion['inserted']) {
+            return [
+                'applied' => false,
+                'notice' => 'anchor_not_found',
+                'post_id' => $post_id,
+            ];
+        }
+
+        $updated_content = $insertion['content'];
+    }
 
     if ($updated_content === $content) {
         return [
@@ -642,6 +688,98 @@ function all_in_one_seo_apply_link_fix_to_post(array $fix): array
         'notice' => 'applied',
         'post_id' => $post_id,
     ];
+}
+
+function all_in_one_seo_insert_contextual_link(string $content, string $suggested_url, string $anchor_text): array
+{
+    if ($suggested_url !== '' && strpos($content, $suggested_url) !== false) {
+        return [
+            'already_present' => true,
+            'content' => $content,
+            'inserted' => false,
+        ];
+    }
+
+    $anchor_text = trim($anchor_text);
+
+    if ($anchor_text === '') {
+        return [
+            'already_present' => false,
+            'content' => $content,
+            'inserted' => false,
+        ];
+    }
+
+    $segments = preg_split('/(<a\b[^>]*>.*?<\/a>)/is', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+    if (!is_array($segments)) {
+        return [
+            'already_present' => false,
+            'content' => $content,
+            'inserted' => false,
+        ];
+    }
+
+    foreach ($segments as $segment_index => $segment) {
+        if (preg_match('/^<a\b[^>]*>.*?<\/a>$/is', $segment)) {
+            continue;
+        }
+
+        $text_segments = preg_split('/(<[^>]+>)/', $segment, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+        if (!is_array($text_segments)) {
+            continue;
+        }
+
+        foreach ($text_segments as $text_index => $text_segment) {
+            if ($text_segment === '' || preg_match('/^<[^>]+>$/', $text_segment)) {
+                continue;
+            }
+
+            $linked_text = all_in_one_seo_link_first_anchor_text(
+                $text_segment,
+                $suggested_url,
+                $anchor_text
+            );
+
+            if ($linked_text === $text_segment) {
+                continue;
+            }
+
+            $text_segments[$text_index] = $linked_text;
+            $segments[$segment_index] = implode('', $text_segments);
+
+            return [
+                'already_present' => false,
+                'content' => implode('', $segments),
+                'inserted' => true,
+            ];
+        }
+    }
+
+    return [
+        'already_present' => false,
+        'content' => $content,
+        'inserted' => false,
+    ];
+}
+
+function all_in_one_seo_link_first_anchor_text(string $text, string $suggested_url, string $anchor_text): string
+{
+    $position = stripos($text, $anchor_text);
+
+    if ($position === false) {
+        return $text;
+    }
+
+    $matched_text = substr($text, $position, strlen($anchor_text));
+    $link = sprintf(
+        '<a href="%s">%s</a>',
+        esc_url($suggested_url),
+        esc_html($matched_text)
+    );
+
+    return substr($text, 0, $position) . $link . substr($text, $position + strlen($anchor_text));
 }
 
 function all_in_one_seo_settings_link(array $links): array
