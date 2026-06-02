@@ -36,7 +36,9 @@ Incoming requests must:
 - Send JSON with a `linkFix` object.
 - Include the API key in the `X-All-In-One-SEO-Key` header.
 
-Received fixes are stored in the WordPress option `all_in_one_seo_fix_queue` and displayed under **Settings > All In One SEO > Received fix tasks**. Administrators can mark each task reviewed. The plugin does not automatically edit posts or pages yet.
+Received fixes are stored in the WordPress option `all_in_one_seo_fix_queue` and displayed under **Settings > All In One SEO > Received fix tasks**. Administrators can mark each task reviewed.
+
+For broken internal-link replacements, administrators can click **Apply replacement**. The plugin resolves the source URL to a WordPress post with `url_to_postid`, checks edit permissions, and replaces the exact broken URL in `post_content` with the suggested URL. Contextual “add a new link” tasks remain manual review tasks for now.
 
 ## Production Packaging
 
@@ -48,6 +50,8 @@ Before distribution, package the folder as `all-in-one-seo.zip` and publish it t
 - Settings values are sanitized before storage and escaped before output.
 - Fix receiver requests require the configured `X-All-In-One-SEO-Key` header.
 - Received fix task fields are sanitized before storage and escaped before admin output.
+- Applying a fix requires `edit_posts`, then `edit_post` permission for the matched source post.
+- Automatic application only performs exact URL replacement in `post_content`.
 - The script is not loaded in WordPress admin.
 - The browser script only sends the allowlisted SEO fields documented in `docs/WEBSITE_SCRIPT.md`.
 - No cookies, form values, local storage, payment fields, or full DOM HTML are collected.

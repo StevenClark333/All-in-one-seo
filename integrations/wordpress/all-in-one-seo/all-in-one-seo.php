@@ -213,6 +213,7 @@ function all_in_one_seo_render_settings_page(): void
         <p>
             <?php esc_html_e('Connect this WordPress site to continuous SEO monitoring, rendered SEO checks, SPA route observations, and Core Web Vitals collection.', 'all-in-one-seo'); ?>
         </p>
+        <?php all_in_one_seo_render_admin_notice(); ?>
         <form action="options.php" method="post">
             <?php
             settings_fields('all_in_one_seo_settings');
@@ -221,6 +222,37 @@ function all_in_one_seo_render_settings_page(): void
             ?>
         </form>
         <?php all_in_one_seo_render_fix_queue(); ?>
+    </div>
+    <?php
+}
+
+function all_in_one_seo_render_admin_notice(): void
+{
+    $notice = isset($_GET['all_in_one_seo_notice']) ? sanitize_key((string) wp_unslash($_GET['all_in_one_seo_notice'])) : '';
+
+    if ($notice === '') {
+        return;
+    }
+
+    $messages = [
+        'applied' => __('Link replacement applied to the matching WordPress post.', 'all-in-one-seo'),
+        'cannot_edit_post' => __('The matching post exists, but your account cannot edit it.', 'all-in-one-seo'),
+        'link_not_found' => __('The matching post was found, but the exact broken URL was not present in post content.', 'all-in-one-seo'),
+        'missing' => __('Fix task was not found in the queue.', 'all-in-one-seo'),
+        'source_not_found' => __('No WordPress post matched the source URL.', 'all-in-one-seo'),
+        'unchanged' => __('No content changes were needed.', 'all-in-one-seo'),
+        'update_failed' => __('WordPress could not update the post.', 'all-in-one-seo'),
+    ];
+    $message = $messages[$notice] ?? '';
+
+    if ($message === '') {
+        return;
+    }
+
+    $class = $notice === 'applied' ? 'notice notice-success' : 'notice notice-warning';
+    ?>
+    <div class="<?php echo esc_attr($class); ?>">
+        <p><?php echo esc_html($message); ?></p>
     </div>
     <?php
 }
@@ -246,7 +278,7 @@ function all_in_one_seo_render_fix_queue(): void
                 <th><?php esc_html_e('Suggested URL', 'all-in-one-seo'); ?></th>
                 <th><?php esc_html_e('Instructions', 'all-in-one-seo'); ?></th>
                 <th><?php esc_html_e('Received', 'all-in-one-seo'); ?></th>
-                <th><?php esc_html_e('Action', 'all-in-one-seo'); ?></th>
+                <th><?php esc_html_e('Actions', 'all-in-one-seo'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -258,7 +290,15 @@ function all_in_one_seo_render_fix_queue(): void
                     <td><?php echo esc_html($fix['manual_instructions']); ?></td>
                     <td><?php echo esc_html($fix['received_at']); ?></td>
                     <td>
-                        <?php if ($fix['status'] !== 'REVIEWED') : ?>
+                        <?php if (all_in_one_seo_fix_can_be_applied($fix)) : ?>
+                            <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" style="margin-bottom: 6px;">
+                                <?php wp_nonce_field('all_in_one_seo_apply_link_fix'); ?>
+                                <input type="hidden" name="action" value="all_in_one_seo_apply_link_fix" />
+                                <input type="hidden" name="fix_id" value="<?php echo esc_attr($fix['id']); ?>" />
+                                <?php submit_button(__('Apply replacement', 'all-in-one-seo'), 'primary small', 'submit', false); ?>
+                            </form>
+                        <?php endif; ?>
+                        <?php if ($fix['status'] !== 'REVIEWED' && $fix['status'] !== 'APPLIED') : ?>
                             <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
                                 <?php wp_nonce_field('all_in_one_seo_mark_fix_reviewed'); ?>
                                 <input type="hidden" name="action" value="all_in_one_seo_mark_fix_reviewed" />
@@ -266,7 +306,7 @@ function all_in_one_seo_render_fix_queue(): void
                                 <?php submit_button(__('Mark reviewed', 'all-in-one-seo'), 'secondary small', 'submit', false); ?>
                             </form>
                         <?php else : ?>
-                            <?php esc_html_e('Reviewed', 'all-in-one-seo'); ?>
+                            <?php echo esc_html(all_in_one_seo_format_fix_status($fix['status'])); ?>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -274,6 +314,27 @@ function all_in_one_seo_render_fix_queue(): void
         </tbody>
     </table>
     <?php
+}
+
+function all_in_one_seo_fix_can_be_applied(array $fix): bool
+{
+    return !empty($fix['source_url'])
+        && !empty($fix['broken_url'])
+        && !empty($fix['suggested_url'])
+        && $fix['status'] !== 'APPLIED';
+}
+
+function all_in_one_seo_format_fix_status(string $status): string
+{
+    if ($status === 'APPLIED') {
+        return __('Applied', 'all-in-one-seo');
+    }
+
+    if ($status === 'REVIEWED') {
+        return __('Reviewed', 'all-in-one-seo');
+    }
+
+    return $status;
 }
 
 function all_in_one_seo_enqueue_monitoring_script(): void
@@ -439,6 +500,115 @@ function all_in_one_seo_mark_fix_reviewed(): void
     exit;
 }
 add_action('admin_post_all_in_one_seo_mark_fix_reviewed', 'all_in_one_seo_mark_fix_reviewed');
+
+function all_in_one_seo_apply_link_fix(): void
+{
+    if (!current_user_can('edit_posts')) {
+        wp_die(esc_html__('You do not have permission to apply fixes.', 'all-in-one-seo'));
+    }
+
+    check_admin_referer('all_in_one_seo_apply_link_fix');
+
+    $fix_id = isset($_POST['fix_id']) ? sanitize_text_field((string) wp_unslash($_POST['fix_id'])) : '';
+    $queue = all_in_one_seo_get_fix_queue();
+    $notice = 'missing';
+
+    foreach ($queue as &$fix) {
+        if ($fix['id'] !== $fix_id) {
+            continue;
+        }
+
+        $result = all_in_one_seo_apply_link_fix_to_post($fix);
+        $notice = $result['notice'];
+
+        if ($result['applied']) {
+            $fix['status'] = 'APPLIED';
+            $fix['applied_at'] = current_time('mysql');
+            $fix['post_id'] = (string) $result['post_id'];
+        }
+
+        break;
+    }
+    unset($fix);
+
+    update_option(ALL_IN_ONE_SEO_FIX_QUEUE_OPTION_NAME, $queue, false);
+    wp_safe_redirect(
+        add_query_arg(
+            'all_in_one_seo_notice',
+            rawurlencode($notice),
+            admin_url('options-general.php?page=all-in-one-seo')
+        )
+    );
+    exit;
+}
+add_action('admin_post_all_in_one_seo_apply_link_fix', 'all_in_one_seo_apply_link_fix');
+
+function all_in_one_seo_apply_link_fix_to_post(array $fix): array
+{
+    $post_id = url_to_postid($fix['source_url']);
+
+    if (!$post_id) {
+        return [
+            'applied' => false,
+            'notice' => 'source_not_found',
+            'post_id' => 0,
+        ];
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post || !current_user_can('edit_post', $post_id)) {
+        return [
+            'applied' => false,
+            'notice' => 'cannot_edit_post',
+            'post_id' => $post_id,
+        ];
+    }
+
+    $content = (string) $post->post_content;
+    $broken_url = (string) $fix['broken_url'];
+    $suggested_url = (string) $fix['suggested_url'];
+
+    if ($broken_url === '' || $suggested_url === '' || strpos($content, $broken_url) === false) {
+        return [
+            'applied' => false,
+            'notice' => 'link_not_found',
+            'post_id' => $post_id,
+        ];
+    }
+
+    $updated_content = str_replace($broken_url, $suggested_url, $content);
+
+    if ($updated_content === $content) {
+        return [
+            'applied' => false,
+            'notice' => 'unchanged',
+            'post_id' => $post_id,
+        ];
+    }
+
+    $updated = wp_update_post(
+        [
+            'ID' => $post_id,
+            'post_content' => $updated_content,
+        ],
+        true
+    );
+
+    if (is_wp_error($updated)) {
+        return [
+            'applied' => false,
+            'notice' => 'update_failed',
+            'post_id' => $post_id,
+        ];
+    }
+
+    return [
+        'applied' => true,
+        'notice' => 'applied',
+        'post_id' => $post_id,
+    ];
+}
 
 function all_in_one_seo_settings_link(array $links): array
 {

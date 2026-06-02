@@ -22,6 +22,8 @@ The plugin displays a receiver endpoint in **Settings > All In One SEO**:
 
 Copy that endpoint and the Receiver API key into the matching WordPress domain in the All In One SEO Integrations page. Approved Fix Center tasks can then be sent to WordPress and reviewed under **Received fix tasks**.
 
+Broken internal-link replacements can be applied from the WordPress settings screen when the source URL maps to an editable post and the exact broken URL exists in post content. Contextual “add a new link” tasks stay in the review queue for manual placement.
+
 ## Behavior
 
 - Uses the WordPress Settings API for configuration.
@@ -30,6 +32,7 @@ Copy that endpoint and the Receiver API key into the matching WordPress domain i
 - Registers a REST endpoint for approved link-fix payloads.
 - Requires the `X-All-In-One-SEO-Key` header for fix receiver requests.
 - Stores received fixes for admin review instead of automatically editing content.
+- Applies exact broken-link replacements only after an administrator clicks **Apply replacement**.
 - Skips WordPress admin pages.
 - Does not read form fields, cookies, local storage, or full page HTML.
 
