@@ -166,6 +166,14 @@ enum WorkerJobStatus {
   DEAD_LETTER
 }
 
+enum LinkFixStatus {
+  DRAFT
+  APPROVED
+  EXPORTED
+  APPLIED
+  DISMISSED
+}
+
 enum AuthTokenPurpose {
   EMAIL_VERIFICATION
   PASSWORD_RESET
@@ -239,6 +247,7 @@ model Workspace {
   integrations            Integration[]
   issues                  SeoIssue[]
   invitations             WorkspaceInvitation[]
+  linkFixSuggestions      LinkFixSuggestion[]
   members                 WorkspaceMember[]
   reports                 Report[]
   reportSchedules         ReportSchedule[]
@@ -448,6 +457,7 @@ model Domain {
   gscMetrics         GscSearchMetric[]
   gaMetrics          GaTrafficMetric[]
   issues             SeoIssue[]
+  linkFixSuggestions LinkFixSuggestion[]
   links              PageLink[]
   pages              Page[]
   reports            Report[]
@@ -582,6 +592,8 @@ model Page {
   outgoingLinks    PageLink[]            @relation("SourcePageLinks")
   incomingLinks    PageLink[]            @relation("TargetPageLinks")
   issues           SeoIssue[]
+  linkFixSources   LinkFixSuggestion[]   @relation("LinkFixSourcePage")
+  linkFixTargets   LinkFixSuggestion[]   @relation("LinkFixTargetPage")
   recommendations  SeoRecommendation[]
   renderedCaptures RenderedPageCapture[]
   snapshots        PageSnapshot[]
@@ -687,6 +699,7 @@ model SeoIssue {
   domain          Domain              @relation(fields: [domainId], references: [id], onDelete: Cascade)
   notes           SeoIssueNote[]
   page            Page?               @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  linkFixSuggestions LinkFixSuggestion[]
   recommendations SeoRecommendation[]
   workspace       Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
@@ -728,6 +741,41 @@ model SeoRecommendation {
   @@index([issueId])
   @@index([pageId])
   @@map("seo_recommendations")
+}
+
+model LinkFixSuggestion {
+  id                String        @id @default(cuid())
+  workspaceId       String
+  domainId          String
+  issueId           String?
+  sourcePageId      String?
+  targetPageId      String?
+  inputHash         String
+  status            LinkFixStatus @default(DRAFT)
+  sourceUrl         String
+  brokenUrl         String?
+  suggestedUrl      String
+  anchorText        String?
+  confidenceScore   Int           @default(60)
+  reason            String
+  manualInstructions String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  approvedAt        DateTime?
+  exportedAt        DateTime?
+  appliedAt         DateTime?
+  dismissedAt       DateTime?
+  domain            Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  issue             SeoIssue?     @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  sourcePage        Page?         @relation("LinkFixSourcePage", fields: [sourcePageId], references: [id], onDelete: SetNull)
+  targetPage        Page?         @relation("LinkFixTargetPage", fields: [targetPageId], references: [id], onDelete: SetNull)
+  workspace         Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, inputHash])
+  @@index([workspaceId, status])
+  @@index([domainId, status])
+  @@index([issueId])
+  @@map("link_fix_suggestions")
 }
 
 model ChangeEvent {

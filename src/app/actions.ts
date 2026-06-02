@@ -5,6 +5,7 @@ import {
   IssueNoteVisibility,
   IssueSeverity,
   IssueStatus,
+  LinkFixStatus,
   ReportScheduleFrequency,
   WorkspaceRole,
   WorkspaceType,
@@ -71,6 +72,10 @@ import {
   buildIssueStatusUpdate,
   normalizeIssueAssignment,
 } from "@/lib/issue-workflow";
+import {
+  generateLinkFixSuggestions,
+  updateLinkFixSuggestion,
+} from "@/lib/link-fixes";
 import {
   createReport,
   createReportSchedule,
@@ -979,6 +984,43 @@ export async function generateIssueRecommendations(formData: FormData) {
   revalidatePath("/recommendations");
   revalidatePath(`/issues/${issueId}`);
   redirect(`/issues/${issueId}`);
+}
+
+export async function generateLinkFixesAction(formData: FormData) {
+  const domainId = getOptionalString(formData, "domainId");
+
+  await generateLinkFixSuggestions({ domainId });
+
+  revalidatePath("/fix-center");
+  redirect(domainId ? `/fix-center?domainId=${domainId}` : "/fix-center");
+}
+
+export async function updateLinkFixAction(formData: FormData) {
+  const id = getRequiredString(formData, "fixId");
+  const status = getOptionalString(formData, "status")?.toUpperCase() as
+    | LinkFixStatus
+    | undefined;
+  const suggestedUrl = getOptionalString(formData, "suggestedUrl");
+  const anchorText = formData.has("anchorText")
+    ? (getOptionalString(formData, "anchorText") ?? null)
+    : undefined;
+
+  if (
+    status &&
+    !["DRAFT", "APPROVED", "EXPORTED", "APPLIED", "DISMISSED"].includes(status)
+  ) {
+    throw new Error("Unsupported fix status.");
+  }
+
+  await updateLinkFixSuggestion({
+    anchorText,
+    id,
+    status,
+    suggestedUrl,
+  });
+
+  revalidatePath("/fix-center");
+  redirect("/fix-center");
 }
 
 export async function generateTemplateFixBrief(formData: FormData) {

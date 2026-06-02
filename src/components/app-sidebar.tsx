@@ -11,6 +11,7 @@ const hrefs: Record<string, string> = {
   Sites: "/domains",
   Pages: "/pages",
   Issues: "/issues",
+  "Fix Center": "/fix-center",
   AI: "/recommendations",
   Technical: "/technical-audit",
   Reports: "/reports",
@@ -30,6 +31,8 @@ const navHelp: Record<string, string> = {
     "Inspect crawled URLs, page snapshots, metadata, and page-level SEO issues.",
   Issues:
     "Review analyzer findings, assign work, update statuses, and group template issues.",
+  "Fix Center":
+    "Approve, edit, export, and track SEO fixes generated from internal-link issues.",
   AI: "Generate SEO recommendations, content fixes, and template-level fix briefs.",
   Technical:
     "Monitor technical SEO signals like robots.txt, sitemap, schema, links, and rendering.",
