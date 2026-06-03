@@ -8,8 +8,8 @@ import {
   updateLinkFixAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { InfoTooltip } from "@/components/info-tooltip";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import {
   buildLinkFixLifecycleSteps,
   getLinkFixCenterData,
@@ -51,7 +51,7 @@ export default async function FixCenterPage({
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950 lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
-      <AppSidebar active="Fix Center" />
+      <AppSidebar active="Fix Center" activeDomainId={selectedDomainId} />
       <main className="min-w-0 px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6">
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -127,14 +127,12 @@ export default async function FixCenterPage({
             </div>
           </section>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="Fix generation, delivery workflows, and audit trails are filtered to this domain."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="fixes"
+            domainId={selectedDomainId}
+            note="Fix generation, delivery workflows, and audit trails are filtered to this domain."
+            returnPath="/fix-center"
+          />
 
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
@@ -447,7 +445,11 @@ export default async function FixCenterPage({
                               </p>
                             </div>
                             <Link
-                              href="/integrations"
+                              href={`/integrations${
+                                suggestion.domainId
+                                  ? `?domainId=${suggestion.domainId}`
+                                  : ""
+                              }`}
                               className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-amber-300 bg-white px-3 text-sm font-semibold text-amber-900 transition hover:bg-amber-100"
                             >
                               Open Integrations
@@ -464,7 +466,11 @@ export default async function FixCenterPage({
                               directly from Fix Center.
                             </p>
                             <Link
-                              href="/integrations"
+                              href={`/integrations${
+                                suggestion.domainId
+                                  ? `?domainId=${suggestion.domainId}`
+                                  : ""
+                              }`}
                               className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
                             >
                               Open Integrations

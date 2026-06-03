@@ -226,6 +226,7 @@ For UI/UX batches, also reread `docs/UI_UX_ROADMAP.md`.
 - [x] Upgrade Sites page into a Semrush-style Projects table with client grouping, search, richer audit metrics, and compact row actions.
 - [x] Upgrade domain workspace into a Site Audit detail page with breadcrumb, metadata row, action bar, tabs, and overview content.
 - [x] Add domain workspace thematic report cards for robots.txt, sitemap, crawlability, HTTPS, internal linking, markup, performance, indexability, canonicals, and JS rendering.
+- [x] Add persistent project selector, breadcrumbs, workspace tabs, and domain-preserving sidebar links to scoped SEO tool pages.
 
 ## 7. Domain Verification
 

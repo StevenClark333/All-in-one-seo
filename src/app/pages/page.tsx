@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FileSearch, Link2 } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getPageInventoryData } from "@/lib/management-queries";
 import { getTemplateLabel, inferPageTemplate } from "@/lib/template-detection";
 
@@ -32,7 +32,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Pages" />
+        <AppSidebar active="Pages" activeDomainId={selectedDomainId} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -58,14 +58,12 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
             <Metric label="Pages with title" value={pagesWithTitles} />
           </section>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="Page inventory and template groups are filtered to this domain."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="pages"
+            domainId={selectedDomainId}
+            note="Page inventory and template groups are filtered to this domain."
+            returnPath="/pages"
+          />
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 p-5">
@@ -80,7 +78,9 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                 templateGroups.map((group) => (
                   <Link
                     key={group.key}
-                    href={`/issues?templateKey=${encodeURIComponent(group.key)}`}
+                    href={`/issues?templateKey=${encodeURIComponent(group.key)}${
+                      selectedDomainId ? `&domainId=${selectedDomainId}` : ""
+                    }`}
                     className="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:bg-white"
                   >
                     <div className="flex items-start justify-between gap-3">

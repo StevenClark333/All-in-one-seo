@@ -5,20 +5,20 @@ import { InfoTooltip } from "@/components/info-tooltip";
 import { navItems } from "@/lib/dashboard-data";
 import { getWorkspaceSwitcherData } from "@/lib/workspace";
 
-const hrefs: Record<string, string> = {
-  Overview: "/",
-  Clients: "/clients",
-  Sites: "/domains",
-  Pages: "/pages",
-  Issues: "/issues",
-  "Fix Center": "/fix-center",
-  AI: "/recommendations",
-  Technical: "/technical-audit",
-  Reports: "/reports",
-  Alerts: "/alerts",
-  Integrations: "/integrations",
-  Billing: "/billing",
-  Settings: "/settings",
+const hrefs: Record<string, (domainId?: string) => string> = {
+  Overview: () => "/",
+  Clients: () => "/clients",
+  Sites: () => "/domains",
+  Pages: (domainId) => withDomain("/pages", domainId),
+  Issues: (domainId) => withDomain("/issues", domainId),
+  "Fix Center": (domainId) => withDomain("/fix-center", domainId),
+  AI: (domainId) => withDomain("/recommendations", domainId),
+  Technical: (domainId) => withDomain("/technical-audit", domainId),
+  Reports: (domainId) => withDomain("/reports", domainId),
+  Alerts: () => "/alerts",
+  Integrations: (domainId) => withDomain("/integrations", domainId),
+  Billing: () => "/billing",
+  Settings: () => "/settings",
 };
 
 const navHelp: Record<string, string> = {
@@ -48,7 +48,13 @@ const navHelp: Record<string, string> = {
     "Manage workspace members, roles, invitations, and account settings.",
 };
 
-export async function AppSidebar({ active }: { active: string }) {
+export async function AppSidebar({
+  active,
+  activeDomainId,
+}: {
+  active: string;
+  activeDomainId?: string;
+}) {
   const { activeWorkspaceId, memberships } = await getWorkspaceSwitcherData();
 
   return (
@@ -76,7 +82,7 @@ export async function AppSidebar({ active }: { active: string }) {
           return (
             <Link
               key={item.label}
-              href={hrefs[item.label] ?? "/"}
+              href={hrefs[item.label]?.(activeDomainId) ?? "/"}
               className={`flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium transition ${
                 isActive
                   ? "bg-slate-950 text-white"
@@ -131,4 +137,8 @@ export async function AppSidebar({ active }: { active: string }) {
       </form>
     </aside>
   );
+}
+
+function withDomain(path: string, domainId?: string) {
+  return domainId ? `${path}?domainId=${domainId}` : path;
 }

@@ -66,6 +66,47 @@ export type ActiveProjectDomain = {
   id: string;
 };
 
+export type ProjectNavigationDomain = ActiveProjectDomain & {
+  healthScore: number | null;
+  verificationStatus: string;
+};
+
+export async function getProjectNavigationData(
+  domainId: string | undefined,
+): Promise<{
+  domains: ProjectNavigationDomain[];
+  selectedDomain: ProjectNavigationDomain | null;
+  workspace: PrimaryWorkspace;
+}> {
+  if (!hasDatabaseUrl()) {
+    return { domains: [], selectedDomain: null, workspace: null };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { domains: [], selectedDomain: null, workspace: null };
+  }
+
+  const domains = await getPrisma().domain.findMany({
+    where: { archivedAt: null, workspaceId: workspace.id },
+    select: {
+      client: { select: { name: true } },
+      domain: true,
+      healthScore: true,
+      id: true,
+      verificationStatus: true,
+    },
+    orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
+  });
+
+  return {
+    domains,
+    selectedDomain: domains.find((domain) => domain.id === domainId) ?? null,
+    workspace,
+  };
+}
+
 export async function getActiveProjectDomain(
   domainId: string | undefined,
 ): Promise<ActiveProjectDomain | null> {

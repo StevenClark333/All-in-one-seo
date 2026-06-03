@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { AlertTriangle, Network } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getInternalLinkGraphData } from "@/lib/link-graph-queries";
-import { getActiveProjectDomain } from "@/lib/management-queries";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +17,6 @@ export default async function TechnicalAuditPage({
   const selectedDomainId = getSingle(params.domainId);
   const { workspace, pages, issues, opportunities } =
     await getInternalLinkGraphData({ domainId: selectedDomainId });
-  const selectedDomain = await getActiveProjectDomain(selectedDomainId);
   const orphanCount = pages.filter((page) => page.isOrphan).length;
   const deepPageCount = issues.filter((issue) =>
     issue.issueType.startsWith("deep_page:"),
@@ -40,7 +38,7 @@ export default async function TechnicalAuditPage({
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Technical" />
+        <AppSidebar active="Technical" activeDomainId={selectedDomainId} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -54,14 +52,12 @@ export default async function TechnicalAuditPage({
             </div>
           </header>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="Technical audit graphs and link opportunities are filtered to this domain."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="technical"
+            domainId={selectedDomainId}
+            note="Technical audit graphs and link opportunities are filtered to this domain."
+            returnPath="/technical-audit"
+          />
 
           <div className="mt-6 grid gap-4 md:grid-cols-5">
             <Metric label="Tracked pages" value={pages.length} />

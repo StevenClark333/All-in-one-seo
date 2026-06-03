@@ -14,8 +14,8 @@ import {
   testWordPressReceiverAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { readAutomationIntegrationConfig } from "@/lib/automation-integrations";
 import { readDeploymentIntegrationConfig } from "@/lib/deployment-checks";
 import { readGaProperties } from "@/lib/google-analytics";
@@ -82,9 +82,6 @@ export default async function IntegrationsPage({
   const wordpressDomains = domains.filter(
     (domain) => domain.platform === "WORDPRESS",
   );
-  const selectedDomain = domains.find(
-    (domain) => domain.id === selectedDomainId,
-  );
   const wordpressReceiverIntegrations = integrations.filter(
     (integration) => integration.provider === "WORDPRESS_RECEIVER",
   );
@@ -117,7 +114,7 @@ export default async function IntegrationsPage({
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Integrations" />
+        <AppSidebar active="Integrations" activeDomainId={selectedDomainId} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -141,14 +138,12 @@ export default async function IntegrationsPage({
             </div>
           </header>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="Integration setup and receiver values are being viewed from this domain workspace."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="integrations"
+            domainId={selectedDomainId}
+            note="Integration setup and receiver values are being viewed from this domain workspace."
+            returnPath="/integrations"
+          />
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">
@@ -202,6 +197,7 @@ export default async function IntegrationsPage({
                 help="Attach this provider to one monitored domain."
                 label="Domain"
                 name="domainId"
+                defaultValue={selectedDomainId ?? ""}
               >
                 <option value="">All domains</option>
                 {domains.map((domain) => (
@@ -552,9 +548,7 @@ export default async function IntegrationsPage({
 
               <div className="grid gap-4 rounded-md border border-slate-200 p-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
                 <div>
-                  <p className="font-semibold">
-                    Download the WordPress plugin
-                  </p>
+                  <p className="font-semibold">Download the WordPress plugin</p>
                   <p className="mt-1 text-sm leading-6 text-slate-500">
                     Upload this ZIP in WordPress admin under Plugins &gt; Add
                     Plugin &gt; Upload Plugin, then save the App URL, Site ID,
@@ -1561,11 +1555,13 @@ export default async function IntegrationsPage({
 
 function Select({
   children,
+  defaultValue,
   help,
   label,
   name,
 }: {
   children: React.ReactNode;
+  defaultValue?: string;
   help?: string;
   label: string;
   name: string;
@@ -1577,6 +1573,7 @@ function Select({
       </span>
       <select
         name={name}
+        defaultValue={defaultValue}
         className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
       >
         {children}

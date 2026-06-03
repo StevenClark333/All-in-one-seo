@@ -2,8 +2,8 @@ import { AlertTriangle, CircleDot, Filter, ListChecks } from "lucide-react";
 import Link from "next/link";
 import { bulkUpdateIssues } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getIssueListData } from "@/lib/issue-queries";
 
 export const dynamic = "force-dynamic";
@@ -54,7 +54,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Issues" />
+        <AppSidebar active="Issues" activeDomainId={filters.domainId} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -78,14 +78,12 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
             </div>
           </header>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="Issue filters and bulk actions are focused on this domain."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="issues"
+            domainId={filters.domainId}
+            note="Issue filters and bulk actions are focused on this domain."
+            returnPath="/issues"
+          />
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">
@@ -229,15 +227,18 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Analyzer-generated issues across all clients, domains, and
-                    pages.
+                    {selectedDomain
+                      ? `Analyzer-generated issues for ${selectedDomain.domain}.`
+                      : "Analyzer-generated issues across all clients, domains, and pages."}
                   </p>
                 </div>
                 <div className="flex max-w-3xl flex-wrap gap-2">
                   {templateGroups.slice(0, 6).map((group) => (
                     <Link
                       key={group.key}
-                      href={`/issues?templateKey=${encodeURIComponent(group.key)}`}
+                      href={`/issues?templateKey=${encodeURIComponent(group.key)}${
+                        filters.domainId ? `&domainId=${filters.domainId}` : ""
+                      }`}
                       className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition hover:bg-white"
                     >
                       {group.label}: {group.issueCount} issues, P
@@ -247,7 +248,9 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                   {issueGroups.map((group) => (
                     <Link
                       key={group.issueType}
-                      href={`/issues?issueType=${encodeURIComponent(group.issueType)}`}
+                      href={`/issues?issueType=${encodeURIComponent(group.issueType)}${
+                        filters.domainId ? `&domainId=${filters.domainId}` : ""
+                      }`}
                       className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:bg-white"
                     >
                       {formatIssueType(group.issueType)}: {group.count}

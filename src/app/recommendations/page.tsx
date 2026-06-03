@@ -6,9 +6,8 @@ import {
   generateTemplateFixBrief,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getAiRecommendationCenterData } from "@/lib/ai";
-import { getActiveProjectDomain } from "@/lib/management-queries";
 
 export const dynamic = "force-dynamic";
 
@@ -29,12 +28,11 @@ export default async function RecommendationsPage({
     recommendations,
     usage,
   } = await getAiRecommendationCenterData({ domainId: selectedDomainId });
-  const selectedDomain = await getActiveProjectDomain(selectedDomainId);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="AI" />
+        <AppSidebar active="AI" activeDomainId={selectedDomainId} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -53,14 +51,12 @@ export default async function RecommendationsPage({
             </div>
           </header>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="AI suggestions, fix briefs, templates, and cached recommendations are filtered to this domain."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="ai"
+            domainId={selectedDomainId}
+            note="AI suggestions, fix briefs, templates, and cached recommendations are filtered to this domain."
+            returnPath="/recommendations"
+          />
 
           <section className="mt-6 grid gap-6 xl:grid-cols-2">
             <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -175,7 +171,7 @@ export default async function RecommendationsPage({
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <Link
-                          href={`/issues?templateKey=${encodeURIComponent(group.templateKey)}`}
+                          href={`/issues?templateKey=${encodeURIComponent(group.templateKey)}&domainId=${group.domainId}`}
                           className="font-semibold underline-offset-4 hover:underline"
                         >
                           {group.label} template

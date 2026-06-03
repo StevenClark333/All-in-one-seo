@@ -14,8 +14,8 @@ import {
   verifyReportWhiteLabelDomainAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
+import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import {
   formatReportWhiteLabelVerificationValue,
   getReportListData,
@@ -40,9 +40,6 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
     templates,
     whiteLabelDomains,
   } = await getReportListData();
-  const selectedDomain = domains.find(
-    (domain) => domain.id === selectedDomainId,
-  );
   const visibleReports = selectedDomainId
     ? reports.filter((report) => report.domainId === selectedDomainId)
     : reports;
@@ -53,7 +50,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Reports" />
+        <AppSidebar active="Reports" activeDomainId={selectedDomainId} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -77,14 +74,12 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             </div>
           </header>
 
-          {selectedDomain ? (
-            <ActiveProjectBanner
-              clientName={selectedDomain.client?.name}
-              domain={selectedDomain.domain}
-              domainId={selectedDomain.id}
-              note="Report generation, schedules, and report library are focused on this domain."
-            />
-          ) : null}
+          <ProjectWorkspaceBar
+            active="reports"
+            domainId={selectedDomainId}
+            note="Report generation, schedules, and report library are focused on this domain."
+            returnPath="/reports"
+          />
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">

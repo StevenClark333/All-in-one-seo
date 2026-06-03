@@ -301,8 +301,9 @@ As the product grows, organize tools into groups:
 - [x] Scope Reports by active domain.
 - [x] Scope Technical Audit by active domain.
 - [x] Scope AI Recommendations by active domain.
-- [ ] Add persistent project selector to scoped pages.
-- [ ] Add domain-scoped breadcrumbs to scoped pages.
+- [x] Add persistent project selector to scoped pages.
+- [x] Add domain-scoped breadcrumbs to scoped pages.
+- [x] Preserve active `domainId` across scoped sidebar navigation and workspace tabs.
 - [ ] Make all scoped page “back” actions return to the domain workspace.
 
 ### F. Global Search / Command Bar
@@ -390,9 +391,9 @@ As the product grows, organize tools into groups:
 
 ### UX Batch 4: Project Selector And Breadcrumbs
 
-- [ ] Add active project selector to scoped pages.
-- [ ] Add breadcrumbs to domain-scoped pages.
-- [ ] Preserve `domainId` across navigation.
+- [x] Add active project selector to scoped pages.
+- [x] Add breadcrumbs to domain-scoped pages.
+- [x] Preserve `domainId` across navigation.
 
 ### UX Batch 5: Search Performance Module
 
@@ -407,11 +408,10 @@ As the product grows, organize tools into groups:
 
 ## 6. Current Priority
 
-The next implementation batch should be **UX Batch 1: Project Table Upgrade**.
+The next implementation batch should be **UX Batch 5: Search Performance Module**.
 
 Reason:
 
-- It changes the first impression of the product.
-- It reinforces the agency/domain operating model.
-- It makes multiple-client management easier immediately.
-- It matches the strongest pattern visible in the Semrush home and Site Audit list screenshots.
+- It fills the current gap between technical audit data and search visibility.
+- It uses already-planned Google Search Console imports instead of expensive rank tracking.
+- It makes each domain workspace feel more like a complete SEO command center.
