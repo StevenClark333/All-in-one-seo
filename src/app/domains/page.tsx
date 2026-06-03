@@ -119,7 +119,22 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
 
             {visibleDomains.length ? (
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[1280px] border-collapse text-left text-sm">
+                <table className="w-full min-w-[1740px] table-fixed border-collapse text-left text-sm">
+                  <colgroup>
+                    <col className="w-[320px]" />
+                    <col className="w-[150px]" />
+                    <col className="w-[150px]" />
+                    <col className="w-[130px]" />
+                    <col className="w-[100px]" />
+                    <col className="w-[120px]" />
+                    <col className="w-[160px]" />
+                    <col className="w-[100px]" />
+                    <col className="w-[150px]" />
+                    <col className="w-[110px]" />
+                    <col className="w-[90px]" />
+                    <col className="w-[130px]" />
+                    <col className="w-[180px]" />
+                  </colgroup>
                   <thead className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                     <tr>
                       <TableHead>Project</TableHead>
@@ -195,10 +210,11 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                       aria-hidden="true"
                                     />
                                   </div>
-                                  <div className="min-w-0">
+                                  <div className="min-w-0 flex-1">
                                     <Link
                                       href={`/domains/${domain.id}/workspace`}
-                                      className="font-semibold text-blue-700 underline-offset-4 hover:underline"
+                                      className="block truncate font-semibold text-blue-700 underline-offset-4 hover:underline"
+                                      title={domain.domain}
                                     >
                                       {domain.domain}
                                     </Link>
@@ -220,12 +236,12 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-4 py-4 text-slate-600">
+                              <td className="whitespace-nowrap px-4 py-4 text-slate-600">
                                 {metrics.lastUpdatedAt
                                   ? formatDate(metrics.lastUpdatedAt)
                                   : "Not started"}
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <span className="font-medium text-slate-900">
                                   {metrics.pagesCrawled.toLocaleString()}
                                 </span>
@@ -234,28 +250,28 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                   / {domain.pages.length.toLocaleString()}
                                 </span>
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <ScoreValue value={metrics.health} />
                               </td>
-                              <td className="px-4 py-4 font-medium text-red-600">
+                              <td className="whitespace-nowrap px-4 py-4 font-medium text-red-600">
                                 {metrics.errors}
                               </td>
-                              <td className="px-4 py-4 font-medium text-amber-600">
+                              <td className="whitespace-nowrap px-4 py-4 font-medium text-amber-600">
                                 {metrics.warnings}
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <PercentValue value={metrics.crawlability} />
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <PercentValue value={metrics.https} />
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <PercentValue value={metrics.internalSeo} />
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <PercentValue value={metrics.markup} />
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <Link
                                   href={`/fix-center?domainId=${domain.id}`}
                                   className="font-medium text-blue-700 underline-offset-4 hover:underline"
@@ -263,7 +279,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                   {metrics.fixesPending}
                                 </Link>
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <Link
                                   href={`/reports?domainId=${domain.id}`}
                                   className="font-medium text-blue-700 underline-offset-4 hover:underline"
@@ -273,7 +289,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                     : "Create"}
                                 </Link>
                               </td>
-                              <td className="px-4 py-4">
+                              <td className="whitespace-nowrap px-4 py-4">
                                 <div className="flex items-center gap-2">
                                   <Link
                                     href={`/domains/${domain.id}/workspace`}
