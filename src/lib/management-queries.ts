@@ -265,6 +265,82 @@ export async function getDomainDetailData(domainId: string) {
   return { workspace, clients, domain };
 }
 
+export async function getDomainWorkspaceData(domainId: string) {
+  if (!hasDatabaseUrl()) {
+    return { workspace: null, domain: null };
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return { workspace: null, domain: null };
+  }
+
+  const domain = await getPrisma().domain.findFirst({
+    where: { archivedAt: null, id: domainId, workspaceId: workspace.id },
+    include: {
+      artifacts: {
+        orderBy: { createdAt: "desc" },
+        take: 4,
+      },
+      changeEvents: {
+        orderBy: { createdAt: "desc" },
+        take: 6,
+      },
+      client: true,
+      crawlRuns: {
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      },
+      integrations: {
+        orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
+      },
+      issues: {
+        where: { status: { not: "FIXED" } },
+        include: { page: true },
+        orderBy: [
+          { severity: "asc" },
+          { priorityScore: "desc" },
+          { lastDetectedAt: "desc" },
+        ],
+        take: 8,
+      },
+      linkFixSuggestions: {
+        orderBy: [{ updatedAt: "desc" }],
+        take: 8,
+      },
+      pages: {
+        include: {
+          issues: {
+            where: { status: { not: "FIXED" } },
+            select: { severity: true },
+          },
+          snapshots: {
+            orderBy: { createdAt: "desc" },
+            take: 1,
+          },
+        },
+        orderBy: [{ importance: "asc" }, { updatedAt: "desc" }],
+        take: 8,
+      },
+      reports: {
+        orderBy: { createdAt: "desc" },
+        take: 4,
+      },
+      scoreHistory: {
+        orderBy: { createdAt: "desc" },
+        take: 6,
+      },
+      verifications: {
+        orderBy: { createdAt: "desc" },
+        take: 4,
+      },
+    },
+  });
+
+  return { workspace, domain };
+}
+
 export async function getPageInventoryData({
   domainId,
 }: {

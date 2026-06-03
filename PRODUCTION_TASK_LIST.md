@@ -219,6 +219,7 @@ Work should move through these batches in order. At the start of each batch, rer
 - [x] Add crawl frequency controls.
 - [x] Add plan-based domain limits.
 - [x] Add bulk domain import.
+- [x] Add domain-first project workspace with scoped pages, issues, fixes, reports, integrations, and crawl actions.
 
 ## 7. Domain Verification
 

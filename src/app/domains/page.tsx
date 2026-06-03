@@ -70,7 +70,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
             <div className="divide-y divide-slate-100">
               {domains.length ? (
                 <>
-                  <div className="hidden grid-cols-[minmax(0,1fr)_120px_90px_90px_130px_220px] gap-4 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 xl:grid">
+                  <div className="hidden grid-cols-[minmax(0,1fr)_120px_90px_90px_130px_300px] gap-4 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 xl:grid">
                     <span>Domain</span>
                     <HelpLabel help="Ownership state. Verified domains can run full production crawls.">
                       Verification
@@ -104,7 +104,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     return (
                       <article
                         key={domain.id}
-                        className="grid gap-4 px-5 py-4 text-sm xl:grid-cols-[minmax(0,1fr)_120px_90px_90px_130px_220px] xl:items-center"
+                        className="grid gap-4 px-5 py-4 text-sm xl:grid-cols-[minmax(0,1fr)_120px_90px_90px_130px_300px] xl:items-center"
                       >
                         <div className="flex min-w-0 items-center gap-3">
                           <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-600">
@@ -112,7 +112,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                           </div>
                           <div className="min-w-0">
                             <Link
-                              href={`/domains/${domain.id}`}
+                              href={`/domains/${domain.id}/workspace`}
                               className="font-medium underline-offset-4 hover:underline"
                             >
                               {domain.domain}
@@ -160,6 +160,18 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                         </MetaBlock>
 
                         <div className="flex flex-wrap gap-2 xl:flex-nowrap">
+                          <Link
+                            href={`/domains/${domain.id}/workspace`}
+                            className="inline-flex h-9 min-w-24 items-center justify-center whitespace-nowrap rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
+                          >
+                            Workspace
+                          </Link>
+                          <Link
+                            href={`/domains/${domain.id}`}
+                            className="inline-flex h-9 min-w-20 items-center justify-center whitespace-nowrap rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                          >
+                            Settings
+                          </Link>
                           <Link
                             href={`/domains/${domain.id}/verification`}
                             className="inline-flex h-9 min-w-20 items-center justify-center whitespace-nowrap rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"

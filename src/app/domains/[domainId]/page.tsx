@@ -74,6 +74,17 @@ export default async function DomainDetailPage({
               Sites
             </Link>
             <Link
+              href={`/domains/${domain.id}/workspace`}
+              className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
+            >
+              Project workspace
+              <InfoTooltip
+                label="Open the domain-scoped workspace for pages, issues, fixes, reports, and integrations."
+                passive
+                side="left"
+              />
+            </Link>
+            <Link
               href={`/domains/${domain.id}/verification`}
               className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
             >
