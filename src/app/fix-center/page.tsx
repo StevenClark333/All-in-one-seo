@@ -9,7 +9,11 @@ import {
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { InfoTooltip } from "@/components/info-tooltip";
-import { getLinkFixCenterData } from "@/lib/link-fixes";
+import {
+  buildLinkFixLifecycleSteps,
+  getLinkFixCenterData,
+  type LinkFixLifecycleStepStatus,
+} from "@/lib/link-fixes";
 
 type FixCenterPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -191,6 +195,16 @@ export default async function FixCenterPage({
                       (integration) =>
                         integration.domainId === suggestion.domainId,
                     );
+                  const lifecycleSteps = buildLinkFixLifecycleSteps({
+                    appliedAt: suggestion.appliedAt,
+                    approvedAt: suggestion.approvedAt,
+                    dismissedAt: suggestion.dismissedAt,
+                    exportedAt: suggestion.exportedAt,
+                    status: suggestion.status,
+                    verificationCheckedAt: suggestion.verificationCheckedAt,
+                    verificationMessage: suggestion.verificationMessage,
+                    verificationStatus: suggestion.verificationStatus,
+                  });
 
                   return (
                     <article
@@ -308,6 +322,40 @@ export default async function FixCenterPage({
                             {suggestion.verificationMessage}
                           </p>
                         ) : null}
+                      </div>
+
+                      <div className="mt-4 rounded-md border border-slate-200 bg-white p-3">
+                        <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                          Fix delivery audit
+                          <InfoTooltip label="Shows where this fix is after approval, delivery to WordPress or another workflow, website application, and crawl verification." />
+                        </p>
+                        <div className="mt-3 grid gap-2 lg:grid-cols-4">
+                          {lifecycleSteps.map((step) => (
+                            <div
+                              key={step.label}
+                              className={`rounded-md border p-3 ${getLifecycleStepClass(
+                                step.status,
+                              )}`}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <p className="text-sm font-semibold">
+                                  {step.label}
+                                </p>
+                                <span className="shrink-0 rounded-full bg-white/70 px-2 py-0.5 text-[11px] font-semibold">
+                                  {formatLifecycleStatus(step.status)}
+                                </span>
+                              </div>
+                              <p className="mt-2 text-xs leading-5">
+                                {step.detail}
+                              </p>
+                              {step.timestamp ? (
+                                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em] opacity-70">
+                                  {formatDateTime(step.timestamp)}
+                                </p>
+                              ) : null}
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -564,4 +612,36 @@ function getVerificationClass(status: string) {
   }
 
   return "bg-slate-100 text-slate-500";
+}
+
+function getLifecycleStepClass(status: LinkFixLifecycleStepStatus) {
+  if (status === "COMPLETE") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  }
+
+  if (status === "CURRENT") {
+    return "border-amber-200 bg-amber-50 text-amber-900";
+  }
+
+  return "border-slate-200 bg-slate-50 text-slate-500";
+}
+
+function formatLifecycleStatus(status: LinkFixLifecycleStepStatus) {
+  if (status === "COMPLETE") {
+    return "Done";
+  }
+
+  if (status === "CURRENT") {
+    return "Next";
+  }
+
+  return "Waiting";
+}
+
+function formatDateTime(value: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "UTC",
+  }).format(value);
 }

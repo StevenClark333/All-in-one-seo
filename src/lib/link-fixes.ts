@@ -29,6 +29,95 @@ export type LinkFixFilters = {
   status?: LinkFixStatus;
 };
 
+export type LinkFixLifecycleStepStatus = "COMPLETE" | "CURRENT" | "PENDING";
+
+export function buildLinkFixLifecycleSteps(input: {
+  appliedAt?: Date | null;
+  approvedAt?: Date | null;
+  dismissedAt?: Date | null;
+  exportedAt?: Date | null;
+  status: LinkFixStatus;
+  verificationCheckedAt?: Date | null;
+  verificationMessage?: string | null;
+  verificationStatus: LinkFixVerificationStatus;
+}) {
+  if (input.status === "DISMISSED") {
+    return [
+      {
+        detail: "This suggestion was dismissed and is no longer active.",
+        label: "Dismissed",
+        status: "COMPLETE" as const,
+        timestamp: input.dismissedAt ?? null,
+      },
+    ];
+  }
+
+  const approvedComplete = Boolean(input.approvedAt);
+  const exportedComplete = Boolean(input.exportedAt);
+  const appliedComplete = Boolean(input.appliedAt);
+  const verificationComplete = Boolean(input.verificationCheckedAt);
+
+  return [
+    {
+      detail: approvedComplete
+        ? "This fix has been approved for delivery."
+        : "Review the suggestion and approve it before sending.",
+      label: "Approved",
+      status: approvedComplete
+        ? ("COMPLETE" as const)
+        : input.status === "DRAFT"
+          ? ("CURRENT" as const)
+          : ("PENDING" as const),
+      timestamp: input.approvedAt ?? null,
+    },
+    {
+      detail: exportedComplete
+        ? "The fix payload has been sent or exported."
+        : "Send this fix to WordPress or another delivery workflow.",
+      label: "Sent to workflow",
+      status: exportedComplete
+        ? ("COMPLETE" as const)
+        : approvedComplete
+          ? ("CURRENT" as const)
+          : ("PENDING" as const),
+      timestamp: input.exportedAt ?? null,
+    },
+    {
+      detail: appliedComplete
+        ? "The fix has been marked applied in the portal or by WordPress."
+        : "Apply the change on the website, then mark it applied.",
+      label: "Applied on site",
+      status: appliedComplete
+        ? ("COMPLETE" as const)
+        : exportedComplete
+          ? ("CURRENT" as const)
+          : ("PENDING" as const),
+      timestamp: input.appliedAt ?? null,
+    },
+    {
+      detail:
+        input.verificationMessage ||
+        (verificationComplete
+          ? "The latest crawl checked this fix."
+          : appliedComplete
+            ? "Waiting for a crawl to verify the website change."
+            : "Verification starts after the fix is applied."),
+      label:
+        input.verificationStatus === "VERIFIED_FIXED"
+          ? "Verified fixed"
+          : input.verificationStatus === "STILL_FAILING"
+            ? "Still failing"
+            : "Crawl verification",
+      status: verificationComplete
+        ? ("COMPLETE" as const)
+        : appliedComplete
+          ? ("CURRENT" as const)
+          : ("PENDING" as const),
+      timestamp: input.verificationCheckedAt ?? null,
+    },
+  ];
+}
+
 export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
   if (!hasDatabaseUrl()) {
     return {

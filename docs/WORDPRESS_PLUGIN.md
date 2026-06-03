@@ -52,6 +52,8 @@ For contextual internal-link opportunities, administrators can click **Add inter
 
 After a successful apply, the plugin posts status back to All In One SEO with the same `X-All-In-One-SEO-Key`. The portal marks the fix `APPLIED` and queues a system crawl so the next crawl can confirm the broken-link issue is gone or the suggested internal link is present.
 
+In Fix Center, each suggestion includes a delivery audit timeline covering approval, workflow send, site application, and crawl verification. This gives agencies a client-safe trail of what was approved, what was sent to WordPress, whether the site reported it applied, and whether the crawler later confirmed the fix.
+
 ## Production Packaging
 
 Build the installable ZIP with:

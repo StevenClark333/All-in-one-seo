@@ -520,6 +520,7 @@ Work should move through these batches in order. At the start of each batch, rer
 - [x] Require passed WordPress receiver test before Fix Center delivery.
 - [x] Explain unavailable WordPress receivers in Fix Center.
 - [x] Add copy-friendly WordPress install values for App URL, Site ID, receiver key, receiver endpoint, and callback URL.
+- [x] Add Fix Center delivery audit timeline for approval, workflow send, site application, and crawl verification.
 
 ## 22. Billing And Plans
 
