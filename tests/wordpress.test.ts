@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildWordPressOnboardingSteps,
   generateWordPressReceiverKey,
+  getWordPressReceiverReadinessMessage,
   isWordPressReceiverReady,
   normalizeWordPressReceiverUrl,
   readWordPressReceiverConfig,
@@ -121,5 +122,34 @@ test("requires a passed receiver test before WordPress fix delivery", () => {
       receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     }),
     false,
+  );
+});
+
+test("explains why a WordPress receiver is unavailable", () => {
+  assert.equal(
+    getWordPressReceiverReadinessMessage({}),
+    "Save the WordPress receiver endpoint in Integrations.",
+  );
+  assert.equal(
+    getWordPressReceiverReadinessMessage({
+      receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    }),
+    "Generate or save the WordPress receiver API key in Integrations.",
+  );
+  assert.equal(
+    getWordPressReceiverReadinessMessage({
+      lastTestStatus: "FAILED",
+      receiverKey: "aioseo_wp_example",
+      receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    }),
+    "The latest WordPress receiver test failed. Fix the endpoint or key, then test again.",
+  );
+  assert.equal(
+    getWordPressReceiverReadinessMessage({
+      lastTestStatus: "PASSED",
+      receiverKey: "aioseo_wp_example",
+      receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    }),
+    "WordPress receiver is ready.",
   );
 });

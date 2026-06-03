@@ -301,6 +301,34 @@ export function isWordPressReceiverReady(config: {
   );
 }
 
+export function getWordPressReceiverReadinessMessage(config: {
+  lastTestMessage?: string;
+  lastTestStatus?: string;
+  receiverKey?: string;
+  receiverUrl?: string;
+}) {
+  if (!config.receiverUrl) {
+    return "Save the WordPress receiver endpoint in Integrations.";
+  }
+
+  if (!config.receiverKey) {
+    return "Generate or save the WordPress receiver API key in Integrations.";
+  }
+
+  if (config.lastTestStatus === "FAILED") {
+    return (
+      config.lastTestMessage ||
+      "The latest WordPress receiver test failed. Fix the endpoint or key, then test again."
+    );
+  }
+
+  if (config.lastTestStatus !== "PASSED") {
+    return "Run Test receiver in Integrations before sending fixes to WordPress.";
+  }
+
+  return "WordPress receiver is ready.";
+}
+
 function readString(value: unknown) {
   return typeof value === "string" ? value : "";
 }

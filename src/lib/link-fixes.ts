@@ -12,6 +12,7 @@ import {
 import { enqueueCrawlRunJob } from "@/lib/crawler-scheduling";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import {
+  getWordPressReceiverReadinessMessage,
   isWordPressReceiverReady,
   readWordPressReceiverConfig,
 } from "@/lib/wordpress";
@@ -32,6 +33,7 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
   if (!hasDatabaseUrl()) {
     return {
       automationIntegrations: [],
+      unavailableWordPressReceivers: [],
       workspace: null,
       domains: [],
       suggestions: [],
@@ -45,6 +47,7 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
   if (!workspace) {
     return {
       automationIntegrations: [],
+      unavailableWordPressReceivers: [],
       workspace: null,
       domains: [],
       suggestions: [],
@@ -107,32 +110,40 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
     }),
   ]);
 
-  return {
-    automationIntegrations: automationIntegrations
-      .map((integration) => {
-        const config = readAutomationIntegrationConfig(integration.configJson);
-        const wordpressConfig =
-          integration.provider === "WORDPRESS_RECEIVER"
-            ? readWordPressReceiverConfig(integration.configJson)
-            : null;
+  const deliveryIntegrations = automationIntegrations.map((integration) => {
+    const config = readAutomationIntegrationConfig(integration.configJson);
+    const wordpressConfig =
+      integration.provider === "WORDPRESS_RECEIVER"
+        ? readWordPressReceiverConfig(integration.configJson)
+        : null;
+    const isReady =
+      integration.provider !== "WORDPRESS_RECEIVER" ||
+      Boolean(wordpressConfig && isWordPressReceiverReady(wordpressConfig));
 
-        return {
-          domainId: integration.domainId,
-          id: integration.id,
-          isReady:
-            integration.provider !== "WORDPRESS_RECEIVER" ||
-            Boolean(
-              wordpressConfig && isWordPressReceiverReady(wordpressConfig),
-            ),
-          label:
-            wordpressConfig?.receiverUrl ||
-            config.label ||
-            integration.domain?.domain ||
-            `${integration.provider} workflow`,
-          provider: integration.provider,
-        };
-      })
-      .filter((integration) => integration.isReady),
+    return {
+      domainId: integration.domainId,
+      id: integration.id,
+      isReady,
+      label:
+        wordpressConfig?.receiverUrl ||
+        config.label ||
+        integration.domain?.domain ||
+        `${integration.provider} workflow`,
+      provider: integration.provider,
+      readinessMessage: wordpressConfig
+        ? getWordPressReceiverReadinessMessage(wordpressConfig)
+        : "",
+    };
+  });
+
+  return {
+    automationIntegrations: deliveryIntegrations.filter(
+      (integration) => integration.isReady,
+    ),
+    unavailableWordPressReceivers: deliveryIntegrations.filter(
+      (integration) =>
+        integration.provider === "WORDPRESS_RECEIVER" && !integration.isReady,
+    ),
     workspace,
     domains,
     suggestions,

@@ -34,6 +34,7 @@ export default async function FixCenterPage({
     domains,
     suggestions,
     counts,
+    unavailableWordPressReceivers,
     verificationCounts,
   } = await getLinkFixCenterData({
     domainId: selectedDomainId,
@@ -185,6 +186,11 @@ export default async function FixCenterPage({
                       integration.provider !== "WORDPRESS_RECEIVER" ||
                       integration.domainId === suggestion.domainId,
                   );
+                  const blockedWordPressReceiver =
+                    unavailableWordPressReceivers.find(
+                      (integration) =>
+                        integration.domainId === suggestion.domainId,
+                    );
 
                   return (
                     <article
@@ -366,6 +372,43 @@ export default async function FixCenterPage({
                             />
                           </button>
                         </form>
+                      ) : null}
+                      {blockedWordPressReceiver ? (
+                        <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                              <p className="font-semibold">
+                                WordPress is not available for this fix yet
+                              </p>
+                              <p className="mt-1">
+                                {blockedWordPressReceiver.readinessMessage}
+                              </p>
+                            </div>
+                            <Link
+                              href="/integrations"
+                              className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-amber-300 bg-white px-3 text-sm font-semibold text-amber-900 transition hover:bg-amber-100"
+                            >
+                              Open Integrations
+                            </Link>
+                          </div>
+                        </div>
+                      ) : null}
+                      {!fixDestinations.length && !blockedWordPressReceiver ? (
+                        <div className="mt-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-600">
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                            <p>
+                              No delivery workflow is ready for this domain.
+                              Connect WordPress, Zapier, or Make to send fixes
+                              directly from Fix Center.
+                            </p>
+                            <Link
+                              href="/integrations"
+                              className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                            >
+                              Open Integrations
+                            </Link>
+                          </div>
+                        </div>
                       ) : null}
                     </article>
                   );
