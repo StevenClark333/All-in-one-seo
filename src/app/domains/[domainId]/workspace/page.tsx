@@ -31,6 +31,18 @@ type DomainWorkspacePageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
+type DomainWorkspace = NonNullable<
+  Awaited<ReturnType<typeof getDomainWorkspaceData>>["domain"]
+>;
+
+type ThematicReport = {
+  detail: string;
+  href: string;
+  label: string;
+  status: "good" | "warning" | "critical" | "neutral";
+  value: string;
+};
+
 export default async function DomainWorkspacePage({
   params,
   searchParams,
@@ -84,6 +96,7 @@ export default async function DomainWorkspacePage({
       integration.status === "CONNECTED",
   );
   const navItems = buildProjectTabs(domain.id);
+  const thematicReports = buildThematicReports(domain);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -269,6 +282,33 @@ export default async function DomainWorkspacePage({
                 latestCrawl ? formatEnum(latestCrawl.status) : "Not started"
               }
             />
+          </section>
+
+          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="text-lg font-semibold">
+                  <HelpLabel help="Focused audit categories for this website, mapped from crawler artifacts, page snapshots, issues, and rendered crawl signals.">
+                    Thematic Reports
+                  </HelpLabel>
+                </h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Quick health cards for the technical areas users usually
+                  inspect first.
+                </p>
+              </div>
+              <Link
+                href={`/technical-audit?domainId=${domain.id}`}
+                className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                View audit details
+              </Link>
+            </div>
+            <div className="grid gap-3 p-5 sm:grid-cols-2 xl:grid-cols-5">
+              {thematicReports.map((report) => (
+                <ThematicReportCard key={report.label} {...report} />
+              ))}
+            </div>
           </section>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -531,6 +571,164 @@ export default async function DomainWorkspacePage({
   );
 }
 
+function buildThematicReports(domain: DomainWorkspace): ThematicReport[] {
+  const latestCrawl = domain.crawlRuns.at(0);
+  const robotsArtifact = domain.artifacts.find(
+    (artifact) => artifact.type === "ROBOTS_TXT",
+  );
+  const sitemapArtifact = domain.artifacts.find(
+    (artifact) => artifact.type === "SITEMAP",
+  );
+  const pagesWithSnapshots = domain.pages.filter(
+    (page) => page.snapshots.length > 0,
+  );
+  const healthyPages = pagesWithSnapshots.filter((page) => {
+    const snapshot = page.snapshots.at(0);
+    const robotsDirective = snapshot?.robotsDirective?.toLowerCase() ?? "";
+
+    return (
+      Boolean(snapshot) &&
+      Number(snapshot?.statusCode) < 400 &&
+      !robotsDirective.includes("noindex")
+    );
+  }).length;
+  const httpsPages = domain.pages.filter((page) =>
+    page.url.toLowerCase().startsWith("https://"),
+  ).length;
+  const schemaPages = pagesWithSnapshots.filter((page) =>
+    hasStructuredData(page.snapshots.at(0)?.metadataJson),
+  ).length;
+  const noindexPages = pagesWithSnapshots.filter((page) =>
+    page.snapshots.at(0)?.robotsDirective?.toLowerCase().includes("noindex"),
+  ).length;
+  const internalIssues = countIssuesByType(domain, [
+    "deep_page:",
+    "sitemap_url_not_internally_linked:",
+    "internally_linked_url_missing_from_sitemap:",
+    "internal_link",
+    "sitemap",
+  ]);
+  const canonicalIssues = countIssuesByType(domain, [
+    "missing_canonical",
+    "broken_canonical",
+    "canonical_non_200",
+  ]);
+  const performanceScore = latestCrawl
+    ? percentage(
+        Math.max(0, latestCrawl.pagesCrawled - latestCrawl.pagesFailed),
+        Math.max(1, latestCrawl.pagesCrawled),
+      )
+    : null;
+  const crawlabilityScore = pagesWithSnapshots.length
+    ? percentage(healthyPages, pagesWithSnapshots.length)
+    : null;
+  const httpsScore = domain.pages.length
+    ? percentage(httpsPages, domain.pages.length)
+    : null;
+  const markupScore = pagesWithSnapshots.length
+    ? percentage(schemaPages, pagesWithSnapshots.length)
+    : null;
+  const indexabilityScore = pagesWithSnapshots.length
+    ? percentage(
+        pagesWithSnapshots.length - noindexPages,
+        pagesWithSnapshots.length,
+      )
+    : null;
+  const jsRenderingUsed = Boolean(latestCrawl?.renderedCaptures.length);
+  const baseHref = `/technical-audit?domainId=${domain.id}`;
+
+  return [
+    {
+      detail: robotsArtifact
+        ? `Fetched ${formatDate(robotsArtifact.createdAt)}`
+        : "Not fetched yet",
+      href: baseHref,
+      label: "Robots.txt",
+      status: artifactStatus(robotsArtifact),
+      value: robotsArtifact?.statusCode
+        ? String(robotsArtifact.statusCode)
+        : "Pending",
+    },
+    {
+      detail: sitemapArtifact
+        ? `Fetched ${formatDate(sitemapArtifact.createdAt)}`
+        : "Not fetched yet",
+      href: baseHref,
+      label: "Sitemap",
+      status: artifactStatus(sitemapArtifact),
+      value: sitemapArtifact?.statusCode
+        ? String(sitemapArtifact.statusCode)
+        : "Pending",
+    },
+    {
+      detail: `${healthyPages} crawlable pages checked`,
+      href: `/pages?domainId=${domain.id}`,
+      label: "Crawlability",
+      status: scoreStatus(crawlabilityScore),
+      value: formatPercent(crawlabilityScore),
+    },
+    {
+      detail: `${httpsPages} HTTPS URLs found`,
+      href: `/pages?domainId=${domain.id}`,
+      label: "HTTPS",
+      status: scoreStatus(httpsScore),
+      value: formatPercent(httpsScore),
+    },
+    {
+      detail: internalIssues
+        ? `${internalIssues} internal SEO issues`
+        : "No internal link issues in current sample",
+      href: `/technical-audit?domainId=${domain.id}`,
+      label: "Internal Linking",
+      status: issueStatus(internalIssues),
+      value: internalIssues ? String(internalIssues) : "Clear",
+    },
+    {
+      detail: `${schemaPages} pages with schema detected`,
+      href: `/pages?domainId=${domain.id}`,
+      label: "Markup",
+      status: scoreStatus(markupScore),
+      value: formatPercent(markupScore),
+    },
+    {
+      detail: latestCrawl
+        ? `${latestCrawl.pagesFailed} failed pages in latest crawl`
+        : "No crawl run yet",
+      href: latestCrawl ? `/crawl-runs/${latestCrawl.id}` : baseHref,
+      label: "Performance",
+      status: scoreStatus(performanceScore),
+      value: formatPercent(performanceScore),
+    },
+    {
+      detail: noindexPages
+        ? `${noindexPages} noindex pages`
+        : "No noindex pages in current sample",
+      href: `/pages?domainId=${domain.id}`,
+      label: "Indexability",
+      status: scoreStatus(indexabilityScore),
+      value: formatPercent(indexabilityScore),
+    },
+    {
+      detail: canonicalIssues
+        ? `${canonicalIssues} canonical issues`
+        : "No canonical issues in priority queue",
+      href: `/issues?domainId=${domain.id}`,
+      label: "Canonicals",
+      status: issueStatus(canonicalIssues),
+      value: canonicalIssues ? String(canonicalIssues) : "Clear",
+    },
+    {
+      detail: jsRenderingUsed
+        ? "Rendered crawl fallback was used"
+        : "Standard crawler data",
+      href: baseHref,
+      label: "JS Rendering",
+      status: jsRenderingUsed ? "warning" : "good",
+      value: jsRenderingUsed ? "Used" : "Stable",
+    },
+  ];
+}
+
 function buildProjectTabs(domainId: string) {
   return [
     {
@@ -637,6 +835,44 @@ function ActionLink({
   );
 }
 
+function ThematicReportCard({
+  detail,
+  href,
+  label,
+  status,
+  value,
+}: ThematicReport) {
+  const tone = getThematicTone(status);
+
+  return (
+    <Link
+      href={href}
+      className="min-w-0 rounded-md border border-slate-200 bg-slate-50 p-4 transition hover:border-slate-300 hover:bg-white"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <p className="font-semibold text-slate-800">{label}</p>
+        <span
+          className={`mt-1 size-2 shrink-0 rounded-full ${tone.dot}`}
+          aria-hidden="true"
+        />
+      </div>
+      <p className={`mt-3 text-2xl font-semibold ${tone.text}`}>{value}</p>
+      <p className="mt-2 min-h-10 text-sm leading-5 text-slate-500">{detail}</p>
+    </Link>
+  );
+}
+
+function getThematicTone(status: ThematicReport["status"]) {
+  const tones = {
+    critical: { dot: "bg-red-500", text: "text-red-700" },
+    good: { dot: "bg-emerald-500", text: "text-emerald-700" },
+    neutral: { dot: "bg-slate-400", text: "text-slate-700" },
+    warning: { dot: "bg-amber-500", text: "text-amber-700" },
+  };
+
+  return tones[status];
+}
+
 function Metric({
   help,
   label,
@@ -712,6 +948,79 @@ function StatusNotice({ message }: { message: string }) {
       <p className="mt-1 text-sm leading-6">{message}</p>
     </div>
   );
+}
+
+function artifactStatus(
+  artifact: DomainWorkspace["artifacts"][number] | undefined,
+): ThematicReport["status"] {
+  if (!artifact) {
+    return "neutral";
+  }
+
+  if (
+    artifact.statusCode &&
+    artifact.statusCode >= 200 &&
+    artifact.statusCode < 400
+  ) {
+    return "good";
+  }
+
+  return artifact.statusCode ? "critical" : "warning";
+}
+
+function countIssuesByType(domain: DomainWorkspace, patterns: string[]) {
+  return domain.issues.filter((issue) =>
+    patterns.some((pattern) =>
+      pattern.endsWith(":")
+        ? issue.issueType.startsWith(pattern)
+        : issue.issueType.includes(pattern),
+    ),
+  ).length;
+}
+
+function formatPercent(value: number | null) {
+  return value === null ? "Pending" : `${value}%`;
+}
+
+function hasStructuredData(metadataJson: unknown) {
+  if (!metadataJson || typeof metadataJson !== "object") {
+    return false;
+  }
+
+  const metadata = metadataJson as Record<string, unknown>;
+  const schemaCount = metadata.schemaCount;
+  const schemaTypes = metadata.schemaTypes;
+  const jsonLdCount = metadata.jsonLdCount;
+
+  return (
+    (typeof schemaCount === "number" && schemaCount > 0) ||
+    (typeof jsonLdCount === "number" && jsonLdCount > 0) ||
+    (Array.isArray(schemaTypes) && schemaTypes.length > 0)
+  );
+}
+
+function issueStatus(count: number): ThematicReport["status"] {
+  if (count === 0) {
+    return "good";
+  }
+
+  return count >= 3 ? "critical" : "warning";
+}
+
+function percentage(part: number, total: number) {
+  return Math.round((part / total) * 100);
+}
+
+function scoreStatus(value: number | null): ThematicReport["status"] {
+  if (value === null) {
+    return "neutral";
+  }
+
+  if (value >= 90) {
+    return "good";
+  }
+
+  return value >= 70 ? "warning" : "critical";
 }
 
 function formatEnum(value: string) {

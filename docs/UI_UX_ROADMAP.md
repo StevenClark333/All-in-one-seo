@@ -279,18 +279,18 @@ As the product grows, organize tools into groups:
 
 ### D. Thematic Reports
 
-- [ ] Add Thematic Reports section to domain workspace.
-- [ ] Add Robots.txt card.
-- [ ] Add Sitemap card.
-- [ ] Add Crawlability card.
-- [ ] Add HTTPS card.
-- [ ] Add Internal Linking card.
-- [ ] Add Markup / Schema card.
-- [ ] Add Performance card.
-- [ ] Add Indexability card.
-- [ ] Add Canonicals card.
-- [ ] Add JS Rendering card.
-- [ ] Link each card to the relevant filtered detail view.
+- [x] Add Thematic Reports section to domain workspace.
+- [x] Add Robots.txt card.
+- [x] Add Sitemap card.
+- [x] Add Crawlability card.
+- [x] Add HTTPS card.
+- [x] Add Internal Linking card.
+- [x] Add Markup / Schema card.
+- [x] Add Performance card.
+- [x] Add Indexability card.
+- [x] Add Canonicals card.
+- [x] Add JS Rendering card.
+- [x] Link each card to the relevant filtered detail view.
 
 ### E. Domain-Scoped Destination Pages
 
@@ -384,9 +384,9 @@ As the product grows, organize tools into groups:
 
 ### UX Batch 3: Thematic Reports
 
-- [ ] Add thematic report cards.
-- [ ] Map existing crawler/analyzer data into card states.
-- [ ] Link each card to filtered details.
+- [x] Add thematic report cards.
+- [x] Map existing crawler/analyzer data into card states.
+- [x] Link each card to filtered details.
 
 ### UX Batch 4: Project Selector And Breadcrumbs
 

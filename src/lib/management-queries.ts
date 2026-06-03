@@ -334,7 +334,7 @@ export async function getDomainWorkspaceData(domainId: string) {
     include: {
       artifacts: {
         orderBy: { createdAt: "desc" },
-        take: 4,
+        take: 8,
       },
       changeEvents: {
         orderBy: { createdAt: "desc" },
@@ -381,7 +381,7 @@ export async function getDomainWorkspaceData(domainId: string) {
           },
         },
         orderBy: [{ importance: "asc" }, { updatedAt: "desc" }],
-        take: 8,
+        take: 50,
       },
       reports: {
         orderBy: { createdAt: "desc" },
