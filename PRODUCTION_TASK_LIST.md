@@ -220,6 +220,7 @@ Work should move through these batches in order. At the start of each batch, rer
 - [x] Add plan-based domain limits.
 - [x] Add bulk domain import.
 - [x] Add domain-first project workspace with scoped pages, issues, fixes, reports, integrations, and crawl actions.
+- [x] Add active project banners and domain-scoped destination pages for workspace navigation.
 
 ## 7. Domain Verification
 

@@ -14,6 +14,7 @@ import {
   testWordPressReceiverAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { readAutomationIntegrationConfig } from "@/lib/automation-integrations";
 import { readDeploymentIntegrationConfig } from "@/lib/deployment-checks";
@@ -31,6 +32,10 @@ import {
 
 export const dynamic = "force-dynamic";
 
+type IntegrationsPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
 const providers = [
   "GOOGLE_SEARCH_CONSOLE",
   "GOOGLE_ANALYTICS",
@@ -46,7 +51,11 @@ const providers = [
 
 const statuses = ["PLANNED", "CONNECTED", "NEEDS_AUTH", "ERROR"];
 
-export default async function IntegrationsPage() {
+export default async function IntegrationsPage({
+  searchParams,
+}: IntegrationsPageProps) {
+  const params = searchParams ? await searchParams : {};
+  const selectedDomainId = getSingle(params.domainId);
   const { workspace, clients, domains, integrations, deploymentChecks } =
     await getIntegrationSettingsData();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -72,6 +81,9 @@ export default async function IntegrationsPage() {
   );
   const wordpressDomains = domains.filter(
     (domain) => domain.platform === "WORDPRESS",
+  );
+  const selectedDomain = domains.find(
+    (domain) => domain.id === selectedDomainId,
   );
   const wordpressReceiverIntegrations = integrations.filter(
     (integration) => integration.provider === "WORDPRESS_RECEIVER",
@@ -128,6 +140,15 @@ export default async function IntegrationsPage() {
               />
             </div>
           </header>
+
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="Integration setup and receiver values are being viewed from this domain workspace."
+            />
+          ) : null}
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">
@@ -1589,6 +1610,10 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getSingle(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }
 
 function readConfigString(value: unknown, key: string) {

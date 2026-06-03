@@ -60,6 +60,30 @@ type PageInventoryItem = Prisma.PageGetPayload<{
   include: typeof pageInventoryInclude;
 }>;
 type PageDetail = Prisma.PageGetPayload<{ include: typeof pageDetailInclude }>;
+export type ActiveProjectDomain = {
+  client: { name: string } | null;
+  domain: string;
+  id: string;
+};
+
+export async function getActiveProjectDomain(
+  domainId: string | undefined,
+): Promise<ActiveProjectDomain | null> {
+  if (!domainId || !hasDatabaseUrl()) {
+    return null;
+  }
+
+  const workspace = await getPrimaryWorkspace();
+
+  if (!workspace) {
+    return null;
+  }
+
+  return getPrisma().domain.findFirst({
+    where: { archivedAt: null, id: domainId, workspaceId: workspace.id },
+    include: { client: { select: { name: true } } },
+  });
+}
 
 export async function getClientManagementData() {
   if (!hasDatabaseUrl()) {

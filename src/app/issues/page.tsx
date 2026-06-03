@@ -2,6 +2,7 @@ import { AlertTriangle, CircleDot, Filter, ListChecks } from "lucide-react";
 import Link from "next/link";
 import { bulkUpdateIssues } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getIssueListData } from "@/lib/issue-queries";
 
@@ -46,6 +47,9 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
       count: issues.filter((issue) => issue.issueType === issueType).length,
     }))
     .filter((group) => group.count > 0);
+  const selectedDomain = domains.find(
+    (domain) => domain.id === filters.domainId,
+  );
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -73,6 +77,15 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               />
             </div>
           </header>
+
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="Issue filters and bulk actions are focused on this domain."
+            />
+          ) : null}
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">

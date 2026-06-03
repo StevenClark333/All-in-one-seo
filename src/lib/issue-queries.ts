@@ -80,6 +80,7 @@ export async function getIssueListData(filters: IssueListFilters = {}) {
       }),
       getPrisma().domain.findMany({
         where: { workspaceId: workspace.id },
+        include: { client: { select: { name: true } } },
         orderBy: { domain: "asc" },
       }),
       getPrisma().workspaceMember.findMany({

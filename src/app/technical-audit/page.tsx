@@ -1,13 +1,24 @@
 import Link from "next/link";
 import { AlertTriangle, Network } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { getInternalLinkGraphData } from "@/lib/link-graph-queries";
+import { getActiveProjectDomain } from "@/lib/management-queries";
 
 export const dynamic = "force-dynamic";
 
-export default async function TechnicalAuditPage() {
+type TechnicalAuditPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function TechnicalAuditPage({
+  searchParams,
+}: TechnicalAuditPageProps) {
+  const params = searchParams ? await searchParams : {};
+  const selectedDomainId = getSingle(params.domainId);
   const { workspace, pages, issues, opportunities } =
-    await getInternalLinkGraphData();
+    await getInternalLinkGraphData({ domainId: selectedDomainId });
+  const selectedDomain = await getActiveProjectDomain(selectedDomainId);
   const orphanCount = pages.filter((page) => page.isOrphan).length;
   const deepPageCount = issues.filter((issue) =>
     issue.issueType.startsWith("deep_page:"),
@@ -42,6 +53,15 @@ export default async function TechnicalAuditPage() {
               </h2>
             </div>
           </header>
+
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="Technical audit graphs and link opportunities are filtered to this domain."
+            />
+          ) : null}
 
           <div className="mt-6 grid gap-4 md:grid-cols-5">
             <Metric label="Tracked pages" value={pages.length} />
@@ -273,4 +293,8 @@ function formatGraphIssue(issueType: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getSingle(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }

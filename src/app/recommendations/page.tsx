@@ -6,11 +6,21 @@ import {
   generateTemplateFixBrief,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { getAiRecommendationCenterData } from "@/lib/ai";
+import { getActiveProjectDomain } from "@/lib/management-queries";
 
 export const dynamic = "force-dynamic";
 
-export default async function RecommendationsPage() {
+type RecommendationsPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function RecommendationsPage({
+  searchParams,
+}: RecommendationsPageProps) {
+  const params = searchParams ? await searchParams : {};
+  const selectedDomainId = getSingle(params.domainId);
   const {
     workspace,
     pages,
@@ -18,7 +28,8 @@ export default async function RecommendationsPage() {
     templateIssueGroups,
     recommendations,
     usage,
-  } = await getAiRecommendationCenterData();
+  } = await getAiRecommendationCenterData({ domainId: selectedDomainId });
+  const selectedDomain = await getActiveProjectDomain(selectedDomainId);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -41,6 +52,15 @@ export default async function RecommendationsPage() {
               {usage.used} / {usage.quota} this month
             </div>
           </header>
+
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="AI suggestions, fix briefs, templates, and cached recommendations are filtered to this domain."
+            />
+          ) : null}
 
           <section className="mt-6 grid gap-6 xl:grid-cols-2">
             <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -259,4 +279,8 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getSingle(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }

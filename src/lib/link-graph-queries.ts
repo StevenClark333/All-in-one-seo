@@ -2,7 +2,11 @@ import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { generateInternalLinkOpportunities } from "@/lib/link-graph-analyzer";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
-export async function getInternalLinkGraphData() {
+export async function getInternalLinkGraphData({
+  domainId,
+}: {
+  domainId?: string;
+} = {}) {
   if (!hasDatabaseUrl()) {
     return {
       workspace: null,
@@ -27,7 +31,10 @@ export async function getInternalLinkGraphData() {
 
   const [domains, issues] = await Promise.all([
     getPrisma().domain.findMany({
-      where: { workspaceId: workspace.id },
+      where: {
+        workspaceId: workspace.id,
+        ...(domainId ? { id: domainId } : {}),
+      },
       include: {
         client: true,
         pages: {
@@ -43,6 +50,7 @@ export async function getInternalLinkGraphData() {
     getPrisma().seoIssue.findMany({
       where: {
         workspaceId: workspace.id,
+        ...(domainId ? { domainId } : {}),
         status: { not: "FIXED" },
         OR: [
           { issueType: { startsWith: "deep_page:" } },

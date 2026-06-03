@@ -8,6 +8,7 @@ import {
   updateLinkFixAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { InfoTooltip } from "@/components/info-tooltip";
 import {
   buildLinkFixLifecycleSteps,
@@ -126,6 +127,15 @@ export default async function FixCenterPage({
             </div>
           </section>
 
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="Fix generation, delivery workflows, and audit trails are filtered to this domain."
+            />
+          ) : null}
+
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
               <div>
@@ -173,10 +183,14 @@ export default async function FixCenterPage({
                 </button>
                 {selectedDomainId || selectedStatus ? (
                   <Link
-                    href="/fix-center"
+                    href={
+                      selectedDomainId
+                        ? `/domains/${selectedDomainId}/workspace`
+                        : "/fix-center"
+                    }
                     className="inline-flex h-10 items-center justify-center rounded-md border border-slate-200 px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
                   >
-                    Clear
+                    {selectedDomainId ? "Workspace" : "Clear"}
                   </Link>
                 ) : null}
               </form>

@@ -14,6 +14,7 @@ import {
   verifyReportWhiteLabelDomainAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import {
   formatReportWhiteLabelVerificationValue,
@@ -23,7 +24,13 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default async function ReportsPage() {
+type ReportsPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function ReportsPage({ searchParams }: ReportsPageProps) {
+  const params = searchParams ? await searchParams : {};
+  const selectedDomainId = getSingle(params.domainId);
   const {
     workspace,
     clients,
@@ -33,6 +40,15 @@ export default async function ReportsPage() {
     templates,
     whiteLabelDomains,
   } = await getReportListData();
+  const selectedDomain = domains.find(
+    (domain) => domain.id === selectedDomainId,
+  );
+  const visibleReports = selectedDomainId
+    ? reports.filter((report) => report.domainId === selectedDomainId)
+    : reports;
+  const visibleSchedules = selectedDomainId
+    ? schedules.filter((schedule) => schedule.domainId === selectedDomainId)
+    : schedules;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -52,7 +68,7 @@ export default async function ReportsPage() {
 
             <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
               <FileText className="size-4" aria-hidden="true" />
-              {reports.length} generated
+              {visibleReports.length} generated
               <InfoTooltip
                 label="Reports generated for clients, domains, or the full workspace."
                 passive
@@ -60,6 +76,15 @@ export default async function ReportsPage() {
               />
             </div>
           </header>
+
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="Report generation, schedules, and report library are focused on this domain."
+            />
+          ) : null}
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">
@@ -104,6 +129,7 @@ export default async function ReportsPage() {
                 help="Limit report data to one website."
                 label="Domain"
                 name="domainId"
+                defaultValue={selectedDomainId ?? ""}
               >
                 <option value="">All selected client domains</option>
                 {domains.map((domain) => (
@@ -193,7 +219,11 @@ export default async function ReportsPage() {
                   </option>
                 ))}
               </Select>
-              <Select label="Domain" name="domainId">
+              <Select
+                label="Domain"
+                name="domainId"
+                defaultValue={selectedDomainId ?? ""}
+              >
                 <option value="">All selected client domains</option>
                 {domains.map((domain) => (
                   <option key={domain.id} value={domain.id}>
@@ -491,8 +521,8 @@ export default async function ReportsPage() {
             </div>
 
             <div className="grid divide-y divide-slate-100">
-              {schedules.length ? (
-                schedules.map((schedule) => (
+              {visibleSchedules.length ? (
+                visibleSchedules.map((schedule) => (
                   <article
                     key={schedule.id}
                     className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_130px_150px_120px_130px]"
@@ -544,8 +574,8 @@ export default async function ReportsPage() {
             </div>
 
             <div className="grid divide-y divide-slate-100">
-              {reports.length ? (
-                reports.map((report) => (
+              {visibleReports.length ? (
+                visibleReports.map((report) => (
                   <article
                     key={report.id}
                     className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_130px_130px_180px_130px]"
@@ -602,11 +632,13 @@ const reportSectionOptions = [
 
 function Select({
   children,
+  defaultValue,
   help,
   label,
   name,
 }: {
   children: React.ReactNode;
+  defaultValue?: string;
   help?: string;
   label: string;
   name: string;
@@ -618,6 +650,7 @@ function Select({
       </span>
       <select
         name={name}
+        defaultValue={defaultValue}
         className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
       >
         {children}
@@ -662,4 +695,8 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getSingle(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }

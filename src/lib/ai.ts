@@ -40,7 +40,11 @@ type TemplateFixBriefGroup = {
   }>;
 };
 
-export async function getAiRecommendationCenterData() {
+export async function getAiRecommendationCenterData({
+  domainId,
+}: {
+  domainId?: string;
+} = {}) {
   const workspace = await getPrimaryWorkspace();
 
   if (!workspace) {
@@ -58,7 +62,10 @@ export async function getAiRecommendationCenterData() {
   const [pages, issues, templateIssues, recommendations, used, quota] =
     await Promise.all([
       getPrisma().page.findMany({
-        where: { domain: { workspaceId: workspace.id } },
+        where: {
+          domain: { workspaceId: workspace.id },
+          ...(domainId ? { domainId } : {}),
+        },
         include: {
           domain: { include: { client: true } },
           snapshots: { orderBy: { createdAt: "desc" }, take: 1 },
@@ -68,7 +75,11 @@ export async function getAiRecommendationCenterData() {
         take: 25,
       }),
       getPrisma().seoIssue.findMany({
-        where: { workspaceId: workspace.id, status: { not: "FIXED" } },
+        where: {
+          workspaceId: workspace.id,
+          ...(domainId ? { domainId } : {}),
+          status: { not: "FIXED" },
+        },
         include: {
           domain: true,
           page: true,
@@ -84,6 +95,7 @@ export async function getAiRecommendationCenterData() {
       getPrisma().seoIssue.findMany({
         where: {
           workspaceId: workspace.id,
+          ...(domainId ? { domainId } : {}),
           pageId: { not: null },
           status: { not: "FIXED" },
         },
@@ -105,8 +117,20 @@ export async function getAiRecommendationCenterData() {
       getPrisma().seoRecommendation.findMany({
         where: {
           OR: [
-            { page: { domain: { workspaceId: workspace.id } } },
-            { issue: { workspaceId: workspace.id } },
+            {
+              page: {
+                domain: {
+                  workspaceId: workspace.id,
+                  ...(domainId ? { id: domainId } : {}),
+                },
+              },
+            },
+            {
+              issue: {
+                workspaceId: workspace.id,
+                ...(domainId ? { domainId } : {}),
+              },
+            },
           ],
         },
         include: {

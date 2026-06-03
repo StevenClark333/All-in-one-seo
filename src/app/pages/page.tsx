@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FileSearch, Link2 } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ActiveProjectBanner } from "@/components/active-project-banner";
 import { getPageInventoryData } from "@/lib/management-queries";
 import { getTemplateLabel, inferPageTemplate } from "@/lib/template-detection";
 
@@ -56,6 +57,15 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
             <Metric label="Critical pages" value={criticalPages} />
             <Metric label="Pages with title" value={pagesWithTitles} />
           </section>
+
+          {selectedDomain ? (
+            <ActiveProjectBanner
+              clientName={selectedDomain.client?.name}
+              domain={selectedDomain.domain}
+              domainId={selectedDomain.id}
+              note="Page inventory and template groups are filtered to this domain."
+            />
+          ) : null}
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 p-5">
@@ -135,10 +145,10 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                 {selectedDomainId ? (
                   <div className="flex items-end">
                     <Link
-                      href="/pages"
+                      href={`/domains/${selectedDomainId}/workspace`}
                       className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
                     >
-                      Clear
+                      Workspace
                     </Link>
                   </div>
                 ) : null}
