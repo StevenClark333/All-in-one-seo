@@ -343,6 +343,13 @@ export async function getDomainWorkspaceData(domainId: string) {
       client: true,
       crawlRuns: {
         orderBy: { createdAt: "desc" },
+        include: {
+          renderedCaptures: {
+            orderBy: { createdAt: "desc" },
+            select: { id: true, status: true },
+            take: 1,
+          },
+        },
         take: 5,
       },
       integrations: {

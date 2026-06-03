@@ -231,9 +231,9 @@ As the product grows, organize tools into groups:
 
 ### B. Domain Workspace / Site Audit Detail
 
-- [ ] Rename the project workspace page header to `Site Audit: domain.com`.
-- [ ] Add breadcrumb: Home > SEO > Site Audit > domain.com.
-- [ ] Add context metadata row:
+- [x] Rename the project workspace page header to `Site Audit: domain.com`.
+- [x] Add breadcrumb: Home > SEO > Site Audit > domain.com.
+- [x] Add context metadata row:
   - Domain
   - Client
   - Last updated
@@ -241,13 +241,13 @@ As the product grows, organize tools into groups:
   - Platform
   - JS rendering status
   - Verification status
-- [ ] Add action buttons:
+- [x] Add action buttons:
   - Rerun crawl
   - Generate report / PDF
   - Export
   - Share
   - Settings
-- [ ] Convert stacked workspace sections into tabs:
+- [x] Convert stacked workspace sections into tabs:
   - Overview
   - Issues
   - Crawled Pages
@@ -256,7 +256,7 @@ As the product grows, organize tools into groups:
   - Fixes
   - Reports
   - Integrations
-- [ ] Keep active project selector visible on every tab.
+- [x] Keep active project selector visible on every tab.
 
 ### C. Site Audit Overview Cards
 
@@ -376,11 +376,11 @@ As the product grows, organize tools into groups:
 
 ### UX Batch 2: Site Audit Workspace Upgrade
 
-- [ ] Rename workspace header to `Site Audit: domain.com`.
-- [ ] Add domain metadata row.
-- [ ] Add action bar.
-- [ ] Add tabs.
-- [ ] Move current workspace content into Overview tab.
+- [x] Rename workspace header to `Site Audit: domain.com`.
+- [x] Add domain metadata row.
+- [x] Add action bar.
+- [x] Add tabs.
+- [x] Move current workspace content into Overview tab.
 
 ### UX Batch 3: Thematic Reports
 

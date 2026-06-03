@@ -3,17 +3,23 @@ import { notFound } from "next/navigation";
 import type React from "react";
 import {
   AlertTriangle,
-  ArrowLeft,
   Bot,
+  CalendarClock,
   CheckCircle2,
+  ChevronRight,
   ClipboardList,
+  Download,
+  ExternalLink,
   FileText,
   Hammer,
+  Home,
   Link2,
   Play,
   PlugZap,
+  Settings,
   ShieldCheck,
 } from "lucide-react";
+import { generateReport } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
@@ -40,6 +46,18 @@ export default async function DomainWorkspacePage({
 
   const latestCrawl = domain.crawlRuns.at(0);
   const latestScore = domain.scoreHistory.at(0);
+  const latestReport = domain.reports.at(0);
+  const lastUpdatedAt =
+    latestCrawl?.completedAt ?? latestCrawl?.createdAt ?? domain.updatedAt;
+  const jsRenderingStatus = latestCrawl?.renderedCaptures.length
+    ? "Rendered fallback used"
+    : "Standard crawler";
+  const shareHref =
+    latestReport?.status === "PUBLISHED" && latestReport.shareToken
+      ? `/share/reports/${latestReport.shareToken}`
+      : latestReport
+        ? `/reports/${latestReport.id}`
+        : `/reports?domainId=${domain.id}`;
   const isVerified =
     domain.verificationStatus === "VERIFIED" ||
     domain.verifications.some(
@@ -65,7 +83,7 @@ export default async function DomainWorkspacePage({
       integration.provider === "WORDPRESS_RECEIVER" &&
       integration.status === "CONNECTED",
   );
-  const navItems = buildProjectNav(domain.id);
+  const navItems = buildProjectTabs(domain.id);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -73,22 +91,30 @@ export default async function DomainWorkspacePage({
         <AppSidebar active="Sites" />
 
         <section className="min-w-0 px-5 py-6 sm:px-8 lg:px-10">
-          <div className="flex flex-wrap gap-2">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex flex-wrap items-center gap-2 text-sm text-slate-500"
+          >
             <Link
-              href="/domains"
-              className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
+              href="/"
+              className="inline-flex items-center gap-1 font-medium hover:text-slate-950"
             >
-              <ArrowLeft className="size-4" aria-hidden="true" />
-              Sites
+              <Home className="size-4" aria-hidden="true" />
+              Home
             </Link>
-            <Link
-              href={`/domains/${domain.id}/verification`}
-              className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
-            >
-              <ShieldCheck className="size-4" aria-hidden="true" />
-              Verification
+            <ChevronRight className="size-4" aria-hidden="true" />
+            <Link href="/domains" className="font-medium hover:text-slate-950">
+              SEO
             </Link>
-          </div>
+            <ChevronRight className="size-4" aria-hidden="true" />
+            <Link href="/domains" className="font-medium hover:text-slate-950">
+              Site Audit
+            </Link>
+            <ChevronRight className="size-4" aria-hidden="true" />
+            <span className="font-semibold text-slate-800">
+              {domain.domain}
+            </span>
+          </nav>
 
           <header className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
@@ -98,37 +124,103 @@ export default async function DomainWorkspacePage({
                   {domain.client?.name ?? "Unassigned client"}
                 </p>
                 <h2 className="mt-2 break-words text-3xl font-semibold tracking-normal">
-                  {domain.domain}
+                  Site Audit: {domain.domain}
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Project workspace for this domain. Audit, pages, issues,
-                  fixes, reports, integrations, and settings stay scoped to one
-                  website.
+                  Active project workspace for this website. Audit, pages,
+                  issues, fixes, reports, integrations, and settings stay scoped
+                  to one domain.
                 </p>
               </div>
-              <form action="/api/domains/start-crawl" method="post">
-                <input type="hidden" name="domainId" value={domain.id} />
-                <input
-                  type="hidden"
-                  name="returnTo"
-                  value={`/domains/${domain.id}/workspace`}
-                />
-                <button
-                  disabled={!isVerified}
-                  className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-                >
-                  <Play className="size-4" aria-hidden="true" />
-                  Run crawl
-                  <InfoTooltip
-                    label="Run a fresh domain crawl and update pages, issues, scores, and fix verification."
-                    passive
-                    side="left"
+              <div className="flex flex-wrap gap-2">
+                <form action="/api/domains/start-crawl" method="post">
+                  <input type="hidden" name="domainId" value={domain.id} />
+                  <input
+                    type="hidden"
+                    name="returnTo"
+                    value={`/domains/${domain.id}/workspace`}
                   />
-                </button>
-              </form>
+                  <button
+                    disabled={!isVerified}
+                    className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                  >
+                    <Play className="size-4" aria-hidden="true" />
+                    Rerun crawl
+                    <InfoTooltip
+                      label="Run a fresh domain crawl and update pages, issues, scores, and fix verification."
+                      passive
+                      side="left"
+                    />
+                  </button>
+                </form>
+                <form action={generateReport}>
+                  <input type="hidden" name="domainId" value={domain.id} />
+                  <input
+                    type="hidden"
+                    name="title"
+                    value={`${domain.domain} SEO report`}
+                  />
+                  <button className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
+                    <FileText className="size-4" aria-hidden="true" />
+                    Generate report
+                  </button>
+                </form>
+                <ActionLink
+                  disabled={!latestReport}
+                  href={
+                    latestReport
+                      ? `/reports/${latestReport.id}/pdf`
+                      : `/reports?domainId=${domain.id}`
+                  }
+                  label="PDF"
+                >
+                  <Download className="size-4" aria-hidden="true" />
+                </ActionLink>
+                <ActionLink
+                  href={`/pages?domainId=${domain.id}`}
+                  label="Export"
+                >
+                  <ExternalLink className="size-4" aria-hidden="true" />
+                </ActionLink>
+                <ActionLink href={shareHref} label="Share">
+                  <ExternalLink className="size-4" aria-hidden="true" />
+                </ActionLink>
+                <ActionLink href={`/domains/${domain.id}`} label="Settings">
+                  <Settings className="size-4" aria-hidden="true" />
+                </ActionLink>
+              </div>
             </div>
 
-            <div className="mt-5 grid gap-2 md:grid-cols-4 xl:grid-cols-7">
+            <dl className="mt-5 grid gap-3 border-t border-slate-200 pt-5 sm:grid-cols-2 xl:grid-cols-7">
+              <ContextItem label="Domain" value={domain.domain} />
+              <ContextItem
+                label="Client"
+                value={domain.client?.name ?? "Unassigned"}
+              />
+              <ContextItem
+                label="Last updated"
+                value={formatDate(lastUpdatedAt)}
+              />
+              <ContextItem
+                label="Pages crawled"
+                value={`${latestCrawl?.pagesCrawled ?? 0} / ${domain.pages.length}`}
+              />
+              <ContextItem
+                label="Platform"
+                value={formatEnum(domain.platform)}
+              />
+              <ContextItem label="JS rendering" value={jsRenderingStatus} />
+              <ContextItem
+                label="Verification"
+                value={
+                  isVerified
+                    ? "Verified"
+                    : formatEnum(domain.verificationStatus)
+                }
+              />
+            </dl>
+
+            <div className="mt-5 flex items-center gap-2 overflow-x-auto border-b border-slate-200">
               {navItems.map((item) => {
                 const Icon = item.icon;
 
@@ -136,7 +228,11 @@ export default async function DomainWorkspacePage({
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="flex h-11 items-center justify-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white"
+                    className={`inline-flex h-11 shrink-0 items-center justify-center gap-2 border-b-2 px-3 text-sm font-semibold transition ${
+                      item.active
+                        ? "border-blue-600 text-slate-950"
+                        : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-950"
+                    }`}
                   >
                     <Icon className="size-4" aria-hidden="true" />
                     {item.label}
@@ -366,9 +462,7 @@ export default async function DomainWorkspacePage({
                       </Link>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500">
-                      No crawl runs yet.
-                    </p>
+                    <p className="text-sm text-slate-500">No crawl runs yet.</p>
                   )}
                 </div>
               </section>
@@ -437,16 +531,110 @@ export default async function DomainWorkspacePage({
   );
 }
 
-function buildProjectNav(domainId: string) {
+function buildProjectTabs(domainId: string) {
   return [
-    { href: `/pages?domainId=${domainId}`, icon: ClipboardList, label: "Pages" },
-    { href: `/issues?domainId=${domainId}`, icon: AlertTriangle, label: "Issues" },
-    { href: `/fix-center?domainId=${domainId}`, icon: Hammer, label: "Fixes" },
-    { href: `/technical-audit?domainId=${domainId}`, icon: Link2, label: "Audit" },
-    { href: `/recommendations?domainId=${domainId}`, icon: Bot, label: "AI" },
-    { href: `/reports?domainId=${domainId}`, icon: FileText, label: "Reports" },
-    { href: `/integrations?domainId=${domainId}`, icon: PlugZap, label: "Integrations" },
+    {
+      active: true,
+      href: `/domains/${domainId}/workspace`,
+      icon: ShieldCheck,
+      label: "Overview",
+    },
+    {
+      active: false,
+      href: `/issues?domainId=${domainId}`,
+      icon: AlertTriangle,
+      label: "Issues",
+    },
+    {
+      active: false,
+      href: `/pages?domainId=${domainId}`,
+      icon: ClipboardList,
+      label: "Crawled Pages",
+    },
+    {
+      active: false,
+      href: `/technical-audit?domainId=${domainId}`,
+      icon: Link2,
+      label: "Internal Links",
+    },
+    {
+      active: false,
+      href: `/technical-audit?domainId=${domainId}`,
+      icon: CalendarClock,
+      label: "Changes",
+    },
+    {
+      active: false,
+      href: `/fix-center?domainId=${domainId}`,
+      icon: Hammer,
+      label: "Fixes",
+    },
+    {
+      active: false,
+      href: `/reports?domainId=${domainId}`,
+      icon: FileText,
+      label: "Reports",
+    },
+    {
+      active: false,
+      href: `/integrations?domainId=${domainId}`,
+      icon: PlugZap,
+      label: "Integrations",
+    },
+    {
+      active: false,
+      href: `/recommendations?domainId=${domainId}`,
+      icon: Bot,
+      label: "AI",
+    },
   ];
+}
+
+function ContextItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="min-w-0 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
+      <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+        {label}
+      </dt>
+      <dd className="mt-1 truncate text-sm font-semibold text-slate-700">
+        {value}
+      </dd>
+    </div>
+  );
+}
+
+function ActionLink({
+  children,
+  disabled,
+  href,
+  label,
+}: {
+  children: React.ReactNode;
+  disabled?: boolean;
+  href: string;
+  label: string;
+}) {
+  if (disabled) {
+    return (
+      <span
+        aria-disabled="true"
+        className="inline-flex h-10 cursor-not-allowed items-center gap-2 whitespace-nowrap rounded-md border border-slate-200 bg-slate-100 px-4 text-sm font-medium text-slate-300"
+      >
+        {children}
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <Link
+      href={href}
+      className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
+    >
+      {children}
+      {label}
+    </Link>
+  );
 }
 
 function Metric({
@@ -532,6 +720,14 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatDate(value: Date) {
+  return new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(value);
 }
 
 function getSingle(value: string | string[] | undefined) {
