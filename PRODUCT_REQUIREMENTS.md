@@ -26,6 +26,10 @@ We tell users what changed, what broke, why it matters, and exactly what to fix 
 
 The working product name, verification TXT namespace, pricing tiers, launch criteria, onboarding checklist, support process, data retention policy, and legal page requirements live in `docs/PRODUCT_OPERATIONS.md`.
 
+### UI/UX Direction Source
+
+The project/domain-first interface direction, Semrush reference findings, missing UX patterns, and UI implementation batches live in `docs/UI_UX_ROADMAP.md`.
+
 ## 3. Target Customers
 
 ### Primary Customers

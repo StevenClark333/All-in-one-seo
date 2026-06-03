@@ -2,7 +2,7 @@
 
 This document is the execution source of truth for building the complete production SaaS product.
 
-Use `PRODUCT_REQUIREMENTS.md` for product scope and decisions. Use this file to track implementation progress.
+Use `PRODUCT_REQUIREMENTS.md` for product scope and decisions. Use `docs/UI_UX_ROADMAP.md` for the Semrush-inspired project/domain UX direction. Use this file to track implementation progress.
 
 Status legend:
 
@@ -14,6 +14,8 @@ Status legend:
 ## 0. Execution Batches
 
 Work should move through these batches in order. At the start of each batch, reread this document and `PRODUCT_REQUIREMENTS.md`, then update this file as tasks are completed.
+
+For UI/UX batches, also reread `docs/UI_UX_ROADMAP.md`.
 
 ### Batch 1: Core Agency Operating Model
 
