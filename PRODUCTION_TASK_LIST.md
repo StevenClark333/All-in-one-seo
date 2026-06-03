@@ -517,6 +517,7 @@ Work should move through these batches in order. At the start of each batch, rer
 - [x] Add generated WordPress receiver API keys.
 - [x] Add WordPress receiver test action.
 - [x] Add WordPress per-domain onboarding checklist.
+- [x] Require passed WordPress receiver test before Fix Center delivery.
 
 ## 22. Billing And Plans
 

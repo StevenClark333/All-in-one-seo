@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildWordPressOnboardingSteps,
   generateWordPressReceiverKey,
+  isWordPressReceiverReady,
   normalizeWordPressReceiverUrl,
   readWordPressReceiverConfig,
 } from "@/lib/wordpress";
@@ -94,5 +95,31 @@ test("builds WordPress onboarding checklist states", () => {
   assert.equal(
     pendingSteps.find((step) => step.label === "Fix delivery enabled")?.status,
     "NEEDS_ACTION",
+  );
+});
+
+test("requires a passed receiver test before WordPress fix delivery", () => {
+  assert.equal(
+    isWordPressReceiverReady({
+      lastTestStatus: "PASSED",
+      receiverKey: "aioseo_wp_example",
+      receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    }),
+    true,
+  );
+  assert.equal(
+    isWordPressReceiverReady({
+      lastTestStatus: "FAILED",
+      receiverKey: "aioseo_wp_example",
+      receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    }),
+    false,
+  );
+  assert.equal(
+    isWordPressReceiverReady({
+      lastTestStatus: "PASSED",
+      receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+    }),
+    false,
   );
 });

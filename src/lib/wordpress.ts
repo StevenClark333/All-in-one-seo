@@ -289,6 +289,18 @@ export function buildWordPressOnboardingSteps(input: {
   ];
 }
 
+export function isWordPressReceiverReady(config: {
+  lastTestStatus?: string;
+  receiverKey?: string;
+  receiverUrl?: string;
+}) {
+  return Boolean(
+    config.receiverUrl &&
+      config.receiverKey &&
+      config.lastTestStatus === "PASSED",
+  );
+}
+
 function readString(value: unknown) {
   return typeof value === "string" ? value : "";
 }

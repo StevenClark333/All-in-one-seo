@@ -79,7 +79,7 @@ Each WordPress domain on the Integrations page shows a setup checklist:
 - Receiver tested.
 - Fix delivery enabled.
 
-The checklist uses portal-observable signals. For example, script detection is complete only after the plugin loads `/seo.js` on a public page, and fix delivery is enabled only after the endpoint, key, and receiver test are all complete.
+The checklist uses portal-observable signals. For example, script detection is complete only after the plugin loads `/seo.js` on a public page, and fix delivery is enabled only after the endpoint, key, and receiver test are all complete. Fix Center only lists WordPress receivers that have passed the receiver test.
 
 ## Security And Privacy
 

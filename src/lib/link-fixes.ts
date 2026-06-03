@@ -11,7 +11,10 @@ import {
 } from "@/lib/automation-integrations";
 import { enqueueCrawlRunJob } from "@/lib/crawler-scheduling";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
-import { readWordPressReceiverConfig } from "@/lib/wordpress";
+import {
+  isWordPressReceiverReady,
+  readWordPressReceiverConfig,
+} from "@/lib/wordpress";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
 const FIXABLE_LINK_ISSUE_PREFIXES = [
@@ -105,24 +108,31 @@ export async function getLinkFixCenterData(filters: LinkFixFilters = {}) {
   ]);
 
   return {
-    automationIntegrations: automationIntegrations.map((integration) => {
-      const config = readAutomationIntegrationConfig(integration.configJson);
-      const wordpressConfig =
-        integration.provider === "WORDPRESS_RECEIVER"
-          ? readWordPressReceiverConfig(integration.configJson)
-          : null;
+    automationIntegrations: automationIntegrations
+      .map((integration) => {
+        const config = readAutomationIntegrationConfig(integration.configJson);
+        const wordpressConfig =
+          integration.provider === "WORDPRESS_RECEIVER"
+            ? readWordPressReceiverConfig(integration.configJson)
+            : null;
 
-      return {
-        domainId: integration.domainId,
-        id: integration.id,
-        label:
-          wordpressConfig?.receiverUrl ||
-          config.label ||
-          integration.domain?.domain ||
-          `${integration.provider} workflow`,
-        provider: integration.provider,
-      };
-    }),
+        return {
+          domainId: integration.domainId,
+          id: integration.id,
+          isReady:
+            integration.provider !== "WORDPRESS_RECEIVER" ||
+            Boolean(
+              wordpressConfig && isWordPressReceiverReady(wordpressConfig),
+            ),
+          label:
+            wordpressConfig?.receiverUrl ||
+            config.label ||
+            integration.domain?.domain ||
+            `${integration.provider} workflow`,
+          provider: integration.provider,
+        };
+      })
+      .filter((integration) => integration.isReady),
     workspace,
     domains,
     suggestions,
@@ -338,6 +348,13 @@ export async function sendLinkFixToAutomation(input: {
 
   if (!webhookUrl) {
     throw new Error("Fix delivery URL was not found.");
+  }
+
+  if (
+    integration.provider === "WORDPRESS_RECEIVER" &&
+    (!wordpressConfig || !isWordPressReceiverReady(wordpressConfig))
+  ) {
+    throw new Error("Test this WordPress receiver before sending fixes.");
   }
 
   const provider = integration.provider as AutomationProvider | string;
