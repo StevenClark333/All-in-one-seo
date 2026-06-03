@@ -207,11 +207,11 @@ As the product grows, organize tools into groups:
 
 ### A. Project / Domain Table Improvements
 
-- [ ] Rename Sites page toward Projects or Sites and Projects.
-- [ ] Add project/folder grouping by client.
-- [ ] Add Semrush-style project rows.
-- [ ] Add search by client, project name, or domain.
-- [ ] Add columns:
+- [x] Rename Sites page toward Projects or Sites and Projects.
+- [x] Add project/folder grouping by client.
+- [x] Add Semrush-style project rows.
+- [x] Add search by client, project name, or domain.
+- [x] Add columns:
   - Health score
   - Last crawl
   - Pages crawled
@@ -223,7 +223,7 @@ As the product grows, organize tools into groups:
   - Schema / Markup
   - Fixes pending
   - Reports
-- [ ] Add row actions:
+- [x] Add row actions:
   - Open workspace
   - Run crawl
   - Create report
@@ -369,10 +369,10 @@ As the product grows, organize tools into groups:
 
 ### UX Batch 1: Project Table Upgrade
 
-- [ ] Upgrade Sites page into a Semrush-style Projects table.
-- [ ] Add richer domain metrics.
-- [ ] Add client/folder grouping.
-- [ ] Add search and compact row actions.
+- [x] Upgrade Sites page into a Semrush-style Projects table.
+- [x] Add richer domain metrics.
+- [x] Add client/folder grouping.
+- [x] Add search and compact row actions.
 
 ### UX Batch 2: Site Audit Workspace Upgrade
 

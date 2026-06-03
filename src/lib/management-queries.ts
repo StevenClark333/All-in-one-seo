@@ -150,7 +150,13 @@ export async function getDomainManagementData() {
         crawlRuns: {
           orderBy: { createdAt: "desc" },
           take: 1,
-          select: { status: true, completedAt: true, createdAt: true },
+          select: {
+            status: true,
+            completedAt: true,
+            createdAt: true,
+            pagesCrawled: true,
+            pagesDiscovered: true,
+          },
         },
         verifications: {
           where: { status: "VERIFIED" },
@@ -158,9 +164,32 @@ export async function getDomainManagementData() {
         },
         issues: {
           where: { status: { not: "FIXED" } },
-          select: { severity: true },
+          select: { issueType: true, severity: true },
         },
-        pages: { select: { id: true } },
+        linkFixSuggestions: {
+          where: { status: { in: ["APPROVED", "EXPORTED", "APPLIED"] } },
+          select: { status: true, verificationStatus: true },
+        },
+        pages: {
+          select: {
+            id: true,
+            url: true,
+            snapshots: {
+              orderBy: { createdAt: "desc" },
+              select: {
+                metadataJson: true,
+                robotsDirective: true,
+                statusCode: true,
+              },
+              take: 1,
+            },
+          },
+        },
+        reports: {
+          orderBy: { createdAt: "desc" },
+          select: { id: true, status: true, createdAt: true },
+          take: 3,
+        },
       },
       orderBy: [{ client: { name: "asc" } }, { domain: "asc" }],
     }),

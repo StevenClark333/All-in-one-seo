@@ -223,6 +223,7 @@ For UI/UX batches, also reread `docs/UI_UX_ROADMAP.md`.
 - [x] Add bulk domain import.
 - [x] Add domain-first project workspace with scoped pages, issues, fixes, reports, integrations, and crawl actions.
 - [x] Add active project banners and domain-scoped destination pages for workspace navigation.
+- [x] Upgrade Sites page into a Semrush-style Projects table with client grouping, search, richer audit metrics, and compact row actions.
 
 ## 7. Domain Verification
 
