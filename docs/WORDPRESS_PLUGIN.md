@@ -17,8 +17,8 @@ integrations/wordpress/all-in-one-seo/
 3. In WordPress admin, open **Plugins > Add Plugin > Upload Plugin**.
 4. Upload the ZIP and activate **All In One SEO**.
 5. Open **Settings > All In One SEO**.
-6. Set the All In One SEO app URL, for example `https://app.example.com`.
-7. Set the domain Site ID from the All In One SEO domain install panel.
+6. Copy the App URL and Site ID from **Values to paste into WordPress** on the matching domain row.
+7. Paste those values into the WordPress plugin settings.
 8. In All In One SEO, save the WordPress receiver endpoint for this domain. Leave the Receiver API key blank to let the portal generate one.
 9. Copy the generated Receiver API key from the Integrations page into WordPress.
 10. Click **Test receiver** in All In One SEO to confirm the endpoint and key are accepted.
@@ -80,6 +80,8 @@ Each WordPress domain on the Integrations page shows a setup checklist:
 - Fix delivery enabled.
 
 The checklist uses portal-observable signals. For example, script detection is complete only after the plugin loads `/seo.js` on a public page, and fix delivery is enabled only after the endpoint, key, and receiver test are all complete. Fix Center only lists WordPress receivers that have passed the receiver test. If a receiver exists but is not ready, Fix Center explains why WordPress is missing from the workflow dropdown and links back to Integrations.
+
+Each domain row also shows **Values to paste into WordPress** with the exact App URL, Site ID, Receiver API key, Receiver endpoint, and Callback URL for that domain. Use this block during client onboarding to avoid mixing setup values between domains.
 
 ## Security And Privacy
 

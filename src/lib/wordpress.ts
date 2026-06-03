@@ -289,6 +289,45 @@ export function buildWordPressOnboardingSteps(input: {
   ];
 }
 
+export function buildWordPressInstallValues(input: {
+  appUrl: string;
+  domain: string;
+  receiverKey?: string;
+  receiverUrl?: string;
+  siteId: string;
+}) {
+  const normalizedAppUrl = input.appUrl.replace(/\/+$/, "");
+  const suggestedReceiverUrl = `https://${input.domain}/wp-json/all-in-one-seo/v1/link-fixes`;
+
+  return [
+    {
+      help: "Paste this into the App URL field in the WordPress plugin settings.",
+      label: "App URL",
+      value: normalizedAppUrl,
+    },
+    {
+      help: "Paste this into the Site ID field so the plugin reports data for the correct portal domain.",
+      label: "Site ID",
+      value: input.siteId,
+    },
+    {
+      help: "Paste this into the Receiver API key field in WordPress. Save the receiver endpoint first if no key exists yet.",
+      label: "Receiver API key",
+      value: input.receiverKey || "Generated after receiver endpoint is saved",
+    },
+    {
+      help: "Save this receiver endpoint in the portal, then test it before sending fixes from Fix Center.",
+      label: "Receiver endpoint",
+      value: input.receiverUrl || suggestedReceiverUrl,
+    },
+    {
+      help: "The WordPress plugin calls this portal endpoint after a fix is applied or reviewed.",
+      label: "Callback URL",
+      value: `${normalizedAppUrl}/api/integrations/wordpress/link-fix-status`,
+    },
+  ];
+}
+
 export function isWordPressReceiverReady(config: {
   lastTestStatus?: string;
   receiverKey?: string;

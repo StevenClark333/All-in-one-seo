@@ -24,6 +24,7 @@ import { readSlackIntegrationConfig } from "@/lib/slack";
 import { readShopifyShop } from "@/lib/shopify";
 import { findMatchingWebflowSite, readWebflowSites } from "@/lib/webflow";
 import {
+  buildWordPressInstallValues,
   buildWordPressOnboardingSteps,
   readWordPressReceiverConfig,
 } from "@/lib/wordpress";
@@ -574,6 +575,13 @@ export default async function IntegrationsPage() {
                       receiverUrl: receiverConfig.receiverUrl,
                       scriptStatus: domain.scriptStatus,
                     });
+                    const installValues = buildWordPressInstallValues({
+                      appUrl,
+                      domain: domain.domain,
+                      receiverKey: receiverConfig.receiverKey,
+                      receiverUrl: receiverConfig.receiverUrl,
+                      siteId: domain.id,
+                    });
 
                     return (
                       <article key={domain.id} className="grid gap-4 p-4">
@@ -598,6 +606,40 @@ export default async function IntegrationsPage() {
                                 : "Not connected"
                             }
                           />
+                        </div>
+                        <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold">
+                              Values to paste into WordPress
+                            </p>
+                            <InfoTooltip
+                              label="Use these exact values in the WordPress plugin settings for this domain."
+                              passive
+                              side="right"
+                            />
+                          </div>
+                          <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                            {installValues.map((item) => (
+                              <div
+                                key={item.label}
+                                className="min-w-0 rounded-md border border-slate-200 bg-white p-3"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                                    {item.label}
+                                  </p>
+                                  <InfoTooltip
+                                    label={item.help}
+                                    passive
+                                    side="right"
+                                  />
+                                </div>
+                                <code className="mt-2 block break-all rounded-md bg-slate-50 px-3 py-2 font-mono text-xs leading-5 text-slate-700">
+                                  {item.value}
+                                </code>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                         <div className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                           <Meta

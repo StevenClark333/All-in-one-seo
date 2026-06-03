@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  buildWordPressInstallValues,
   buildWordPressOnboardingSteps,
   generateWordPressReceiverKey,
   getWordPressReceiverReadinessMessage,
@@ -96,6 +97,57 @@ test("builds WordPress onboarding checklist states", () => {
   assert.equal(
     pendingSteps.find((step) => step.label === "Fix delivery enabled")?.status,
     "NEEDS_ACTION",
+  );
+});
+
+test("builds copy-friendly WordPress install values", () => {
+  assert.deepEqual(
+    buildWordPressInstallValues({
+      appUrl: "https://allinoneseo.example.com/",
+      domain: "client.example.com",
+      receiverKey: "aioseo_wp_example",
+      receiverUrl:
+        "https://client.example.com/wp-json/all-in-one-seo/v1/link-fixes",
+      siteId: "site_123",
+    }),
+    [
+      {
+        help: "Paste this into the App URL field in the WordPress plugin settings.",
+        label: "App URL",
+        value: "https://allinoneseo.example.com",
+      },
+      {
+        help: "Paste this into the Site ID field so the plugin reports data for the correct portal domain.",
+        label: "Site ID",
+        value: "site_123",
+      },
+      {
+        help: "Paste this into the Receiver API key field in WordPress. Save the receiver endpoint first if no key exists yet.",
+        label: "Receiver API key",
+        value: "aioseo_wp_example",
+      },
+      {
+        help: "Save this receiver endpoint in the portal, then test it before sending fixes from Fix Center.",
+        label: "Receiver endpoint",
+        value:
+          "https://client.example.com/wp-json/all-in-one-seo/v1/link-fixes",
+      },
+      {
+        help: "The WordPress plugin calls this portal endpoint after a fix is applied or reviewed.",
+        label: "Callback URL",
+        value:
+          "https://allinoneseo.example.com/api/integrations/wordpress/link-fix-status",
+      },
+    ],
+  );
+
+  assert.equal(
+    buildWordPressInstallValues({
+      appUrl: "https://allinoneseo.example.com",
+      domain: "client.example.com",
+      siteId: "site_123",
+    }).find((item) => item.label === "Receiver endpoint")?.value,
+    "https://client.example.com/wp-json/all-in-one-seo/v1/link-fixes",
   );
 });
 
