@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f7fb;
+  --foreground: #1f2937;
+  --app-canvas: #f4f7fb;
+  --app-surface: #ffffff;
+  --app-surface-soft: #f9fbfd;
+  --app-border: #e3e8ef;
+  --app-border-strong: #ccd6e3;
+  --app-text: #1f2937;
+  --app-muted: #667085;
+  --app-navy: #17324d;
+  --app-navy-soft: #24445f;
+  --app-orange: #ff642f;
+  --app-orange-dark: #e65320;
+  --app-orange-soft: #fff2ec;
+  --app-blue-soft: #edf6ff;
+  --app-shadow: 0 10px 28px rgb(31 41 55 / 0.07);
+  --app-shadow-sm: 0 4px 14px rgb(31 41 55 / 0.06);
 }
 
 @theme inline {
@@ -10,13 +25,6 @@
   --color-foreground: var(--foreground);
   --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -79,6 +87,98 @@ body {
 }
 
 @layer components {
+  .bg-\[\#f6f8fb\],
+  .bg-slate-50 {
+    background-color: var(--app-canvas) !important;
+  }
+
+  .bg-white {
+    background-color: var(--app-surface) !important;
+  }
+
+  .bg-blue-50 {
+    background-color: var(--app-blue-soft) !important;
+  }
+
+  .bg-slate-100 {
+    background-color: var(--app-surface-soft) !important;
+  }
+
+  .border-slate-100,
+  .border-slate-200,
+  .border-slate-300,
+  .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--app-border) !important;
+  }
+
+  .text-slate-950,
+  .text-slate-900,
+  .text-slate-800 {
+    color: var(--app-text) !important;
+  }
+
+  .text-slate-700,
+  .text-slate-600,
+  .text-slate-500 {
+    color: var(--app-muted) !important;
+  }
+
+  .shadow-sm {
+    box-shadow: var(--app-shadow-sm) !important;
+  }
+
+  .rounded-lg {
+    border-radius: 10px !important;
+  }
+
+  .rounded-md {
+    border-radius: 8px !important;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    background-color: #ffffff;
+    border-color: var(--app-border);
+    color: var(--app-text);
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--app-orange) !important;
+    box-shadow: 0 0 0 4px rgb(255 100 47 / 0.14) !important;
+  }
+
+  button,
+  a {
+    text-underline-offset: 4px;
+  }
+
+  .bg-slate-950 {
+    background-color: var(--app-navy) !important;
+  }
+
+  .hover\:bg-slate-800:hover {
+    background-color: var(--app-navy-soft) !important;
+  }
+
+  button.bg-slate-950,
+  a.bg-slate-950 {
+    background-color: var(--app-orange) !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 18px rgb(255 100 47 / 0.2);
+  }
+
+  button.bg-slate-950:hover,
+  a.bg-slate-950:hover {
+    background-color: var(--app-orange-dark) !important;
+  }
+
+  .focus\:bg-slate-950:focus {
+    background-color: var(--app-navy) !important;
+  }
+
   .overflow-x-auto {
     max-width: 100%;
   }
