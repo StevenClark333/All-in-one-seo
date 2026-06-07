@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  ArrowRight,
   CheckCircle2,
   CircleDot,
   FileText,
@@ -13,7 +14,12 @@ import {
 } from "@/components/analytics-widgets";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
-import { mvpModules, type Severity } from "@/lib/dashboard-data";
+import {
+  mvpModules,
+  type Issue,
+  type Severity,
+  type Site,
+} from "@/lib/dashboard-data";
 import { getDashboardData } from "@/lib/dashboard-queries";
 
 const severityStyles: Record<Severity, string> = {
@@ -41,6 +47,11 @@ export default async function Home() {
     workspaceType,
   } = await getDashboardData();
   const isAgency = workspaceType === "AGENCY";
+  const nextSteps = buildDashboardNextSteps({
+    isDatabaseConfigured,
+    issues,
+    sites,
+  });
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -116,6 +127,66 @@ export default async function Home() {
               );
             })}
           </div>
+
+          <section className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div className="grid gap-5 p-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+              <div className="rounded-lg border border-orange-100 bg-orange-50 p-5">
+                <p className="text-sm font-semibold text-orange-700">
+                  Start here
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+                  Today&apos;s SEO plan
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Follow these steps in order. Each one takes you to the next
+                  screen you need, without making you hunt through the whole
+                  app.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {nextSteps.map((step, index) => {
+                  const Icon = step.icon;
+
+                  return (
+                    <Link
+                      key={step.title}
+                      href={step.href}
+                      className="group grid gap-3 rounded-lg border border-slate-200 bg-white p-4 transition hover:border-orange-200 hover:bg-orange-50/40 sm:grid-cols-[auto_minmax(0,1fr)_auto]"
+                    >
+                      <span className="flex size-9 items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-700">
+                        {index + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <Icon
+                            className="size-4 text-orange-600"
+                            aria-hidden="true"
+                          />
+                          <span className="font-semibold text-slate-950">
+                            {step.title}
+                          </span>
+                          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600">
+                            {step.badge}
+                          </span>
+                        </span>
+                        <span className="mt-1 block text-sm leading-6 text-slate-600">
+                          {step.detail}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2 self-center text-sm font-semibold text-orange-700">
+                        {step.action}
+                        <ArrowRight
+                          className="size-4 transition group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
@@ -508,4 +579,141 @@ function QuickAction({ href, label }: { href: string; label: string }) {
       <span aria-hidden="true">→</span>
     </Link>
   );
+}
+
+function buildDashboardNextSteps({
+  isDatabaseConfigured,
+  issues,
+  sites,
+}: {
+  isDatabaseConfigured: boolean;
+  issues: Issue[];
+  sites: Site[];
+}) {
+  if (!isDatabaseConfigured) {
+    return [
+      {
+        action: "Connect database",
+        badge: "Required",
+        detail:
+          "The app needs a database before it can show real websites, issues, and reports.",
+        href: "/settings",
+        icon: AlertTriangle,
+        title: "Connect the product data",
+      },
+      {
+        action: "Add project",
+        badge: "Next",
+        detail:
+          "Once data is connected, add the first website you want to monitor.",
+        href: "/domains/new",
+        icon: Plus,
+        title: "Add your first website",
+      },
+      {
+        action: "Create report",
+        badge: "Later",
+        detail:
+          "After the first crawl, turn the findings into a simple client-ready report.",
+        href: "/reports",
+        icon: FileText,
+        title: "Share the results",
+      },
+    ];
+  }
+
+  if (!sites.length) {
+    return [
+      {
+        action: "Add project",
+        badge: "First step",
+        detail:
+          "Add the website you care about. We will guide you through verification and crawling after that.",
+        href: "/domains/new",
+        icon: Plus,
+        title: "Add your first website",
+      },
+      {
+        action: "View projects",
+        badge: "Easy",
+        detail:
+          "Projects keep each website, crawl, issue, and report in one place.",
+        href: "/domains",
+        icon: CheckCircle2,
+        title: "Keep work organized by project",
+      },
+      {
+        action: "Open reports",
+        badge: "Share",
+        detail:
+          "Reports are where finished SEO work becomes simple updates for clients or teammates.",
+        href: "/reports",
+        icon: FileText,
+        title: "Prepare to share progress",
+      },
+    ];
+  }
+
+  const pendingVerification = sites.find(
+    (site) => site.verification === "pending",
+  );
+  const criticalIssue = issues.find((issue) => issue.severity === "critical");
+  const warningIssue = issues.find((issue) => issue.severity === "warning");
+
+  return [
+    pendingVerification
+      ? {
+          action: "Verify site",
+          badge: "Needed",
+          detail: `${pendingVerification.domain} needs verification before it can be fully monitored.`,
+          href: "/domains",
+          icon: AlertTriangle,
+          title: "Finish website setup",
+        }
+      : {
+          action: "Open projects",
+          badge: "Healthy habit",
+          detail:
+            "Start with your project list to see which websites need attention today.",
+          href: "/domains",
+          icon: CheckCircle2,
+          title: "Check website health",
+        },
+    criticalIssue
+      ? {
+          action: "Fix now",
+          badge: "Important",
+          detail: `${criticalIssue.domain} has a critical issue. Open the problem and follow the recommended solution.`,
+          href: "/issues?severity=CRITICAL",
+          icon: AlertTriangle,
+          title: "Fix the most urgent problem",
+        }
+      : warningIssue
+        ? {
+            action: "Review",
+            badge: "Recommended",
+            detail: `${warningIssue.domain} has a warning worth reviewing before it becomes a bigger issue.`,
+            href: "/issues?severity=WARNING",
+            icon: CircleDot,
+            title: "Review the next warning",
+          }
+        : {
+            action: "Run crawl",
+            badge: "Refresh",
+            detail:
+              "No urgent issues are showing. Refresh crawl data to keep monitoring current.",
+            href: "/domains",
+            icon: Play,
+            title: "Refresh the latest scan",
+          },
+    {
+      action: "Create report",
+      badge: "Share",
+      detail:
+        "Turn the latest health, issues, and fixes into a simple report for someone else.",
+      href: "/reports",
+      icon: FileText,
+      title: "Send a clear update",
+    },
+  ];
 }
