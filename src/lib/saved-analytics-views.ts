@@ -30,11 +30,19 @@ export async function getSavedAnalyticsViews(route: SavedAnalyticsRoute) {
     return [];
   }
 
-  return getPrisma().savedAnalyticsView.findMany({
-    where: { route, workspaceId: workspace.id },
-    orderBy: [{ isDefault: "desc" }, { updatedAt: "desc" }],
-    take: 8,
-  });
+  try {
+    return await getPrisma().savedAnalyticsView.findMany({
+      where: { route, workspaceId: workspace.id },
+      orderBy: [{ isDefault: "desc" }, { updatedAt: "desc" }],
+      take: 8,
+    });
+  } catch (error) {
+    if (isMissingSavedViewsTableError(error)) {
+      return [];
+    }
+
+    throw error;
+  }
 }
 
 export function buildSavedViewHref({
@@ -75,5 +83,13 @@ function isFilterRecord(value: Prisma.JsonValue): value is SavedAnalyticsFilters
     value !== null &&
     !Array.isArray(value) &&
     Object.values(value).every((item) => typeof item === "string")
+  );
+}
+
+export function isMissingSavedViewsTableError(error: unknown) {
+  return (
+    error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === "P2021" &&
+    error.meta?.table === "public.saved_analytics_views"
   );
 }

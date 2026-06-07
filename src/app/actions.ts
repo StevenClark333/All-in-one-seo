@@ -116,6 +116,7 @@ import {
 } from "@/lib/workspace";
 import {
   isSavedAnalyticsRoute,
+  isMissingSavedViewsTableError,
   normalizeSavedViewFilters,
 } from "@/lib/saved-analytics-views";
 
@@ -1279,37 +1280,43 @@ export async function saveAnalyticsViewAction(formData: FormData) {
     throw new Error("Choose a supported analytics view.");
   }
 
-  if (isDefault) {
-    await getPrisma().savedAnalyticsView.updateMany({
-      where: { route, workspaceId: workspace.id },
-      data: { isDefault: false },
-    });
-  }
+  try {
+    if (isDefault) {
+      await getPrisma().savedAnalyticsView.updateMany({
+        where: { route, workspaceId: workspace.id },
+        data: { isDefault: false },
+      });
+    }
 
-  await getPrisma().savedAnalyticsView.upsert({
-    where: {
-      workspaceId_route_name: {
+    await getPrisma().savedAnalyticsView.upsert({
+      where: {
+        workspaceId_route_name: {
+          name,
+          route,
+          workspaceId: workspace.id,
+        },
+      },
+      create: {
+        filtersJson: filters,
+        isDefault,
+        lastUsedAt: new Date(),
         name,
         route,
+        userId: user.id,
         workspaceId: workspace.id,
       },
-    },
-    create: {
-      filtersJson: filters,
-      isDefault,
-      lastUsedAt: new Date(),
-      name,
-      route,
-      userId: user.id,
-      workspaceId: workspace.id,
-    },
-    update: {
-      filtersJson: filters,
-      isDefault,
-      lastUsedAt: new Date(),
-      userId: user.id,
-    },
-  });
+      update: {
+        filtersJson: filters,
+        isDefault,
+        lastUsedAt: new Date(),
+        userId: user.id,
+      },
+    });
+  } catch (error) {
+    if (!isMissingSavedViewsTableError(error)) {
+      throw error;
+    }
+  }
 
   const params = new URLSearchParams(filters);
   const href = params.toString() ? `${route}?${params.toString()}` : route;
