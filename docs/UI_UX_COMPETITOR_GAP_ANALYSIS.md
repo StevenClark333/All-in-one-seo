@@ -133,6 +133,7 @@ The product should become a guided SEO assistant dashboard:
   - Needs CMS
   - Needs developer
 - [x] Group URL-specific technical issue types into friendly filter categories.
+- [x] Default the Problems page to a short prioritized list with an explicit show-all option.
 - [ ] Add one-click export/handoff where direct fix is not possible.
 
 ### Batch D: Visual Polish

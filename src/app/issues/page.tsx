@@ -59,6 +59,10 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
   const selectedDomain = domains.find(
     (domain) => domain.id === filters.domainId,
   );
+  const isShowingAll = filters.show === "all";
+  const visibleIssues = isShowingAll ? issues : issues.slice(0, 12);
+  const hiddenIssueCount = Math.max(0, issues.length - visibleIssues.length);
+  const isCompactQueue = hiddenIssueCount > 0;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -78,9 +82,10 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
 
             <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
               <CircleDot className="size-4" aria-hidden="true" />
-              {issues.length} shown
+              {visibleIssues.length}
+              {hiddenIssueCount ? ` of ${issues.length}` : ""} shown
               <InfoTooltip
-                label="Number of issues matching the current filters."
+                label="Number of problems currently shown from the matching queue."
                 passive
                 side="left"
               />
@@ -232,13 +237,17 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                 <div>
                   <h3 className="text-lg font-semibold">
                     <HelpLabel help="Analyzer-generated SEO work items across all selected clients, sites, and pages.">
-                      Issue queue
+                      {isShowingAll ? "All matching problems" : "Top problems"}
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    {selectedDomain
-                      ? `Analyzer-generated issues for ${selectedDomain.domain}.`
-                      : "Analyzer-generated issues across all clients, domains, and pages."}
+                    {isShowingAll
+                      ? selectedDomain
+                        ? `All analyzer-generated problems for ${selectedDomain.domain}.`
+                        : "All analyzer-generated problems across clients, projects, and pages."
+                      : selectedDomain
+                        ? `Showing the most important problems for ${selectedDomain.domain} first.`
+                        : "Showing the most important problems first so you can act without scrolling forever."}
                   </p>
                 </div>
                 <div className="flex max-w-3xl flex-wrap gap-2">
@@ -271,7 +280,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
 
             {issues.length ? (
               <div className="grid gap-3 border-b border-slate-200 bg-slate-50 p-4 lg:grid-cols-3">
-                {issues.slice(0, 3).map((issue) => {
+                {visibleIssues.slice(0, 3).map((issue) => {
                   const solution = buildIssueSolution({
                     issueType: issue.issueType,
                     platform: issue.domain.platform,
@@ -322,10 +331,26 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               {issues.length ? (
                 <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-sm font-medium text-slate-600">
-                    Select issues to update status in bulk, including ignored
-                    rules.
+                    {isCompactQueue
+                      ? `Showing the top ${visibleIssues.length} problems. ${hiddenIssueCount} lower-priority problems are hidden for now.`
+                      : "Select problems to update status in bulk, including ignored rules."}
                   </p>
                   <div className="flex flex-wrap gap-2">
+                    {isCompactQueue ? (
+                      <Link
+                        href={buildIssuesHref(filters, { show: "all" })}
+                        className="inline-flex h-9 items-center rounded-md border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-orange-50"
+                      >
+                        Show all {issues.length}
+                      </Link>
+                    ) : isShowingAll ? (
+                      <Link
+                        href={buildIssuesHref(filters, { show: undefined })}
+                        className="inline-flex h-9 items-center rounded-md border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-orange-50"
+                      >
+                        Show top problems
+                      </Link>
+                    ) : null}
                     <select
                       name="status"
                       defaultValue="IN_PROGRESS"
@@ -350,8 +375,8 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               ) : null}
 
               <div className="grid divide-y divide-slate-100">
-                {issues.length ? (
-                  issues.map((issue) => (
+                {visibleIssues.length ? (
+                  visibleIssues.map((issue) => (
                     <IssueRow key={issue.id} issue={issue} />
                   ))
                 ) : (
@@ -514,6 +539,7 @@ function normalizeFilters(
     assignedToId: getSingle(searchParams.assignedToId),
     issueType: getSingle(searchParams.issueType),
     templateKey: getSingle(searchParams.templateKey),
+    show: getSingle(searchParams.show),
   };
 }
 
@@ -538,6 +564,24 @@ function formatIssueType(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function buildIssuesHref(
+  filters: ReturnType<typeof normalizeFilters>,
+  overrides: Partial<ReturnType<typeof normalizeFilters>>,
+) {
+  const params = new URLSearchParams();
+  const nextFilters = { ...filters, ...overrides };
+
+  for (const [key, value] of Object.entries(nextFilters)) {
+    if (value) {
+      params.set(key, value);
+    }
+  }
+
+  const query = params.toString();
+
+  return query ? `/issues?${query}` : "/issues";
 }
 
 function getSolutionHref({
