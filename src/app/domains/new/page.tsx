@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowLeft, Globe2 } from "lucide-react";
+import type React from "react";
+import {
+  ArrowLeft,
+  CalendarCheck,
+  Globe2,
+  MonitorCog,
+  ShieldCheck,
+} from "lucide-react";
 import { createDomain } from "@/app/actions";
 import { getDomainManagementData } from "@/lib/management-queries";
 
@@ -28,12 +35,12 @@ export default async function NewDomainPage() {
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Domains
+          Projects
         </Link>
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-slate-950 text-white">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
               <Globe2 className="size-5" aria-hidden="true" />
             </div>
             <div>
@@ -41,10 +48,37 @@ export default async function NewDomainPage() {
                 {workspace?.name ?? "Workspace"}
               </p>
               <h1 className="text-2xl font-semibold tracking-normal">
-                Add domain
+                Add project website
               </h1>
             </div>
           </div>
+          <p className="mt-4 text-sm leading-6 text-slate-500">
+            Add the website first. After it is saved, the portal will guide you
+            through verification, crawl setup, and the first SEO check.
+          </p>
+
+          <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">
+            <p className="text-sm font-semibold text-orange-700">
+              Website setup plan
+            </p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+              <SetupTile
+                icon={<Globe2 className="size-4" aria-hidden="true" />}
+                title="Website"
+                body="Use the main website address, like example.com."
+              />
+              <SetupTile
+                icon={<MonitorCog className="size-4" aria-hidden="true" />}
+                title="Platform"
+                body="Pick WordPress, Shopify, Webflow, or leave it unknown."
+              />
+              <SetupTile
+                icon={<CalendarCheck className="size-4" aria-hidden="true" />}
+                title="Crawl rhythm"
+                body="Weekly is a safe first setting for most websites."
+              />
+            </div>
+          </section>
 
           {!workspace ? (
             <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
@@ -54,7 +88,7 @@ export default async function NewDomainPage() {
             <form action={createDomain} className="mt-6 grid gap-5">
               <label className="grid gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  Domain
+                  Website address
                 </span>
                 <input
                   name="domain"
@@ -66,7 +100,7 @@ export default async function NewDomainPage() {
 
               <label className="grid gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  Client
+                  Client or brand
                 </span>
                 <select
                   name="clientId"
@@ -102,7 +136,7 @@ export default async function NewDomainPage() {
 
                 <label className="grid gap-2">
                   <span className="text-sm font-medium text-slate-700">
-                    Crawl frequency
+                    Crawl rhythm
                   </span>
                   <select
                     name="crawlFrequency"
@@ -115,12 +149,21 @@ export default async function NewDomainPage() {
                       </option>
                     ))}
                   </select>
+                  <span className="text-xs leading-5 text-slate-500">
+                    Weekly keeps checks useful without making the account feel
+                    noisy.
+                  </span>
                 </label>
               </div>
 
-              <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
-                New domains start as pending verification. The next task-list
-                slice will generate DNS TXT tokens and check ownership.
+              <div className="rounded-md border border-orange-100 bg-orange-50 p-4 text-sm leading-6 text-orange-900">
+                <div className="flex gap-3">
+                  <ShieldCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                  <p>
+                    New websites start with a verification step so the portal
+                    knows you are allowed to crawl and monitor them.
+                  </p>
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 border-t border-slate-200 pt-5">
@@ -130,8 +173,8 @@ export default async function NewDomainPage() {
                 >
                   Cancel
                 </Link>
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Add domain
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                  Add website
                 </button>
               </div>
             </form>
@@ -139,6 +182,26 @@ export default async function NewDomainPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+function SetupTile({
+  body,
+  icon,
+  title,
+}: {
+  body: string;
+  icon: React.ReactNode;
+  title: string;
+}) {
+  return (
+    <div className="rounded-lg border border-orange-100 bg-white p-3">
+      <span className="inline-flex size-7 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-2 text-sm font-semibold text-slate-950">{title}</p>
+      <p className="mt-1 text-xs leading-5 text-slate-500">{body}</p>
+    </div>
   );
 }
 

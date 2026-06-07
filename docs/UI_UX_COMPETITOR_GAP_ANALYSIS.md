@@ -103,6 +103,7 @@ Gap for us:
 | Clients | Agency client management opens with counts, issue load, settings, and imports | Start with client care: setup gaps, urgent attention, and reports worth sharing |
 | Content Ideas | AI recommendation center starts with generation lists and quota wording | Start with page copy, fix briefs, and repeated-page help in plain language |
 | Fixes | Fix Center starts with many statuses, filters, audit details, and delivery mechanics | Start with one calm path: review a fix, send it, then check it |
+| Project Setup | Add-domain and project detail pages start with domain/crawl/settings language | Start with website setup, verification, first crawl, and the clearest next problem |
 
 ## Product Direction
 
@@ -389,3 +390,25 @@ Implementation:
 - [x] Rename the filter action to "Show fixes".
 - [x] Rename fix actions to "Approve fix", "Mark sent", "Mark fixed", "Save edit", and "Send fix".
 - [x] Add a friendlier empty state for no fixes ready yet.
+
+### Batch S: Project Setup Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project/site audit workflows centered on a project, its setup state, crawl health, and issues before users drill into technical settings.
+- Screaming Frog-style raw crawl details are powerful, but the nontechnical user should not start with domain settings, scripts, artifacts, and lifecycle actions.
+- A softer project workflow should answer "is setup done?", "can I crawl?", and "what should I fix next?" first.
+
+Implementation:
+
+- [x] Rename the new-domain flow to "Add project website".
+- [x] Add a plain-language website setup plan above the project creation form.
+- [x] Rename "Domain" to "Website address", "Client" to "Client or brand", and "Crawl frequency" to "Crawl rhythm".
+- [x] Replace the pending-verification note with a calmer verification explanation.
+- [x] Rename the primary project creation action to "Add website".
+- [x] Add a plain-language project care plan above project detail metrics.
+- [x] Surface setup, crawl, and problems as the first three choices on project detail.
+- [x] Rename project detail settings to optional "Project details".
+- [x] Collapse lifecycle controls, install script, and crawl files behind optional panels.
+- [x] Replace uppercase project metrics and table labels with softer labels.
+- [x] Add friendlier empty states for no crawled pages, no crawl files, and no open issues.
