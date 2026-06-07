@@ -59,6 +59,10 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
   const selectedDomain = domains.find(
     (domain) => domain.id === filters.domainId,
   );
+  const visibleTemplateGroups = getVisibleTemplateGroups(
+    templateGroups,
+    filters.templateKey,
+  );
   const isShowingAll = filters.show === "all";
   const visibleIssues = isShowingAll ? issues : issues.slice(0, 12);
   const hiddenIssueCount = Math.max(0, issues.length - visibleIssues.length);
@@ -204,7 +208,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                 value={filters.templateKey}
               >
                 <option value="">All templates</option>
-                {templateGroups.map((group) => (
+                {visibleTemplateGroups.map((group) => (
                   <option key={group.key} value={group.key}>
                     {group.label}
                   </option>
@@ -582,6 +586,28 @@ function buildIssuesHref(
   const query = params.toString();
 
   return query ? `/issues?${query}` : "/issues";
+}
+
+function getVisibleTemplateGroups(
+  templateGroups: Awaited<ReturnType<typeof getIssueListData>>["templateGroups"],
+  selectedTemplateKey?: string,
+) {
+  const topGroups = templateGroups.slice(0, 12);
+
+  if (
+    selectedTemplateKey &&
+    !topGroups.some((group) => group.key === selectedTemplateKey)
+  ) {
+    const selectedGroup = templateGroups.find(
+      (group) => group.key === selectedTemplateKey,
+    );
+
+    if (selectedGroup) {
+      return [...topGroups, selectedGroup];
+    }
+  }
+
+  return topGroups;
 }
 
 function getSolutionHref({
