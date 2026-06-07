@@ -52,6 +52,7 @@ export default async function Home() {
     issues,
     sites,
   });
+  const priorityIssues = issues.slice(0, 5);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -62,13 +63,17 @@ export default async function Home() {
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <p className="text-sm font-semibold text-orange-600">
-                {isAgency ? "Agency command center" : "Business command center"}
+                {isAgency ? "Agency workspace" : "SEO workspace"}
               </p>
               <h2 className="mt-2 max-w-4xl text-3xl font-semibold tracking-normal text-slate-950">
                 {isAgency
-                  ? `Continuous SEO monitoring across ${workspaceName}`
-                  : `Continuous SEO monitoring for ${workspaceName}`}
+                  ? `Here is what needs attention across ${workspaceName}`
+                  : `Here is what needs attention for ${workspaceName}`}
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                Start with the plan below. The detailed charts are still here
+                when you need them, but the next step stays at the top.
+              </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
@@ -77,9 +82,9 @@ export default async function Home() {
                 className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50"
               >
                 <Play className="size-4" aria-hidden="true" />
-                Start crawl
+                Scan project
                 <InfoTooltip
-                  label="Go to Sites to manually run a crawler pass for a verified domain."
+                  label="Go to Projects to manually scan a verified website."
                   passive
                   side="left"
                 />
@@ -89,44 +94,15 @@ export default async function Home() {
                 className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
               >
                 <Plus className="size-4" aria-hidden="true" />
-                Add project
+                Add website
                 <InfoTooltip
-                  label="Add a new website to verify, crawl, monitor, and report on."
+                  label="Add a new website to verify, scan, monitor, and report on."
                   passive
                   side="left"
                 />
               </Link>
             </div>
           </header>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {agencyStats.map((stat) => {
-              const Icon = stat.icon;
-
-              return (
-                <article
-                  key={stat.label}
-                  className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:bg-orange-50/30"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-medium text-slate-500">
-                      <HelpLabel help={getStatHelp(stat.label)}>
-                        {stat.label}
-                      </HelpLabel>
-                    </p>
-                    <Icon
-                      className="size-5 text-slate-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <p className="mt-4 text-3xl font-semibold tracking-normal">
-                    {stat.value}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500">{stat.detail}</p>
-                </article>
-              );
-            })}
-          </div>
 
           <section className="mt-6 overflow-hidden rounded-lg border border-orange-100 bg-white shadow-sm">
             <div className="grid gap-5 p-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
@@ -138,10 +114,20 @@ export default async function Home() {
                   Today&apos;s SEO plan
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Follow these steps in order. Each one takes you to the next
-                  screen you need, without making you hunt through the whole
-                  app.
+                  Follow these in order. Each card takes you to one focused
+                  screen, so you do not need to understand every SEO term first.
                 </p>
+                <div className="mt-5 grid gap-2 text-sm text-slate-700">
+                  <span className="rounded-md bg-white/80 px-3 py-2">
+                    Fix urgent problems before browsing reports.
+                  </span>
+                  <span className="rounded-md bg-white/80 px-3 py-2">
+                    Use reports when you are ready to share progress.
+                  </span>
+                  <span className="rounded-md bg-white/80 px-3 py-2">
+                    Open analytics only when you want deeper detail.
+                  </span>
+                </div>
               </div>
 
               <div className="grid gap-3">
@@ -188,23 +174,64 @@ export default async function Home() {
             </div>
           </section>
 
+          <section className="mt-6">
+            <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-950">
+                  Quick health snapshot
+                </h3>
+                <p className="text-sm text-slate-500">
+                  A calm overview before the detailed charts.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {agencyStats.map((stat) => {
+                const Icon = stat.icon;
+
+                return (
+                  <article
+                    key={stat.label}
+                    className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:bg-orange-50/30"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm font-medium text-slate-500">
+                        <HelpLabel help={getStatHelp(stat.label)}>
+                          {stat.label}
+                        </HelpLabel>
+                      </p>
+                      <Icon
+                        className="size-5 text-slate-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <p className="mt-4 text-3xl font-semibold tracking-normal">
+                      {stat.value}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500">{stat.detail}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-orange-600">
-                  Portfolio command center
+                <p className="text-sm font-semibold text-orange-600">
+                  Deeper analytics
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-normal">
-                  Agency analytics cockpit
+                  Website health details
                 </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Jump from portfolio health to the exact project, issue, report,
-                  or search visibility view that needs attention.
+                  Use this when you want to compare projects, review search
+                  visibility, or prepare a report after the top plan is handled.
                 </p>
               </div>
               <div className="grid gap-2 sm:grid-cols-4">
                 <QuickLink href="/domains" label="Projects" />
-                <QuickLink href="/issues" label="Issues" />
+                <QuickLink href="/issues" label="Problems" />
                 <QuickLink href="/search-performance" label="Search" />
                 <QuickLink href="/reports" label="Reports" />
               </div>
@@ -243,7 +270,7 @@ export default async function Home() {
 
             <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
               <div>
-                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <h4 className="text-sm font-semibold text-slate-600">
                   Site health distribution
                 </h4>
                 <div className="mt-4 grid gap-4">
@@ -268,12 +295,12 @@ export default async function Home() {
                 </div>
               </div>
               <div>
-                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
-                  Fast actions
+                <h4 className="text-sm font-semibold text-slate-600">
+                  Helpful shortcuts
                 </h4>
                 <div className="mt-4 grid gap-2">
-                  <QuickAction href="/domains/new" label="Add project" />
-                  <QuickAction href="/domains" label="Run project crawl" />
+                  <QuickAction href="/domains/new" label="Add website" />
+                  <QuickAction href="/domains" label="Scan project" />
                   <QuickAction href="/recommendations" label="Generate briefs" />
                   <QuickAction href="/rank-tracking" label="Track keywords" />
                 </div>
@@ -302,8 +329,8 @@ export default async function Home() {
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Verification, crawl status, and issue volume across the full
-                    active site portfolio.
+                    Verification, scan status, and issue volume across your
+                    active projects.
                   </p>
                 </div>
                 <button className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
@@ -319,7 +346,7 @@ export default async function Home() {
 
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[760px] text-left text-sm">
-                  <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+                  <thead className="bg-slate-50 text-xs text-slate-500">
                     <tr>
                       <th className="px-5 py-3 font-semibold">Client</th>
                       <th className="px-5 py-3 font-semibold">Domain</th>
@@ -392,8 +419,8 @@ export default async function Home() {
                           className="px-5 py-8 text-center text-slate-500"
                           colSpan={6}
                         >
-                          No domains found. Add and verify a domain to begin
-                          monitoring.
+                          No websites yet. Add your first website and we will
+                          guide you through the setup.
                         </td>
                       </tr>
                     )}
@@ -461,27 +488,31 @@ export default async function Home() {
               <div>
                 <h3 className="text-lg font-semibold">
                   <HelpLabel help="The highest-impact SEO work across clients, ranked by severity and analyzer priority.">
-                    Priority issues
+                    Top problems to review
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Cross-client issue queue for agency operators.
+                  A short list of the most important work. Open all problems
+                  when you want the full queue.
                 </p>
               </div>
-              <button className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
+              <Link
+                href="/issues"
+                className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+              >
                 <CircleDot className="size-4" aria-hidden="true" />
-                Assign selected
+                Open all problems
                 <InfoTooltip
-                  label="Bulk ownership action for selected issues once selection controls are active."
+                  label="Open the full Problems page with filters and all current SEO findings."
                   passive
                   side="left"
                 />
-              </button>
+              </Link>
             </div>
 
             <div className="grid divide-y divide-slate-100">
-              {issues.length ? (
-                issues.map((issue) => (
+              {priorityIssues.length ? (
+                priorityIssues.map((issue) => (
                   <article
                     key={`${issue.domain}-${issue.title}`}
                     className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_170px_130px_130px]"
@@ -503,13 +534,13 @@ export default async function Home() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      <p className="text-xs font-semibold text-slate-400">
                         Owner
                       </p>
                       <p className="mt-2 text-sm font-medium">{issue.owner}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      <p className="text-xs font-semibold text-slate-400">
                         Status
                       </p>
                       <p className="mt-2 text-sm font-medium capitalize">
@@ -530,10 +561,20 @@ export default async function Home() {
               ) : (
                 <div className="p-8 text-center text-sm text-slate-500">
                   No open SEO issues yet. Run a crawl to generate the first
-                  audit.
+                  friendly action plan.
                 </div>
               )}
             </div>
+            {issues.length > priorityIssues.length ? (
+              <div className="border-t border-slate-100 p-4 text-center">
+                <Link
+                  href="/issues"
+                  className="text-sm font-semibold text-orange-700 transition hover:text-orange-800"
+                >
+                  Show all {issues.length.toLocaleString()} problems
+                </Link>
+              </div>
+            ) : null}
           </section>
         </section>
       </div>
@@ -543,14 +584,22 @@ export default async function Home() {
 
 function getStatHelp(label: string) {
   const help: Record<string, string> = {
+    "Avg. health":
+      "Average SEO health across websites that have finished setup.",
     "Active clients":
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
+    "Clients":
+      "Clients managed inside this workspace, useful for agency portfolio tracking.",
+    "Critical issues":
+      "Problems that can meaningfully hurt search visibility and should be fixed first.",
     "Verified domains":
       "Domains with ownership confirmed, eligible for full production crawls.",
     "Pages crawled":
       "Pages collected by the crawler and available for technical SEO analysis.",
     "Open issues":
       "Analyzer findings that still need review, assignment, or resolution.",
+    "Reports due":
+      "Reports that are ready for review or still need a clean client update.",
   };
 
   return (
@@ -576,7 +625,7 @@ function QuickAction({ href, label }: { href: string; label: string }) {
       className="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3 text-sm font-semibold text-slate-700 transition hover:bg-white hover:text-slate-950"
     >
       {label}
-      <span aria-hidden="true">-&gt;</span>
+      <ArrowRight className="size-4" aria-hidden="true" />
     </Link>
   );
 }

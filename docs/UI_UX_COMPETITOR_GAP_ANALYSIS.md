@@ -105,8 +105,8 @@ The product should become a guided SEO assistant dashboard:
 
 - [x] Add soft global theme.
 - [x] Add "Today's SEO plan" panel to the dashboard.
-- [ ] Translate dashboard actions into plain language.
-- [ ] Move dense analytics below the guided plan.
+- [x] Translate dashboard actions into plain language.
+- [x] Move dense analytics below the guided plan.
 - [ ] Add friendly empty states for no sites, no issues, and no reports.
 
 ### Batch B: Navigation Simplification
@@ -144,7 +144,7 @@ The product should become a guided SEO assistant dashboard:
 - [ ] Use orange only for primary actions.
 - [ ] Use green for healthy/done.
 - [ ] Use amber/red only for actual urgency.
-- [ ] Make dashboard sections shorter and more scannable.
+- [x] Make dashboard sections shorter and more scannable.
 
 ### Batch E: Verification
 

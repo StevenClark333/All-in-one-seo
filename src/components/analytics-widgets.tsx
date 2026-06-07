@@ -29,7 +29,7 @@ export function AnalyticsMetricCard({
     <>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+          <p className="text-sm font-medium text-slate-500">
             {label}
           </p>
           <p className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
