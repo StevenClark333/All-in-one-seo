@@ -36,7 +36,7 @@ const projectTools: Array<{
   },
   {
     key: "issues",
-    label: "Issues",
+    label: "Problems",
     buildHref: (domainId) => `/issues?domainId=${domainId}`,
   },
   {
@@ -46,12 +46,12 @@ const projectTools: Array<{
   },
   {
     key: "search",
-    label: "Search Performance",
+    label: "Google Results",
     buildHref: (domainId) => `/search-performance?domainId=${domainId}`,
   },
   {
     key: "competitive",
-    label: "Competitive",
+    label: "Competitors",
     buildHref: (domainId) => `/competitive-analysis?domainId=${domainId}`,
   },
   {
@@ -61,7 +61,7 @@ const projectTools: Array<{
   },
   {
     key: "rank",
-    label: "Rank Tracking",
+    label: "Rank Tracker",
     buildHref: (domainId) => `/rank-tracking?domainId=${domainId}`,
   },
   {
@@ -76,7 +76,7 @@ const projectTools: Array<{
   },
   {
     key: "ai",
-    label: "AI",
+    label: "Content Ideas",
     buildHref: (domainId) => `/recommendations?domainId=${domainId}`,
   },
   {

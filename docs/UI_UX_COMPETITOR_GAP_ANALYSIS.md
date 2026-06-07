@@ -111,12 +111,12 @@ The product should become a guided SEO assistant dashboard:
 
 ### Batch B: Navigation Simplification
 
-- [ ] Rename technical labels where possible:
+- [x] Rename technical labels where possible:
   - Sites -> Projects
   - Fix Center -> Fixes
   - AI -> Content Ideas
   - Technical -> Internal Links
-- [ ] Add a compact "main path" section:
+- [x] Add a compact "main path" section:
   - Dashboard
   - Projects
   - Problems

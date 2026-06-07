@@ -30,67 +30,70 @@ const hrefs: Record<string, (domainId?: string) => string> = {
 
 const navHelp: Record<string, string> = {
   Overview:
-    "Your agency command center: portfolio health, site status, and priority SEO work.",
-  Clients: "Manage agency clients, their domains, reports, and SEO workload.",
+    "Start here for today's plan, website health, and the next best action.",
+  Clients: "Manage clients, their websites, reports, and SEO workload.",
   Sites:
-    "Add domains, verify ownership, run crawls, and manage install scripts.",
+    "Add websites, verify ownership, run scans, and keep each project organized.",
   Pages:
-    "Inspect crawled URLs, page snapshots, metadata, and page-level SEO issues.",
+    "Review crawled website pages, titles, descriptions, and page-level problems.",
   "Search Performance":
-    "Review Google Search Console visibility, query movement, top pages, and search demand.",
+    "See Google results, clicks, impressions, top pages, and search demand.",
   "Competitive Analysis":
-    "Compare managed domains by organic visibility, top pages, crawl depth, and open issue load.",
+    "Compare your website against competitors and spot content opportunities.",
   "Keyword Research":
-    "Prioritize Search Console queries, keyword opportunities, intent groups, and content gaps.",
+    "Find useful keywords, content gaps, and easy opportunities to improve.",
   "Rank Tracking":
-    "Track owned keyword rankings, competitor rankings, and imported keyword volume metrics.",
+    "Track keyword positions for your website and competitors.",
   Issues:
-    "Review analyzer findings, assign work, update statuses, and group template issues.",
+    "See the problems that need attention and the easiest way to solve them.",
   "Fix Center":
-    "Approve, edit, export, and track SEO fixes generated from internal-link issues.",
-  AI: "Generate SEO recommendations, content fixes, and template-level fix briefs.",
+    "Approve, export, and track fixes without digging through technical details.",
+  AI: "Generate content ideas, SEO recommendations, and fix briefs.",
   Technical:
-    "Monitor technical SEO signals like robots.txt, sitemap, schema, links, and rendering.",
+    "Review internal links, crawlability, schema, and rendering signals.",
   Reports:
-    "Create client-ready reports, scheduled reports, custom templates, and white-label sharing.",
+    "Create simple reports for clients, teammates, or your own records.",
   Alerts:
-    "Configure monitoring rules for outages, SEO regressions, and delivery channels.",
+    "Get notified when something important changes.",
   Integrations:
-    "Connect Search Console, Analytics, CMS, deployment, alerting, and automation tools.",
+    "Connect Google, CMS, hosting, alerts, and automation tools.",
   Billing:
     "Manage plan limits, usage, subscriptions, trials, and billing portal access.",
   Settings:
     "Manage workspace members, roles, invitations, and account settings.",
 };
 
+const displayLabels: Record<string, string> = {
+  AI: "Content Ideas",
+  Issues: "Problems",
+  "Fix Center": "Fixes",
+  "Keyword Research": "Keywords",
+  "Rank Tracking": "Rank Tracker",
+  "Search Performance": "Google Results",
+  Sites: "Projects",
+  Technical: "Internal Links",
+};
+
 const seoGroups = [
   {
-    items: ["Overview", "Sites", "Pages", "Search Performance", "Technical"],
-    label: "Site Performance",
+    items: ["Overview", "Sites", "Issues", "Fix Center", "Reports"],
+    label: "Main path",
   },
   {
-    items: ["Competitive Analysis"],
-    label: "Competitive Analysis",
+    items: ["Pages", "Search Performance", "Technical"],
+    label: "Website details",
   },
   {
-    items: ["Keyword Research", "Rank Tracking"],
-    label: "Keyword Research",
+    items: ["Competitive Analysis", "Keyword Research", "Rank Tracking"],
+    label: "Grow visibility",
   },
   {
-    items: ["Issues", "Fix Center"],
-    label: "Internal SEO",
-  },
-  {
-    items: ["AI"],
-    label: "Content Ideas",
-  },
-  {
-    items: ["Reports", "Alerts", "Integrations"],
-    label: "Reporting",
+    items: ["AI", "Alerts", "Integrations"],
+    label: "Helpful tools",
   },
   {
     items: ["Clients", "Billing", "Settings"],
-    label: "Agency Admin",
+    label: "Workspace",
   },
 ];
 
@@ -125,9 +128,9 @@ export async function AppSidebar({
             return (
               <Link
                 key={label}
-                aria-label={label}
+                aria-label={getDisplayLabel(label)}
                 href={hrefs[label]?.(activeDomainId) ?? "/"}
-                title={label}
+                title={getDisplayLabel(label)}
                 className={`inline-flex size-10 items-center justify-center rounded-md transition ${
                   label === active
                     ? "bg-white text-slate-950"
@@ -206,7 +209,9 @@ export async function AppSidebar({
                         }`}
                       >
                         <Icon className="size-4" aria-hidden="true" />
-                        <span className="min-w-0 flex-1">{item.label}</span>
+                        <span className="min-w-0 flex-1">
+                          {getDisplayLabel(item.label)}
+                        </span>
                         <InfoTooltip
                           label={
                             navHelp[item.label] ?? "Open this portal section."
@@ -264,4 +269,8 @@ export async function AppSidebar({
 
 function withDomain(path: string, domainId?: string) {
   return domainId ? `${path}?domainId=${domainId}` : path;
+}
+
+function getDisplayLabel(label: string) {
+  return displayLabels[label] ?? label;
 }
