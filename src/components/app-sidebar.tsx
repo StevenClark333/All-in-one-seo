@@ -179,54 +179,84 @@ export async function AppSidebar({
           </form>
 
           <nav
-            className="mt-6 grid gap-5 pr-1 lg:mt-7"
+            className="mt-6 grid gap-4 pr-1 lg:mt-7"
             aria-label="Main navigation"
           >
-            {seoGroups.map((group) => (
-              <div key={group.label}>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  {group.label}
-                </p>
-                <div className="grid gap-1">
-                  {group.items.map((label) => {
-                    const item = navItems.find(
-                      (navItem) => navItem.label === label,
-                    );
+            {seoGroups.map((group) => {
+              const isMainPath = group.label === "Main path";
+              const isWorkspace = group.label === "Workspace";
 
-                    if (!item) {
-                      return null;
-                    }
+              return (
+                <div
+                  key={group.label}
+                  className={
+                    isMainPath
+                      ? "rounded-lg border border-orange-100 bg-orange-50/50 p-2"
+                      : "border-t border-slate-100 pt-3"
+                  }
+                >
+                  <p
+                    className={`mb-2 text-xs font-semibold ${
+                      isMainPath ? "text-orange-700" : "text-slate-400"
+                    }`}
+                  >
+                    {group.label}
+                  </p>
+                  <div
+                    className={isMainPath ? "grid gap-1.5" : "grid gap-0.5"}
+                  >
+                    {group.items.map((label) => {
+                      const item = navItems.find(
+                        (navItem) => navItem.label === label,
+                      );
 
-                    const Icon = item.icon;
-                    const isActive = item.label === active;
+                      if (!item) {
+                        return null;
+                      }
 
-                    return (
-                      <Link
-                        key={item.label}
-                        href={hrefs[item.label]?.(activeDomainId) ?? "/"}
-                        className={`flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition ${
-                          isActive
-                            ? "bg-orange-50 text-orange-700 shadow-[inset_3px_0_0_#ff642f]"
-                            : "text-slate-600 hover:bg-orange-50 hover:text-slate-950"
-                        }`}
-                      >
-                        <Icon className="size-4" aria-hidden="true" />
-                        <span className="min-w-0 flex-1">
-                          {getDisplayLabel(item.label)}
-                        </span>
-                        <InfoTooltip
-                          label={
-                            navHelp[item.label] ?? "Open this portal section."
-                          }
-                          passive
-                          side="left"
-                        />
-                      </Link>
-                    );
-                  })}
+                      const Icon = item.icon;
+                      const isActive = item.label === active;
+                      const mutedItem = !isMainPath && !isActive;
+
+                      return (
+                        <Link
+                          key={item.label}
+                          href={hrefs[item.label]?.(activeDomainId) ?? "/"}
+                          className={`flex items-center gap-3 rounded-md px-3 font-medium transition ${
+                            isActive
+                              ? "bg-orange-50 text-orange-700 shadow-[inset_3px_0_0_#ff642f]"
+                              : mutedItem
+                                ? "h-8 text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                                : "h-10 text-sm text-slate-600 hover:bg-orange-50 hover:text-slate-950"
+                          }`}
+                        >
+                          <Icon
+                            className={mutedItem ? "size-3.5" : "size-4"}
+                            aria-hidden="true"
+                          />
+                          <span className="min-w-0 flex-1">
+                            {getDisplayLabel(item.label)}
+                          </span>
+                          <InfoTooltip
+                            label={
+                              navHelp[item.label] ??
+                              "Open this portal section."
+                            }
+                            passive
+                            side="left"
+                          />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                  {!isMainPath && !isWorkspace ? (
+                    <p className="mt-2 px-3 text-xs leading-5 text-slate-400">
+                      Optional when you want deeper detail.
+                    </p>
+                  ) : null}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </nav>
 
           {memberships.length > 1 ? (

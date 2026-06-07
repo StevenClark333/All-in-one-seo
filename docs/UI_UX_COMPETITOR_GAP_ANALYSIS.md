@@ -122,7 +122,7 @@ The product should become a guided SEO assistant dashboard:
   - Problems
   - Fixes
   - Reports
-- [ ] Keep advanced sections visually quieter.
+- [x] Keep advanced sections visually quieter.
 
 ### Batch C: Issue Solving
 
