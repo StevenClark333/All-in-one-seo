@@ -138,6 +138,36 @@ export default async function IntegrationsPage({
             </div>
           </header>
 
+          <IntegrationPlan
+            analyticsCount={
+              mappedSearchConsoleProperties.length +
+              mappedAnalyticsProperties.length
+            }
+            automationCount={
+              Number(Boolean(slackIntegration)) +
+              vercelIntegrations.length +
+              netlifyIntegrations.length +
+              automationIntegrations.length
+            }
+            cmsCount={
+              wordpressReceiverIntegrations.length +
+              shopifyIntegrations.length +
+              mappedWebflowSites.length
+            }
+            connectedCount={
+              integrations.filter(
+                (integration) => integration.status === "CONNECTED",
+              ).length
+            }
+            needsAttentionCount={
+              integrations.filter((integration) =>
+                ["ERROR", "NEEDS_AUTH", "PLANNED"].includes(
+                  integration.status,
+                ),
+              ).length
+            }
+          />
+
           <ProjectWorkspaceBar
             active="integrations"
             domainId={selectedDomainId}
@@ -145,19 +175,35 @@ export default async function IntegrationsPage({
             returnPath="/integrations"
           />
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2">
-              <PlugZap className="size-5 text-slate-500" aria-hidden="true" />
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="Create a provider record before OAuth mapping, plugin install, or webhook configuration.">
-                  Add integration
-                </HelpLabel>
-              </h3>
-            </div>
+          <details className="group mt-5 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex size-9 items-center justify-center rounded-md bg-orange-50 text-orange-600">
+                  <PlugZap className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Create a provider record before OAuth mapping, plugin install, or webhook configuration.">
+                      Add integration manually
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Use this only when the provider-specific setup below does
+                    not already cover what you need.
+                  </p>
+                </div>
+              </div>
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Add manually
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
 
             <form
               action={createIntegrationAction}
-              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
+              className="grid gap-3 border-t border-slate-100 p-5 md:grid-cols-2 2xl:grid-cols-4"
             >
               <Select
                 help="External system or channel this portal should connect to."
@@ -207,7 +253,7 @@ export default async function IntegrationsPage({
                 ))}
               </Select>
               <label className="grid gap-2 md:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   Notes
                 </span>
                 <input
@@ -227,9 +273,12 @@ export default async function IntegrationsPage({
                 </button>
               </div>
             </form>
-          </section>
+          </details>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="search-console"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
@@ -379,7 +428,10 @@ export default async function IntegrationsPage({
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="google-analytics"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
@@ -512,7 +564,10 @@ export default async function IntegrationsPage({
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="wordpress-plugin"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Install the WordPress package to inject the monitoring script through WordPress APIs.">
@@ -821,7 +876,10 @@ export default async function IntegrationsPage({
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="shopify-app"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Connect Shopify shops so storefront domains can be mapped to monitoring and deployment signals.">
@@ -915,7 +973,10 @@ export default async function IntegrationsPage({
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="configured-integrations"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
@@ -1568,7 +1629,7 @@ function Select({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-500">
         {help ? <HelpLabel help={help}>{label}</HelpLabel> : label}
       </span>
       <select
@@ -1593,11 +1654,96 @@ function Meta({
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {help ? <HelpLabel help={help}>{label}</HelpLabel> : label}
       </p>
       <p className="mt-1 text-sm font-medium text-slate-700">{value}</p>
     </div>
+  );
+}
+
+function IntegrationPlan({
+  analyticsCount,
+  automationCount,
+  cmsCount,
+  connectedCount,
+  needsAttentionCount,
+}: {
+  analyticsCount: number;
+  automationCount: number;
+  cmsCount: number;
+  connectedCount: number;
+  needsAttentionCount: number;
+}) {
+  const plan = [
+    {
+      detail: analyticsCount
+        ? "Search and traffic data is mapped, so reports can use real performance signals."
+        : "Connect Search Console first so the product can show real clicks, keywords, and pages.",
+      href: analyticsCount ? "#google-analytics" : "#search-console",
+      label: analyticsCount ? "Analytics data is ready" : "Start with Google data",
+      value: analyticsCount ? `${analyticsCount} mapped` : "Best first step",
+    },
+    {
+      detail: cmsCount
+        ? "CMS connections are available for site-specific fix delivery and install steps."
+        : "Choose the platform your website uses so fixes can become easier to apply.",
+      href: cmsCount ? "#configured-integrations" : "#wordpress-plugin",
+      label: cmsCount ? "Website platform connected" : "Connect the website platform",
+      value: cmsCount ? `${cmsCount} ready` : "CMS setup",
+    },
+    {
+      detail: automationCount
+        ? "Alerts, deploy checks, or automation hooks can help keep changes moving."
+        : "Add alerts and deployment checks after the main data and CMS connections are done.",
+      href: automationCount ? "#configured-integrations" : "#configured-integrations",
+      label: automationCount ? "Keep updates moving" : "Automate after setup",
+      value: automationCount ? `${automationCount} active` : "Optional later",
+    },
+  ];
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-sm font-medium text-orange-600">
+            Connection setup plan
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-normal">
+            Connect only what helps the next SEO step.
+          </h3>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
+            {connectedCount} connected
+          </span>
+          {needsAttentionCount ? (
+            <span className="inline-flex items-center rounded-full bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">
+              {needsAttentionCount} need attention
+            </span>
+          ) : null}
+        </div>
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        {plan.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="rounded-md border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-orange-200 hover:bg-orange-50"
+          >
+            <span className="text-sm font-semibold text-slate-950">
+              {item.label}
+            </span>
+            <span className="mt-2 block text-sm font-medium text-orange-600">
+              {item.value}
+            </span>
+            <span className="mt-2 block text-sm leading-6 text-slate-500">
+              {item.detail}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
   );
 }
 

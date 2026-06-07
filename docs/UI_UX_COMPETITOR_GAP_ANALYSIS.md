@@ -88,6 +88,7 @@ Gap for us:
 | Issue solving | Improved, but still spread across Issues, Fix Center, Recommendations | One recommended solution path per issue |
 | Visual feel | Softer after latest theme pass, but still dense | More white space, softer panels, orange highlights, fewer competing sections |
 | Nontechnical usability | Requires understanding SEO terms | Explain impact in human language and show the exact next button |
+| Integrations | Long provider setup page that starts with an admin-style form | Plain-language connection plan first, then provider setup only when needed |
 
 ## Product Direction
 
@@ -171,3 +172,20 @@ The product should become a guided SEO assistant dashboard:
 - [x] Reduce uppercase labels on the Reports workflow.
 - [x] Keep mobile navigation focused on the main path so page content appears sooner.
 - [x] Browser-check Reports desktop and mobile after deployment.
+
+### Batch H: Integration Setup Simplification
+
+Competitive evidence:
+
+- Semrush keeps site audit detail behind severity groups and thematic reports, so users do not have to understand every technical check at once.
+- Ahrefs pairs health-score summaries with issue groups and fix instructions.
+- Ubersuggest frames audit issues around actionable recommendations, which is closer to the nontechnical user target.
+
+Implementation:
+
+- [x] Add a connection setup plan above Integrations provider detail.
+- [x] Start with Google data, website platform, and automation as three plain-language choices.
+- [x] Collapse the generic manual integration form behind a softer expandable row.
+- [x] Add direct anchors for Search Console, Analytics, WordPress, Shopify, and configured integrations.
+- [x] Reduce uppercase labels through shared Integrations metadata helpers.
+- [ ] Browser-check Integrations desktop and mobile after deployment.
