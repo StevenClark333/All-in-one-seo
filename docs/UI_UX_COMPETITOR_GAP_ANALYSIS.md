@@ -160,4 +160,4 @@ The product should become a guided SEO assistant dashboard:
 - [x] Replace hard black analytics actions with orange primary actions.
 - [x] Reduce uppercase analytics labels in Search Performance, saved views, and reusable SEO filters.
 - [ ] Apply the same guided-plan pattern to keyword research and competitor analysis.
-- [ ] Browser-check live Search Performance desktop and mobile.
+- [x] Browser-check live Search Performance desktop and mobile.
