@@ -147,6 +147,7 @@ export function buildLinkFixAutomationPayload({
   domain,
   fixId,
   manualInstructions,
+  platformFixBrief,
   provider,
   sourceUrl,
   status,
@@ -158,6 +159,7 @@ export function buildLinkFixAutomationPayload({
   domain: string;
   fixId: string;
   manualInstructions: string;
+  platformFixBrief?: unknown;
   provider: string;
   sourceUrl: string;
   status: string;
@@ -177,6 +179,7 @@ export function buildLinkFixAutomationPayload({
       callbackUrl: callbackUrl ?? "",
       domain,
       manualInstructions,
+      platformFixBrief: platformFixBrief ?? null,
       sourceUrl,
       status,
       suggestedUrl,

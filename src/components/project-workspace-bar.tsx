@@ -14,9 +14,13 @@ type ProjectToolKey =
   | "overview"
   | "issues"
   | "pages"
+  | "search"
   | "technical"
   | "fixes"
   | "ai"
+  | "competitive"
+  | "keywords"
+  | "rank"
   | "reports"
   | "integrations";
 
@@ -39,6 +43,26 @@ const projectTools: Array<{
     key: "pages",
     label: "Crawled Pages",
     buildHref: (domainId) => `/pages?domainId=${domainId}`,
+  },
+  {
+    key: "search",
+    label: "Search Performance",
+    buildHref: (domainId) => `/search-performance?domainId=${domainId}`,
+  },
+  {
+    key: "competitive",
+    label: "Competitive",
+    buildHref: (domainId) => `/competitive-analysis?domainId=${domainId}`,
+  },
+  {
+    key: "keywords",
+    label: "Keywords",
+    buildHref: (domainId) => `/keyword-research?domainId=${domainId}`,
+  },
+  {
+    key: "rank",
+    label: "Rank Tracking",
+    buildHref: (domainId) => `/rank-tracking?domainId=${domainId}`,
   },
   {
     key: "technical",

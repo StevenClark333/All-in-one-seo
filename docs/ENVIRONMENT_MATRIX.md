@@ -43,6 +43,14 @@ Use this matrix when configuring local, preview, and production environments.
 | `WEBFLOW_CLIENT_SECRET` | Optional | Required for Webflow             | Webflow OAuth      |
 | `WEBFLOW_SCOPES`        | Optional | Required for Webflow             | Webflow scopes     |
 
+## Keyword Provider Imports
+
+| Variable                          | Preview  | Production                                | Purpose                         |
+| --------------------------------- | -------- | ----------------------------------------- | ------------------------------- |
+| `KEYWORD_PROVIDER_NAME`           | Optional | Required when webhook imports are enabled | Provider label on imported rows |
+| `KEYWORD_PROVIDER_WEBHOOK_SECRET` | Optional | Required when webhook imports are enabled | Protects keyword import API     |
+| `KEYWORD_IMPORT_DEMO_MODE`        | Optional | Optional                                  | Synthetic demo import fallback  |
+
 ## Billing
 
 | Variable                  | Preview             | Production          | Purpose              |

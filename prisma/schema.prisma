@@ -120,6 +120,23 @@ enum RecommendationType {
   CONTENT_GAP
 }
 
+enum RankTrackingFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum RankTrackingStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum SearchEngine {
+  GOOGLE
+  BING
+}
+
 enum ReportStatus {
   DRAFT
   GENERATED
@@ -156,6 +173,7 @@ enum WorkerJobType {
   DOMAIN_VERIFICATION
   SCHEDULED_REPORT
   AI_RECOMMENDATION
+  KEYWORD_IMPORT
 }
 
 enum WorkerJobStatus {
@@ -203,6 +221,7 @@ model User {
   workspaceMembers WorkspaceMember[]
   assignedIssues   SeoIssue[]            @relation("AssignedIssues")
   issueNotes       SeoIssueNote[]
+  savedViews       SavedAnalyticsView[]
 
   @@map("users")
 }
@@ -249,18 +268,22 @@ model Workspace {
   aiUsageEvents           AiUsageEvent[]
   auditLogs               AuditLog[]
   clients                 Client[]
+  competitorDomains       CompetitorDomain[]
   deploymentChecks        DeploymentCheck[]
   domains                 Domain[]
   integrations            Integration[]
   issues                  SeoIssue[]
   invitations             WorkspaceInvitation[]
+  keywordMetrics          KeywordMetric[]
   linkFixSuggestions      LinkFixSuggestion[]
   members                 WorkspaceMember[]
   reports                 Report[]
   reportSchedules         ReportSchedule[]
   reportTemplates         ReportTemplate[]
   reportWhiteLabelDomains ReportWhiteLabelDomain[]
+  savedViews             SavedAnalyticsView[]
   subscriptions           WorkspaceSubscription[]
+  trackedKeywords         TrackedKeyword[]
   workerJobs              WorkerJob[]
 
   @@map("workspaces")
@@ -412,6 +435,26 @@ model WorkerJob {
   @@map("worker_jobs")
 }
 
+model SavedAnalyticsView {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String?
+  name        String
+  route       String
+  filtersJson Json
+  isDefault   Boolean   @default(false)
+  lastUsedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, route, name])
+  @@index([workspaceId, route, updatedAt])
+  @@index([userId])
+  @@map("saved_analytics_views")
+}
+
 model Client {
   id                      String                   @id @default(cuid())
   workspaceId             String
@@ -425,6 +468,7 @@ model Client {
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
   alertRules              AlertRule[]
+  competitorDomains       CompetitorDomain[]
   domains                 Domain[]
   integrations            Integration[]
   issues                  SeoIssue[]
@@ -457,6 +501,7 @@ model Domain {
   alerts             Alert[]
   changeEvents       ChangeEvent[]
   client             Client?                   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  competitors        CompetitorDomain[]
   crawlRuns          CrawlRun[]
   deploymentChecks   DeploymentCheck[]
   artifacts          CrawlArtifact[]
@@ -471,6 +516,7 @@ model Domain {
   reportSchedules    ReportSchedule[]
   scriptEvents       ScriptEvent[]
   scoreHistory       SiteScore[]
+  trackedKeywords    TrackedKeyword[]
   verificationChecks DomainVerificationCheck[]
   verifications      DomainVerification[]
   workspace          Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
@@ -482,6 +528,99 @@ model Domain {
   @@index([workspaceId, lastCrawledAt])
   @@index([workspaceId, archivedAt])
   @@map("domains")
+}
+
+model CompetitorDomain {
+  id          String    @id @default(cuid())
+  workspaceId String
+  clientId    String?
+  domainId    String
+  domain      String
+  label       String?
+  notes       String?
+  source      String    @default("MANUAL")
+  lastSeenAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  client      Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  baseDomain  Domain    @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([domainId, domain])
+  @@index([workspaceId])
+  @@index([clientId])
+  @@index([domainId])
+  @@map("competitor_domains")
+}
+
+model TrackedKeyword {
+  id          String                @id @default(cuid())
+  workspaceId String
+  domainId    String
+  keyword     String
+  locale      String?
+  country     String?
+  device      String?
+  engine      SearchEngine          @default(GOOGLE)
+  frequency   RankTrackingFrequency @default(WEEKLY)
+  status      RankTrackingStatus    @default(ACTIVE)
+  tags        String?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  domain      Domain                @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  metrics     KeywordMetric[]
+  rankings    RankObservation[]
+  workspace   Workspace             @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([domainId, keyword, country, device, engine])
+  @@index([workspaceId, status])
+  @@index([domainId, status])
+  @@map("tracked_keywords")
+}
+
+model RankObservation {
+  id               String         @id @default(cuid())
+  trackedKeywordId String
+  date             DateTime
+  engine           SearchEngine   @default(GOOGLE)
+  country          String?
+  device           String?
+  position         Float?
+  url              String?
+  competitorDomain String?
+  featuredSnippet  Boolean        @default(false)
+  localPack        Boolean        @default(false)
+  peopleAlsoAsk    Boolean        @default(false)
+  metadataJson     Json?
+  createdAt        DateTime       @default(now())
+  trackedKeyword   TrackedKeyword @relation(fields: [trackedKeywordId], references: [id], onDelete: Cascade)
+
+  @@index([trackedKeywordId, date])
+  @@index([competitorDomain])
+  @@map("rank_observations")
+}
+
+model KeywordMetric {
+  id               String          @id @default(cuid())
+  workspaceId      String
+  trackedKeywordId String?
+  keyword          String
+  country          String?
+  language         String?
+  provider         String          @default("MANUAL")
+  searchVolume     Int?
+  difficulty       Int?
+  cpcCents         Int?
+  competition      Float?
+  trendJson        Json?
+  importedAt       DateTime        @default(now())
+  createdAt        DateTime        @default(now())
+  trackedKeyword   TrackedKeyword? @relation(fields: [trackedKeywordId], references: [id], onDelete: SetNull)
+  workspace        Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, keyword])
+  @@index([trackedKeywordId])
+  @@map("keyword_metrics")
 }
 
 model SiteScore {

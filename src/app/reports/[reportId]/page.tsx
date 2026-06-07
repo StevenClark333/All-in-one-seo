@@ -30,15 +30,19 @@ export default async function ReportDetailPage({
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Reports" />
+        <AppSidebar active="Reports" activeDomainId={report.domainId ?? undefined} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <Link
-            href="/reports"
+            href={
+              report.domainId
+                ? `/domains/${report.domainId}/workspace`
+                : "/reports"
+            }
             className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            Reports
+            {report.domainId ? "Project workspace" : "Reports"}
           </Link>
 
           <header className="mt-6 flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">

@@ -40,11 +40,11 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-6 text-slate-950 sm:px-8 lg:px-10">
       <div className="mx-auto max-w-5xl">
         <Link
-          href="/domains"
+          href={`/domains/${crawlRun.domain.id}/workspace`}
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Domains
+          Project workspace
         </Link>
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">

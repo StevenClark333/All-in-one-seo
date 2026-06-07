@@ -12,7 +12,7 @@ control.
 - Provision managed PostgreSQL.
 - Store the production connection string as `PRODUCTION_DATABASE_URL` in GitHub
   Actions and `DATABASE_URL` in the hosting environment.
-- Run `npx prisma migrate deploy` against production.
+- Run `npm run db:migrate:deploy` against production.
 - Run `npx prisma migrate status` against production and confirm it is clean.
 
 ## Storage, Jobs, And CDN
@@ -46,6 +46,11 @@ control.
   `SHOPIFY_API_SECRET`, and `SHOPIFY_SCOPES`.
 - Create Webflow app credentials and set `WEBFLOW_CLIENT_ID`,
   `WEBFLOW_CLIENT_SECRET`, and `WEBFLOW_SCOPES`.
+- Configure `KEYWORD_PROVIDER_NAME` and `KEYWORD_PROVIDER_WEBHOOK_SECRET` for
+  Semrush, Ahrefs, DataForSEO, or another keyword provider connector.
+- Send provider keyword updates to
+  `/api/integrations/keyword-provider/import` with
+  `Authorization: Bearer <KEYWORD_PROVIDER_WEBHOOK_SECRET>`.
 - Generate `INTEGRATION_ENCRYPTION_KEY` with
   `npm run secret:generate -- encryption hex`.
 
@@ -60,6 +65,7 @@ control.
 ## Preflight And Smoke
 
 - Run `npm run release:readiness` locally before pushing.
+- Run `npm run verify:e2e:ready` before authenticated browser verification.
 - Run the manual `Production Preflight` GitHub workflow.
 - Run `SMOKE_TEST_TARGET_URL=<production-url> npm run smoke:test`.
 - Sign up as the first admin and create the initial workspace.

@@ -36,11 +36,13 @@ function checkPackageScripts(): Check {
   };
   const requiredScripts = [
     "check",
+    "db:migrate:deploy",
     "launch:handoff",
     "security:audit",
     "secret:generate",
     "smoke:test",
     "validate:production-env",
+    "verify:e2e:ready",
   ];
   const missing = requiredScripts.filter(
     (script) => !packageJson.scripts?.[script],
@@ -116,12 +118,14 @@ function checkReleaseDocs(): Check {
   const requiredPhrases = [
     "npm run validate:production-env",
     "npm run smoke:test",
+    "npm run db:migrate:deploy",
     "Production Preflight",
     "PRODUCTION_DATABASE_URL",
     "npm run secret:generate",
     "npm run launch:handoff",
     "CRON_SECRET",
     "STRIPE_WEBHOOK_SECRET",
+    "KEYWORD_PROVIDER_WEBHOOK_SECRET",
   ];
   const { missing, passed } = includesAll(docs, requiredPhrases);
 

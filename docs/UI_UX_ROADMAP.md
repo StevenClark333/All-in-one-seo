@@ -260,22 +260,22 @@ As the product grows, organize tools into groups:
 
 ### C. Site Audit Overview Cards
 
-- [ ] Add Site Health gauge/card.
-- [ ] Add Crawled Pages breakdown:
+- [x] Add Site Health gauge/card.
+- [x] Add Crawled Pages breakdown:
   - Healthy
   - Broken
   - Have issues
   - Redirects
   - Blocked
-- [ ] Add Errors card with trend.
-- [ ] Add Warnings card with top warning list.
-- [ ] Add AI Search Health / AI crawler accessibility card.
-- [ ] Add Blocked from AI Search card:
+- [x] Add Errors card with trend.
+- [x] Add Warnings card with top warning list.
+- [x] Add AI Search Health / AI crawler accessibility card.
+- [x] Add Blocked from AI Search card:
   - ChatGPT-User
   - OAI-SearchBot
   - Googlebot
   - Google-Extended
-- [ ] Add quick “View all issues” link from overview.
+- [x] Add quick “View all issues” link from overview.
 
 ### D. Thematic Reports
 
@@ -304,24 +304,24 @@ As the product grows, organize tools into groups:
 - [x] Add persistent project selector to scoped pages.
 - [x] Add domain-scoped breadcrumbs to scoped pages.
 - [x] Preserve active `domainId` across scoped sidebar navigation and workspace tabs.
-- [ ] Make all scoped page “back” actions return to the domain workspace.
+- [x] Make all scoped page “back” actions return to the domain workspace.
 
 ### F. Global Search / Command Bar
 
-- [ ] Add top search bar.
-- [ ] Search domains.
-- [ ] Search clients.
-- [ ] Search pages.
-- [ ] Search issues.
-- [ ] Search reports.
-- [ ] Search actions such as “run crawl” or “create report.”
-- [ ] Add keyboard shortcut later.
+- [x] Add top search bar.
+- [x] Search domains.
+- [x] Search clients.
+- [x] Search pages.
+- [x] Search issues.
+- [x] Search reports.
+- [x] Search actions such as “run crawl” or “create report.”
+- [x] Add keyboard shortcut later.
 
 ### G. Sidebar And Information Architecture
 
-- [ ] Move from flat sidebar to grouped navigation.
-- [ ] Add compact icon rail for primary product areas.
-- [ ] Add expanded SEO menu with sections:
+- [x] Move from flat sidebar to grouped navigation.
+- [x] Add compact icon rail for primary product areas.
+- [x] Add expanded SEO menu with sections:
   - Dashboard
   - Site Performance
   - Competitive Analysis
@@ -329,42 +329,42 @@ As the product grows, organize tools into groups:
   - Content Ideas
   - Internal SEO
   - Reporting
-- [ ] Keep agency admin pages separate from SEO tool pages.
-- [ ] Avoid exposing internal docs or roadmap pages in customer navigation.
+- [x] Keep agency admin pages separate from SEO tool pages.
+- [x] Avoid exposing internal docs or roadmap pages in customer navigation.
 
 ### H. Search Console Powered Position / Visibility Module
 
-- [ ] Add “Search Performance” module as near-term position tracking substitute.
-- [ ] Show visibility from GSC average position and impressions.
-- [ ] Show improved queries.
-- [ ] Show declined queries.
-- [ ] Show top queries.
-- [ ] Show top pages.
-- [ ] Add date range filter.
-- [ ] Add country/device filters when data exists.
-- [ ] Reserve true keyword rank tracking as future paid subsystem.
+- [x] Add “Search Performance” module as near-term position tracking substitute.
+- [x] Show visibility from GSC average position and impressions.
+- [x] Show improved queries.
+- [x] Show declined queries.
+- [x] Show top queries.
+- [x] Show top pages.
+- [x] Add date range filter.
+- [x] Add country/device filters when data exists.
+- [x] Reserve true keyword rank tracking as future paid subsystem.
 
 ### I. Reports And Export UX
 
-- [ ] Add one-click PDF from domain workspace.
-- [ ] Add CSV export for pages/issues.
-- [ ] Add share link from domain workspace.
-- [ ] Add report schedule shortcut from domain workspace.
-- [ ] Show latest report status on project row.
+- [x] Add one-click PDF from domain workspace.
+- [x] Add CSV export for pages/issues.
+- [x] Add share link from domain workspace.
+- [x] Add report schedule shortcut from domain workspace.
+- [x] Show latest report status on project row.
 
 ### J. Visual Design System Adjustments
 
-- [ ] Reduce overuse of large cards on dense operational pages.
-- [ ] Use more compact tables where users need scanning/comparison.
-- [ ] Keep card radius at 8px or less.
-- [ ] Standardize section headers, action bars, tabs, and filter rows.
-- [ ] Add health/status gauges where they clarify score state.
-- [ ] Use consistent colors:
+- [x] Reduce overuse of large cards on dense operational pages.
+- [x] Use more compact tables where users need scanning/comparison.
+- [x] Keep card radius at 8px or less.
+- [x] Standardize section headers, action bars, tabs, and filter rows.
+- [x] Add health/status gauges where they clarify score state.
+- [x] Use consistent colors:
   - Green for healthy/fixed
   - Red for errors/critical
   - Amber for warnings/pending
   - Blue/violet for informational AI/workflow signals
-- [ ] Prevent horizontal overflow in all tables and action rows.
+- [x] Prevent horizontal overflow in all tables and action rows.
 
 ## 5. Recommended Implementation Batches
 
@@ -397,21 +397,36 @@ As the product grows, organize tools into groups:
 
 ### UX Batch 5: Search Performance Module
 
-- [ ] Build GSC-powered search performance dashboard.
-- [ ] Add query/page/date filters.
-- [ ] Link it from the domain workspace.
+- [x] Build GSC-powered search performance dashboard.
+- [x] Add query/page/date filters.
+- [x] Link it from the domain workspace.
 
 ### UX Batch 6: Global Search / Command Bar
 
-- [ ] Add global top search.
-- [ ] Search domains, clients, pages, issues, reports, and actions.
+- [x] Add global top search.
+- [x] Search domains, clients, pages, issues, reports, and actions.
+
+### UX Batch 7: Future SEO Product Groups
+
+- [x] Promote Competitive Analysis into a navigable product group.
+- [x] Add Domain Overview, Organic Search Console, and Top Pages views.
+- [x] Promote Keyword Research into a navigable product group.
+- [x] Add Search Console Queries, Keyword Opportunities, and Content Gap views.
+- [x] Preserve active project scoping across future product group pages.
+- [x] Add external competitor domain tracking.
+- [x] Add rank tracking for owned and competitor keyword positions.
+- [x] Add provider-neutral keyword volume, difficulty, CPC, and source imports.
+- [x] Add competitor-aware content gaps from tracked rank observations.
+- [x] Resolve the Turbopack snapshot-storage trace warning.
 
 ## 6. Current Priority
 
-The next implementation batch should be **UX Batch 5: Search Performance Module**.
+The UI/UX roadmap checklist is complete. UX Batch 5, UX Batch 6, UX Batch 7, and the remaining polish items have been implemented and verified through automated checks.
 
-Reason:
+Verification focus:
 
-- It fills the current gap between technical audit data and search visibility.
-- It uses already-planned Google Search Console imports instead of expensive rank tracking.
-- It makes each domain workspace feel more like a complete SEO command center.
+- Search visibility now uses imported Google Search Console data.
+- The domain workspace now exposes audit cards, exports, share/report shortcuts, and project-scoped navigation.
+- The global command/search surface and grouped sidebar complete the navigation polish phase.
+- Competitive Analysis and Keyword Research now expose the future SEO product groups as real app surfaces.
+

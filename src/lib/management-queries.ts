@@ -396,6 +396,10 @@ export async function getDomainWorkspaceData(domainId: string) {
       integrations: {
         orderBy: [{ provider: "asc" }, { createdAt: "desc" }],
       },
+      gscMetrics: {
+        orderBy: [{ date: "desc" }, { impressions: "desc" }],
+        take: 500,
+      },
       issues: {
         where: { status: { not: "FIXED" } },
         include: { page: true },

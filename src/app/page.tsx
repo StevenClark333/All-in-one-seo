@@ -7,6 +7,10 @@ import {
   Plus,
 } from "lucide-react";
 import Link from "next/link";
+import {
+  AnalyticsMetricCard,
+  HorizontalBar,
+} from "@/components/analytics-widgets";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { mvpModules, type Severity } from "@/lib/dashboard-data";
@@ -112,6 +116,99 @@ export default async function Home() {
               );
             })}
           </div>
+
+          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+                  Portfolio command center
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-normal">
+                  Agency analytics cockpit
+                </h3>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                  Jump from portfolio health to the exact project, issue, report,
+                  or search visibility view that needs attention.
+                </p>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-4">
+                <QuickLink href="/domains" label="Projects" />
+                <QuickLink href="/issues" label="Issues" />
+                <QuickLink href="/search-performance" label="Search" />
+                <QuickLink href="/reports" label="Reports" />
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <AnalyticsMetricCard
+                href="/domains"
+                icon={CheckCircle2}
+                label="Healthy sites"
+                points={sites.map((site) => ({ value: site.score }))}
+                value={sites.filter((site) => site.score >= 80).length}
+              />
+              <AnalyticsMetricCard
+                href="/issues?severity=CRITICAL"
+                icon={AlertTriangle}
+                label="Critical workload"
+                value={sites.reduce((total, site) => total + site.critical, 0)}
+              />
+              <AnalyticsMetricCard
+                href="/issues"
+                icon={CircleDot}
+                label="Warning load"
+                value={sites.reduce((total, site) => total + site.warnings, 0)}
+              />
+              <AnalyticsMetricCard
+                href="/reports"
+                icon={FileText}
+                label="Reports queue"
+                value={
+                  agencyStats.find((stat) => stat.label === "Reports due")
+                    ?.value ?? "0"
+                }
+              />
+            </div>
+
+            <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+              <div>
+                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Site health distribution
+                </h4>
+                <div className="mt-4 grid gap-4">
+                  <HorizontalBar
+                    label="80+ healthy"
+                    max={Math.max(1, sites.length)}
+                    value={sites.filter((site) => site.score >= 80).length}
+                  />
+                  <HorizontalBar
+                    label="60-79 needs attention"
+                    max={Math.max(1, sites.length)}
+                    value={
+                      sites.filter((site) => site.score >= 60 && site.score < 80)
+                        .length
+                    }
+                  />
+                  <HorizontalBar
+                    label="Below 60 high risk"
+                    max={Math.max(1, sites.length)}
+                    value={sites.filter((site) => site.score < 60).length}
+                  />
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Fast actions
+                </h4>
+                <div className="mt-4 grid gap-2">
+                  <QuickAction href="/domains/new" label="Add project" />
+                  <QuickAction href="/domains" label="Run project crawl" />
+                  <QuickAction href="/recommendations" label="Generate briefs" />
+                  <QuickAction href="/rank-tracking" label="Track keywords" />
+                </div>
+              </div>
+            </div>
+          </section>
 
           {!isDatabaseConfigured ? (
             <section className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-900">
@@ -387,5 +484,28 @@ function getStatHelp(label: string) {
 
   return (
     help[label] ?? "Key workspace metric used to understand SEO operations."
+  );
+}
+
+function QuickLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-semibold text-slate-700 transition hover:bg-white hover:text-slate-950"
+    >
+      {label}
+    </Link>
+  );
+}
+
+function QuickAction({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3 text-sm font-semibold text-slate-700 transition hover:bg-white hover:text-slate-950"
+    >
+      {label}
+      <span aria-hidden="true">→</span>
+    </Link>
   );
 }

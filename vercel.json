@@ -3,6 +3,10 @@
     {
       "path": "/api/jobs/private-beta-daily",
       "schedule": "15 3 * * *"
+    },
+    {
+      "path": "/api/jobs/process-keyword-imports",
+      "schedule": "45 3 * * *"
     }
   ]
 }

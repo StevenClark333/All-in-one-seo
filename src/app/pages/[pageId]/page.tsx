@@ -28,15 +28,15 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Pages" />
+        <AppSidebar active="Pages" activeDomainId={page.domain.id} />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <Link
-            href="/pages"
+            href={`/domains/${page.domain.id}/workspace`}
             className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            Pages
+            Project workspace
           </Link>
 
           <header className="mt-6 border-b border-slate-200 pb-6">

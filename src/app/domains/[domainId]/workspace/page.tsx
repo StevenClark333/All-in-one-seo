@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type React from "react";
 import {
   AlertTriangle,
+  BarChart3,
   Bot,
   CalendarClock,
   CheckCircle2,
@@ -20,6 +21,10 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { generateReport } from "@/app/actions";
+import {
+  AnalyticsMetricCard,
+  HorizontalBar,
+} from "@/components/analytics-widgets";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
@@ -59,6 +64,8 @@ export default async function DomainWorkspacePage({
   const latestCrawl = domain.crawlRuns.at(0);
   const latestScore = domain.scoreHistory.at(0);
   const latestReport = domain.reports.at(0);
+  const searchSummary = buildSearchSummary(domain.gscMetrics);
+  const auditOverview = buildAuditOverview(domain);
   const lastUpdatedAt =
     latestCrawl?.completedAt ?? latestCrawl?.createdAt ?? domain.updatedAt;
   const jsRenderingStatus = latestCrawl?.renderedCaptures.length
@@ -97,11 +104,27 @@ export default async function DomainWorkspacePage({
   );
   const navItems = buildProjectTabs(domain.id);
   const thematicReports = buildThematicReports(domain);
+  const commandQueue = buildCommandQueue({
+    approvedFixes,
+    criticalIssues,
+    domainId: domain.id,
+    isVerified,
+    latestReportId: latestReport?.id,
+    warningIssues,
+  });
+  const scorePoints = domain.scoreHistory
+    .slice()
+    .reverse()
+    .map((score) => ({ value: score.score }));
+  const searchPoints = domain.gscMetrics
+    .slice(0, 28)
+    .reverse()
+    .map((metric) => ({ value: metric.impressions }));
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Sites" />
+        <AppSidebar active="Sites" activeDomainId={domain.id} />
 
         <section className="min-w-0 px-5 py-6 sm:px-8 lg:px-10">
           <nav
@@ -190,13 +213,25 @@ export default async function DomainWorkspacePage({
                   <Download className="size-4" aria-hidden="true" />
                 </ActionLink>
                 <ActionLink
-                  href={`/pages?domainId=${domain.id}`}
-                  label="Export"
+                  href={`/api/exports/pages?domainId=${domain.id}`}
+                  label="Pages CSV"
                 >
-                  <ExternalLink className="size-4" aria-hidden="true" />
+                  <Download className="size-4" aria-hidden="true" />
+                </ActionLink>
+                <ActionLink
+                  href={`/api/exports/issues?domainId=${domain.id}`}
+                  label="Issues CSV"
+                >
+                  <Download className="size-4" aria-hidden="true" />
                 </ActionLink>
                 <ActionLink href={shareHref} label="Share">
                   <ExternalLink className="size-4" aria-hidden="true" />
+                </ActionLink>
+                <ActionLink
+                  href={`/reports?domainId=${domain.id}#schedule-report`}
+                  label="Schedule"
+                >
+                  <CalendarClock className="size-4" aria-hidden="true" />
                 </ActionLink>
                 <ActionLink href={`/domains/${domain.id}`} label="Settings">
                   <Settings className="size-4" aria-hidden="true" />
@@ -259,6 +294,122 @@ export default async function DomainWorkspacePage({
             <StatusNotice message={getDomainErrorMessage(error)} />
           ) : null}
 
+          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+                  Project command center
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-normal">
+                  {domain.domain} SEO cockpit
+                </h3>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                  Health, search visibility, crawl coverage, and priority work
+                  in one place, with every metric linked to its next step.
+                </p>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-3">
+                {commandQueue.slice(0, 3).map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-white hover:text-slate-950"
+                  >
+                    {item.label}
+                    <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-xs text-slate-500">
+                      {item.count}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <AnalyticsMetricCard
+                delta={auditOverview.healthDelta}
+                help="Latest site health score"
+                href={`/issues?domainId=${domain.id}`}
+                icon={ShieldCheck}
+                label="Site health"
+                points={scorePoints}
+                value={domain.healthScore ?? latestScore?.score ?? 0}
+              />
+              <AnalyticsMetricCard
+                help="Search Console visibility"
+                href={`/search-performance?domainId=${domain.id}`}
+                icon={BarChart3}
+                label="Search visibility"
+                points={searchPoints}
+                suffix="%"
+                value={searchSummary.visibility}
+              />
+              <AnalyticsMetricCard
+                help="Pages crawled in the latest crawl"
+                href={`/pages?domainId=${domain.id}`}
+                icon={ClipboardList}
+                label="Crawl coverage"
+                suffix="%"
+                value={calculateCoverage(
+                  latestCrawl?.pagesCrawled ?? 0,
+                  domain.pages.length,
+                )}
+              />
+              <AnalyticsMetricCard
+                help="Open critical and warning issues"
+                href={`/issues?domainId=${domain.id}`}
+                icon={AlertTriangle}
+                label="Priority issues"
+                value={`${criticalIssues} / ${warningIssues}`}
+              />
+            </div>
+
+            <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+              <div>
+                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Analytics distribution
+                </h4>
+                <div className="mt-4 grid gap-4">
+                  <HorizontalBar
+                    label="Healthy pages"
+                    max={Math.max(1, domain.pages.length)}
+                    value={auditOverview.pageBreakdown.healthy}
+                  />
+                  <HorizontalBar
+                    label="Pages with issues"
+                    max={Math.max(1, domain.pages.length)}
+                    value={auditOverview.pageBreakdown.haveIssues}
+                  />
+                  <HorizontalBar
+                    label="Broken pages"
+                    max={Math.max(1, domain.pages.length)}
+                    value={auditOverview.pageBreakdown.broken}
+                  />
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Action queue
+                </h4>
+                <div className="mt-4 grid gap-2">
+                  {commandQueue.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="flex items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm transition hover:bg-white"
+                    >
+                      <span className="font-semibold text-slate-700">
+                        {item.label}
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-xs font-semibold text-slate-500">
+                        {item.count}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
               help="Latest site health score for this domain."
@@ -282,6 +433,172 @@ export default async function DomainWorkspacePage({
                 latestCrawl ? formatEnum(latestCrawl.status) : "Not started"
               }
             />
+          </section>
+
+          <section className="mt-6 grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)_360px]">
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Gauge-style score from the latest site health value and crawl score history.">
+                      Site Health
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Latest technical audit score.
+                  </p>
+                </div>
+                <Link
+                  href={`/issues?domainId=${domain.id}`}
+                  className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline"
+                >
+                  View all issues
+                </Link>
+              </div>
+              <div className="mt-5 flex items-center gap-5">
+                <div
+                  className="grid size-32 place-items-center rounded-full"
+                  style={{
+                    background: `conic-gradient(${auditOverview.healthColor} ${
+                      auditOverview.healthScore
+                    }%, #e2e8f0 0)`,
+                  }}
+                >
+                  <div className="grid size-24 place-items-center rounded-full bg-white">
+                    <span className="text-3xl font-semibold">
+                      {auditOverview.healthScore}
+                    </span>
+                  </div>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-700">
+                    {auditOverview.healthLabel}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    {auditOverview.healthTrend}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <h3 className="text-lg font-semibold">
+                <HelpLabel help="Breakdown of crawled pages by latest snapshot status, issue load, redirects, and robots directives.">
+                  Crawled Pages
+                </HelpLabel>
+              </h3>
+              <div className="mt-4 grid gap-3 sm:grid-cols-5">
+                <BreakdownItem
+                  label="Healthy"
+                  tone="success"
+                  value={auditOverview.pageBreakdown.healthy}
+                />
+                <BreakdownItem
+                  label="Broken"
+                  tone="error"
+                  value={auditOverview.pageBreakdown.broken}
+                />
+                <BreakdownItem
+                  label="Have issues"
+                  tone="warning"
+                  value={auditOverview.pageBreakdown.haveIssues}
+                />
+                <BreakdownItem
+                  label="Redirects"
+                  tone="info"
+                  value={auditOverview.pageBreakdown.redirects}
+                />
+                <BreakdownItem
+                  label="Blocked"
+                  tone="muted"
+                  value={auditOverview.pageBreakdown.blocked}
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              <SignalCard
+                detail={auditOverview.errorTrend}
+                label="Errors"
+                tone="error"
+                value={criticalIssues}
+              />
+              <SignalCard
+                detail={`${auditOverview.topWarnings.length} top warning categories`}
+                label="Warnings"
+                tone="warning"
+                value={warningIssues}
+              />
+            </div>
+          </section>
+
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="A search-AI accessibility score based on robots.txt and page-level robots directives.">
+                      AI Search Health
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    AI crawler and search bot accessibility.
+                  </p>
+                </div>
+                <span className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
+                  {auditOverview.aiSearchHealth}%
+                </span>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-4">
+                {auditOverview.botAccess.map((bot) => (
+                  <div
+                    key={bot.name}
+                    className={`rounded-md border p-3 ${
+                      bot.blocked
+                        ? "border-red-200 bg-red-50 text-red-800"
+                        : "border-emerald-200 bg-emerald-50 text-emerald-800"
+                    }`}
+                  >
+                    <p className="text-sm font-semibold">{bot.name}</p>
+                    <p className="mt-1 text-xs">
+                      {bot.blocked ? "Blocked" : "Allowed"}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <h3 className="text-lg font-semibold">
+                <HelpLabel help="Most common warning issues for this website.">
+                  Top warnings
+                </HelpLabel>
+              </h3>
+              <div className="mt-4 grid gap-3">
+                {auditOverview.topWarnings.length ? (
+                  auditOverview.topWarnings.map((warning) => (
+                    <Link
+                      key={warning.issueType}
+                      href={`/issues?domainId=${domain.id}&issueType=${encodeURIComponent(
+                        warning.issueType,
+                      )}`}
+                      className="flex items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 transition hover:bg-white"
+                    >
+                      <span className="min-w-0 truncate text-sm font-semibold">
+                        {formatIssueType(warning.issueType)}
+                      </span>
+                      <span className="shrink-0 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700">
+                        {warning.count}
+                      </span>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-sm text-slate-500">
+                    No warning categories in the current issue sample.
+                  </p>
+                )}
+              </div>
+            </div>
           </section>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -345,6 +662,53 @@ export default async function DomainWorkspacePage({
                     href={`/fix-center?domainId=${domain.id}`}
                     label="Sent / applied"
                     value={`${sentFixes} / ${appliedFixes}`}
+                  />
+                </div>
+              </section>
+
+              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      <HelpLabel help="Imported Google Search Console visibility and demand signals for this website.">
+                        Search performance
+                      </HelpLabel>
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Query and page demand from Google Search Console imports.
+                    </p>
+                  </div>
+                  <Link
+                    href={`/search-performance?domainId=${domain.id}`}
+                    className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    View performance
+                  </Link>
+                </div>
+                <div className="mt-4 grid gap-3 md:grid-cols-4">
+                  <QueueCard
+                    help="Impression-weighted visibility based on average search position."
+                    href={`/search-performance?domainId=${domain.id}`}
+                    label="Visibility"
+                    value={`${searchSummary.visibility}%`}
+                  />
+                  <QueueCard
+                    help="Organic clicks from imported Search Console metrics."
+                    href={`/search-performance?domainId=${domain.id}`}
+                    label="Clicks"
+                    value={searchSummary.clicks.toLocaleString()}
+                  />
+                  <QueueCard
+                    help="Organic impressions from imported Search Console metrics."
+                    href={`/search-performance?domainId=${domain.id}`}
+                    label="Impressions"
+                    value={searchSummary.impressions.toLocaleString()}
+                  />
+                  <QueueCard
+                    help="Distinct queries found in imported Search Console rows."
+                    href={`/search-performance?domainId=${domain.id}`}
+                    label="Queries"
+                    value={searchSummary.queries}
                   />
                 </div>
               </section>
@@ -751,6 +1115,12 @@ function buildProjectTabs(domainId: string) {
     },
     {
       active: false,
+      href: `/search-performance?domainId=${domainId}`,
+      icon: BarChart3,
+      label: "Search Performance",
+    },
+    {
+      active: false,
       href: `/technical-audit?domainId=${domainId}`,
       icon: Link2,
       label: "Internal Links",
@@ -786,6 +1156,239 @@ function buildProjectTabs(domainId: string) {
       label: "AI",
     },
   ];
+}
+
+function buildSearchSummary(metrics: DomainWorkspace["gscMetrics"]) {
+  const clicks = metrics.reduce((total, metric) => total + metric.clicks, 0);
+  const impressions = metrics.reduce(
+    (total, metric) => total + metric.impressions,
+    0,
+  );
+  const visibleWeight = metrics.reduce((total, metric) => {
+    const positionScore = Math.max(0, 101 - metric.position) / 100;
+
+    return total + metric.impressions * positionScore;
+  }, 0);
+  const queries = new Set(metrics.map((metric) => metric.query).filter(Boolean));
+
+  return {
+    clicks,
+    impressions,
+    queries: queries.size,
+    visibility: impressions
+      ? Math.round((visibleWeight / impressions) * 1000) / 10
+      : 0,
+  };
+}
+
+function buildCommandQueue({
+  approvedFixes,
+  criticalIssues,
+  domainId,
+  isVerified,
+  latestReportId,
+  warningIssues,
+}: {
+  approvedFixes: number;
+  criticalIssues: number;
+  domainId: string;
+  isVerified: boolean;
+  latestReportId?: string;
+  warningIssues: number;
+}) {
+  return [
+    {
+      count: criticalIssues,
+      href: `/issues?domainId=${domainId}&severity=CRITICAL`,
+      label: "Fix critical issues",
+    },
+    {
+      count: warningIssues,
+      href: `/issues?domainId=${domainId}&severity=WARNING`,
+      label: "Review warnings",
+    },
+    {
+      count: approvedFixes,
+      href: `/fix-center?domainId=${domainId}`,
+      label: "Ship approved fixes",
+    },
+    {
+      count: isVerified ? 1 : 0,
+      href: `/domains/${domainId}/verification`,
+      label: isVerified ? "Verification ready" : "Verify domain",
+    },
+    {
+      count: latestReportId ? 1 : 0,
+      href: latestReportId ? `/reports/${latestReportId}` : `/reports?domainId=${domainId}`,
+      label: latestReportId ? "Review latest report" : "Create report",
+    },
+  ];
+}
+
+function calculateCoverage(crawled: number, known: number) {
+  if (!known) {
+    return 0;
+  }
+
+  return Math.min(100, Math.round((crawled / known) * 100));
+}
+
+function buildAuditOverview(domain: DomainWorkspace) {
+  const latestScore = domain.healthScore ?? domain.scoreHistory.at(0)?.score ?? 0;
+  const previousScore = domain.scoreHistory.at(1)?.score;
+  const pagesWithSnapshots = domain.pages.filter(
+    (page) => page.snapshots.length > 0,
+  );
+  const pageBreakdown = pagesWithSnapshots.reduce(
+    (summary, page) => {
+      const snapshot = page.snapshots.at(0);
+      const statusCode = snapshot?.statusCode ?? 0;
+      const robotsDirective = snapshot?.robotsDirective?.toLowerCase() ?? "";
+
+      if (statusCode >= 300 && statusCode < 400) {
+        summary.redirects += 1;
+      }
+
+      if (statusCode >= 400) {
+        summary.broken += 1;
+      }
+
+      if (robotsDirective.includes("noindex")) {
+        summary.blocked += 1;
+      }
+
+      if (page.issues.length) {
+        summary.haveIssues += 1;
+      }
+
+      if (
+        statusCode > 0 &&
+        statusCode < 300 &&
+        !robotsDirective.includes("noindex") &&
+        !page.issues.length
+      ) {
+        summary.healthy += 1;
+      }
+
+      return summary;
+    },
+    { blocked: 0, broken: 0, haveIssues: 0, healthy: 0, redirects: 0 },
+  );
+  const warningCounts = new Map<string, number>();
+
+  for (const issue of domain.issues) {
+    if (issue.severity !== "WARNING") {
+      continue;
+    }
+
+    warningCounts.set(issue.issueType, (warningCounts.get(issue.issueType) ?? 0) + 1);
+  }
+
+  const robotsText = domain.artifacts
+    .filter((artifact) => artifact.type === "ROBOTS_TXT")
+    .map((artifact) => JSON.stringify(artifact.metadataJson ?? "").toLowerCase())
+    .join("\n");
+  const botAccess = ["ChatGPT-User", "OAI-SearchBot", "Googlebot", "Google-Extended"].map(
+    (name) => ({
+      blocked:
+        robotsText.includes(name.toLowerCase()) &&
+        robotsText.includes("disallow"),
+      name,
+    }),
+  );
+  const blockedBotCount = botAccess.filter((bot) => bot.blocked).length;
+  const pageBlockRate = pagesWithSnapshots.length
+    ? pageBreakdown.blocked / pagesWithSnapshots.length
+    : 0;
+  const aiSearchHealth = Math.max(
+    0,
+    Math.round(100 - blockedBotCount * 20 - pageBlockRate * 30),
+  );
+
+  return {
+    aiSearchHealth,
+    botAccess,
+    errorTrend:
+      previousScore === undefined
+        ? "No previous score for trend yet"
+        : latestScore >= previousScore
+          ? `Health improved by ${latestScore - previousScore} points`
+          : `Health declined by ${previousScore - latestScore} points`,
+    healthColor:
+      latestScore >= 85 ? "#059669" : latestScore >= 65 ? "#d97706" : "#dc2626",
+    healthLabel:
+      latestScore >= 85
+        ? "Healthy"
+        : latestScore >= 65
+          ? "Needs attention"
+          : "High risk",
+    healthDelta:
+      previousScore === undefined ? undefined : latestScore - previousScore,
+    healthScore: latestScore,
+    healthTrend:
+      previousScore === undefined
+        ? "Run another crawl to compare score movement."
+        : latestScore >= previousScore
+          ? "The latest score is holding or improving."
+          : "The latest score moved down and should be reviewed.",
+    pageBreakdown,
+    topWarnings: Array.from(warningCounts.entries())
+      .map(([issueType, count]) => ({ count, issueType }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5),
+  };
+}
+
+function BreakdownItem({
+  label,
+  tone,
+  value,
+}: {
+  label: string;
+  tone: "error" | "info" | "muted" | "success" | "warning";
+  value: number;
+}) {
+  const styles = {
+    error: "border-red-200 bg-red-50 text-red-700",
+    info: "border-blue-200 bg-blue-50 text-blue-700",
+    muted: "border-slate-200 bg-slate-100 text-slate-600",
+    success: "border-emerald-200 bg-emerald-50 text-emerald-700",
+    warning: "border-amber-200 bg-amber-50 text-amber-700",
+  };
+
+  return (
+    <div className={`rounded-md border p-3 ${styles[tone]}`}>
+      <p className="text-xs font-semibold uppercase tracking-[0.12em]">
+        {label}
+      </p>
+      <p className="mt-2 text-2xl font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function SignalCard({
+  detail,
+  label,
+  tone,
+  value,
+}: {
+  detail: string;
+  label: string;
+  tone: "error" | "warning";
+  value: number;
+}) {
+  const styles =
+    tone === "error"
+      ? "border-red-200 bg-red-50 text-red-800"
+      : "border-amber-200 bg-amber-50 text-amber-800";
+
+  return (
+    <div className={`rounded-lg border p-5 ${styles}`}>
+      <p className="text-sm font-semibold">{label}</p>
+      <p className="mt-2 text-3xl font-semibold">{value}</p>
+      <p className="mt-2 text-sm leading-6">{detail}</p>
+    </div>
+  );
 }
 
 function ContextItem({ label, value }: { label: string; value: string }) {
@@ -1026,6 +1629,13 @@ function scoreStatus(value: number | null): ThematicReport["status"] {
 function formatEnum(value: string) {
   return value
     .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function formatIssueType(value: string) {
+  return value
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");

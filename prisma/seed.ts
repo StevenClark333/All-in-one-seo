@@ -88,7 +88,7 @@ async function main() {
   const apexTech = await upsertClient(workspace.id, "ApexTech");
   const brightLedger = await upsertClient(workspace.id, "BrightLedger");
 
-  await createDomainBundle({
+  const northstarDomain = await createDomainBundle({
     workspaceId: workspace.id,
     clientId: northstar.id,
     domain: "northstardental.com",
@@ -100,7 +100,7 @@ async function main() {
     assignedToId: seoOperator.id,
   });
 
-  await createDomainBundle({
+  const urbanThreadDomain = await createDomainBundle({
     workspaceId: workspace.id,
     clientId: urbanThread.id,
     domain: "urbanthread.store",
@@ -112,7 +112,7 @@ async function main() {
     assignedToId: seoOperator.id,
   });
 
-  await createDomainBundle({
+  const apexTechDomain = await createDomainBundle({
     workspaceId: workspace.id,
     clientId: apexTech.id,
     domain: "apextech.io",
@@ -122,6 +122,47 @@ async function main() {
     criticalIssues: 1,
     warningIssues: 14,
   });
+
+  await seedProductSeoAnalytics({
+    clientId: northstar.id,
+    domain: northstarDomain,
+    keywords: [
+      "dentist near me",
+      "cosmetic dentist austin",
+      "emergency dental care",
+      "teeth whitening cost",
+      "northstar dental reviews",
+    ],
+    competitors: ["brightsmileclinic.com", "austindentalgroup.com"],
+    workspaceId: workspace.id,
+  });
+  await seedProductSeoAnalytics({
+    clientId: urbanThread.id,
+    domain: urbanThreadDomain,
+    keywords: [
+      "sustainable streetwear",
+      "organic cotton hoodie",
+      "urban thread discount",
+      "best capsule wardrobe",
+      "streetwear brands",
+    ],
+    competitors: ["threadmarket.com", "everlane.com"],
+    workspaceId: workspace.id,
+  });
+  await seedProductSeoAnalytics({
+    clientId: apexTech.id,
+    domain: apexTechDomain,
+    keywords: [
+      "workflow automation software",
+      "ai ops dashboard",
+      "apextech alternatives",
+      "best incident management tool",
+      "saas deployment checklist",
+    ],
+    competitors: ["opsforge.io", "deploypilot.com"],
+    workspaceId: workspace.id,
+  });
+  await seedSavedAnalyticsViews(workspace.id, productOwner.id, northstarDomain.id);
 
   await prisma.domain.upsert({
     where: {
@@ -295,6 +336,30 @@ async function createDomainBundle(input: {
     },
   });
 
+  for (const pagePath of ["/pricing", "/services", "/blog/seo-checklist"]) {
+    await prisma.page.upsert({
+      where: {
+        domainId_normalizedUrl: {
+          domainId: domain.id,
+          normalizedUrl: `https://${input.domain}${pagePath}`,
+        },
+      },
+      update: {
+        lastSeenAt: new Date(),
+        lastCrawledAt: daysAgo(1),
+      },
+      create: {
+        domainId: domain.id,
+        importance: pagePath === "/pricing" ? "IMPORTANT" : "NORMAL",
+        lastCrawledAt: daysAgo(1),
+        lastSeenAt: new Date(),
+        normalizedUrl: `https://${input.domain}${pagePath}`,
+        pageType: pagePath.startsWith("/blog") ? "article" : "landing",
+        url: `https://${input.domain}${pagePath}`,
+      },
+    });
+  }
+
   if (input.criticalIssues > 0) {
     await prisma.seoIssue.create({
       data: {
@@ -337,6 +402,203 @@ async function createDomainBundle(input: {
       },
     });
   }
+
+  return domain;
+}
+
+async function seedProductSeoAnalytics(input: {
+  clientId: string;
+  competitors: string[];
+  domain: { domain: string; id: string };
+  keywords: string[];
+  workspaceId: string;
+}) {
+  await prisma.competitorDomain.createMany({
+    data: input.competitors.map((competitor, index) => ({
+      clientId: input.clientId,
+      domain: competitor,
+      domainId: input.domain.id,
+      label: index === 0 ? "Direct competitor" : "SERP competitor",
+      lastSeenAt: daysAgo(index + 1),
+      source: "SEED",
+      workspaceId: input.workspaceId,
+    })),
+    skipDuplicates: true,
+  });
+
+  const trackedKeywords = [];
+
+  for (const [index, keyword] of input.keywords.entries()) {
+    const trackedKeyword = await prisma.trackedKeyword.upsert({
+      where: {
+        domainId_keyword_country_device_engine: {
+          country: "US",
+          device: index % 2 ? "MOBILE" : "DESKTOP",
+          domainId: input.domain.id,
+          engine: "GOOGLE",
+          keyword,
+        },
+      },
+      update: {
+        frequency: index < 2 ? "DAILY" : "WEEKLY",
+        status: "ACTIVE",
+        tags: index < 2 ? "priority,commercial" : "monitoring",
+      },
+      create: {
+        country: "US",
+        device: index % 2 ? "MOBILE" : "DESKTOP",
+        domainId: input.domain.id,
+        engine: "GOOGLE",
+        frequency: index < 2 ? "DAILY" : "WEEKLY",
+        keyword,
+        locale: "en-US",
+        tags: index < 2 ? "priority,commercial" : "monitoring",
+        workspaceId: input.workspaceId,
+      },
+    });
+
+    trackedKeywords.push(trackedKeyword);
+
+    await prisma.keywordMetric.create({
+      data: {
+        competition: 0.28 + index * 0.08,
+        country: "US",
+        cpcCents: 180 + index * 95,
+        difficulty: 24 + index * 9,
+        keyword,
+        language: "en",
+        provider: "SEED_PROVIDER",
+        searchVolume: 450 + index * 760,
+        trackedKeywordId: trackedKeyword.id,
+        trendJson: [32, 38, 35, 44, 51, 57, 62].map(
+          (value) => value + index * 3,
+        ),
+        workspaceId: input.workspaceId,
+      },
+    });
+
+    const latestPosition = 2 + index * 3;
+    const previousPosition = latestPosition + (index % 2 ? -2 : 3);
+
+    await prisma.rankObservation.createMany({
+      data: [
+        {
+          country: "US",
+          date: daysAgo(1),
+          device: trackedKeyword.device,
+          engine: "GOOGLE",
+          position: latestPosition,
+          trackedKeywordId: trackedKeyword.id,
+          url: `https://${input.domain.domain}/${slugify(keyword)}`,
+        },
+        {
+          country: "US",
+          date: daysAgo(8),
+          device: trackedKeyword.device,
+          engine: "GOOGLE",
+          position: previousPosition,
+          trackedKeywordId: trackedKeyword.id,
+          url: `https://${input.domain.domain}/${slugify(keyword)}`,
+        },
+        ...input.competitors.map((competitor, competitorIndex) => ({
+          competitorDomain: competitor,
+          country: "US",
+          date: daysAgo(1),
+          device: trackedKeyword.device,
+          engine: "GOOGLE" as const,
+          position: Math.max(1, latestPosition - competitorIndex - 1),
+          trackedKeywordId: trackedKeyword.id,
+          url: `https://${competitor}/${slugify(keyword)}`,
+        })),
+      ],
+    });
+  }
+
+  const pages = ["/", "/pricing", "/services", "/blog/seo-checklist"];
+
+  for (const [keywordIndex, keyword] of input.keywords.entries()) {
+    for (let day = 0; day < 14; day += 1) {
+      const impressions = 120 + keywordIndex * 80 + day * 9;
+      const clicks = Math.max(1, Math.round(impressions * (0.035 + day / 1000)));
+      const pageUrl = `https://${input.domain.domain}${pages[keywordIndex % pages.length]}`;
+
+      await prisma.gscSearchMetric.upsert({
+        where: {
+          domainId_date_query_pageUrl_country_device: {
+            country: "US",
+            date: daysAgo(day),
+            device: keywordIndex % 2 ? "MOBILE" : "DESKTOP",
+            domainId: input.domain.id,
+            pageUrl,
+            query: keyword,
+          },
+        },
+        update: {
+          clicks,
+          ctr: clicks / impressions,
+          impressions,
+          position: 3 + keywordIndex * 2 + day / 10,
+        },
+        create: {
+          clicks,
+          country: "US",
+          ctr: clicks / impressions,
+          date: daysAgo(day),
+          device: keywordIndex % 2 ? "MOBILE" : "DESKTOP",
+          domainId: input.domain.id,
+          impressions,
+          pageUrl,
+          position: 3 + keywordIndex * 2 + day / 10,
+          query: keyword,
+        },
+      });
+    }
+  }
+}
+
+async function seedSavedAnalyticsViews(
+  workspaceId: string,
+  userId: string,
+  primaryDomainId: string,
+) {
+  await prisma.savedAnalyticsView.createMany({
+    data: [
+      {
+        filtersJson: { domainId: primaryDomainId },
+        isDefault: true,
+        name: "Primary project",
+        route: "/search-performance",
+        userId,
+        workspaceId,
+      },
+      {
+        filtersJson: { domainId: primaryDomainId, query: "dentist" },
+        name: "Dental growth terms",
+        route: "/keyword-research",
+        userId,
+        workspaceId,
+      },
+      {
+        filtersJson: { domainId: primaryDomainId },
+        name: "Rank watchlist",
+        route: "/rank-tracking",
+        userId,
+        workspaceId,
+      },
+      {
+        filtersJson: { domainId: primaryDomainId },
+        name: "Competitive snapshot",
+        route: "/competitive-analysis",
+        userId,
+        workspaceId,
+      },
+    ],
+    skipDuplicates: true,
+  });
+}
+
+function slugify(value: string) {
+  return value.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function daysAgo(days: number) {

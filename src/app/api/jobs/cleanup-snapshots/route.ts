@@ -5,7 +5,7 @@ import {
 } from "@/lib/api-protection";
 import { reportError } from "@/lib/error-reporting";
 import { logger } from "@/lib/logger";
-import { cleanupExpiredHtmlSnapshots } from "@/lib/snapshot-storage";
+import { cleanupExpiredHtmlSnapshots } from "@/lib/snapshot-cleanup";
 
 export const dynamic = "force-dynamic";
 

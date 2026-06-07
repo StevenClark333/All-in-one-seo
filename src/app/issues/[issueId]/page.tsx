@@ -4,10 +4,12 @@ import { ArrowLeft, Bot, MessageSquareText } from "lucide-react";
 import {
   addIssueNote,
   assignIssue,
+  generateLinkFixesAction,
   generateIssueRecommendations,
   updateIssueStatus,
 } from "@/app/actions";
 import { getIssueDetailData } from "@/lib/issue-queries";
+import { buildIssueSolution } from "@/lib/issue-solutions";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,12 @@ export default async function IssueDetailPage({
   }
 
   const latestSnapshot = issue.page?.snapshots.at(0);
+  const solution = buildIssueSolution({
+    issueType: issue.issueType,
+    platform: issue.domain.platform,
+    recommendation: issue.recommendation,
+    title: issue.title,
+  });
   const timeline = [
     {
       id: "created",
@@ -63,11 +71,11 @@ export default async function IssueDetailPage({
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-6 text-slate-950 sm:px-8 lg:px-10">
       <div className="mx-auto max-w-6xl">
         <Link
-          href="/issues"
+          href={`/domains/${issue.domain.id}/workspace`}
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Issues
+          Project workspace
         </Link>
 
         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -90,6 +98,65 @@ export default async function IssueDetailPage({
             <p className="mt-3 text-sm leading-6 text-slate-600">
               {issue.description}
             </p>
+
+            <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                    Recommended solution
+                  </p>
+                  <h2 className="mt-2 text-xl font-semibold text-emerald-950">
+                    {solution.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-emerald-900">
+                    {solution.detail}
+                  </p>
+                </div>
+                <span className="inline-flex h-9 shrink-0 items-center rounded-md bg-white px-3 text-sm font-semibold text-emerald-800">
+                  {solution.effort}
+                </span>
+              </div>
+              <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">
+                <ol className="grid gap-2 text-sm leading-6 text-emerald-950">
+                  {solution.steps.map((step, index) => (
+                    <li key={step}>
+                      <span className="font-semibold">{index + 1}.</span> {step}
+                    </li>
+                  ))}
+                </ol>
+                <div className="flex flex-wrap items-start gap-2 lg:justify-end">
+                  {solution.primaryAction === "fix-center" ? (
+                    <form action={generateLinkFixesAction}>
+                      <input
+                        type="hidden"
+                        name="domainId"
+                        value={issue.domain.id}
+                      />
+                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                        Generate fix
+                      </button>
+                    </form>
+                  ) : (
+                    <form action={generateIssueRecommendations}>
+                      <input type="hidden" name="issueId" value={issue.id} />
+                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                        Generate fix brief
+                      </button>
+                    </form>
+                  )}
+                  <Link
+                    href={
+                      solution.primaryAction === "fix-center"
+                        ? `/fix-center?domainId=${issue.domain.id}`
+                        : `/recommendations?domainId=${issue.domain.id}`
+                    }
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-emerald-300 bg-white px-4 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-100"
+                  >
+                    Open workspace
+                  </Link>
+                </div>
+              </div>
+            </div>
 
             <dl className="mt-6 grid gap-4 border-t border-slate-200 pt-6 md:grid-cols-2">
               <Meta label="Workspace" value={workspace?.name ?? "Workspace"} />

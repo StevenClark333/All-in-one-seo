@@ -81,7 +81,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             returnPath="/reports"
           />
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <section
+            id="generate-report"
+            className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+          >
             <div className="flex items-center gap-2">
               <Plus className="size-5 text-slate-500" aria-hidden="true" />
               <h3 className="text-lg font-semibold">
@@ -178,7 +181,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             </form>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <section
+            id="schedule-report"
+            className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+          >
             <div className="flex items-center gap-2">
               <CalendarClock
                 className="size-5 text-slate-500"

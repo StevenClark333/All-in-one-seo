@@ -11,6 +11,7 @@ import {
 } from "@/lib/automation-integrations";
 import { enqueueCrawlRunJob } from "@/lib/crawler-scheduling";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
+import { buildPlatformFixBrief } from "@/lib/platform-fix-briefs";
 import {
   getWordPressReceiverReadinessMessage,
   isWordPressReceiverReady,
@@ -468,6 +469,14 @@ export async function sendLinkFixToAutomation(input: {
     domain: fix.domain.domain,
     fixId: fix.id,
     manualInstructions: fix.manualInstructions,
+    platformFixBrief: buildPlatformFixBrief({
+      anchorText: fix.anchorText,
+      brokenUrl: fix.brokenUrl,
+      domain: fix.domain.domain,
+      platform: fix.domain.platform,
+      sourceUrl: fix.sourceUrl,
+      suggestedUrl: fix.suggestedUrl,
+    }),
     provider,
     sourceUrl: fix.sourceUrl,
     status: fix.status,

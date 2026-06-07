@@ -10,9 +10,13 @@ import {
   processNextCrawlRunJob,
 } from "@/lib/crawler-scheduling";
 import { reportError } from "@/lib/error-reporting";
+import {
+  enqueueDueKeywordImportJobs,
+  processNextKeywordImportJob,
+} from "@/lib/keyword-provider-jobs";
 import { logger } from "@/lib/logger";
 import { evaluateReportSchedules } from "@/lib/reporting";
-import { cleanupExpiredHtmlSnapshots } from "@/lib/snapshot-storage";
+import { cleanupExpiredHtmlSnapshots } from "@/lib/snapshot-cleanup";
 
 export const dynamic = "force-dynamic";
 
@@ -44,9 +48,16 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [alerts, scheduledCrawls, scheduledReports, snapshotCleanup] =
+    const [
+      alerts,
+      keywordImports,
+      scheduledCrawls,
+      scheduledReports,
+      snapshotCleanup,
+    ] =
       await Promise.all([
         evaluateAlertRules(),
+        enqueueDueKeywordImportJobs(),
         enqueueDueScheduledCrawls(),
         evaluateReportSchedules(),
         cleanupExpiredHtmlSnapshots(),
@@ -54,10 +65,15 @@ export async function GET(request: Request) {
     const crawlWorker = await processNextCrawlRunJob(
       `private-beta-${randomUUID()}`,
     );
+    const keywordWorker = await processNextKeywordImportJob(
+      `private-beta-keywords-${randomUUID()}`,
+    );
 
     return NextResponse.json({
       alerts,
       crawlWorker,
+      keywordImports,
+      keywordWorker,
       scheduledCrawls,
       scheduledReports,
       snapshotCleanup: {

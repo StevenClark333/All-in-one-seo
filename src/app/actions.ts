@@ -6,7 +6,9 @@ import {
   IssueSeverity,
   IssueStatus,
   LinkFixStatus,
+  RankTrackingFrequency,
   ReportScheduleFrequency,
+  SearchEngine,
   WorkspaceRole,
   WorkspaceType,
 } from "@prisma/client";
@@ -112,6 +114,10 @@ import {
   getWorkspacePlanForType,
   selectedWorkspaceCookieName,
 } from "@/lib/workspace";
+import {
+  isSavedAnalyticsRoute,
+  normalizeSavedViewFilters,
+} from "@/lib/saved-analytics-views";
 
 export async function createWorkspace(formData: FormData) {
   const user = await requireCurrentUserForAction();
@@ -1074,6 +1080,244 @@ export async function generateTemplateFixBrief(formData: FormData) {
   redirect(`/issues?templateKey=${encodeURIComponent(templateKey)}`);
 }
 
+export async function addCompetitorDomainAction(formData: FormData) {
+  const workspace = await requirePrimaryWorkspace();
+  const domainId = getRequiredString(formData, "domainId");
+  const competitorDomain = normalizeDomain(
+    getRequiredString(formData, "competitorDomain"),
+  );
+  const label = getOptionalString(formData, "label");
+  const notes = getOptionalString(formData, "notes");
+
+  const domain = await getPrisma().domain.findFirst({
+    where: { archivedAt: null, id: domainId, workspaceId: workspace.id },
+    select: { clientId: true, id: true },
+  });
+
+  if (!domain) {
+    throw new Error("Choose a valid project before adding a competitor.");
+  }
+
+  await getPrisma().competitorDomain.upsert({
+    where: {
+      domainId_domain: {
+        domain: competitorDomain,
+        domainId,
+      },
+    },
+    create: {
+      clientId: domain.clientId,
+      domain: competitorDomain,
+      domainId,
+      label,
+      notes,
+      workspaceId: workspace.id,
+    },
+    update: {
+      label,
+      notes,
+      source: "MANUAL",
+    },
+  });
+
+  revalidatePath("/competitive-analysis");
+  revalidatePath("/rank-tracking");
+  redirect(`/competitive-analysis?domainId=${domainId}`);
+}
+
+export async function addTrackedKeywordAction(formData: FormData) {
+  const workspace = await requirePrimaryWorkspace();
+  const domainId = getRequiredString(formData, "domainId");
+  const keyword = getRequiredString(formData, "keyword").toLowerCase();
+  const country = getOptionalString(formData, "country")?.toUpperCase();
+  const device = getOptionalString(formData, "device")?.toUpperCase();
+  const locale = getOptionalString(formData, "locale");
+  const tags = getOptionalString(formData, "tags");
+  const engine = getSearchEngine(formData);
+  const frequency = getRankTrackingFrequency(formData);
+
+  const domain = await getPrisma().domain.findFirst({
+    where: { archivedAt: null, id: domainId, workspaceId: workspace.id },
+    select: { id: true },
+  });
+
+  if (!domain) {
+    throw new Error("Choose a valid project before tracking a keyword.");
+  }
+
+  const existingKeyword = await getPrisma().trackedKeyword.findFirst({
+    where: {
+      country: country ?? null,
+      device: device ?? null,
+      domainId,
+      engine,
+      keyword,
+    },
+    select: { id: true },
+  });
+
+  if (existingKeyword) {
+    await getPrisma().trackedKeyword.update({
+      where: { id: existingKeyword.id },
+      data: {
+        frequency,
+        locale,
+        status: "ACTIVE",
+        tags,
+      },
+    });
+  } else {
+    await getPrisma().trackedKeyword.create({
+      data: {
+      country,
+      device,
+      domainId,
+      engine,
+      frequency,
+      keyword,
+      locale,
+      tags,
+      workspaceId: workspace.id,
+      },
+    });
+  }
+
+  revalidatePath("/rank-tracking");
+  revalidatePath("/keyword-research");
+  redirect(`/rank-tracking?domainId=${domainId}`);
+}
+
+export async function importKeywordMetricAction(formData: FormData) {
+  const workspace = await requirePrimaryWorkspace();
+  const keyword = getRequiredString(formData, "keyword").toLowerCase();
+  const trackedKeywordId = getOptionalString(formData, "trackedKeywordId");
+  const country = getOptionalString(formData, "country")?.toUpperCase();
+  const provider = getOptionalString(formData, "provider") ?? "MANUAL";
+  const searchVolume = getOptionalInteger(formData, "searchVolume");
+  const difficulty = getOptionalInteger(formData, "difficulty");
+  const cpcCents = getOptionalInteger(formData, "cpcCents");
+
+  if (trackedKeywordId) {
+    const trackedKeyword = await getPrisma().trackedKeyword.findFirst({
+      where: { id: trackedKeywordId, workspaceId: workspace.id },
+      select: { id: true },
+    });
+
+    if (!trackedKeyword) {
+      throw new Error("Choose a valid tracked keyword before importing metrics.");
+    }
+  }
+
+  await getPrisma().keywordMetric.create({
+    data: {
+      country,
+      cpcCents,
+      difficulty,
+      keyword,
+      provider,
+      searchVolume,
+      trackedKeywordId,
+      workspaceId: workspace.id,
+    },
+  });
+
+  revalidatePath("/keyword-research");
+  revalidatePath("/rank-tracking");
+  redirect("/keyword-research");
+}
+
+export async function recordRankObservationAction(formData: FormData) {
+  const workspace = await requirePrimaryWorkspace();
+  const trackedKeywordId = getRequiredString(formData, "trackedKeywordId");
+  const competitorDomain = getOptionalString(formData, "competitorDomain");
+  const position = getOptionalFloat(formData, "position");
+  const url = getOptionalString(formData, "url");
+  const date = getDateOrDefault(formData, "date", new Date());
+  const engine = getSearchEngine(formData);
+
+  const trackedKeyword = await getPrisma().trackedKeyword.findFirst({
+    where: { id: trackedKeywordId, workspaceId: workspace.id },
+    select: { country: true, device: true, domainId: true, id: true },
+  });
+
+  if (!trackedKeyword) {
+    throw new Error("Choose a valid tracked keyword before recording a rank.");
+  }
+
+  await getPrisma().rankObservation.create({
+    data: {
+      competitorDomain: competitorDomain
+        ? normalizeDomain(competitorDomain)
+        : undefined,
+      country: trackedKeyword.country,
+      date,
+      device: trackedKeyword.device,
+      engine,
+      position,
+      trackedKeywordId,
+      url,
+    },
+  });
+
+  revalidatePath("/rank-tracking");
+  revalidatePath("/competitive-analysis");
+  revalidatePath("/keyword-research");
+  redirect(`/rank-tracking?domainId=${trackedKeyword.domainId}`);
+}
+
+export async function saveAnalyticsViewAction(formData: FormData) {
+  const workspace = await requirePrimaryWorkspace();
+  const user = await requireCurrentUserForAction();
+  const name = getRequiredString(formData, "name");
+  const route = getRequiredString(formData, "route");
+  const filters = parseSavedAnalyticsFilters(
+    getRequiredString(formData, "filtersJson"),
+  );
+  const isDefault = formData.get("isDefault") === "1";
+
+  if (!isSavedAnalyticsRoute(route)) {
+    throw new Error("Choose a supported analytics view.");
+  }
+
+  if (isDefault) {
+    await getPrisma().savedAnalyticsView.updateMany({
+      where: { route, workspaceId: workspace.id },
+      data: { isDefault: false },
+    });
+  }
+
+  await getPrisma().savedAnalyticsView.upsert({
+    where: {
+      workspaceId_route_name: {
+        name,
+        route,
+        workspaceId: workspace.id,
+      },
+    },
+    create: {
+      filtersJson: filters,
+      isDefault,
+      lastUsedAt: new Date(),
+      name,
+      route,
+      userId: user.id,
+      workspaceId: workspace.id,
+    },
+    update: {
+      filtersJson: filters,
+      isDefault,
+      lastUsedAt: new Date(),
+      userId: user.id,
+    },
+  });
+
+  const params = new URLSearchParams(filters);
+  const href = params.toString() ? `${route}?${params.toString()}` : route;
+
+  revalidatePath(route);
+  redirect(href);
+}
+
 async function requirePrimaryWorkspace() {
   const workspace = await getPrimaryWorkspace();
 
@@ -1144,6 +1388,54 @@ function getDateOrDefault(formData: FormData, key: string, fallback: Date) {
   return date;
 }
 
+function getOptionalInteger(formData: FormData, key: string) {
+  const value = getOptionalString(formData, key);
+
+  if (!value) {
+    return undefined;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+
+  return Number.isNaN(parsed) ? undefined : parsed;
+}
+
+function getOptionalFloat(formData: FormData, key: string) {
+  const value = getOptionalString(formData, key);
+
+  if (!value) {
+    return undefined;
+  }
+
+  const parsed = Number.parseFloat(value);
+
+  return Number.isNaN(parsed) ? undefined : parsed;
+}
+
+function getRankTrackingFrequency(formData: FormData) {
+  const frequency = getOptionalString(formData, "frequency")?.toUpperCase();
+
+  if (
+    frequency === RankTrackingFrequency.DAILY ||
+    frequency === RankTrackingFrequency.MONTHLY ||
+    frequency === RankTrackingFrequency.WEEKLY
+  ) {
+    return frequency;
+  }
+
+  return RankTrackingFrequency.WEEKLY;
+}
+
+function getSearchEngine(formData: FormData) {
+  const engine = getOptionalString(formData, "engine")?.toUpperCase();
+
+  if (engine === SearchEngine.BING || engine === SearchEngine.GOOGLE) {
+    return engine;
+  }
+
+  return SearchEngine.GOOGLE;
+}
+
 function getVerificationMethod(formData: FormData) {
   const method = getOptionalString(formData, "method")?.toUpperCase();
 
@@ -1157,6 +1449,30 @@ function getVerificationMethod(formData: FormData) {
   }
 
   return "DNS_TXT";
+}
+
+function parseSavedAnalyticsFilters(value: string) {
+  try {
+    const parsed: unknown = JSON.parse(value);
+
+    if (
+      typeof parsed !== "object" ||
+      parsed === null ||
+      Array.isArray(parsed)
+    ) {
+      return {};
+    }
+
+    const filters = Object.fromEntries(
+      Object.entries(parsed).filter(
+        (entry): entry is [string, string] => typeof entry[1] === "string",
+      ),
+    );
+
+    return normalizeSavedViewFilters(filters);
+  } catch {
+    return {};
+  }
 }
 
 function daysAgo(days: number) {

@@ -47,6 +47,9 @@ export const optionalProductionEnvVars = [
   "LOAD_TEST_CONCURRENCY",
   "LOAD_TEST_SITE_ID",
   "SMOKE_TEST_TARGET_URL",
+  "KEYWORD_PROVIDER_NAME",
+  "KEYWORD_PROVIDER_WEBHOOK_SECRET",
+  "KEYWORD_IMPORT_DEMO_MODE",
 ] as const;
 
 export function validateEnv(

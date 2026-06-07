@@ -78,6 +78,7 @@ test("builds link fix automation payloads", () => {
       fixId: "fix_123",
       manualInstructions:
         "Replace the old link with the current services page.",
+      platformFixBrief: { deliveryMode: "Shopify Liquid/theme handoff" },
       provider: "ZAPIER",
       sourceUrl: "https://example.com/about",
       status: "APPROVED",
@@ -93,6 +94,7 @@ test("builds link fix automation payloads", () => {
         domain: "example.com",
         manualInstructions:
           "Replace the old link with the current services page.",
+        platformFixBrief: { deliveryMode: "Shopify Liquid/theme handoff" },
         sourceUrl: "https://example.com/about",
         status: "APPROVED",
         suggestedUrl: "https://example.com/services",

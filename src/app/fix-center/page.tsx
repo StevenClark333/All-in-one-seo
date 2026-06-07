@@ -15,6 +15,7 @@ import {
   getLinkFixCenterData,
   type LinkFixLifecycleStepStatus,
 } from "@/lib/link-fixes";
+import { buildPlatformFixBrief } from "@/lib/platform-fix-briefs";
 
 type FixCenterPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -61,12 +62,12 @@ export default async function FixCenterPage({
                   Fix Center
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-normal">
-                  Turn link issues into approved website fixes
+                  Recommended fixes ready to apply
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Generate suggested internal-link repairs from crawler
-                  findings, approve the good ones, export exact instructions,
-                  and mark them applied after publishing.
+                  Review the suggested solution, send it to the website
+                  workflow, then mark it applied. Each fix includes the exact
+                  URL, platform steps, and verification status.
                 </p>
               </div>
               <form action={generateLinkFixesAction} className="flex gap-2">
@@ -96,6 +97,20 @@ export default async function FixCenterPage({
                   value={counts[status]}
                 />
               ))}
+            </div>
+            <div className="mt-4 grid gap-3 lg:grid-cols-3">
+              <NextActionCard
+                detail="Start here after a crawl. The portal turns link and discovery problems into ready-to-send fixes."
+                label="1. Generate"
+              />
+              <NextActionCard
+                detail="Check the recommended URL and anchor text. Edit only if the suggested page is not the best match."
+                label="2. Approve"
+              />
+              <NextActionCard
+                detail="Send to WordPress, Zapier, Make, or export the brief. Mark applied and recrawl to verify."
+                label="3. Apply"
+              />
             </div>
             <div className="mt-3 grid gap-3 sm:grid-cols-4">
               <Metric
@@ -137,8 +152,8 @@ export default async function FixCenterPage({
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
               <div>
-                <h3 className="inline-flex items-center gap-2 text-lg font-semibold">
-                  Fix queue
+                  <h3 className="inline-flex items-center gap-2 text-lg font-semibold">
+                  Fixes to apply
                   <InfoTooltip label="Filter and work through approved internal-link fixes by domain and status." />
                 </h3>
                 <p className="mt-1 text-sm text-slate-600">
@@ -217,6 +232,14 @@ export default async function FixCenterPage({
                     verificationMessage: suggestion.verificationMessage,
                     verificationStatus: suggestion.verificationStatus,
                   });
+                  const platformBrief = buildPlatformFixBrief({
+                    anchorText: suggestion.anchorText,
+                    brokenUrl: suggestion.brokenUrl,
+                    domain: suggestion.domain.domain,
+                    platform: suggestion.domain.platform,
+                    sourceUrl: suggestion.sourceUrl,
+                    suggestedUrl: suggestion.suggestedUrl,
+                  });
 
                   return (
                     <article
@@ -259,6 +282,9 @@ export default async function FixCenterPage({
                           </h4>
                           <p className="mt-2 text-sm leading-6 text-slate-600">
                             {suggestion.reason}
+                          </p>
+                          <p className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">
+                            Do this: {suggestion.manualInstructions}
                           </p>
                         </div>
                         {suggestion.issue ? (
@@ -320,7 +346,10 @@ export default async function FixCenterPage({
                         </button>
                       </form>
 
-                      <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3">
+                      <details className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3">
+                        <summary className="cursor-pointer text-sm font-semibold text-slate-700">
+                          Show full manual instruction
+                        </summary>
                         <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                           Manual fix instruction
                           <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client workflow." />
@@ -334,9 +363,62 @@ export default async function FixCenterPage({
                             {suggestion.verificationMessage}
                           </p>
                         ) : null}
-                      </div>
+                      </details>
 
-                      <div className="mt-4 rounded-md border border-slate-200 bg-white p-3">
+                      <details className="mt-4 rounded-md border border-blue-100 bg-blue-50 p-3">
+                        <summary className="cursor-pointer text-sm font-semibold text-blue-950">
+                          Platform instructions and export
+                        </summary>
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+                              Platform fix brief
+                            </p>
+                            <h5 className="mt-1 text-sm font-semibold text-blue-950">
+                              {platformBrief.platformLabel} -{" "}
+                              {platformBrief.deliveryMode}
+                            </h5>
+                            <p className="mt-2 text-sm leading-6 text-blue-900">
+                              {platformBrief.summary}
+                            </p>
+                          </div>
+                          <Link
+                            href={`/api/exports/fix-brief?fixId=${suggestion.id}`}
+                            className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-blue-200 bg-white px-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
+                          >
+                            <Download className="size-4" aria-hidden="true" />
+                            Export brief
+                          </Link>
+                        </div>
+                        <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                          <div className="rounded-md border border-blue-100 bg-white p-3">
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                              Handoff steps
+                            </p>
+                            <ol className="mt-2 grid gap-2 text-sm leading-6 text-slate-700">
+                              {platformBrief.steps.slice(0, 4).map((step) => (
+                                <li key={step}>{step}</li>
+                              ))}
+                            </ol>
+                          </div>
+                          <div className="rounded-md border border-blue-100 bg-white p-3">
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                              Snippet
+                            </p>
+                            <pre className="mt-2 max-h-36 overflow-auto rounded-md bg-slate-950 p-3 text-xs leading-5 text-slate-50">
+                              <code>
+                                {platformBrief.snippets[0]?.code ??
+                                  "No snippet required."}
+                              </code>
+                            </pre>
+                          </div>
+                        </div>
+                      </details>
+
+                      <details className="mt-4 rounded-md border border-slate-200 bg-white p-3">
+                        <summary className="cursor-pointer text-sm font-semibold text-slate-700">
+                          Delivery audit and timestamps
+                        </summary>
                         <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                           Fix delivery audit
                           <InfoTooltip label="Shows where this fix is after approval, delivery to WordPress or another workflow, website application, and crawl verification." />
@@ -368,7 +450,7 @@ export default async function FixCenterPage({
                             </div>
                           ))}
                         </div>
-                      </div>
+                      </details>
 
                       <div className="mt-4 flex flex-wrap gap-2">
                         <StatusButton
@@ -484,11 +566,12 @@ export default async function FixCenterPage({
               ) : (
                 <div className="rounded-lg border border-dashed border-slate-300 p-8 text-center">
                   <h4 className="text-base font-semibold">
-                    No link fixes generated yet
+                    No fixes generated yet
                   </h4>
                   <p className="mt-2 text-sm text-slate-600">
-                    Run a crawl, then generate fixes from the current
-                    internal-link issue queue.
+                    Run a crawl, then generate fixes from the current issue
+                    queue. For title, meta, schema, canonical, and indexability
+                    problems, open the issue to see the exact solution steps.
                   </p>
                 </div>
               )}
@@ -496,6 +579,15 @@ export default async function FixCenterPage({
           </section>
         </div>
       </main>
+    </div>
+  );
+}
+
+function NextActionCard({ detail, label }: { detail: string; label: string }) {
+  return (
+    <div className="rounded-md border border-slate-200 bg-white p-3">
+      <p className="text-sm font-semibold">{label}</p>
+      <p className="mt-1 text-sm leading-6 text-slate-600">{detail}</p>
     </div>
   );
 }

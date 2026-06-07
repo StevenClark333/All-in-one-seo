@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getIssueListData } from "@/lib/issue-queries";
+import { buildIssueSolution } from "@/lib/issue-solutions";
 
 export const dynamic = "force-dynamic";
 
@@ -260,6 +261,44 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               </div>
             </div>
 
+            {issues.length ? (
+              <div className="grid gap-3 border-b border-slate-200 bg-slate-50 p-4 lg:grid-cols-3">
+                {issues.slice(0, 3).map((issue) => {
+                  const solution = buildIssueSolution({
+                    issueType: issue.issueType,
+                    platform: issue.domain.platform,
+                    recommendation: issue.recommendation,
+                    title: issue.title,
+                  });
+
+                  return (
+                    <Link
+                      key={issue.id}
+                      href={getSolutionHref({
+                        domainId: issue.domain.id,
+                        issueId: issue.id,
+                        primaryAction: solution.primaryAction,
+                      })}
+                      className="rounded-md border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Top solution
+                      </p>
+                      <h4 className="mt-2 line-clamp-1 text-sm font-semibold">
+                        {solution.title}
+                      </h4>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+                        {solution.detail}
+                      </p>
+                      <span className="mt-3 inline-flex h-8 items-center rounded-md bg-slate-950 px-3 text-xs font-semibold text-white">
+                        {solution.actionLabel}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : null}
+
             <form action={bulkUpdateIssues}>
               {issues.length ? (
                 <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -294,85 +333,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               <div className="grid divide-y divide-slate-100">
                 {issues.length ? (
                   issues.map((issue) => (
-                    <article
-                      key={issue.id}
-                      className="grid gap-4 p-5 xl:grid-cols-[28px_1fr_170px_140px_130px]"
-                    >
-                      <div className="pt-1">
-                        <input
-                          type="checkbox"
-                          name="issueId"
-                          value={issue.id}
-                          aria-label={`Select ${issue.title}`}
-                          className="size-4 rounded border-slate-300 text-slate-950 focus:ring-slate-500"
-                        />
-                      </div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span
-                            className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${severityStyles[issue.severity]}`}
-                          >
-                            {formatEnum(issue.severity)}
-                          </span>
-                          <span
-                            className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${statusStyles[issue.status]}`}
-                          >
-                            {formatEnum(issue.status)}
-                          </span>
-                          <span className="text-xs font-medium text-slate-500">
-                            <HelpLabel help="Priority blends severity, page importance, and fix impact. Higher numbers should be handled sooner.">
-                              Priority {issue.priorityScore}
-                            </HelpLabel>
-                          </span>
-                        </div>
-                        <h4 className="mt-3 font-semibold">{issue.title}</h4>
-                        <p className="mt-1 text-sm leading-6 text-slate-500">
-                          {issue.description}
-                        </p>
-                        <p className="mt-2 text-sm text-slate-500">
-                          {issue.client?.name ?? "Unassigned"} -{" "}
-                          <Link
-                            href={`/domains/${issue.domain.id}`}
-                            className="font-medium text-slate-700 underline-offset-4 hover:underline"
-                          >
-                            {issue.domain.domain}
-                          </Link>
-                          {issue.page ? ` - ${issue.page.url}` : ""}
-                        </p>
-                      </div>
-
-                      <Meta
-                        help="Analyzer rule that created this issue."
-                        label="Type"
-                        value={formatIssueType(issue.issueType)}
-                      />
-                      <Meta
-                        help="Teammate responsible for resolving this issue."
-                        label="Owner"
-                        value={
-                          issue.assignedTo?.name ??
-                          issue.assignedTo?.email ??
-                          "Unassigned"
-                        }
-                      />
-                      <div className="flex items-center xl:justify-end">
-                        <Link
-                          href={`/issues/${issue.id}`}
-                          className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
-                        >
-                          <AlertTriangle
-                            className="size-4"
-                            aria-hidden="true"
-                          />
-                          Review
-                          <InfoTooltip
-                            label="Open issue details, recommendations, assignment, notes, and status controls."
-                            passive
-                            side="left"
-                          />
-                        </Link>
-                      </div>
-                    </article>
+                    <IssueRow key={issue.id} issue={issue} />
                   ))
                 ) : (
                   <div className="p-8 text-center text-sm text-slate-500">
@@ -389,22 +350,95 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
   );
 }
 
-function Meta({
-  help,
-  label,
-  value,
+function IssueRow({
+  issue,
 }: {
-  help: string;
-  label: string;
-  value: string;
+  issue: Awaited<ReturnType<typeof getIssueListData>>["issues"][number];
 }) {
+  const solution = buildIssueSolution({
+    issueType: issue.issueType,
+    platform: issue.domain.platform,
+    recommendation: issue.recommendation,
+    title: issue.title,
+  });
+
   return (
-    <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-        <HelpLabel help={help}>{label}</HelpLabel>
-      </p>
-      <p className="mt-2 text-sm font-medium">{value}</p>
-    </div>
+    <article className="grid gap-4 p-5 xl:grid-cols-[28px_minmax(0,1fr)_minmax(260px,0.75fr)_130px]">
+      <div className="pt-1">
+        <input
+          type="checkbox"
+          name="issueId"
+          value={issue.id}
+          aria-label={`Select ${issue.title}`}
+          className="size-4 rounded border-slate-300 text-slate-950 focus:ring-slate-500"
+        />
+      </div>
+      <div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${severityStyles[issue.severity]}`}
+          >
+            {formatEnum(issue.severity)}
+          </span>
+          <span
+            className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${statusStyles[issue.status]}`}
+          >
+            {formatEnum(issue.status)}
+          </span>
+          <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600">
+            {solution.effort}
+          </span>
+          <span className="text-xs font-medium text-slate-500">
+            <HelpLabel help="Priority blends severity, page importance, and fix impact. Higher numbers should be handled sooner.">
+              Priority {issue.priorityScore}
+            </HelpLabel>
+          </span>
+        </div>
+        <h4 className="mt-3 font-semibold">{issue.title}</h4>
+        <p className="mt-1 text-sm leading-6 text-slate-500">
+          {issue.description}
+        </p>
+        <p className="mt-2 text-sm text-slate-500">
+          {issue.client?.name ?? "Unassigned"} -{" "}
+          <Link
+            href={`/domains/${issue.domain.id}`}
+            className="font-medium text-slate-700 underline-offset-4 hover:underline"
+          >
+            {issue.domain.domain}
+          </Link>
+          {issue.page ? ` - ${issue.page.url}` : ""}
+        </p>
+      </div>
+
+      <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Solution
+        </p>
+        <h5 className="mt-2 text-sm font-semibold">{solution.title}</h5>
+        <p className="mt-1 line-clamp-3 text-sm leading-6 text-slate-600">
+          {solution.detail}
+        </p>
+      </div>
+
+      <div className="flex items-center xl:justify-end">
+        <Link
+          href={getSolutionHref({
+            domainId: issue.domain.id,
+            issueId: issue.id,
+            primaryAction: solution.primaryAction,
+          })}
+          className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
+        >
+          <AlertTriangle className="size-4" aria-hidden="true" />
+          {solution.actionLabel}
+          <InfoTooltip
+            label="Open the fastest path to resolve this issue."
+            passive
+            side="left"
+          />
+        </Link>
+      </div>
+    </article>
   );
 }
 
@@ -472,4 +506,24 @@ function formatIssueType(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getSolutionHref({
+  domainId,
+  issueId,
+  primaryAction,
+}: {
+  domainId: string;
+  issueId: string;
+  primaryAction: string;
+}) {
+  if (primaryAction === "fix-center") {
+    return `/fix-center?domainId=${domainId}`;
+  }
+
+  if (primaryAction === "recommendations") {
+    return `/issues/${issueId}`;
+  }
+
+  return `/issues/${issueId}`;
 }

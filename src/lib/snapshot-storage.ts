@@ -1,11 +1,8 @@
-import { mkdir, readFile, rm, writeFile } from "fs/promises";
-import os from "os";
-import path from "path";
 import { del, put } from "@vercel/blob";
 import { getPrisma } from "@/lib/prisma";
 
 const localStorageRoot = ".storage";
-const serverlessStorageRoot = path.join(os.tmpdir(), "all-in-one-seo");
+const serverlessStorageRoot = "/tmp/all-in-one-seo";
 const defaultRetentionDays = 90;
 
 export async function storeHtmlSnapshot({
@@ -31,6 +28,11 @@ export async function storeHtmlSnapshot({
   }
 
   const filePath = getLocalSnapshotPath(key);
+  const [{ mkdir, writeFile }, path] = await Promise.all([
+    import("fs/promises"),
+    import("path"),
+  ]);
+
   await mkdir(path.dirname(filePath), { recursive: true });
   await writeFile(filePath, html, "utf8");
 
@@ -45,6 +47,8 @@ export async function readHtmlSnapshot(objectKey: string) {
   }
 
   const key = objectKey.replace("local://", "");
+  const { readFile } = await import("fs/promises");
+
   return readFile(getLocalSnapshotPath(key), "utf8");
 }
 
@@ -114,7 +118,7 @@ export function getLocalSnapshotRoot(
     return serverlessStorageRoot;
   }
 
-  return path.join(/*turbopackIgnore: true*/ process.cwd(), localStorageRoot);
+  return localStorageRoot;
 }
 
 function hasVercelBlobToken() {
@@ -124,6 +128,8 @@ function hasVercelBlobToken() {
 async function deleteHtmlSnapshot(objectKey: string) {
   if (objectKey.startsWith("local://")) {
     const key = objectKey.replace("local://", "");
+    const { rm } = await import("fs/promises");
+
     await rm(getLocalSnapshotPath(key), {
       force: true,
     });
@@ -136,5 +142,5 @@ async function deleteHtmlSnapshot(objectKey: string) {
 }
 
 function getLocalSnapshotPath(key: string) {
-  return path.join(getLocalSnapshotRoot(), key);
+  return `${getLocalSnapshotRoot()}/${key}`;
 }

@@ -5,6 +5,7 @@ export const workerConcurrencyLimits: Record<WorkerJobType, number> = {
   AI_RECOMMENDATION: 2,
   CRAWL_RUN: 3,
   DOMAIN_VERIFICATION: 10,
+  KEYWORD_IMPORT: 6,
   SCHEDULED_REPORT: 4,
 };
 

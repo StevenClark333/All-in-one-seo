@@ -76,7 +76,7 @@ for the generated setup sheet.
 3. Run migrations:
 
 ```bash
-npx prisma migrate deploy
+npm run db:migrate:deploy
 ```
 
 4. Generate Prisma client during build:
@@ -177,6 +177,8 @@ Current implementation stores compact crawl metadata and recommendation output i
 - `npm run check` passes.
 - `npm run release:readiness` passes.
 - `npm run validate:production-env` passes in the production environment.
+- `npm run db:migrate:deploy` has been run against the production database.
+- `npm run verify:e2e:ready` passes anywhere authenticated browser checks will run.
 - `SMOKE_TEST_TARGET_URL=<deployment-url> npm run smoke:test` passes after deployment.
 - `npx prisma migrate status` is clean.
 - `DATABASE_URL` points to production database.
@@ -198,6 +200,7 @@ Required GitHub secrets:
 - `INTEGRATION_ENCRYPTION_KEY`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `KEYWORD_PROVIDER_WEBHOOK_SECRET` if provider webhook imports are enabled.
 
 Required GitHub variables:
 
