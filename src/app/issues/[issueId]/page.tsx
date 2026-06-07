@@ -19,6 +19,12 @@ type IssueDetailPageProps = {
 
 const statuses = ["OPEN", "IN_PROGRESS", "FIXED", "IGNORED", "REAPPEARED"];
 
+const availabilityStyles = {
+  amber: "border-amber-200 bg-amber-50 text-amber-800",
+  blue: "border-blue-200 bg-blue-50 text-blue-800",
+  emerald: "border-emerald-200 bg-emerald-50 text-emerald-800",
+};
+
 export default async function IssueDetailPage({
   params,
 }: IssueDetailPageProps) {
@@ -112,9 +118,34 @@ export default async function IssueDetailPage({
                     {solution.detail}
                   </p>
                 </div>
-                <span className="inline-flex h-9 shrink-0 items-center rounded-md bg-white px-3 text-sm font-semibold text-emerald-800">
-                  {solution.effort}
-                </span>
+                <div className="flex shrink-0 flex-wrap gap-2 lg:justify-end">
+                  <span className="inline-flex h-9 items-center rounded-md bg-white px-3 text-sm font-semibold text-emerald-800">
+                    {solution.effort}
+                  </span>
+                  <span
+                    className={`inline-flex h-9 items-center rounded-md border bg-white px-3 text-sm font-semibold ${availabilityStyles[solution.fixAvailability.tone]}`}
+                  >
+                    {solution.fixAvailability.label}
+                  </span>
+                </div>
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="rounded-md border border-emerald-200 bg-white/70 p-3">
+                  <p className="text-sm font-semibold text-emerald-950">
+                    Why this matters
+                  </p>
+                  <p className="mt-1 text-sm leading-6 text-emerald-900">
+                    {solution.whyMatters}
+                  </p>
+                </div>
+                <div className="rounded-md border border-emerald-200 bg-white/70 p-3">
+                  <p className="text-sm font-semibold text-emerald-950">
+                    Can I fix this here?
+                  </p>
+                  <p className="mt-1 text-sm leading-6 text-emerald-900">
+                    {solution.fixAvailability.detail}
+                  </p>
+                </div>
               </div>
               <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">
                 <ol className="grid gap-2 text-sm leading-6 text-emerald-950">

@@ -23,6 +23,12 @@ const statusStyles = {
   IGNORED: "border-slate-200 bg-slate-100 text-slate-600",
 };
 
+const availabilityStyles = {
+  amber: "border-amber-200 bg-amber-50 text-amber-800",
+  blue: "border-blue-200 bg-blue-50 text-blue-800",
+  emerald: "border-emerald-200 bg-emerald-50 text-emerald-800",
+};
+
 type IssuesPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
@@ -290,6 +296,17 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
                         {solution.detail}
                       </p>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+                        <span className="font-semibold text-slate-800">
+                          Why it matters:{" "}
+                        </span>
+                        {solution.whyMatters}
+                      </p>
+                      <span
+                        className={`mt-3 inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${availabilityStyles[solution.fixAvailability.tone]}`}
+                      >
+                        {solution.fixAvailability.label}
+                      </span>
                       <span className="mt-3 inline-flex h-8 items-center rounded-md bg-slate-950 px-3 text-xs font-semibold text-white">
                         {solution.actionLabel}
                       </span>
@@ -411,12 +428,25 @@ function IssueRow({
       </div>
 
       <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-          Solution
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+            Best next step
+          </p>
+          <span
+            className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${availabilityStyles[solution.fixAvailability.tone]}`}
+          >
+            {solution.fixAvailability.label}
+          </span>
+        </div>
         <h5 className="mt-2 text-sm font-semibold">{solution.title}</h5>
         <p className="mt-1 line-clamp-3 text-sm leading-6 text-slate-600">
           {solution.detail}
+        </p>
+        <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+          <span className="font-semibold text-slate-800">
+            Why this matters:{" "}
+          </span>
+          {solution.whyMatters}
         </p>
       </div>
 

@@ -126,9 +126,9 @@ The product should become a guided SEO assistant dashboard:
 
 ### Batch C: Issue Solving
 
-- [ ] Put the recommended solution above issue metadata everywhere.
-- [ ] Add "Why this matters" in plain English.
-- [ ] Add "Can I fix this here?" status:
+- [x] Put the recommended solution above issue metadata everywhere.
+- [x] Add "Why this matters" in plain English.
+- [x] Add "Can I fix this here?" status:
   - Yes, apply fix
   - Needs CMS
   - Needs developer
