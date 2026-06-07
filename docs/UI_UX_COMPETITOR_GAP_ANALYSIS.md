@@ -170,4 +170,4 @@ The product should become a guided SEO assistant dashboard:
 - [x] Collapse advanced report schedule, template, and white-label setup blocks.
 - [x] Reduce uppercase labels on the Reports workflow.
 - [x] Keep mobile navigation focused on the main path so page content appears sooner.
-- [ ] Browser-check Reports desktop and mobile after deployment.
+- [x] Browser-check Reports desktop and mobile after deployment.
