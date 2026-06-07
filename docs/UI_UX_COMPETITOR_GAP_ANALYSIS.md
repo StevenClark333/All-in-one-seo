@@ -13,6 +13,7 @@ Make All In One SEO easier, softer, and more beautiful than the common SEO tool 
 ## Sources Reviewed
 
 - Semrush Site Audit Overview: https://www.semrush.com/kb/540-site-audit-overview
+- Semrush Site Audit Crawled Pages: https://www.semrush.com/kb/543-site-audit-crawled-pages
 - Semrush Site Audit product page: https://www.semrush.com/features/site-audit/
 - Semrush Site Audit Thematic Reports: https://www.semrush.com/kb/959-site-audit-thematic-reports
 - Semrush Site Audit Issues report: https://www.semrush.com/kb/541-site-audit-issues-report
@@ -22,6 +23,7 @@ Make All In One SEO easier, softer, and more beautiful than the common SEO tool 
 - Ahrefs pricing: https://ahrefs.com/pricing
 - Ahrefs limits and usage help: https://help.ahrefs.com/en/articles/9720420-what-is-my-subscription-plan-how-can-i-check-what-i-have
 - Ahrefs Site Audit: https://ahrefs.com/site-audit
+- Ahrefs Site Audit Page Explorer filters: https://help.ahrefs.com/en/articles/1399529-how-to-use-site-audit-filters-in-page-explorer-and-link-explorer
 - Ahrefs Site Audit issue settings: https://help.ahrefs.com/using-ahrefs/site-audit-new/how-to-configure-pre-set-issues-within-ahrefs-site-audit/
 - Ubersuggest Site Audit guide: https://ubersuggest.zendesk.com/hc/en-us/articles/4405444013211-Running-a-Site-Audit-With-Ubersuggest
 - Ubersuggest Site Audit tutorial: https://ubersuggest.zendesk.com/hc/en-us/articles/32125971038491-Site-Audit-Tutorial-and-Video-Guide
@@ -94,6 +96,7 @@ Gap for us:
 | Integrations | Long provider setup page that starts with an admin-style form | Plain-language connection plan first, then provider setup only when needed |
 | Rank tracking | Metrics, filters, and manual data forms appear before guidance | Show rank movement guidance first, then charts, then advanced data management |
 | Billing | Plan, usage, and upgrade choices appear as admin data | Start with reassurance: current plan, usage risk, and the safest next billing action |
+| Pages | Crawl inventory starts with metrics, templates, filters, and a table | Start with a page-care plan: risky pages, repeated template fixes, and easy title checks |
 
 ## Product Direction
 
@@ -247,3 +250,21 @@ Implementation:
 - [x] Replace uppercase alert form labels and metadata labels with softer labels.
 - [x] Add friendlier empty states for no alert rules and no deliveries.
 - [x] Browser-check Alerts desktop and mobile locally.
+
+### Batch L: Page Inventory Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both keep crawled-page inventory useful by combining page-level data with issue groups, statuses, and filters.
+- Screaming Frog exposes deep page tables for experts, but that is the pattern to soften for this product's target user.
+- A nontechnical page inventory should answer "which pages need attention?" and "can one template fix help many pages?" before showing raw crawl rows.
+
+Implementation:
+
+- [x] Add a plain-language page care plan above page metrics and crawl inventory.
+- [x] Surface critical pages, repeated template fixes, and missing titles as the first three choices.
+- [x] Add anchors for page inventory and template groups.
+- [x] Rename the filter action to "Show pages" and the domain label to "Project".
+- [x] Explain template groups as repeated-page fixes instead of URL-pattern scoring.
+- [x] Replace uppercase page metrics, table headers, and mobile metadata labels with softer labels.
+- [x] Add friendlier empty states for no page patterns and no crawled pages.
