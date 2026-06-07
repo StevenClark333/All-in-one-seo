@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Globe2, Mail, NotebookText } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  CheckCircle2,
+  FileText,
+  Globe2,
+  Mail,
+  NotebookText,
+} from "lucide-react";
 import {
   archiveClientAction,
   deleteClientAction,
@@ -66,6 +74,11 @@ export default async function ClientDetailPage({
             <h2 className="mt-2 text-3xl font-semibold tracking-normal">
               {client.name}
             </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+              Keep this client easy to manage: confirm their website setup,
+              review urgent issues, then send a report when there is progress to
+              share.
+            </p>
             <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-600">
               <span className="inline-flex items-center gap-2">
                 <Mail className="size-4" aria-hidden="true" />
@@ -78,6 +91,12 @@ export default async function ClientDetailPage({
             </div>
           </header>
 
+          <ClientDetailPlan
+            criticalIssues={criticalIssues}
+            domainCount={client.domains.length}
+            reportCount={client.reports.length}
+          />
+
           <section className="mt-6 grid gap-4 md:grid-cols-4">
             <Metric label="Average health" value={averageHealth ?? "Pending"} />
             <Metric label="Domains" value={client.domains.length} />
@@ -89,11 +108,14 @@ export default async function ClientDetailPage({
           </section>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-            <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div
+              id="client-projects"
+              className="rounded-lg border border-slate-200 bg-white shadow-sm"
+            >
               <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Client domains</h3>
+                <h3 className="text-lg font-semibold">Client websites</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Domains, crawl readiness, score trend, and open issue load.
+                  Open a website to review its health, crawl status, and fixes.
                 </p>
               </div>
 
@@ -118,8 +140,8 @@ export default async function ClientDetailPage({
                             >
                               {domain.domain}
                             </Link>
-                            <p className="mt-1 text-sm text-slate-500">
-                              {formatEnum(domain.platform)} -{" "}
+                        <p className="mt-1 text-sm text-slate-500">
+                              {formatEnum(domain.platform)} ·{" "}
                               {formatEnum(domain.verificationStatus)}
                             </p>
                           </div>
@@ -142,17 +164,29 @@ export default async function ClientDetailPage({
                     );
                   })
                 ) : (
-                  <div className="p-8 text-center text-sm text-slate-500">
-                    No domains are attached to this client yet.
-                  </div>
+                  <EmptyState
+                    title="No websites connected"
+                    body="Connect this client's first website so the dashboard can begin checking pages and issues."
+                  />
                 )}
               </div>
             </div>
 
             <aside className="grid gap-6">
-              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="font-semibold">Client settings</h3>
-                <form action={updateClientAction} className="mt-4 grid gap-3">
+              <section
+                id="client-settings"
+                className="rounded-lg border border-slate-200 bg-white shadow-sm"
+              >
+                <details>
+                  <summary className="p-5">
+                    <h3 className="font-semibold">Client settings</h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Optional details for contact, logo, tags, and crawl
+                      rhythm.
+                    </p>
+                  </summary>
+                  <div className="border-t border-slate-200 p-5">
+                <form action={updateClientAction} className="grid gap-3">
                   <input type="hidden" name="clientId" value={client.id} />
                   <input
                     name="name"
@@ -193,7 +227,7 @@ export default async function ClientDetailPage({
                     rows={3}
                     className="rounded-md border border-slate-200 px-3 py-2 text-sm"
                   />
-                  <button className="h-10 rounded-md bg-slate-950 px-4 text-sm font-medium text-white">
+                  <button className="h-10 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                     Save client
                   </button>
                 </form>
@@ -211,10 +245,18 @@ export default async function ClientDetailPage({
                     </button>
                   </form>
                 </div>
+                  </div>
+                </details>
               </section>
 
-              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <section
+                id="client-issues"
+                className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+              >
                 <h3 className="font-semibold">Priority issues</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Start here when the client needs help today.
+                </p>
                 <div className="mt-4 grid gap-3">
                   {client.issues.length ? (
                     client.issues.map((issue) => (
@@ -225,18 +267,27 @@ export default async function ClientDetailPage({
                       >
                         <p className="text-sm font-semibold">{issue.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(issue.severity)} - {issue.domain.domain}
+                          {formatEnum(issue.severity)} · {issue.domain.domain}
                         </p>
                       </Link>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500">No open issues.</p>
+                    <EmptyNote
+                      title="No priority issues"
+                      body="This client does not have urgent open issues right now."
+                    />
                   )}
                 </div>
               </section>
 
-              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <section
+                id="client-reports"
+                className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+              >
                 <h3 className="font-semibold">Recent reports</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Use reports to show progress without sending raw audit detail.
+                </p>
                 <div className="mt-4 grid gap-3">
                   {client.reports.length ? (
                     client.reports.map((report) => (
@@ -246,15 +297,16 @@ export default async function ClientDetailPage({
                       >
                         <p className="text-sm font-semibold">{report.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(report.status)} -{" "}
+                          {formatEnum(report.status)} ·{" "}
                           {report.createdAt.toLocaleDateString()}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500">
-                      No reports generated yet.
-                    </p>
+                    <EmptyNote
+                      title="No reports yet"
+                      body="Generate a client report when there is meaningful progress to share."
+                    />
                   )}
                 </div>
               </section>
@@ -266,10 +318,75 @@ export default async function ClientDetailPage({
   );
 }
 
+function ClientDetailPlan({
+  criticalIssues,
+  domainCount,
+  reportCount,
+}: {
+  criticalIssues: number;
+  domainCount: number;
+  reportCount: number;
+}) {
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Client next steps
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Keep this account moving without extra digging.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Check website setup first, then handle urgent issues, then use
+            reports to show progress in plain language.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanTile
+            icon={
+              domainCount ? (
+                <CheckCircle2 className="size-4" aria-hidden="true" />
+              ) : (
+                <Globe2 className="size-4" aria-hidden="true" />
+              )
+            }
+            label="Websites"
+            value={domainCount ? `${domainCount} connected` : "Connect one"}
+            detail="A client needs at least one website before audits can help."
+            href="#client-projects"
+          />
+          <PlanTile
+            icon={
+              criticalIssues ? (
+                <AlertCircle className="size-4" aria-hidden="true" />
+              ) : (
+                <CheckCircle2 className="size-4" aria-hidden="true" />
+              )
+            }
+            label="Issues"
+            value={criticalIssues ? `${criticalIssues} urgent` : "No urgent issues"}
+            detail="Open the highest-impact issue before reviewing details."
+            href="#client-issues"
+          />
+          <PlanTile
+            icon={<FileText className="size-4" aria-hidden="true" />}
+            label="Reports"
+            value={reportCount ? `${reportCount} prepared` : "No reports yet"}
+            detail="Share progress only when the report has a clear story."
+            href="#client-reports"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
@@ -280,10 +397,58 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-2 text-sm font-medium text-slate-700">{value}</p>
+    </div>
+  );
+}
+
+function PlanTile({
+  detail,
+  href,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="block rounded-lg border border-orange-100 bg-white p-4 shadow-sm transition hover:border-orange-200"
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </Link>
+  );
+}
+
+function EmptyState({ body, title }: { body: string; title: string }) {
+  return (
+    <div className="p-8 text-center text-sm text-slate-500">
+      <p className="font-semibold text-slate-900">{title}</p>
+      <p className="mx-auto mt-1 max-w-md leading-6">{body}</p>
+    </div>
+  );
+}
+
+function EmptyNote({ body, title }: { body: string; title: string }) {
+  return (
+    <div className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">
+      <p className="font-semibold text-slate-900">{title}</p>
+      <p className="mt-1 leading-5">{body}</p>
     </div>
   );
 }

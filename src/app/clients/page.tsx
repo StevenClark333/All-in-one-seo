@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { Plus, UsersRound } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  Plus,
+  UserRoundPlus,
+  UsersRound,
+} from "lucide-react";
 import { bulkImportClientsAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getClientManagementData } from "@/lib/management-queries";
@@ -8,6 +15,14 @@ export const dynamic = "force-dynamic";
 
 export default async function ClientsPage() {
   const { workspace, clients } = await getClientManagementData();
+  const clientsWithoutDomains = clients.filter(
+    (client) => client.domains.length === 0,
+  ).length;
+  const clientsWithCriticalIssues = clients.filter((client) =>
+    client.issues.some((issue) => issue.severity === "CRITICAL"),
+  ).length;
+  const clientsWithReports = clients.filter((client) => client.reports.length)
+    .length;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -23,23 +38,38 @@ export default async function ClientsPage() {
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 Clients
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                Keep every client account simple: finish setup, open the client
+                that needs attention, and send a clear report when progress is
+                ready.
+              </p>
             </div>
 
             <Link
               href="/clients/new"
-              className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
+              className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700"
             >
               <Plus className="size-4" aria-hidden="true" />
               Add client
             </Link>
           </header>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <ClientCarePlan
+            clientsWithCriticalIssues={clientsWithCriticalIssues}
+            clientsWithReports={clientsWithReports}
+            clientsWithoutDomains={clientsWithoutDomains}
+            totalClients={clients.length}
+          />
+
+          <section
+            id="client-list"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">Agency clients</h3>
+              <h3 className="text-lg font-semibold">Client list</h3>
               <p className="mt-1 text-sm text-slate-500">
-                Client-level ownership, domain counts, issue load, and latest
-                reporting status.
+                Open one client to review their projects, priority issues, and
+                latest report.
               </p>
             </div>
 
@@ -72,8 +102,8 @@ export default async function ClientsPage() {
                           >
                             {client.name}
                           </Link>
-                          <p className="mt-1 text-sm text-slate-500">
-                            {client.contactEmail ?? "No contact email"} -{" "}
+                        <p className="mt-1 text-sm text-slate-500">
+                            {client.contactEmail ?? "No contact email"} ·{" "}
                             {client.domains.length} domain
                             {client.domains.length === 1 ? "" : "s"}
                           </p>
@@ -81,7 +111,7 @@ export default async function ClientsPage() {
                       </div>
 
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        <p className="text-sm font-medium text-slate-500">
                           Health
                         </p>
                         <p className="mt-2 text-sm font-semibold">
@@ -90,7 +120,7 @@ export default async function ClientsPage() {
                       </div>
 
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        <p className="text-sm font-medium text-slate-500">
                           Open issues
                         </p>
                         <p className="mt-2 text-sm font-medium">
@@ -101,7 +131,7 @@ export default async function ClientsPage() {
                       </div>
 
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        <p className="text-sm font-medium text-slate-500">
                           Latest report
                         </p>
                         <p className="mt-2 text-sm font-medium">
@@ -113,31 +143,162 @@ export default async function ClientsPage() {
                   );
                 })
               ) : (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No clients yet. Add the first client to begin agency
-                  management.
-                </div>
+                <EmptyState
+                  title="No clients yet"
+                  body="Add your first client, then connect their website so the dashboard can build a simple care plan."
+                />
               )}
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold">Bulk import</h3>
-            <form action={bulkImportClientsAction} className="mt-4 grid gap-3">
-              <textarea
-                name="clients"
-                rows={4}
-                placeholder="Client name, contact@example.com, tag"
-                className="rounded-md border border-slate-200 px-3 py-2 text-sm"
-              />
-              <button className="h-10 w-fit rounded-md bg-slate-950 px-4 text-sm font-medium text-white">
-                Import clients
-              </button>
-            </form>
+          <section
+            id="client-import"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
+            <details>
+              <summary className="p-5">
+                <h3 className="text-lg font-semibold">
+                  Add many clients at once
+                </h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Optional for migrations. Most teams can add clients one at a
+                  time.
+                </p>
+              </summary>
+              <form
+                action={bulkImportClientsAction}
+                className="grid gap-3 border-t border-slate-200 p-5"
+              >
+                <label className="grid gap-2 text-sm font-medium text-slate-700">
+                  Client rows
+                  <textarea
+                    name="clients"
+                    rows={4}
+                    placeholder="Client name, contact@example.com, tag"
+                    className="rounded-md border border-slate-200 px-3 py-2 text-sm font-normal"
+                  />
+                </label>
+                <button className="h-10 w-fit rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                  Import clients
+                </button>
+              </form>
+            </details>
           </section>
         </section>
       </div>
     </main>
+  );
+}
+
+function ClientCarePlan({
+  clientsWithCriticalIssues,
+  clientsWithReports,
+  clientsWithoutDomains,
+  totalClients,
+}: {
+  clientsWithCriticalIssues: number;
+  clientsWithReports: number;
+  clientsWithoutDomains: number;
+  totalClients: number;
+}) {
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Client care plan
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Know who needs setup, attention, or a report.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Start with the client that has no website connected or open urgent
+            issues. Keep the full client table as detail below.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanTile
+            icon={<UserRoundPlus className="size-4" aria-hidden="true" />}
+            label="Setup"
+            value={
+              clientsWithoutDomains
+                ? `${clientsWithoutDomains} need a website`
+                : `${totalClients} clients set up`
+            }
+            detail="Connect a website before SEO checks can begin."
+            href="/clients/new"
+          />
+          <PlanTile
+            icon={
+              clientsWithCriticalIssues ? (
+                <AlertCircle className="size-4" aria-hidden="true" />
+              ) : (
+                <CheckCircle2 className="size-4" aria-hidden="true" />
+              )
+            }
+            label="Attention"
+            value={
+              clientsWithCriticalIssues
+                ? `${clientsWithCriticalIssues} need review`
+                : "No urgent clients"
+            }
+            detail="Open the client with critical issues first."
+            href="#client-list"
+          />
+          <PlanTile
+            icon={<FileText className="size-4" aria-hidden="true" />}
+            label="Reports"
+            value={
+              clientsWithReports
+                ? `${clientsWithReports} have reports`
+                : "No reports yet"
+            }
+            detail="Send a report when there is progress worth sharing."
+            href="#client-list"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanTile({
+  detail,
+  href,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="block rounded-lg border border-orange-100 bg-white p-4 shadow-sm transition hover:border-orange-200"
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </Link>
+  );
+}
+
+function EmptyState({ body, title }: { body: string; title: string }) {
+  return (
+    <div className="p-8 text-center text-sm text-slate-500">
+      <p className="font-semibold text-slate-900">{title}</p>
+      <p className="mx-auto mt-1 max-w-md leading-6">{body}</p>
+    </div>
   );
 }
 

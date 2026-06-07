@@ -100,6 +100,7 @@ Gap for us:
 | Internal Links | Link graph starts as technical metrics, issues, opportunities, and a detailed table | Lead with suggested links, hard-to-find pages, and coverage before showing graph detail |
 | Projects | Wide audit table and bulk import appear as the main experience | Start with setup/health/next-project guidance, then keep the table as detail |
 | Settings | Team roles, permissions, invites, and removals feel like admin controls | Start with seat comfort, admin safety, and pending invites before detailed role rules |
+| Clients | Agency client management opens with counts, issue load, settings, and imports | Start with client care: setup gaps, urgent attention, and reports worth sharing |
 
 ## Product Direction
 
@@ -326,3 +327,24 @@ Implementation:
 - [x] Add role descriptions directly under each teammate.
 - [x] Rename actions to "Save role" and "Remove access".
 - [x] Add a friendlier pending-invitations empty state.
+
+### Batch P: Client Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both organize agency work around projects, reports, and client-facing outcomes, but the detail can still feel like account administration.
+- A softer client workflow should answer "who needs setup?", "who needs attention?", and "what can I share with the client?" before showing tables or settings.
+- Bulk import and client settings should stay available, but not dominate the first view for a nontechnical user.
+
+Implementation:
+
+- [x] Add a plain-language client care plan above the client list.
+- [x] Surface setup gaps, urgent clients, and report readiness as the first three choices.
+- [x] Rename "Agency clients" to "Client list" and soften list helper text.
+- [x] Collapse bulk client import behind an optional "Add many clients at once" panel.
+- [x] Add an easy setup guide on the new-client screen.
+- [x] Rename the new-client primary action to "Create client".
+- [x] Add a plain-language client next-steps plan on client detail pages.
+- [x] Rename "Client domains" to "Client websites".
+- [x] Collapse client settings behind an optional detail panel.
+- [x] Add friendlier empty states for no clients, no websites, no priority issues, and no reports.

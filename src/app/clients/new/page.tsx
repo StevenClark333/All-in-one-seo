@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, UsersRound } from "lucide-react";
+import { ArrowLeft, CalendarCheck, Mail, Tag, UsersRound } from "lucide-react";
 import { createClient } from "@/app/actions";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
@@ -33,6 +33,33 @@ export default async function NewClientPage() {
               </h1>
             </div>
           </div>
+          <p className="mt-4 text-sm leading-6 text-slate-500">
+            Add the basics now. You can connect websites, reports, and deeper
+            settings after the client is created.
+          </p>
+
+          <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">
+            <p className="text-sm font-semibold text-orange-700">
+              Easy client setup
+            </p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+              <SetupTile
+                icon={<UsersRound className="size-4" aria-hidden="true" />}
+                title="Name"
+                body="Use the client or brand name your team recognizes."
+              />
+              <SetupTile
+                icon={<Mail className="size-4" aria-hidden="true" />}
+                title="Contact"
+                body="Add the email used for reports and updates."
+              />
+              <SetupTile
+                icon={<CalendarCheck className="size-4" aria-hidden="true" />}
+                title="Crawl rhythm"
+                body="Weekly is a safe starting point for most clients."
+              />
+            </div>
+          </section>
 
           {!workspace ? (
             <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
@@ -86,6 +113,9 @@ export default async function NewClientPage() {
                   <option value="DAILY">Daily</option>
                   <option value="CUSTOM">Custom</option>
                 </select>
+                <span className="text-xs leading-5 text-slate-500">
+                  Weekly keeps the client updated without feeling noisy.
+                </span>
               </label>
 
               <label className="grid gap-2">
@@ -101,13 +131,14 @@ export default async function NewClientPage() {
               </label>
 
               <label className="grid gap-2">
-                <span className="text-sm font-medium text-slate-700">
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <Tag className="size-4" aria-hidden="true" />
                   Internal notes
                 </span>
                 <textarea
                   name="notes"
                   rows={4}
-                  placeholder="Account owner, reporting cadence, special crawl rules..."
+                  placeholder="Account owner, what the client cares about, special reporting notes..."
                   className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -120,7 +151,7 @@ export default async function NewClientPage() {
                   Cancel
                 </Link>
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Add client
+                  Create client
                 </button>
               </div>
             </form>
@@ -128,5 +159,25 @@ export default async function NewClientPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+function SetupTile({
+  body,
+  icon,
+  title,
+}: {
+  body: string;
+  icon: React.ReactNode;
+  title: string;
+}) {
+  return (
+    <div className="rounded-lg border border-orange-100 bg-white p-3">
+      <span className="inline-flex size-7 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-2 text-sm font-semibold text-slate-950">{title}</p>
+      <p className="mt-1 text-xs leading-5 text-slate-500">{body}</p>
+    </div>
   );
 }
