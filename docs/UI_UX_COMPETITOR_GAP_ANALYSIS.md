@@ -1,6 +1,6 @@
 # UI/UX Competitor Gap Analysis
 
-Last updated: 2026-06-07
+Last updated: 2026-06-08
 
 ## Goal
 
@@ -152,3 +152,12 @@ The product should become a guided SEO assistant dashboard:
 - [x] Browser-check mobile viewport.
 - [x] Confirm no route errors in Vercel logs.
 - [x] Confirm user can move from dashboard to one fix path without confusion.
+
+### Batch F: Analytics Simplification
+
+- [x] Add a plain-language growth plan above Search Performance metrics.
+- [x] Move advanced Search Performance filters into a collapsible section.
+- [x] Replace hard black analytics actions with orange primary actions.
+- [x] Reduce uppercase analytics labels in Search Performance, saved views, and reusable SEO filters.
+- [ ] Apply the same guided-plan pattern to keyword research and competitor analysis.
+- [ ] Browser-check live Search Performance desktop and mobile.

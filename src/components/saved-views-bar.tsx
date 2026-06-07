@@ -23,7 +23,7 @@ export async function SavedViewsBar({
     <section className="mt-6 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+          <p className="text-sm font-semibold text-slate-600">
             Saved views
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
@@ -71,7 +71,7 @@ export async function SavedViewsBar({
             <input name="isDefault" type="checkbox" value="1" />
             Default
           </label>
-          <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+          <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
             <BookmarkPlus className="size-4" aria-hidden="true" />
             Save
           </button>

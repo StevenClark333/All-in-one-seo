@@ -24,7 +24,7 @@ export function SeoFilterBar({
       className="mt-6 grid gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_repeat(2,minmax(0,0.8fr))_auto_auto]"
     >
       <label className="grid gap-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+        <span className="text-sm font-medium text-slate-600">
           Project
         </span>
         <select
@@ -41,7 +41,7 @@ export function SeoFilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+        <span className="text-sm font-medium text-slate-600">
           Query
         </span>
         <input
@@ -52,7 +52,7 @@ export function SeoFilterBar({
         />
       </label>
       <label className="grid gap-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+        <span className="text-sm font-medium text-slate-600">
           Country
         </span>
         <select
@@ -68,7 +68,7 @@ export function SeoFilterBar({
         </select>
       </label>
       <label className="grid gap-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+        <span className="text-sm font-medium text-slate-600">
           Device
         </span>
         <select
@@ -84,7 +84,7 @@ export function SeoFilterBar({
         </select>
       </label>
       <div className="flex items-end">
-        <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+        <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
           <Filter className="size-4" aria-hidden="true" />
           Apply
         </button>

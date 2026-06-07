@@ -1,6 +1,14 @@
 import Link from "next/link";
 import type React from "react";
-import { ArrowDown, ArrowUp, BarChart3, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  BarChart3,
+  MousePointerClick,
+  Search,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
@@ -46,6 +54,10 @@ export default async function SearchPerformancePage({
     data.previousSummary.avgPosition && data.summary.avgPosition
       ? data.previousSummary.avgPosition - data.summary.avgPosition
       : 0;
+  const growthSteps = buildSearchGrowthSteps({
+    data,
+    selectedDomainId,
+  });
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -98,6 +110,64 @@ export default async function SearchPerformancePage({
             route="/search-performance"
           />
 
+          <section className="mt-6 overflow-hidden rounded-lg border border-orange-100 bg-white shadow-sm">
+            <div className="grid gap-5 p-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+              <div className="rounded-lg border border-orange-100 bg-orange-50 p-5">
+                <p className="text-sm font-semibold text-orange-700">
+                  Start here
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-normal">
+                  Search growth plan
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700">
+                  Keep the top numbers visible, but start with the easiest next
+                  move: protect what is working, fix what is slipping, and turn
+                  search impressions into visits.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {growthSteps.map((step, index) => {
+                  const Icon = step.icon;
+
+                  return (
+                    <Link
+                      key={step.title}
+                      href={step.href}
+                      className="group grid gap-3 rounded-lg border border-slate-200 bg-white p-4 transition hover:border-orange-200 hover:bg-orange-50/40 sm:grid-cols-[auto_minmax(0,1fr)_auto]"
+                    >
+                      <span className="flex size-9 items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-700">
+                        {index + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <Icon
+                            className="size-4 text-orange-600"
+                            aria-hidden="true"
+                          />
+                          <span className="font-semibold text-slate-950">
+                            {step.title}
+                          </span>
+                          <span className={step.badgeClass}>{step.badge}</span>
+                        </span>
+                        <span className="mt-1 block text-sm leading-6 text-slate-600">
+                          {step.detail}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2 self-center text-sm font-semibold text-orange-700">
+                        {step.action}
+                        <ArrowUp
+                          className="size-4 rotate-45 transition group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
               delta={visibilityDelta}
@@ -126,15 +196,22 @@ export default async function SearchPerformancePage({
             />
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">Filters</h3>
-              <p className="mt-1 text-sm text-slate-500">
-                {selectedDomain
-                  ? `Focused on ${selectedDomain.domain}.`
-                  : "Use a project, date range, query, page, country, or device to narrow imported GSC rows."}
-              </p>
-            </div>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">Adjust filters</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {selectedDomain
+                      ? `Focused on ${selectedDomain.domain}.`
+                      : "Open this only when you want a specific project, date, query, country, or device."}
+                  </p>
+                </div>
+                <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                  Show options
+                </span>
+              </div>
+            </summary>
             <form className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-[minmax(0,260px)_repeat(6,minmax(0,1fr))_auto]">
               <FilterLabel label="Project">
                 <select
@@ -211,13 +288,13 @@ export default async function SearchPerformancePage({
                 </select>
               </FilterLabel>
               <div className="flex items-end gap-2">
-                <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                   <Search className="size-4" aria-hidden="true" />
                   Apply
                 </button>
               </div>
             </form>
-          </section>
+          </details>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-2">
             <MovementPanel
@@ -263,7 +340,7 @@ function Metric({
 }) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         <HelpLabel help={help}>{label}</HelpLabel>
       </p>
       <p className="mt-2 text-2xl font-semibold">
@@ -349,7 +426,7 @@ function RankingTable({
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th className="px-5 py-3 font-semibold">{label}</th>
               <th className="px-5 py-3 font-semibold">Clicks</th>
@@ -410,7 +487,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-600">
         {label}
       </span>
       {children}
@@ -421,7 +498,7 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
@@ -472,4 +549,87 @@ function formatMovement(value: number | null) {
 
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function buildSearchGrowthSteps({
+  data,
+  selectedDomainId,
+}: {
+  data: Awaited<ReturnType<typeof getSearchPerformanceData>>;
+  selectedDomainId?: string;
+}) {
+  const querySuffix = selectedDomainId ? `?domainId=${selectedDomainId}` : "";
+  const topQuery = data.topQueries[0];
+  const declinedQuery = data.declinedQueries[0];
+  const improvedQuery = data.improvedQueries[0];
+  const topPage = data.topPages[0];
+
+  if (!data.latestImportedAt) {
+    return [
+      {
+        action: "Connect data",
+        badge: "Setup",
+        badgeClass:
+          "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
+        detail:
+          "Connect Google Search Console so this page can show clicks, impressions, rankings, and easy growth opportunities.",
+        href: "/integrations",
+        icon: Search,
+        title: "Import search data",
+      },
+      {
+        action: "Add keywords",
+        badge: "Next",
+        badgeClass:
+          "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
+        detail:
+          "Track the search terms you care about first, then compare them with Search Console data after import.",
+        href: `/keyword-research${querySuffix}`,
+        icon: Sparkles,
+        title: "Choose keywords to watch",
+      },
+    ];
+  }
+
+  return [
+    {
+      action: "Review wins",
+      badge: "Healthy",
+      badgeClass:
+        "rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700",
+      detail: topQuery
+        ? `"${topQuery.key}" is already bringing search demand. Keep that page fresh and easy to click.`
+        : "Your strongest search terms will appear here once there is enough data.",
+      href: `/keyword-research${querySuffix}`,
+      icon: ShieldCheck,
+      title: "Protect what is working",
+    },
+    {
+      action: "Improve page",
+      badge: declinedQuery ? "Needs care" : "Watch",
+      badgeClass: declinedQuery
+        ? "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700"
+        : "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
+      detail: declinedQuery
+        ? `"${declinedQuery.key}" slipped by ${Math.abs(
+            declinedQuery.positionChange ?? 0,
+          ).toFixed(1)} positions. Refresh the page title, headings, and answer quality.`
+        : "No clear ranking drop in this range. Keep watching the next import.",
+      href: `/pages${querySuffix}`,
+      icon: ArrowDown,
+      title: "Fix search terms that slipped",
+    },
+    {
+      action: "Find ideas",
+      badge: improvedQuery ? "Opportunity" : "Plan",
+      badgeClass:
+        "rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 text-xs font-medium text-orange-700",
+      detail: topPage
+        ? `${topPage.key} has ${topPage.impressions.toLocaleString()} impressions. Improve the title and intro to earn more clicks.`
+        : "Use keyword ideas to create or improve pages before the next search import.",
+      href: `/keyword-research${querySuffix}`,
+      icon: MousePointerClick,
+      title: "Turn impressions into clicks",
+    },
+  ];
 }
