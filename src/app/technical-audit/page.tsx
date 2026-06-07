@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { AlertTriangle, Network } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  LinkIcon,
+  Network,
+  Route,
+} from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getInternalLinkGraphData } from "@/lib/link-graph-queries";
@@ -34,6 +40,8 @@ export default async function TechnicalAuditPage({
     (total, page) => total + page.outgoingCount,
     0,
   );
+  const linkedPageCount = pages.filter((page) => !page.isOrphan).length;
+  const topOpportunity = opportunities.at(0);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -47,15 +55,34 @@ export default async function TechnicalAuditPage({
                 {workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Internal link graph
+                Internal links
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                Find pages that need more helpful links, then choose the easiest
+                link to add first.
+              </p>
             </div>
           </header>
+
+          <LinkCarePlan
+            deepPageCount={deepPageCount}
+            issueCount={issues.length}
+            linkedPageCount={linkedPageCount}
+            opportunityCount={opportunities.length}
+            orphanCount={orphanCount}
+            pageCount={pages.length}
+            sitemapMismatchCount={sitemapMismatchCount}
+            topOpportunityLabel={
+              topOpportunity
+                ? `${topOpportunity.anchorText} on ${topOpportunity.domain}`
+                : undefined
+            }
+          />
 
           <ProjectWorkspaceBar
             active="technical"
             domainId={selectedDomainId}
-            note="Technical audit graphs and link opportunities are filtered to this domain."
+            note="Internal link checks and link suggestions are filtered to this project."
             returnPath="/technical-audit"
           />
 
@@ -67,18 +94,20 @@ export default async function TechnicalAuditPage({
             <Metric label="Sitemap gaps" value={sitemapMismatchCount} />
           </div>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="link-opportunities"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex items-center gap-3 border-b border-slate-200 p-5">
               <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
                 <Network className="size-5" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold">
-                  Internal link opportunities
+                  Suggested links to add
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Suggested source-to-target links for pages with low internal
-                  link coverage.
+                  Simple source-to-target links for pages that need more help.
                 </p>
               </div>
             </div>
@@ -105,7 +134,7 @@ export default async function TechnicalAuditPage({
                         </span>
                         .
                       </p>
-                      <p className="mt-2 text-xs text-slate-500">
+                      <p className="mt-2 text-sm text-slate-500">
                         {opportunity.client} - {opportunity.domain}
                       </p>
                     </div>
@@ -117,23 +146,27 @@ export default async function TechnicalAuditPage({
                   </article>
                 ))
               ) : (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No internal link opportunities found from current graph data.
-                </div>
+                <EmptyState
+                  title="No link suggestions yet"
+                  body="Run a crawl after pages are connected. Suggested links will appear here when a page needs more internal support."
+                />
               )}
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="link-issues"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex items-center gap-3 border-b border-slate-200 p-5">
               <div className="flex size-10 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
                 <AlertTriangle className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">Graph issues</h3>
+                <h3 className="text-lg font-semibold">Link issues</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Depth and sitemap/internal-link mismatch findings from the
-                  latest analyzer runs.
+                  Pages that are too deep, missing from the link path, or not
+                  matching the sitemap.
                 </p>
               </div>
             </div>
@@ -155,7 +188,7 @@ export default async function TechnicalAuditPage({
                       <p className="mt-1 text-sm leading-6 text-slate-500">
                         {issue.description}
                       </p>
-                      <p className="mt-2 text-xs text-slate-500">
+                      <p className="mt-2 text-sm text-slate-500">
                         {issue.domain.client?.name ?? "Unassigned"} -{" "}
                         {issue.domain.domain}
                         {issue.page ? ` - ${issue.page.url}` : ""}
@@ -169,22 +202,26 @@ export default async function TechnicalAuditPage({
                   </article>
                 ))
               ) : (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No active internal link graph issues.
-                </div>
+                <EmptyState
+                  title="No link issues active"
+                  body="Nice. When a crawl finds deep pages, orphan pages, or sitemap mismatches, they will appear here with a direct issue link."
+                />
               )}
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="link-details"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex items-center gap-3 border-b border-slate-200 p-5">
               <div className="flex size-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
                 <Network className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">Page link metrics</h3>
+                <h3 className="text-lg font-semibold">Detailed link counts</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Incoming and outgoing internal links from stored crawl data.
+                  Page-by-page link counts for deeper review.
                   {orphanCount
                     ? ` ${orphanCount} possible orphan pages found.`
                     : ""}
@@ -194,7 +231,7 @@ export default async function TechnicalAuditPage({
 
             <div className="overflow-x-auto">
               <table className="w-full min-w-[860px] text-left text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+                <thead className="bg-slate-50 text-sm font-medium text-slate-500">
                   <tr>
                     <th className="px-5 py-3 font-semibold">Page</th>
                     <th className="px-5 py-3 font-semibold">Client</th>
@@ -247,8 +284,7 @@ export default async function TechnicalAuditPage({
                         className="px-5 py-8 text-center text-slate-500"
                         colSpan={6}
                       >
-                        No link graph data yet. Run a crawl to persist internal
-                        links.
+                        No link data yet. Run a crawl to collect internal links.
                       </td>
                     </tr>
                   )}
@@ -259,6 +295,118 @@ export default async function TechnicalAuditPage({
         </section>
       </div>
     </main>
+  );
+}
+
+function LinkCarePlan({
+  deepPageCount,
+  issueCount,
+  linkedPageCount,
+  opportunityCount,
+  orphanCount,
+  pageCount,
+  sitemapMismatchCount,
+  topOpportunityLabel,
+}: {
+  deepPageCount: number;
+  issueCount: number;
+  linkedPageCount: number;
+  opportunityCount: number;
+  orphanCount: number;
+  pageCount: number;
+  sitemapMismatchCount: number;
+  topOpportunityLabel?: string;
+}) {
+  const firstAction =
+    opportunityCount > 0
+      ? `${opportunityCount} suggested links`
+      : issueCount > 0
+        ? `${issueCount} link issues`
+        : "Links look calm";
+  const coverage =
+    pageCount > 0
+      ? `${linkedPageCount} of ${pageCount} pages linked`
+      : "No pages yet";
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Link care plan
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Help important pages feel easier to find.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Start with suggested links, then review deep pages or sitemap gaps
+            only when something needs attention.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanTile
+            icon={<LinkIcon className="size-4" aria-hidden="true" />}
+            label="Do first"
+            value={firstAction}
+            detail={
+              topOpportunityLabel
+                ? `Start with ${topOpportunityLabel}.`
+                : "Run a crawl when you want fresh link ideas."
+            }
+            href={opportunityCount > 0 ? "#link-opportunities" : "#link-issues"}
+          />
+          <PlanTile
+            icon={<Route className="size-4" aria-hidden="true" />}
+            label="Watch depth"
+            value={`${deepPageCount + orphanCount} hard-to-find pages`}
+            detail="Deep or orphan pages may need links from stronger pages."
+            href="#link-issues"
+          />
+          <PlanTile
+            icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
+            label="Coverage"
+            value={coverage}
+            detail={
+              sitemapMismatchCount
+                ? `${sitemapMismatchCount} sitemap gaps need review.`
+                : "Sitemap matching looks quiet."
+            }
+            href="#link-details"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanTile({
+  detail,
+  href,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <a
+      href={href}
+      className="block rounded-lg border border-orange-100 bg-white p-4 shadow-sm transition hover:border-orange-200 hover:bg-white"
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </a>
   );
 }
 
@@ -274,10 +422,19 @@ function Metric({ label, value }: { label: string; value: number }) {
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-2 text-sm font-medium">{value}</p>
+    </div>
+  );
+}
+
+function EmptyState({ body, title }: { body: string; title: string }) {
+  return (
+    <div className="p-8 text-center">
+      <p className="text-base font-semibold text-slate-900">{title}</p>
+      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+        {body}
+      </p>
     </div>
   );
 }

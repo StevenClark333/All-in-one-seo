@@ -97,6 +97,7 @@ Gap for us:
 | Rank tracking | Metrics, filters, and manual data forms appear before guidance | Show rank movement guidance first, then charts, then advanced data management |
 | Billing | Plan, usage, and upgrade choices appear as admin data | Start with reassurance: current plan, usage risk, and the safest next billing action |
 | Pages | Crawl inventory starts with metrics, templates, filters, and a table | Start with a page-care plan: risky pages, repeated template fixes, and easy title checks |
+| Internal Links | Link graph starts as technical metrics, issues, opportunities, and a detailed table | Lead with suggested links, hard-to-find pages, and coverage before showing graph detail |
 
 ## Product Direction
 
@@ -268,3 +269,21 @@ Implementation:
 - [x] Explain template groups as repeated-page fixes instead of URL-pattern scoring.
 - [x] Replace uppercase page metrics, table headers, and mobile metadata labels with softer labels.
 - [x] Add friendlier empty states for no page patterns and no crawled pages.
+
+### Batch M: Internal Link Calmness
+
+Competitive evidence:
+
+- Semrush surfaces internal linking as a thematic audit area instead of forcing users to start with raw crawl rows.
+- Ahrefs keeps internal-link work tied to site audit/page explorer workflows, where issues and opportunities can be filtered.
+- Screaming Frog exposes the deepest link tables for experts, but this product should keep that detail below a friendlier plan.
+
+Implementation:
+
+- [x] Rename the page from "Internal link graph" to the softer "Internal links".
+- [x] Add a plain-language link care plan above metrics and graph details.
+- [x] Surface suggested links, hard-to-find pages, and coverage as the first three choices.
+- [x] Add anchors for suggested links, link issues, and detailed link counts.
+- [x] Rename "Graph issues" to "Link issues" and "Page link metrics" to "Detailed link counts".
+- [x] Replace uppercase technical metadata labels and table headers with softer labels.
+- [x] Add friendlier empty states for no link suggestions, no link issues, and no link data.
