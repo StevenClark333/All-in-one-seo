@@ -18,6 +18,9 @@ Make All In One SEO easier, softer, and more beautiful than the common SEO tool 
 - Semrush Site Audit Issues report: https://www.semrush.com/kb/541-site-audit-issues-report
 - Semrush Position Tracking: https://www.semrush.com/position-tracking/
 - Semrush Position Tracking Overview: https://www.semrush.com/kb/549-position-tracking-overview-manual
+- Semrush pricing: https://www.semrush.com/pricing/
+- Ahrefs pricing: https://ahrefs.com/pricing
+- Ahrefs limits and usage help: https://help.ahrefs.com/en/articles/9720420-what-is-my-subscription-plan-how-can-i-check-what-i-have
 - Ahrefs Site Audit: https://ahrefs.com/site-audit
 - Ahrefs Site Audit issue settings: https://help.ahrefs.com/using-ahrefs/site-audit-new/how-to-configure-pre-set-issues-within-ahrefs-site-audit/
 - Ubersuggest Site Audit guide: https://ubersuggest.zendesk.com/hc/en-us/articles/4405444013211-Running-a-Site-Audit-With-Ubersuggest
@@ -90,6 +93,7 @@ Gap for us:
 | Nontechnical usability | Requires understanding SEO terms | Explain impact in human language and show the exact next button |
 | Integrations | Long provider setup page that starts with an admin-style form | Plain-language connection plan first, then provider setup only when needed |
 | Rank tracking | Metrics, filters, and manual data forms appear before guidance | Show rank movement guidance first, then charts, then advanced data management |
+| Billing | Plan, usage, and upgrade choices appear as admin data | Start with reassurance: current plan, usage risk, and the safest next billing action |
 
 ## Product Direction
 
@@ -207,3 +211,20 @@ Implementation:
 - [x] Add direct anchors for rank distribution, data management, tracked keywords, and competitor gaps.
 - [x] Reduce uppercase labels in Rank Tracking metrics, forms, and metadata helpers.
 - [x] Browser-check Rank Tracking desktop and mobile after deployment.
+
+### Batch J: Billing Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs pricing pages center plan limits, projects, tracked keywords, usage, and upgrade paths.
+- Ahrefs help explicitly directs users to account limits and usage, which makes usage confidence part of billing UX.
+- A nontechnical billing page should answer "am I okay?", "am I near a limit?", and "should I change anything?" before showing plan cards.
+
+Implementation:
+
+- [x] Add a plain-language billing comfort plan above current plan and usage detail.
+- [x] Make current plan, usage risk, and invoices/payment the first three billing choices.
+- [x] Add anchors for current plan, usage, and plan comparison.
+- [x] Highlight the current plan inside plan cards.
+- [x] Reduce uppercase labels in Billing metadata.
+- [ ] Browser-check Billing desktop and mobile after deployment.

@@ -18,6 +18,11 @@ export const dynamic = "force-dynamic";
 export default async function BillingPage() {
   const { plans, subscription, usage, workspace } = await getBillingPageData();
   const currentPlan = subscription?.plan ?? plans.at(0);
+  const nearLimitCount =
+    usage && currentPlan
+      ? getUsageItems(usage, currentPlan).filter((item) => item.percent >= 80)
+          .length
+      : 0;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -41,7 +46,20 @@ export default async function BillingPage() {
             </div>
           </header>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <BillingComfortPlan
+            currentPlanName={
+              subscription?.plan.name ?? workspace?.plan ?? currentPlan?.name
+            }
+            hasStripeCustomer={Boolean(subscription?.stripeCustomerId)}
+            nearLimitCount={nearLimitCount}
+            planCount={plans.length}
+            trialLabel={trialStatusLabel(subscription ?? null)}
+          />
+
+          <section
+            id="current-plan"
+            className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+          >
             <div className="flex items-center gap-2">
               <ShieldCheck
                 className="size-5 text-slate-500"
@@ -77,7 +95,10 @@ export default async function BillingPage() {
           </section>
 
           {usage && currentPlan ? (
-            <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <section
+              id="usage"
+              className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+            >
               <div className="flex items-center gap-2">
                 <CreditCard
                   className="size-5 text-slate-500"
@@ -115,7 +136,7 @@ export default async function BillingPage() {
             </section>
           ) : null}
 
-          <section className="mt-6">
+          <section id="plans" className="mt-6">
             <div className="grid gap-4 xl:grid-cols-4">
               {plans.map((plan) => {
                 const isCurrent = subscription?.plan.key === plan.key;
@@ -124,11 +145,18 @@ export default async function BillingPage() {
                 return (
                   <article
                     key={plan.key}
-                    className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+                    className={`rounded-lg border bg-white p-5 shadow-sm ${
+                      isCurrent ? "border-orange-200" : "border-slate-200"
+                    }`}
                   >
                     <div className="flex min-h-28 flex-col justify-between gap-3">
                       <div>
                         <h3 className="text-lg font-semibold">{plan.name}</h3>
+                        {isCurrent ? (
+                          <p className="mt-2 inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-700">
+                            Current plan
+                          </p>
+                        ) : null}
                         <p className="mt-2 text-sm leading-6 text-slate-500">
                           {plan.description}
                         </p>
@@ -198,11 +226,89 @@ export default async function BillingPage() {
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-1 text-sm font-medium text-slate-700">{value}</p>
     </div>
+  );
+}
+
+function BillingComfortPlan({
+  currentPlanName,
+  hasStripeCustomer,
+  nearLimitCount,
+  planCount,
+  trialLabel,
+}: {
+  currentPlanName?: string;
+  hasStripeCustomer: boolean;
+  nearLimitCount: number;
+  planCount: number;
+  trialLabel: string;
+}) {
+  const plan = [
+    {
+      detail: currentPlanName
+        ? "Your current plan is active here. Check the usage card before changing anything."
+        : "Pick a plan only after you know how many sites, pages, reports, and teammates you need.",
+      href: "#current-plan",
+      label: currentPlanName ? "Check your plan" : "Choose a plan",
+      value: currentPlanName ?? "Not selected",
+    },
+    {
+      detail: nearLimitCount
+        ? "One or more limits is close. Review usage before starting more crawls or reports."
+        : "Your usage is not near a plan limit right now.",
+      href: "#usage",
+      label: nearLimitCount ? "Review limits" : "Limits look okay",
+      value: nearLimitCount ? `${nearLimitCount} near limit` : "All calm",
+    },
+    {
+      detail: hasStripeCustomer
+        ? "Use the billing portal only when you need invoices, payment details, or subscription changes."
+        : "Compare plans below when you are ready to start a trial or subscribe.",
+      href: hasStripeCustomer ? "#current-plan" : "#plans",
+      label: hasStripeCustomer ? "Invoices and payment" : "Compare simple options",
+      value: hasStripeCustomer ? "Portal ready" : `${planCount} plans`,
+    },
+  ];
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-sm font-medium text-orange-600">
+            Billing comfort plan
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-normal">
+            Know your plan and limits before changing anything.
+          </h3>
+        </div>
+        <span className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
+          {trialLabel}
+        </span>
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        {plan.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="rounded-md border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-orange-200 hover:bg-orange-50"
+          >
+            <span className="text-sm font-semibold text-slate-950">
+              {item.label}
+            </span>
+            <span className="mt-2 block text-sm font-medium text-orange-600">
+              {item.value}
+            </span>
+            <span className="mt-2 block text-sm leading-6 text-slate-500">
+              {item.detail}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -256,6 +362,42 @@ function UsageMeter({
       ) : null}
     </div>
   );
+}
+
+function getUsageItems(
+  usage: NonNullable<Awaited<ReturnType<typeof getBillingPageData>>["usage"]>,
+  currentPlan: NonNullable<
+    Awaited<ReturnType<typeof getBillingPageData>>["plans"][number]
+  >,
+) {
+  return [
+    {
+      limit: currentPlan.domainLimit,
+      used: usage.domains,
+    },
+    {
+      limit: currentPlan.pageCrawlLimit,
+      used: usage.pages,
+    },
+    {
+      limit: currentPlan.aiRecommendationLimit,
+      used: usage.aiRecommendations,
+    },
+    {
+      limit: currentPlan.teamSeatLimit,
+      used: usage.teamSeats,
+    },
+    {
+      limit: currentPlan.reportLimit,
+      used: usage.reports,
+    },
+  ].map((item) => ({
+    ...item,
+    percent: Math.min(
+      100,
+      Math.round((item.used / Math.max(item.limit, 1)) * 100),
+    ),
+  }));
 }
 
 function formatEnum(value: string) {
