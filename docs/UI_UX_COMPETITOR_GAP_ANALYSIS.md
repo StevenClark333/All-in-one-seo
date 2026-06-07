@@ -188,4 +188,4 @@ Implementation:
 - [x] Collapse the generic manual integration form behind a softer expandable row.
 - [x] Add direct anchors for Search Console, Analytics, WordPress, Shopify, and configured integrations.
 - [x] Reduce uppercase labels through shared Integrations metadata helpers.
-- [ ] Browser-check Integrations desktop and mobile after deployment.
+- [x] Browser-check Integrations desktop and mobile after deployment.
