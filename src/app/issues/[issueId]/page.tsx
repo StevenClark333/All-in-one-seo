@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Bot, MessageSquareText } from "lucide-react";
+import { ArrowLeft, Bot, Download, MessageSquareText } from "lucide-react";
 import {
   addIssueNote,
   assignIssue,
@@ -42,6 +42,9 @@ export default async function IssueDetailPage({
     recommendation: issue.recommendation,
     title: issue.title,
   });
+  const canExportHandoff =
+    solution.fixAvailability.label === "Needs CMS" ||
+    solution.fixAvailability.label === "Needs developer";
   const timeline = [
     {
       id: "created",
@@ -145,6 +148,15 @@ export default async function IssueDetailPage({
                   <p className="mt-1 text-sm leading-6 text-emerald-900">
                     {solution.fixAvailability.detail}
                   </p>
+                  {canExportHandoff ? (
+                    <Link
+                      href={`/api/exports/fix-brief?issueId=${issue.id}`}
+                      className="mt-3 inline-flex h-9 items-center gap-2 rounded-md border border-emerald-300 bg-white px-3 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-100"
+                    >
+                      <Download className="size-4" aria-hidden="true" />
+                      Download handoff
+                    </Link>
+                  ) : null}
                 </div>
               </div>
               <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">

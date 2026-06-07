@@ -135,7 +135,7 @@ The product should become a guided SEO assistant dashboard:
 - [x] Group URL-specific technical issue types into friendly filter categories.
 - [x] Default the Problems page to a short prioritized list with an explicit show-all option.
 - [x] Keep the template filter short by showing only high-priority patterns by default.
-- [ ] Add one-click export/handoff where direct fix is not possible.
+- [x] Add one-click export/handoff where direct fix is not possible.
 
 ### Batch D: Visual Polish
 
