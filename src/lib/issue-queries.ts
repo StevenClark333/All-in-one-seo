@@ -51,7 +51,7 @@ export async function getIssueListData(filters: IssueListFilters = {}) {
     ...(filters.severity ? { severity: filters.severity as never } : {}),
     ...(filters.status ? { status: filters.status as never } : {}),
     ...(filters.assignedToId ? { assignedToId: filters.assignedToId } : {}),
-    ...(filters.issueType ? { issueType: filters.issueType } : {}),
+    ...(filters.issueType ? buildIssueTypeWhere(filters.issueType) : {}),
     ...(filters.templateKey
       ? { page: buildTemplatePageWhere(filters.templateKey) }
       : {}),
@@ -112,9 +112,15 @@ export async function getIssueListData(filters: IssueListFilters = {}) {
     clients,
     domains,
     members,
-    issueTypes: issueTypes.map((issue) => issue.issueType),
+    issueTypes: Array.from(
+      new Set(issueTypes.map((issue) => getIssueTypeGroupKey(issue.issueType))),
+    ),
     templateGroups: buildIssueTemplateGroups(templateIssues),
   };
+}
+
+export function getIssueTypeGroupKey(issueType: string) {
+  return issueType.split(":").at(0) ?? issueType;
 }
 
 export async function getIssueDetailData(issueId: string) {
@@ -251,5 +257,17 @@ function buildTemplatePageWhere(templateKey: string): Prisma.PageWhereInput {
         url: { contains: prefix, mode: "insensitive" as const },
       })),
     ],
+  };
+}
+
+function buildIssueTypeWhere(issueType: string): Prisma.SeoIssueWhereInput {
+  const key = getIssueTypeGroupKey(issueType);
+
+  if (issueType.includes(":")) {
+    return { issueType };
+  }
+
+  return {
+    OR: [{ issueType: key }, { issueType: { startsWith: `${key}:` } }],
   };
 }

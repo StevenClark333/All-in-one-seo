@@ -132,6 +132,7 @@ The product should become a guided SEO assistant dashboard:
   - Yes, apply fix
   - Needs CMS
   - Needs developer
+- [x] Group URL-specific technical issue types into friendly filter categories.
 - [ ] Add one-click export/handoff where direct fix is not possible.
 
 ### Batch D: Visual Polish

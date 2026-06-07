@@ -4,7 +4,7 @@ import { bulkUpdateIssues } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
-import { getIssueListData } from "@/lib/issue-queries";
+import { getIssueListData, getIssueTypeGroupKey } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 
 export const dynamic = "force-dynamic";
@@ -51,7 +51,9 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
   const issueGroups = issueTypes
     .map((issueType) => ({
       issueType,
-      count: issues.filter((issue) => issue.issueType === issueType).length,
+      count: issues.filter(
+        (issue) => getIssueTypeGroupKey(issue.issueType) === issueType,
+      ).length,
     }))
     .filter((group) => group.count > 0);
   const selectedDomain = domains.find(
@@ -532,7 +534,7 @@ function formatEnum(value: string) {
 }
 
 function formatIssueType(value: string) {
-  return value
+  return getIssueTypeGroupKey(value)
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
