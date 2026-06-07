@@ -99,6 +99,7 @@ Gap for us:
 | Pages | Crawl inventory starts with metrics, templates, filters, and a table | Start with a page-care plan: risky pages, repeated template fixes, and easy title checks |
 | Internal Links | Link graph starts as technical metrics, issues, opportunities, and a detailed table | Lead with suggested links, hard-to-find pages, and coverage before showing graph detail |
 | Projects | Wide audit table and bulk import appear as the main experience | Start with setup/health/next-project guidance, then keep the table as detail |
+| Settings | Team roles, permissions, invites, and removals feel like admin controls | Start with seat comfort, admin safety, and pending invites before detailed role rules |
 
 ## Product Direction
 
@@ -306,3 +307,22 @@ Implementation:
 - [x] Rename "Project audit table" to "Project details".
 - [x] Replace uppercase project table labels and client group labels with softer labels.
 - [x] Collapse bulk import behind an optional "Add many projects at once" panel.
+
+### Batch O: Settings Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs account areas rely on seats, roles, and workspace access rules, which can feel administrative for nontechnical users.
+- A softer version should answer "who can access this?", "do I have seats?", and "which invite needs attention?" before showing detailed permissions.
+- Role detail should be available but not dominate the first view.
+
+Implementation:
+
+- [x] Add a plain-language workspace comfort plan above team management.
+- [x] Surface seats, trusted admins, and pending invites as the first three choices.
+- [x] Add anchors for team members, invite teammate, and pending invitations.
+- [x] Move invite teammate above detailed role permissions.
+- [x] Collapse role permissions into an optional role guide.
+- [x] Add role descriptions directly under each teammate.
+- [x] Rename actions to "Save role" and "Remove access".
+- [x] Add a friendlier pending-invitations empty state.

@@ -1,4 +1,6 @@
 import {
+  CheckCircle2,
+  MailCheck,
   ShieldCheck,
   Trash2,
   UserPlus,
@@ -74,6 +76,9 @@ export default async function SettingsPage() {
   const { invitations, members, plan, seatUsage, workspace } =
     await getTeamSettingsData();
   const seatsRemaining = Math.max(0, seatUsage.limit - seatUsage.totalUsed);
+  const adminCount = members.filter(
+    (member) => member.role === "OWNER" || member.role === "ADMIN",
+  ).length;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -89,6 +94,11 @@ export default async function SettingsPage() {
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 Settings
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                Keep access simple: invite the right people, choose the safest
+                role, and review pending invites without digging through account
+                settings.
+              </p>
             </div>
 
             <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm">
@@ -102,8 +112,19 @@ export default async function SettingsPage() {
             </div>
           </header>
 
+          <SettingsComfortPlan
+            adminCount={adminCount}
+            pendingInvitations={seatUsage.pendingInvitations}
+            seatsRemaining={seatsRemaining}
+            totalSeats={seatUsage.limit}
+            usedSeats={seatUsage.totalUsed}
+          />
+
           <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
-            <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <section
+              id="team-members"
+              className="rounded-lg border border-slate-200 bg-white shadow-sm"
+            >
               <div className="flex items-start gap-3 border-b border-slate-200 p-5">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
                   <UsersRound className="size-5" aria-hidden="true" />
@@ -111,8 +132,8 @@ export default async function SettingsPage() {
                 <div>
                   <h3 className="text-lg font-semibold">Team members</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Manage production roles and remove access for teammates who
-                    no longer need this dashboard.
+                    Review who can enter the workspace and keep every teammate
+                    on the lightest role that works.
                   </p>
                 </div>
               </div>
@@ -129,6 +150,9 @@ export default async function SettingsPage() {
                       </p>
                       <p className="mt-1 text-sm text-slate-500">
                         {member.user.email}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-slate-500">
+                        {roleProfiles[member.role].description}
                       </p>
                     </div>
 
@@ -159,7 +183,7 @@ export default async function SettingsPage() {
                           ))}
                         </select>
                         <button className="h-10 rounded-md border border-slate-200 px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                          Save
+                          Save role
                         </button>
                       </form>
                     )}
@@ -175,7 +199,7 @@ export default async function SettingsPage() {
                         />
                         <button className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-red-200 px-3 text-sm font-medium text-red-700 transition hover:bg-red-50">
                           <Trash2 className="size-4" aria-hidden="true" />
-                          Remove
+                          Remove access
                         </button>
                       </form>
                     )}
@@ -185,45 +209,10 @@ export default async function SettingsPage() {
             </section>
 
             <aside className="grid gap-6">
-              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                <div className="border-b border-slate-200 p-5">
-                  <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Use these production role names when creating accounts or inviting teammates.">
-                      Role permissions
-                    </HelpLabel>
-                  </h3>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Clear role names for owners, agency teammates, operators,
-                    and client-facing viewers.
-                  </p>
-                </div>
-
-                <div className="grid divide-y divide-slate-100">
-                  {Object.entries(roleProfiles).map(([role, profile]) => (
-                    <article key={role} className="p-5">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <p className="font-semibold">{profile.title}</p>
-                        <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-500">
-                          {role}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm leading-6 text-slate-500">
-                        {profile.description}
-                      </p>
-                      <ul className="mt-3 grid gap-2 text-sm text-slate-600">
-                        {profile.permissions.map((permission) => (
-                          <li key={permission} className="flex gap-2">
-                            <span className="mt-2 size-1.5 shrink-0 rounded-full bg-slate-400" />
-                            <span>{permission}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+              <section
+                id="invite-teammate"
+                className="rounded-lg border border-slate-200 bg-white shadow-sm"
+              >
                 <div className="border-b border-slate-200 p-5">
                   <div className="flex items-center gap-3">
                     <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
@@ -244,7 +233,7 @@ export default async function SettingsPage() {
                   className="grid gap-4 p-5"
                 >
                   <label className="grid gap-2 text-sm font-medium text-slate-700">
-                    Email
+                    Teammate email
                     <input
                       name="email"
                       type="email"
@@ -255,7 +244,7 @@ export default async function SettingsPage() {
                   </label>
 
                   <label className="grid gap-2 text-sm font-medium text-slate-700">
-                    Role
+                    Safe starting role
                     <select
                       name="role"
                       defaultValue="MEMBER"
@@ -276,7 +265,10 @@ export default async function SettingsPage() {
                 </form>
               </section>
 
-              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+              <section
+                id="pending-invites"
+                className="rounded-lg border border-slate-200 bg-white shadow-sm"
+              >
                 <div className="border-b border-slate-200 p-5">
                   <h3 className="text-lg font-semibold">Pending invitations</h3>
                 </div>
@@ -306,17 +298,167 @@ export default async function SettingsPage() {
                       </article>
                     ))
                   ) : (
-                    <div className="p-5 text-sm text-slate-500">
-                      No pending invitations.
-                    </div>
+                    <EmptyState
+                      title="No pending invitations"
+                      body="Everyone invited has either joined or there are no open invites right now."
+                    />
                   )}
                 </div>
+              </section>
+
+              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+                <details>
+                  <summary className="p-5">
+                    <h3 className="text-lg font-semibold">
+                      <HelpLabel help="Use these production role names when creating accounts or inviting teammates.">
+                        Role guide
+                      </HelpLabel>
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Open this when you are unsure which role is safest.
+                    </p>
+                  </summary>
+
+                  <div className="grid divide-y divide-slate-100 border-t border-slate-200">
+                    {Object.entries(roleProfiles).map(([role, profile]) => (
+                      <article key={role} className="p-5">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="font-semibold">{profile.title}</p>
+                          <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-500">
+                            {role}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm leading-6 text-slate-500">
+                          {profile.description}
+                        </p>
+                        <ul className="mt-3 grid gap-2 text-sm text-slate-600">
+                          {profile.permissions.map((permission) => (
+                            <li key={permission} className="flex gap-2">
+                              <span className="mt-2 size-1.5 shrink-0 rounded-full bg-slate-400" />
+                              <span>{permission}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </article>
+                    ))}
+                  </div>
+                </details>
               </section>
             </aside>
           </div>
         </section>
       </div>
     </main>
+  );
+}
+
+function SettingsComfortPlan({
+  adminCount,
+  pendingInvitations,
+  seatsRemaining,
+  totalSeats,
+  usedSeats,
+}: {
+  adminCount: number;
+  pendingInvitations: number;
+  seatsRemaining: number;
+  totalSeats: number;
+  usedSeats: number;
+}) {
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Workspace comfort plan
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Keep access calm and easy to understand.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Start by checking seats, then invite teammates with the lightest
+            role they need. Open the role guide only when you want detail.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanTile
+            icon={<UsersRound className="size-4" aria-hidden="true" />}
+            label="Seats"
+            value={`${usedSeats} of ${totalSeats} used`}
+            detail={
+              seatsRemaining
+                ? `${seatsRemaining} available for new teammates.`
+                : "No open seats on this plan."
+            }
+            href="#invite-teammate"
+          />
+          <PlanTile
+            icon={<ShieldCheck className="size-4" aria-hidden="true" />}
+            label="Admins"
+            value={`${adminCount} trusted admins`}
+            detail="Admins can manage access, so keep this group small."
+            href="#team-members"
+          />
+          <PlanTile
+            icon={
+              pendingInvitations > 0 ? (
+                <MailCheck className="size-4" aria-hidden="true" />
+              ) : (
+                <CheckCircle2 className="size-4" aria-hidden="true" />
+              )
+            }
+            label="Invites"
+            value={
+              pendingInvitations
+                ? `${pendingInvitations} pending`
+                : "No pending invites"
+            }
+            detail="Revoke old invitations if someone no longer needs access."
+            href="#pending-invites"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanTile({
+  detail,
+  href,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <a
+      href={href}
+      className="block rounded-lg border border-orange-100 bg-white p-4 shadow-sm transition hover:border-orange-200 hover:bg-white"
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </a>
+  );
+}
+
+function EmptyState({ body, title }: { body: string; title: string }) {
+  return (
+    <div className="p-5 text-sm text-slate-500">
+      <p className="font-semibold text-slate-900">{title}</p>
+      <p className="mt-1 leading-6">{body}</p>
+    </div>
   );
 }
 
