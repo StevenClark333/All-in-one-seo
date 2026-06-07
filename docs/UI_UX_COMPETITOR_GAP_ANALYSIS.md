@@ -228,3 +228,22 @@ Implementation:
 - [x] Highlight the current plan inside plan cards.
 - [x] Reduce uppercase labels in Billing metadata.
 - [x] Browser-check Billing desktop and mobile after deployment.
+
+### Batch K: Frontend Softness and Alerts Calmness
+
+Competitive evidence:
+
+- Semrush keeps monitoring and tracking workflows calm by surfacing a short status summary before dense configuration.
+- A friendlier SEO portal should make alerts feel like "what should I watch?" rather than a technical routing table.
+- The primary navigation should feel light and stable so users can scan the main path without a heavy admin-console frame.
+
+Implementation:
+
+- [x] Soften the primary sidebar rail from dark navy to a light, quiet rail.
+- [x] Rename the Alerts primary action from "Evaluate rules" to "Check alerts now".
+- [x] Add a plain-language alert comfort plan above rule configuration.
+- [x] Surface active rules, delivery health, and latest signal as compact cards.
+- [x] Add anchors for alert rules, delivery history, and rule creation.
+- [x] Replace uppercase alert form labels and metadata labels with softer labels.
+- [x] Add friendlier empty states for no alert rules and no deliveries.
+- [x] Browser-check Alerts desktop and mobile locally.

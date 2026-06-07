@@ -114,7 +114,7 @@ export async function AppSidebar({
       <div className="flex min-h-full">
         <nav
           aria-label="Primary product areas"
-          className="hidden w-14 shrink-0 border-r border-slate-200 bg-[#18324a] px-2 py-4 lg:grid lg:auto-rows-min lg:gap-2"
+          className="hidden w-14 shrink-0 border-r border-slate-200 bg-white px-2 py-4 lg:grid lg:auto-rows-min lg:gap-2"
         >
           {primaryRailItems.map((label) => {
             const item = navItems.find((navItem) => navItem.label === label);
@@ -133,8 +133,8 @@ export async function AppSidebar({
                 title={getDisplayLabel(label)}
                 className={`inline-flex size-10 items-center justify-center rounded-md transition ${
                   label === active
-                    ? "bg-white text-orange-600 shadow-sm"
-                    : "text-slate-300 hover:bg-white/10 hover:text-white"
+                    ? "bg-orange-50 text-orange-600 shadow-sm"
+                    : "text-slate-400 hover:bg-orange-50 hover:text-slate-700"
                 }`}
               >
                 <Icon className="size-4" aria-hidden="true" />
