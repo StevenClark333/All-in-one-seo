@@ -89,6 +89,7 @@ Gap for us:
 | Visual feel | Softer after latest theme pass, but still dense | More white space, softer panels, orange highlights, fewer competing sections |
 | Nontechnical usability | Requires understanding SEO terms | Explain impact in human language and show the exact next button |
 | Integrations | Long provider setup page that starts with an admin-style form | Plain-language connection plan first, then provider setup only when needed |
+| Rank tracking | Metrics, filters, and manual data forms appear before guidance | Show rank movement guidance first, then charts, then advanced data management |
 
 ## Product Direction
 
@@ -189,3 +190,20 @@ Implementation:
 - [x] Add direct anchors for Search Console, Analytics, WordPress, Shopify, and configured integrations.
 - [x] Reduce uppercase labels through shared Integrations metadata helpers.
 - [x] Browser-check Integrations desktop and mobile after deployment.
+
+### Batch I: Rank Tracking Simplification
+
+Competitive evidence:
+
+- Semrush Position Tracking leads with visibility, estimated traffic, average position, competitor comparison, and top 3/10/20/100 ranking views.
+- Ahrefs Rank Tracker focuses on what moved, wins/losses, competitor gains, average position, position distribution, and device/location context.
+- The better nontechnical version should explain which keyword needs attention next before showing inventory tables or manual rank-entry forms.
+
+Implementation:
+
+- [x] Add a plain-language rank movement plan above rank metrics.
+- [x] Move saved views and filters into a collapsible "Adjust rank view" section.
+- [x] Collapse manual keyword, rank, and metric entry forms into "Manage tracking data".
+- [x] Add direct anchors for rank distribution, data management, tracked keywords, and competitor gaps.
+- [x] Reduce uppercase labels in Rank Tracking metrics, forms, and metadata helpers.
+- [ ] Browser-check Rank Tracking desktop and mobile after deployment.

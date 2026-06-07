@@ -63,6 +63,18 @@ export default async function RankTrackingPage({
             </div>
           </header>
 
+          <RankMovementPlan
+            averagePosition={data.summary.averagePosition}
+            keywordCount={data.summary.keywords}
+            needsRankDataCount={
+              data.keywords.filter(
+                (keyword) => !getOwnedRank(keyword)?.position,
+              ).length
+            }
+            topTenCount={data.summary.topTen}
+            worsenedCount={data.summary.worsened}
+          />
+
           <ProjectWorkspaceBar
             active="rank"
             domainId={selectedDomainId}
@@ -70,21 +82,39 @@ export default async function RankTrackingPage({
             returnPath="/rank-tracking"
           />
 
-          <SavedViewsBar
-            filters={{
-              domainId: selectedDomainId ?? "",
-              query: query ?? "",
-            }}
-            route="/rank-tracking"
-          />
+          <details className="group mt-5 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div>
+                <h3 className="text-lg font-semibold">Adjust rank view</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Save this view or narrow the page by project and keyword.
+                </p>
+              </div>
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Show filters
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
+            <div className="grid gap-4 border-t border-slate-100 p-5">
+              <SavedViewsBar
+                filters={{
+                  domainId: selectedDomainId ?? "",
+                  query: query ?? "",
+                }}
+                route="/rank-tracking"
+              />
 
-          <SeoFilterBar
-            action="/rank-tracking"
-            domainId={selectedDomainId}
-            domains={data.domains}
-            query={query}
-            resetHref="/rank-tracking"
-          />
+              <SeoFilterBar
+                action="/rank-tracking"
+                domainId={selectedDomainId}
+                domains={data.domains}
+                query={query}
+                resetHref="/rank-tracking"
+              />
+            </div>
+          </details>
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
@@ -110,7 +140,10 @@ export default async function RankTrackingPage({
           </section>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-            <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <section
+              id="rank-distribution"
+              className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+            >
               <div className="flex flex-col gap-2 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">Rank distribution</h3>
@@ -158,157 +191,177 @@ export default async function RankTrackingPage({
             </section>
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-3">
-            <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Track keyword</h3>
+          <details
+            id="manage-rank-data"
+            className="group mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div>
+                <h3 className="text-lg font-semibold">Manage tracking data</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Add keywords, record a rank, or import search volume when you
+                  need to update the tracker manually.
+                </p>
               </div>
-              <form action={addTrackedKeywordAction} className="grid gap-4 p-5">
-                <FilterLabel label="Project">
-                  <select
-                    name="domainId"
-                    defaultValue={selectedDomainId ?? ""}
-                    required
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">Choose project</option>
-                    {data.domains.map((domain) => (
-                      <option key={domain.id} value={domain.id}>
-                        {domain.domain}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <FilterLabel label="Keyword">
-                  <input
-                    name="keyword"
-                    placeholder="seo audit software"
-                    required
-                    className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <FilterLabel label="Country">
-                    <input
-                      name="country"
-                      placeholder="US"
-                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                    />
-                  </FilterLabel>
-                  <FilterLabel label="Device">
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Add data
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
+            <div className="grid gap-6 border-t border-slate-100 p-5 xl:grid-cols-3">
+              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">Track keyword</h3>
+                </div>
+                <form action={addTrackedKeywordAction} className="grid gap-4 p-5">
+                  <FilterLabel label="Project">
                     <select
-                      name="device"
+                      name="domainId"
+                      defaultValue={selectedDomainId ?? ""}
+                      required
                       className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     >
-                      <option value="">Any</option>
-                      <option value="DESKTOP">Desktop</option>
-                      <option value="MOBILE">Mobile</option>
+                      <option value="">Choose project</option>
+                      {data.domains.map((domain) => (
+                        <option key={domain.id} value={domain.id}>
+                          {domain.domain}
+                        </option>
+                      ))}
                     </select>
                   </FilterLabel>
-                </div>
-                <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
-                  <Plus className="size-4" aria-hidden="true" />
-                  Add keyword
-                </button>
-              </form>
-            </section>
+                  <FilterLabel label="Keyword">
+                    <input
+                      name="keyword"
+                      placeholder="seo audit software"
+                      required
+                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    />
+                  </FilterLabel>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <FilterLabel label="Country">
+                      <input
+                        name="country"
+                        placeholder="US"
+                        className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </FilterLabel>
+                    <FilterLabel label="Device">
+                      <select
+                        name="device"
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      >
+                        <option value="">Any</option>
+                        <option value="DESKTOP">Desktop</option>
+                        <option value="MOBILE">Mobile</option>
+                      </select>
+                    </FilterLabel>
+                  </div>
+                  <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                    <Plus className="size-4" aria-hidden="true" />
+                    Add keyword
+                  </button>
+                </form>
+              </section>
 
-            <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Record rank</h3>
-              </div>
-              <form action={recordRankObservationAction} className="grid gap-4 p-5">
-                <FilterLabel label="Keyword">
-                  <select
-                    name="trackedKeywordId"
-                    required
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">Choose keyword</option>
-                    {data.keywords.map((keyword) => (
-                      <option key={keyword.id} value={keyword.id}>
-                        {keyword.keyword}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <FilterLabel label="Position">
-                    <input
-                      name="position"
-                      min="1"
-                      step="0.1"
-                      type="number"
-                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                    />
-                  </FilterLabel>
-                  <FilterLabel label="Date">
-                    <input
-                      name="date"
-                      type="date"
-                      defaultValue={new Date().toISOString().slice(0, 10)}
-                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                    />
-                  </FilterLabel>
+              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">Record rank</h3>
                 </div>
-                <FilterLabel label="Competitor domain">
-                  <input
-                    name="competitorDomain"
-                    placeholder="Leave blank for owned rank"
-                    className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
-                  Save rank
-                </button>
-              </form>
-            </section>
+                <form action={recordRankObservationAction} className="grid gap-4 p-5">
+                  <FilterLabel label="Keyword">
+                    <select
+                      name="trackedKeywordId"
+                      required
+                      className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    >
+                      <option value="">Choose keyword</option>
+                      {data.keywords.map((keyword) => (
+                        <option key={keyword.id} value={keyword.id}>
+                          {keyword.keyword}
+                        </option>
+                      ))}
+                    </select>
+                  </FilterLabel>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <FilterLabel label="Position">
+                      <input
+                        name="position"
+                        min="1"
+                        step="0.1"
+                        type="number"
+                        className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </FilterLabel>
+                    <FilterLabel label="Date">
+                      <input
+                        name="date"
+                        type="date"
+                        defaultValue={new Date().toISOString().slice(0, 10)}
+                        className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </FilterLabel>
+                  </div>
+                  <FilterLabel label="Competitor domain">
+                    <input
+                      name="competitorDomain"
+                      placeholder="Leave blank for owned rank"
+                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    />
+                  </FilterLabel>
+                  <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                    Save rank
+                  </button>
+                </form>
+              </section>
 
-            <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Import metric</h3>
-              </div>
-              <form action={importKeywordMetricAction} className="grid gap-4 p-5">
-                <FilterLabel label="Keyword">
-                  <input
-                    name="keyword"
-                    placeholder="seo audit software"
-                    required
-                    className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <FilterLabel label="Volume">
-                    <input
-                      name="searchVolume"
-                      min="0"
-                      type="number"
-                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                    />
-                  </FilterLabel>
-                  <FilterLabel label="Difficulty">
-                    <input
-                      name="difficulty"
-                      max="100"
-                      min="0"
-                      type="number"
-                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                    />
-                  </FilterLabel>
+              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">Import metric</h3>
                 </div>
-                <FilterLabel label="Provider">
-                  <input
-                    name="provider"
-                    placeholder="Semrush, Ahrefs, DataForSEO"
-                    className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
-                  Save metric
-                </button>
-              </form>
-            </section>
-          </section>
+                <form action={importKeywordMetricAction} className="grid gap-4 p-5">
+                  <FilterLabel label="Keyword">
+                    <input
+                      name="keyword"
+                      placeholder="seo audit software"
+                      required
+                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    />
+                  </FilterLabel>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <FilterLabel label="Volume">
+                      <input
+                        name="searchVolume"
+                        min="0"
+                        type="number"
+                        className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </FilterLabel>
+                    <FilterLabel label="Difficulty">
+                      <input
+                        name="difficulty"
+                        max="100"
+                        min="0"
+                        type="number"
+                        className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </FilterLabel>
+                  </div>
+                  <FilterLabel label="Provider">
+                    <input
+                      name="provider"
+                      placeholder="Semrush, Ahrefs, DataForSEO"
+                      className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    />
+                  </FilterLabel>
+                  <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                    Save metric
+                  </button>
+                </form>
+              </section>
+            </div>
+          </details>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
             <KeywordTable keywords={data.keywords} />
@@ -322,7 +375,10 @@ export default async function RankTrackingPage({
 
 function KeywordTable({ keywords }: { keywords: RankKeyword[] }) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+    <section
+      id="tracked-keywords"
+      className="rounded-lg border border-slate-200 bg-white shadow-sm"
+    >
       <div className="border-b border-slate-200 p-5">
         <h3 className="text-lg font-semibold">Tracked keyword inventory</h3>
       </div>
@@ -393,7 +449,10 @@ function CompetitorGapList({
   gaps: Awaited<ReturnType<typeof getRankTrackingData>>["competitorContentGaps"];
 }) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+    <section
+      id="competitor-gaps"
+      className="rounded-lg border border-slate-200 bg-white shadow-sm"
+    >
       <div className="flex items-center gap-3 border-b border-slate-200 p-5">
         <Crosshair className="size-5 text-blue-700" aria-hidden="true" />
         <h3 className="text-lg font-semibold">Competitor gaps</h3>
@@ -426,6 +485,84 @@ function CompetitorGapList({
   );
 }
 
+function RankMovementPlan({
+  averagePosition,
+  keywordCount,
+  needsRankDataCount,
+  topTenCount,
+  worsenedCount,
+}: {
+  averagePosition: number | null;
+  keywordCount: number;
+  needsRankDataCount: number;
+  topTenCount: number;
+  worsenedCount: number;
+}) {
+  const plan = [
+    {
+      detail: keywordCount
+        ? "Watch the keywords that already have movement before adding more data."
+        : "Add one important keyword so the tracker can start showing progress.",
+      href: keywordCount ? "#rank-distribution" : "#manage-rank-data",
+      label: keywordCount ? "See what moved" : "Add your first keyword",
+      value: keywordCount ? `${keywordCount} tracked` : "Start here",
+    },
+    {
+      detail: worsenedCount
+        ? "Review the keywords that dropped and decide whether a page needs a content refresh."
+        : "No tracked keyword drops are showing right now.",
+      href: "#competitor-gaps",
+      label: worsenedCount ? "Recover lost positions" : "No drops to fix",
+      value: worsenedCount ? `${worsenedCount} dropped` : "Stable",
+    },
+    {
+      detail: needsRankDataCount
+        ? "Add a rank observation so averages and top position groups become useful."
+        : "Rank data is ready, so focus on the best keywords near page one.",
+      href: needsRankDataCount ? "#manage-rank-data" : "#tracked-keywords",
+      label: needsRankDataCount ? "Fill missing rank data" : "Push page-one wins",
+      value: needsRankDataCount ? `${needsRankDataCount} pending` : `${topTenCount} top 10`,
+    },
+  ];
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-sm font-medium text-orange-600">
+            Rank movement plan
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-normal">
+            Know which keyword needs attention next.
+          </h3>
+        </div>
+        <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
+          {averagePosition ? `${averagePosition} average position` : "Ranks pending"}
+        </div>
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        {plan.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="rounded-md border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-orange-200 hover:bg-orange-50"
+          >
+            <span className="text-sm font-semibold text-slate-950">
+              {item.label}
+            </span>
+            <span className="mt-2 block text-sm font-medium text-orange-600">
+              {item.value}
+            </span>
+            <span className="mt-2 block text-sm leading-6 text-slate-500">
+              {item.detail}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Metric({
   help,
   label,
@@ -437,7 +574,7 @@ function Metric({
 }) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         <HelpLabel help={help}>{label}</HelpLabel>
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
@@ -454,7 +591,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-500">
         {label}
       </span>
       {children}
@@ -465,7 +602,7 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
