@@ -161,3 +161,13 @@ The product should become a guided SEO assistant dashboard:
 - [x] Reduce uppercase analytics labels in Search Performance, saved views, and reusable SEO filters.
 - [x] Apply the same guided-plan pattern to keyword research and competitor analysis.
 - [x] Browser-check live Search Performance desktop and mobile.
+
+### Batch G: Softer Frontend Pass
+
+- [x] Lighten the global canvas, borders, shadows, and surface treatment.
+- [x] Add softer expandable-section behavior for dense setup areas.
+- [x] Add a plain-language report delivery plan above report setup.
+- [x] Collapse advanced report schedule, template, and white-label setup blocks.
+- [x] Reduce uppercase labels on the Reports workflow.
+- [x] Keep mobile navigation focused on the main path so page content appears sooner.
+- [ ] Browser-check Reports desktop and mobile after deployment.

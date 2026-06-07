@@ -192,7 +192,7 @@ export async function AppSidebar({
                   className={
                     isMainPath
                       ? "rounded-lg border border-orange-100 bg-orange-50/50 p-2"
-                      : "border-t border-slate-100 pt-3"
+                      : "hidden border-t border-slate-100 pt-3 lg:block"
                   }
                 >
                   <p

@@ -75,6 +75,13 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             </div>
           </header>
 
+          <ReportPlan
+            reportCount={visibleReports.length}
+            scheduleCount={visibleSchedules.length}
+            templateCount={templates.length}
+            domainCount={whiteLabelDomains.length}
+          />
+
           <ProjectWorkspaceBar
             active="reports"
             domainId={selectedDomainId}
@@ -84,7 +91,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
 
           <section
             id="generate-report"
-            className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+            className="mt-5 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
           >
             <div className="flex items-center gap-2">
               <Plus className="size-5 text-slate-500" aria-hidden="true" />
@@ -100,7 +107,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
               className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   <HelpLabel help="Client-facing report name shown in the report library and share view.">
                     Title
                   </HelpLabel>
@@ -150,7 +157,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 ))}
               </Select>
               <label className="grid gap-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   Start
                 </span>
                 <input
@@ -160,7 +167,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 />
               </label>
               <label className="grid gap-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   End
                 </span>
                 <input
@@ -182,28 +189,41 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             </form>
           </section>
 
-          <section
+          <details
             id="schedule-report"
-            className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+            className="group mt-4 rounded-lg border border-slate-200 bg-white shadow-sm"
           >
-            <div className="flex items-center gap-2">
-              <CalendarClock
-                className="size-5 text-slate-500"
-                aria-hidden="true"
-              />
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="Automate recurring weekly or monthly report generation for clients or domains.">
-                  Schedule report
-                </HelpLabel>
-              </h3>
-            </div>
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex size-9 items-center justify-center rounded-md bg-orange-50 text-orange-600">
+                  <CalendarClock className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Automate recurring weekly or monthly report generation for clients or domains.">
+                      Schedule report
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Open this when you want weekly or monthly updates to run
+                    automatically.
+                  </p>
+                </div>
+              </div>
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Set up
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
 
             <form
               action={scheduleReport}
-              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
+              className="grid gap-3 border-t border-slate-100 p-5 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   Title
                 </span>
                 <input
@@ -260,27 +280,40 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 </button>
               </div>
             </form>
-          </section>
+          </details>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2">
-              <LayoutTemplate
-                className="size-5 text-slate-500"
-                aria-hidden="true"
-              />
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="Create reusable report section presets for different client or executive needs.">
-                  Custom report template
-                </HelpLabel>
-              </h3>
-            </div>
+          <details className="group mt-4 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex size-9 items-center justify-center rounded-md bg-blue-50 text-blue-700">
+                  <LayoutTemplate className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Create reusable report section presets for different client or executive needs.">
+                      Custom report template
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Save a short executive, client, or technical report format
+                    for later.
+                  </p>
+                </div>
+              </div>
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Customize
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
 
             <form
               action={createCustomReportTemplate}
-              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
+              className="grid gap-3 border-t border-slate-100 p-5 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   Name
                 </span>
                 <input
@@ -291,7 +324,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 />
               </label>
               <label className="grid gap-2 xl:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   Description
                 </span>
                 <input
@@ -309,7 +342,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 ))}
               </Select>
               <fieldset className="grid gap-2 md:col-span-2 2xl:col-span-4">
-                <legend className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <legend className="text-sm font-medium text-slate-500">
                   <HelpLabel help="Select which report blocks should be included when this template is used.">
                     Sections
                   </HelpLabel>
@@ -343,9 +376,12 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 </button>
               </div>
             </form>
-          </section>
+          </details>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="report-templates"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Saved section presets available for report generation and schedules.">
@@ -388,22 +424,38 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2">
-              <Globe2 className="size-5 text-slate-500" aria-hidden="true" />
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="Configure a branded hostname for report share links, such as reports.client.com.">
-                  White-label report domain
-                </HelpLabel>
-              </h3>
-            </div>
+          <details className="group mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div className="flex items-center gap-3">
+                <span className="flex size-9 items-center justify-center rounded-md bg-orange-50 text-orange-600">
+                  <Globe2 className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Configure a branded hostname for report share links, such as reports.client.com.">
+                      White-label report domain
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Optional branding for client share links and agency
+                    delivery.
+                  </p>
+                </div>
+              </div>
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Brand reports
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
 
             <form
               action={createReportWhiteLabelDomainAction}
-              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_220px_auto]"
+              className="grid gap-3 border-t border-slate-100 p-5 md:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_220px_auto]"
             >
               <label className="grid gap-2">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-sm font-medium text-slate-500">
                   <HelpLabel help="Custom domain where shared reports should be served after DNS verification.">
                     Hostname
                   </HelpLabel>
@@ -435,7 +487,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
               </div>
             </form>
 
-            <div className="mt-5 grid divide-y divide-slate-100 border-t border-slate-100">
+            <div className="grid divide-y divide-slate-100 border-t border-slate-100 px-5">
               {whiteLabelDomains.length ? (
                 whiteLabelDomains.map((domain) => (
                   <article
@@ -507,9 +559,12 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 </div>
               )}
             </div>
-          </section>
+          </details>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="scheduled-reports"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Recurring report jobs and their next run dates.">
@@ -563,7 +618,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section
+            id="report-library"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Generated reports that can be reviewed, published, shared, or exported as PDFs.">
@@ -644,6 +702,82 @@ const reportSectionOptions = [
   { label: "Recommendations", value: "priorityRecommendations" },
 ];
 
+function ReportPlan({
+  domainCount,
+  reportCount,
+  scheduleCount,
+  templateCount,
+}: {
+  domainCount: number;
+  reportCount: number;
+  scheduleCount: number;
+  templateCount: number;
+}) {
+  const plan = [
+    {
+      label: reportCount ? "Review the latest client update" : "Create a first report",
+      value: reportCount ? `${reportCount} ready` : "Start here",
+      detail: reportCount
+        ? "Open the library, check the summary, then share the report when it looks right."
+        : "Generate a simple report from the current SEO data before setting up advanced options.",
+      href: reportCount ? "#report-library" : "#generate-report",
+    },
+    {
+      label: scheduleCount ? "Keep updates automatic" : "Automate later",
+      value: scheduleCount ? `${scheduleCount} active` : "Optional",
+      detail: scheduleCount
+        ? "Scheduled reports are already keeping clients updated without manual work."
+        : "Use schedules after the first report looks good and the client wants regular updates.",
+      href: "#schedule-report",
+    },
+    {
+      label: templateCount ? "Reuse a proven format" : "Save your best format",
+      value: templateCount ? `${templateCount} templates` : "After first draft",
+      detail: templateCount
+        ? "Pick a saved template to keep reports consistent and faster to prepare."
+        : "Once you like a report structure, save it as a template for the next client.",
+      href: "#report-templates",
+    },
+  ];
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-sm font-medium text-orange-600">
+            Report delivery plan
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-normal">
+            Send clearer SEO updates with fewer steps.
+          </h3>
+        </div>
+        <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
+          {domainCount ? `${domainCount} branded domains` : "Branding optional"}
+        </div>
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        {plan.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className="rounded-md border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-orange-200 hover:bg-orange-50"
+          >
+            <span className="text-sm font-semibold text-slate-950">
+              {item.label}
+            </span>
+            <span className="mt-2 block text-sm font-medium text-orange-600">
+              {item.value}
+            </span>
+            <span className="mt-2 block text-sm leading-6 text-slate-500">
+              {item.detail}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Select({
   children,
   defaultValue,
@@ -659,7 +793,7 @@ function Select({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-500">
         {help ? <HelpLabel help={help}>{label}</HelpLabel> : label}
       </span>
       <select
@@ -684,7 +818,7 @@ function Meta({
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {help ? <HelpLabel help={help}>{label}</HelpLabel> : label}
       </p>
       <p className="mt-2 text-sm font-medium text-slate-700">{value}</p>
