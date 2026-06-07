@@ -1,7 +1,16 @@
 import Link from "next/link";
 import type React from "react";
 import type { LinkFixStatus } from "@prisma/client";
-import { CheckCircle2, Download, Hammer, Pencil, Play, X } from "lucide-react";
+import {
+  CheckCircle2,
+  ClipboardCheck,
+  Download,
+  Hammer,
+  Pencil,
+  Play,
+  Send,
+  X,
+} from "lucide-react";
 import {
   generateLinkFixesAction,
   sendLinkFixToAutomationAction,
@@ -49,6 +58,10 @@ export default async function FixCenterPage({
   const selectedDomain = domains.find(
     (domain) => domain.id === selectedDomainId,
   );
+  const readyToReview = counts.DRAFT + counts.APPROVED;
+  const sentOrApplied = counts.EXPORTED + counts.APPLIED;
+  const needsCheck =
+    verificationCounts.PENDING + verificationCounts.STILL_FAILING;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950 lg:grid lg:grid-cols-[280px_minmax(0,1fr)]">
@@ -62,12 +75,12 @@ export default async function FixCenterPage({
                   Fix Center
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-normal">
-                  Recommended fixes ready to apply
+                  Fixes
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Review the suggested solution, send it to the website
-                  workflow, then mark it applied. Each fix includes the exact
-                  URL, platform steps, and verification status.
+                  Work through suggested fixes without hunting through audit
+                  data. Start with a ready fix, send it to the right workflow,
+                  then check that the website is better.
                 </p>
               </div>
               <form action={generateLinkFixesAction} className="flex gap-2">
@@ -89,57 +102,50 @@ export default async function FixCenterPage({
               </form>
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-5">
-              {statuses.map((status) => (
+            <FixComfortPlan
+              deliveryWorkflowCount={automationIntegrations.length}
+              needsCheck={needsCheck}
+              readyToReview={readyToReview}
+              sentOrApplied={sentOrApplied}
+            />
+
+            <details className="mt-4 rounded-lg border border-slate-200 bg-slate-50">
+              <summary className="p-4">
+                <h3 className="text-sm font-semibold text-slate-800">
+                  Detailed fix status
+                </h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  Optional counts for teams that want the full delivery audit.
+                </p>
+              </summary>
+              <div className="grid gap-3 border-t border-slate-200 p-4 sm:grid-cols-5">
+                {statuses.map((status) => (
+                  <Metric
+                    key={status}
+                    label={formatStatus(status)}
+                    value={counts[status]}
+                  />
+                ))}
+              </div>
+              <div className="grid gap-3 border-t border-slate-200 p-4 sm:grid-cols-4">
                 <Metric
-                  key={status}
-                  label={formatStatus(status)}
-                  value={counts[status]}
+                  label="Verification pending"
+                  value={verificationCounts.PENDING}
                 />
-              ))}
-            </div>
-            <div className="mt-4 grid gap-3 lg:grid-cols-3">
-              <NextActionCard
-                detail="Start here after a crawl. The portal turns link and discovery problems into ready-to-send fixes."
-                label="1. Generate"
-              />
-              <NextActionCard
-                detail="Check the recommended URL and anchor text. Edit only if the suggested page is not the best match."
-                label="2. Approve"
-              />
-              <NextActionCard
-                detail="Send to WordPress, Zapier, Make, or export the brief. Mark applied and recrawl to verify."
-                label="3. Apply"
-              />
-            </div>
-            <div className="mt-3 grid gap-3 sm:grid-cols-4">
-              <Metric
-                label="Verification pending"
-                value={verificationCounts.PENDING}
-              />
-              <Metric
-                label="Verified fixed"
-                value={verificationCounts.VERIFIED_FIXED}
-              />
-              <Metric
-                label="Still failing"
-                value={verificationCounts.STILL_FAILING}
-              />
-              <Metric
-                label="Not checked"
-                value={verificationCounts.NOT_CHECKED}
-              />
-            </div>
-            <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-              <span className="font-semibold text-slate-800">
-                Automation handoff:
-              </span>{" "}
-              {automationIntegrations.length
-                ? `${automationIntegrations.length} delivery workflow${
-                    automationIntegrations.length === 1 ? "" : "s"
-                  } connected for sending approved fixes.`
-                : "Connect WordPress, Zapier, or Make in Integrations to send fixes into a CMS, project board, or client workflow."}
-            </div>
+                <Metric
+                  label="Verified fixed"
+                  value={verificationCounts.VERIFIED_FIXED}
+                />
+                <Metric
+                  label="Still failing"
+                  value={verificationCounts.STILL_FAILING}
+                />
+                <Metric
+                  label="Not checked"
+                  value={verificationCounts.NOT_CHECKED}
+                />
+              </div>
+            </details>
           </section>
 
           <ProjectWorkspaceBar
@@ -149,11 +155,14 @@ export default async function FixCenterPage({
             returnPath="/fix-center"
           />
 
-          <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+          <section
+            id="fix-list"
+            className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+          >
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div>
-                  <h3 className="inline-flex items-center gap-2 text-lg font-semibold">
-                  Fixes to apply
+                <h3 className="inline-flex items-center gap-2 text-lg font-semibold">
+                  Fix list
                   <InfoTooltip label="Filter and work through approved internal-link fixes by domain and status." />
                 </h3>
                 <p className="mt-1 text-sm text-slate-600">
@@ -162,51 +171,56 @@ export default async function FixCenterPage({
                     : "Showing fixes across all active domains."}
                 </p>
               </div>
-              <form
-                className="grid gap-2 sm:grid-cols-[minmax(0,260px)_160px_auto_auto]"
-                method="get"
-              >
-                <select
-                  name="domainId"
-                  defaultValue={selectedDomainId ?? ""}
-                  className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700"
+              <details className="rounded-lg border border-slate-200 bg-slate-50 xl:min-w-[520px]">
+                <summary className="p-3 text-sm font-semibold text-slate-700">
+                  Adjust fix view
+                </summary>
+                <form
+                  className="grid gap-2 border-t border-slate-200 p-3 sm:grid-cols-[minmax(0,260px)_160px_auto_auto]"
+                  method="get"
                 >
-                  <option value="">All domains</option>
-                  {domains.map((domain) => (
-                    <option key={domain.id} value={domain.id}>
-                      {domain.client?.name ? `${domain.client.name} - ` : ""}
-                      {domain.domain}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  name="status"
-                  defaultValue={selectedStatus ?? ""}
-                  className="h-10 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700"
-                >
-                  <option value="">All statuses</option>
-                  {statuses.map((status) => (
-                    <option key={status} value={status}>
-                      {formatStatus(status)}
-                    </option>
-                  ))}
-                </select>
-                <button className="h-10 rounded-md border border-slate-300 px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
-                  Filter
-                </button>
-                {selectedDomainId || selectedStatus ? (
-                  <Link
-                    href={
-                      selectedDomainId
-                        ? `/domains/${selectedDomainId}/workspace`
-                        : "/fix-center"
-                    }
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-slate-200 px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                  <select
+                    name="domainId"
+                    defaultValue={selectedDomainId ?? ""}
+                    className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700"
                   >
-                    {selectedDomainId ? "Workspace" : "Clear"}
-                  </Link>
-                ) : null}
-              </form>
+                    <option value="">All domains</option>
+                    {domains.map((domain) => (
+                      <option key={domain.id} value={domain.id}>
+                        {domain.client?.name ? `${domain.client.name} · ` : ""}
+                        {domain.domain}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    name="status"
+                    defaultValue={selectedStatus ?? ""}
+                    className="h-10 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700"
+                  >
+                    <option value="">All statuses</option>
+                    {statuses.map((status) => (
+                      <option key={status} value={status}>
+                        {formatStatus(status)}
+                      </option>
+                    ))}
+                  </select>
+                  <button className="h-10 rounded-md border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                    Show fixes
+                  </button>
+                  {selectedDomainId || selectedStatus ? (
+                    <Link
+                      href={
+                        selectedDomainId
+                          ? `/domains/${selectedDomainId}/workspace`
+                          : "/fix-center"
+                      }
+                      className="inline-flex h-10 items-center justify-center rounded-md border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                    >
+                      {selectedDomainId ? "Workspace" : "Clear"}
+                    </Link>
+                  ) : null}
+                </form>
+              </details>
             </div>
 
             <div className="mt-5 grid gap-4">
@@ -268,9 +282,9 @@ export default async function FixCenterPage({
                                 suggestion.verificationStatus,
                               )}
                             </span>
-                            <span className="text-xs font-medium text-slate-500">
+                            <span className="text-sm font-medium text-slate-500">
                               {suggestion.domain.client?.name
-                                ? `${suggestion.domain.client.name} - `
+                                ? `${suggestion.domain.client.name} · `
                                 : ""}
                               {suggestion.domain.domain}
                             </span>
@@ -342,7 +356,7 @@ export default async function FixCenterPage({
                         </label>
                         <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md border border-slate-300 px-4 text-sm font-semibold text-slate-700 transition hover:bg-white">
                           <Pencil className="size-4" aria-hidden="true" />
-                          Save
+                          Save edit
                         </button>
                       </form>
 
@@ -375,7 +389,7 @@ export default async function FixCenterPage({
                               Platform fix brief
                             </p>
                             <h5 className="mt-1 text-sm font-semibold text-blue-950">
-                              {platformBrief.platformLabel} -{" "}
+                              {platformBrief.platformLabel} ·{" "}
                               {platformBrief.deliveryMode}
                             </h5>
                             <p className="mt-2 text-sm leading-6 text-blue-900">
@@ -456,19 +470,19 @@ export default async function FixCenterPage({
                         <StatusButton
                           fixId={suggestion.id}
                           status="APPROVED"
-                          label="Approve"
+                          label="Approve fix"
                           icon={<CheckCircle2 className="size-4" />}
                         />
                         <StatusButton
                           fixId={suggestion.id}
                           status="EXPORTED"
-                          label="Mark exported"
+                          label="Mark sent"
                           icon={<Download className="size-4" />}
                         />
                         <StatusButton
                           fixId={suggestion.id}
                           status="APPLIED"
-                          label="Mark applied"
+                          label="Mark fixed"
                           icon={<Hammer className="size-4" />}
                         />
                         <StatusButton
@@ -507,7 +521,7 @@ export default async function FixCenterPage({
                           </label>
                           <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                             <Download className="size-4" aria-hidden="true" />
-                            Send payload
+                            Send fix
                             <InfoTooltip
                               label="Posts this fix as JSON to the selected WordPress, Zapier, or Make receiver and marks it exported."
                               passive
@@ -566,12 +580,12 @@ export default async function FixCenterPage({
               ) : (
                 <div className="rounded-lg border border-dashed border-slate-300 p-8 text-center">
                   <h4 className="text-base font-semibold">
-                    No fixes generated yet
+                    No fixes ready yet
                   </h4>
                   <p className="mt-2 text-sm text-slate-600">
-                    Run a crawl, then generate fixes from the current issue
-                    queue. For title, meta, schema, canonical, and indexability
-                    problems, open the issue to see the exact solution steps.
+                    Generate fixes after a crawl. When the portal finds a
+                    ready-to-send link fix, it will appear here with the next
+                    button to press.
                   </p>
                 </div>
               )}
@@ -583,12 +597,95 @@ export default async function FixCenterPage({
   );
 }
 
-function NextActionCard({ detail, label }: { detail: string; label: string }) {
+function FixComfortPlan({
+  deliveryWorkflowCount,
+  needsCheck,
+  readyToReview,
+  sentOrApplied,
+}: {
+  deliveryWorkflowCount: number;
+  needsCheck: number;
+  readyToReview: number;
+  sentOrApplied: number;
+}) {
   return (
-    <div className="rounded-md border border-slate-200 bg-white p-3">
-      <p className="text-sm font-semibold">{label}</p>
-      <p className="mt-1 text-sm leading-6 text-slate-600">{detail}</p>
-    </div>
+    <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-5">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Fix comfort plan
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Pick one fix, send it, then check it.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Keep this page simple: review the ready fixes first, use connected
+            workflows when possible, and only open detailed status when you need
+            a delivery audit.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanTile
+            icon={<ClipboardCheck className="size-4" aria-hidden="true" />}
+            label="Review"
+            value={
+              readyToReview ? `${readyToReview} ready fixes` : "No fixes ready"
+            }
+            detail="Approve the fix if the suggested page and anchor text look right."
+            href="#fix-list"
+          />
+          <PlanTile
+            icon={<Send className="size-4" aria-hidden="true" />}
+            label="Send"
+            value={
+              deliveryWorkflowCount
+                ? `${deliveryWorkflowCount} workflows ready`
+                : "Connect a workflow"
+            }
+            detail={`${sentOrApplied} fixes have been sent or applied.`}
+            href="/integrations"
+          />
+          <PlanTile
+            icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
+            label="Check"
+            value={needsCheck ? `${needsCheck} need a check` : "Nothing urgent"}
+            detail="After the fix is applied, recrawl to confirm the page improved."
+            href="#fix-list"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanTile({
+  detail,
+  href,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <a
+      href={href}
+      className="block rounded-lg border border-orange-100 bg-white p-4 shadow-sm transition hover:border-orange-200"
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </a>
   );
 }
 

@@ -102,6 +102,7 @@ Gap for us:
 | Settings | Team roles, permissions, invites, and removals feel like admin controls | Start with seat comfort, admin safety, and pending invites before detailed role rules |
 | Clients | Agency client management opens with counts, issue load, settings, and imports | Start with client care: setup gaps, urgent attention, and reports worth sharing |
 | Content Ideas | AI recommendation center starts with generation lists and quota wording | Start with page copy, fix briefs, and repeated-page help in plain language |
+| Fixes | Fix Center starts with many statuses, filters, audit details, and delivery mechanics | Start with one calm path: review a fix, send it, then check it |
 
 ## Product Direction
 
@@ -368,3 +369,23 @@ Implementation:
 - [x] Rename generic "Generate" actions to "Create page ideas", "Create fix brief", and "Create shared brief".
 - [x] Rename recent recommendations to "Saved ideas and briefs".
 - [x] Add friendlier empty states for no pages, no fix briefs, and no repeated-page briefs.
+
+### Batch R: Fix Workflow Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit Issues groups problems by severity and keeps export/rerun/report actions close to issue review.
+- Ahrefs-style audit workflows keep detailed issue and page data available, but the first view should still point to the next practical fix.
+- Ubersuggest pairs audit issues with recommendation language, impact, and difficulty, which is closer to the nontechnical user target.
+
+Implementation:
+
+- [x] Rename the page lead from "Recommended fixes ready to apply" to the simpler "Fixes".
+- [x] Add a plain-language fix comfort plan above status counters.
+- [x] Surface review, send, and check as the first three choices.
+- [x] Move detailed fix and verification counters into an optional "Detailed fix status" panel.
+- [x] Rename "Fixes to apply" to "Fix list".
+- [x] Collapse domain/status filters behind "Adjust fix view".
+- [x] Rename the filter action to "Show fixes".
+- [x] Rename fix actions to "Approve fix", "Mark sent", "Mark fixed", "Save edit", and "Send fix".
+- [x] Add a friendlier empty state for no fixes ready yet.
