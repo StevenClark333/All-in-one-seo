@@ -1,6 +1,15 @@
 import Link from "next/link";
 import type React from "react";
-import { BarChart3, Globe2, Trophy } from "lucide-react";
+import {
+  ArrowUpRight,
+  BarChart3,
+  Eye,
+  Globe2,
+  Plus,
+  Search,
+  ShieldCheck,
+  Trophy,
+} from "lucide-react";
 import { addCompetitorDomainAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel } from "@/components/info-tooltip";
@@ -32,6 +41,7 @@ export default async function CompetitiveAnalysisPage({
     startDate,
   });
   const topDomain = data.domainRows.at(0);
+  const competitorPlan = buildCompetitorPlan({ data, selectedDomainId });
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -76,6 +86,64 @@ export default async function CompetitiveAnalysisPage({
             }}
             route="/competitive-analysis"
           />
+
+          <section className="mt-6 overflow-hidden rounded-lg border border-orange-100 bg-white shadow-sm">
+            <div className="grid gap-5 p-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+              <div className="rounded-lg border border-orange-100 bg-orange-50 p-5">
+                <p className="text-sm font-semibold text-orange-700">
+                  Start here
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-normal">
+                  Competitor action plan
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700">
+                  Compare only what helps the next decision: who is ahead, what
+                  page or keyword is worth copying thoughtfully, and what to do
+                  next on your own site.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {competitorPlan.map((step, index) => {
+                  const Icon = step.icon;
+
+                  return (
+                    <Link
+                      key={step.title}
+                      href={step.href}
+                      className="group grid gap-3 rounded-lg border border-slate-200 bg-white p-4 transition hover:border-orange-200 hover:bg-orange-50/40 sm:grid-cols-[auto_minmax(0,1fr)_auto]"
+                    >
+                      <span className="flex size-9 items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-700">
+                        {index + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <Icon
+                            className="size-4 text-orange-600"
+                            aria-hidden="true"
+                          />
+                          <span className="font-semibold text-slate-950">
+                            {step.title}
+                          </span>
+                          <span className={step.badgeClass}>{step.badge}</span>
+                        </span>
+                        <span className="mt-1 block text-sm leading-6 text-slate-600">
+                          {step.detail}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2 self-center text-sm font-semibold text-orange-700">
+                        {step.action}
+                        <ArrowUpRight
+                          className="size-4 transition group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
@@ -140,7 +208,8 @@ export default async function CompetitiveAnalysisPage({
                     className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   />
                 </FilterLabel>
-                <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
+                  <Plus className="size-4" aria-hidden="true" />
                   Save competitor
                 </button>
               </form>
@@ -183,16 +252,22 @@ export default async function CompetitiveAnalysisPage({
             </section>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-end xl:justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">Domain overview</h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Compare owned domains by organic visibility, crawl depth, and
-                  issue load.
-                </p>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">Adjust comparison</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Open this when you want to compare a specific project,
+                    date range, or device.
+                  </p>
+                </div>
+                <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                  Show options
+                </span>
               </div>
-              <form className="grid gap-3 md:grid-cols-[repeat(4,minmax(0,1fr))_auto]">
+            </summary>
+              <form className="grid gap-3 p-5 md:grid-cols-[repeat(4,minmax(0,1fr))_auto]">
                 <FilterLabel label="Project">
                   <select
                     name="domainId"
@@ -238,16 +313,25 @@ export default async function CompetitiveAnalysisPage({
                   </select>
                 </FilterLabel>
                 <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                  <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
+                    <Search className="size-4" aria-hidden="true" />
                     Compare
                   </button>
                 </div>
               </form>
-            </div>
+          </details>
 
+          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div className="border-b border-slate-100 p-5">
+              <h3 className="text-lg font-semibold">Domain overview</h3>
+              <p className="mt-1 text-sm text-slate-500">
+                Compare owned domains by organic visibility, crawl depth, and
+                issue load.
+              </p>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[860px] text-left text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+                <thead className="bg-slate-50 text-xs text-slate-500">
                   <tr>
                     <th className="px-5 py-3 font-semibold">Domain</th>
                     <th className="px-5 py-3 font-semibold">Visibility</th>
@@ -337,7 +421,7 @@ function Metric({
 }) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         <HelpLabel help={help}>{label}</HelpLabel>
       </p>
       <p className="mt-2 text-2xl font-semibold">
@@ -377,7 +461,7 @@ function TopList({
               className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_100px_120px]"
             >
               <div className="min-w-0">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <p className="text-sm font-medium text-slate-500">
                   {label}
                 </p>
                 <p className="mt-1 line-clamp-2 font-semibold">{item.key}</p>
@@ -408,7 +492,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-600">
         {label}
       </span>
       {children}
@@ -419,7 +503,7 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
@@ -441,4 +525,86 @@ function formatInputDate(value: Date) {
 
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function buildCompetitorPlan({
+  data,
+  selectedDomainId,
+}: {
+  data: Awaited<ReturnType<typeof getCompetitiveAnalysisData>>;
+  selectedDomainId?: string;
+}) {
+  const domainSuffix = selectedDomainId ? `?domainId=${selectedDomainId}` : "";
+  const topOwnedDomain = data.domainRows[0];
+  const competitorWinner = data.competitorRows[0];
+  const topQuery = data.topQueries[0];
+
+  if (!data.domainRows.length) {
+    return [
+      {
+        action: "Add project",
+        badge: "Setup",
+        badgeClass:
+          "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
+        detail:
+          "Add and scan at least one project so competitor comparisons have a real baseline.",
+        href: "/domains/new",
+        icon: Plus,
+        title: "Start with your website",
+      },
+      {
+        action: "Connect data",
+        badge: "Next",
+        badgeClass:
+          "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
+        detail:
+          "Connect Search Console so visibility, clicks, and impressions can power fair comparisons.",
+        href: "/integrations",
+        icon: Search,
+        title: "Import search data",
+      },
+    ];
+  }
+
+  return [
+    {
+      action: "Open project",
+      badge: "Leader",
+      badgeClass:
+        "rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700",
+      detail: topOwnedDomain
+        ? `${topOwnedDomain.domain} has the strongest visibility in this view. Keep its best pages fresh.`
+        : "Use your strongest project as the reference point before changing lower-performing sites.",
+      href: topOwnedDomain
+        ? `/domains/${topOwnedDomain.id}/workspace`
+        : `/domains${domainSuffix}`,
+      icon: ShieldCheck,
+      title: "Protect your strongest project",
+    },
+    {
+      action: "Review terms",
+      badge: competitorWinner ? "Competitor" : "Add competitor",
+      badgeClass: competitorWinner
+        ? "rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 text-xs font-medium text-orange-700"
+        : "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
+      detail: competitorWinner
+        ? `${competitorWinner.domain} is visible in tracked rankings. Check which terms they win, then improve your matching pages.`
+        : "Add one competitor domain so the portal can show where they are ahead.",
+      href: `/rank-tracking${domainSuffix}`,
+      icon: Eye,
+      title: "See who is ahead",
+    },
+    {
+      action: "Find keywords",
+      badge: "Opportunity",
+      badgeClass:
+        "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
+      detail: topQuery
+        ? `"${topQuery.key}" is one of the strongest organic queries in this comparison. Use it to plan the next content improvement.`
+        : "Review keyword opportunities once search data is imported.",
+      href: `/keyword-research${domainSuffix}`,
+      icon: BarChart3,
+      title: "Choose the next search win",
+    },
+  ];
 }

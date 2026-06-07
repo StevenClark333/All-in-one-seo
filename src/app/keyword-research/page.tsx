@@ -1,6 +1,14 @@
 import Link from "next/link";
 import type React from "react";
-import { Lightbulb, Search, Target } from "lucide-react";
+import {
+  ArrowUpRight,
+  FileText,
+  Lightbulb,
+  MousePointerClick,
+  Search,
+  Sparkles,
+  Target,
+} from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HorizontalBar } from "@/components/analytics-widgets";
 import { HelpLabel } from "@/components/info-tooltip";
@@ -41,6 +49,7 @@ export default async function KeywordResearchPage({
     1,
     ...data.intentGroups.map((item) => item.impressions),
   );
+  const keywordPlan = buildKeywordPlan({ data, selectedDomainId });
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -86,6 +95,64 @@ export default async function KeywordResearchPage({
             }}
             route="/keyword-research"
           />
+
+          <section className="mt-6 overflow-hidden rounded-lg border border-orange-100 bg-white shadow-sm">
+            <div className="grid gap-5 p-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+              <div className="rounded-lg border border-orange-100 bg-orange-50 p-5">
+                <p className="text-sm font-semibold text-orange-700">
+                  Start here
+                </p>
+                <h3 className="mt-2 text-2xl font-semibold tracking-normal">
+                  Keyword growth plan
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700">
+                  Pick the next useful keyword, write the missing content, then
+                  watch where competitors are already winning. The detailed
+                  tables stay below for deeper review.
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                {keywordPlan.map((step, index) => {
+                  const Icon = step.icon;
+
+                  return (
+                    <Link
+                      key={step.title}
+                      href={step.href}
+                      className="group grid gap-3 rounded-lg border border-slate-200 bg-white p-4 transition hover:border-orange-200 hover:bg-orange-50/40 sm:grid-cols-[auto_minmax(0,1fr)_auto]"
+                    >
+                      <span className="flex size-9 items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-700">
+                        {index + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <Icon
+                            className="size-4 text-orange-600"
+                            aria-hidden="true"
+                          />
+                          <span className="font-semibold text-slate-950">
+                            {step.title}
+                          </span>
+                          <span className={step.badgeClass}>{step.badge}</span>
+                        </span>
+                        <span className="mt-1 block text-sm leading-6 text-slate-600">
+                          {step.detail}
+                        </span>
+                      </span>
+                      <span className="flex items-center gap-2 self-center text-sm font-semibold text-orange-700">
+                        {step.action}
+                        <ArrowUpRight
+                          className="size-4 transition group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
@@ -162,15 +229,22 @@ export default async function KeywordResearchPage({
             </section>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-end xl:justify-between">
-              <div>
-                <h3 className="text-lg font-semibold">Search Console queries</h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Filter by project, query, market, device, and reporting range.
-                </p>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">Adjust keyword filters</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Open this only when you want a specific project, query,
+                    country, device, or reporting range.
+                  </p>
+                </div>
+                <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                  Show options
+                </span>
               </div>
-              <form className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,230px)_repeat(5,minmax(0,1fr))_auto]">
+            </summary>
+              <form className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-[minmax(0,230px)_repeat(5,minmax(0,1fr))_auto]">
                 <FilterLabel label="Project">
                   <select
                     name="domainId"
@@ -238,14 +312,13 @@ export default async function KeywordResearchPage({
                   </select>
                 </FilterLabel>
                 <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                  <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                     <Search className="size-4" aria-hidden="true" />
                     Apply
                   </button>
                 </div>
               </form>
-            </div>
-          </section>
+          </details>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
             <OpportunityList items={data.opportunities} />
@@ -279,7 +352,7 @@ function Metric({
 }) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         <HelpLabel help={help}>{label}</HelpLabel>
       </p>
       <p className="mt-2 text-2xl font-semibold">
@@ -307,7 +380,7 @@ function OpportunityList({ items }: { items: KeywordOpportunity[] }) {
               <div className="min-w-0">
                 <p className="line-clamp-2 font-semibold">{item.key}</p>
                 <p className="mt-1 text-sm text-slate-500">{item.reason}</p>
-                <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                <p className="mt-2 text-sm font-medium text-slate-500">
                   {formatIntent(item.intent)}
                 </p>
               </div>
@@ -468,7 +541,7 @@ function QueryTable({ items }: { items: SearchPerformanceGroup[] }) {
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[620px] text-left text-sm">
-          <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th className="px-5 py-3 font-semibold">Query</th>
               <th className="px-5 py-3 font-semibold">Clicks</th>
@@ -521,7 +594,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-600">
         {label}
       </span>
       {children}
@@ -532,7 +605,7 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
@@ -571,4 +644,84 @@ function formatIntent(value: string) {
 
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function buildKeywordPlan({
+  data,
+  selectedDomainId,
+}: {
+  data: Awaited<ReturnType<typeof getKeywordResearchData>>;
+  selectedDomainId?: string;
+}) {
+  const domainSuffix = selectedDomainId ? `?domainId=${selectedDomainId}` : "";
+  const bestOpportunity = data.opportunities[0];
+  const contentGap = data.contentGaps[0];
+  const competitorGap = data.competitorContentGaps[0];
+
+  if (!data.topQueries.length) {
+    return [
+      {
+        action: "Connect data",
+        badge: "Setup",
+        badgeClass:
+          "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
+        detail:
+          "Connect Google Search Console so keyword ideas come from real searches instead of guesswork.",
+        href: "/integrations",
+        icon: Search,
+        title: "Import keyword data",
+      },
+      {
+        action: "Track terms",
+        badge: "Next",
+        badgeClass:
+          "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
+        detail:
+          "Add the search terms that matter to your business, then compare them with new Search Console imports.",
+        href: `/rank-tracking${domainSuffix}`,
+        icon: Target,
+        title: "Choose keywords to watch",
+      },
+    ];
+  }
+
+  return [
+    {
+      action: "Open ideas",
+      badge: "Best bet",
+      badgeClass:
+        "rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 text-xs font-medium text-orange-700",
+      detail: bestOpportunity
+        ? `"${bestOpportunity.key}" has a strong opportunity score. Use it for the next page update or brief.`
+        : "Use the best demand signals to choose the next page or post to improve.",
+      href: `/recommendations${domainSuffix}`,
+      icon: Sparkles,
+      title: "Pick one keyword to improve",
+    },
+    {
+      action: "Create brief",
+      badge: contentGap ? "Missing content" : "Watch",
+      badgeClass: contentGap
+        ? "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700"
+        : "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
+      detail: contentGap
+        ? `"${contentGap.key}" gets impressions but needs a better answer, page title, or internal links.`
+        : "No clear content gap in this view. Keep monitoring the next import.",
+      href: contentGap?.actionHref ?? `/recommendations${domainSuffix}`,
+      icon: FileText,
+      title: "Turn a gap into a brief",
+    },
+    {
+      action: "Compare",
+      badge: competitorGap ? "Competitor" : "Optional",
+      badgeClass:
+        "rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700",
+      detail: competitorGap
+        ? `${competitorGap.competitorDomain} is ahead for "${competitorGap.keyword}". Use that page as a reference, then make yours clearer.`
+        : "Add competitors in Rank Tracking to reveal search terms they win and you can target.",
+      href: `/competitive-analysis${domainSuffix}`,
+      icon: MousePointerClick,
+      title: "Learn from competitor wins",
+    },
+  ];
 }
