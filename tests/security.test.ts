@@ -63,6 +63,9 @@ test("allows public portal assets without an app session", () => {
     isPublicPortalPath("/downloads/all-in-one-seo-wordpress.zip"),
     true,
   );
+  assert.equal(isPublicPortalPath("/password-reset"), true);
+  assert.equal(isPublicPortalPath("/password-reset/confirm"), true);
+  assert.equal(isPublicPortalPath("/verify-email"), true);
   assert.equal(isPublicPortalPath("/seo.js"), true);
   assert.equal(isPublicPortalPath("/integrations"), false);
 });

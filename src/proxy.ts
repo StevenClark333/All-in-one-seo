@@ -6,6 +6,8 @@ import { isMutatingMethod, isTrustedRequestOrigin } from "@/lib/security";
 const publicPrefixes = [
   "/login",
   "/signup",
+  "/password-reset",
+  "/verify-email",
   "/share",
   "/seo.js",
   "/downloads",
