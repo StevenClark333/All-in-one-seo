@@ -101,6 +101,7 @@ Gap for us:
 | Projects | Wide audit table and bulk import appear as the main experience | Start with setup/health/next-project guidance, then keep the table as detail |
 | Settings | Team roles, permissions, invites, and removals feel like admin controls | Start with seat comfort, admin safety, and pending invites before detailed role rules |
 | Clients | Agency client management opens with counts, issue load, settings, and imports | Start with client care: setup gaps, urgent attention, and reports worth sharing |
+| Content Ideas | AI recommendation center starts with generation lists and quota wording | Start with page copy, fix briefs, and repeated-page help in plain language |
 
 ## Product Direction
 
@@ -348,3 +349,22 @@ Implementation:
 - [x] Rename "Client domains" to "Client websites".
 - [x] Collapse client settings behind an optional detail panel.
 - [x] Add friendlier empty states for no clients, no websites, no priority issues, and no reports.
+
+### Batch Q: Content Ideas Calmness
+
+Competitive evidence:
+
+- Semrush content tools frame work around content ideas, writing assistance, readability, SEO, and next content actions rather than exposing prompt mechanics first.
+- Ahrefs-style content workflows are most useful when they point to gaps, pages, and fixes before showing deeper data.
+- A nontechnical user should choose "help me write page copy", "help me explain a fix", or "help me handle repeated pages" before seeing raw AI generation lists.
+
+Implementation:
+
+- [x] Rename the page heading from "AI recommendations" to "Content Ideas".
+- [x] Add a plain-language content idea plan above domain filters and generation sections.
+- [x] Surface page copy, fix briefs, and repeated-page briefs as the first three choices.
+- [x] Replace quota wording with "ideas left this month".
+- [x] Collapse heavy generation sections into expandable page copy, fix brief, and repeated-page areas.
+- [x] Rename generic "Generate" actions to "Create page ideas", "Create fix brief", and "Create shared brief".
+- [x] Rename recent recommendations to "Saved ideas and briefs".
+- [x] Add friendlier empty states for no pages, no fix briefs, and no repeated-page briefs.
