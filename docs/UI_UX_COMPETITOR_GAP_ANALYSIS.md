@@ -227,4 +227,4 @@ Implementation:
 - [x] Add anchors for current plan, usage, and plan comparison.
 - [x] Highlight the current plan inside plan cards.
 - [x] Reduce uppercase labels in Billing metadata.
-- [ ] Browser-check Billing desktop and mobile after deployment.
+- [x] Browser-check Billing desktop and mobile after deployment.
