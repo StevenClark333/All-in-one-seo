@@ -148,7 +148,7 @@ The product should become a guided SEO assistant dashboard:
 
 ### Batch E: Verification
 
-- [ ] Browser-check live dashboard after login.
-- [ ] Browser-check mobile viewport.
-- [ ] Confirm no route errors in Vercel logs.
-- [ ] Confirm user can move from dashboard to one fix path without confusion.
+- [x] Browser-check live dashboard after login.
+- [x] Browser-check mobile viewport.
+- [x] Confirm no route errors in Vercel logs.
+- [x] Confirm user can move from dashboard to one fix path without confusion.
