@@ -206,4 +206,4 @@ Implementation:
 - [x] Collapse manual keyword, rank, and metric entry forms into "Manage tracking data".
 - [x] Add direct anchors for rank distribution, data management, tracked keywords, and competitor gaps.
 - [x] Reduce uppercase labels in Rank Tracking metrics, forms, and metadata helpers.
-- [ ] Browser-check Rank Tracking desktop and mobile after deployment.
+- [x] Browser-check Rank Tracking desktop and mobile after deployment.
