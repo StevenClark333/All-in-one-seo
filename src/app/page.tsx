@@ -61,10 +61,10 @@ export default async function Home() {
         <section id="main-content" className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-500">
+              <p className="text-sm font-semibold text-orange-600">
                 {isAgency ? "Agency command center" : "Business command center"}
               </p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-slate-950">
+              <h2 className="mt-2 max-w-4xl text-3xl font-semibold tracking-normal text-slate-950">
                 {isAgency
                   ? `Continuous SEO monitoring across ${workspaceName}`
                   : `Continuous SEO monitoring for ${workspaceName}`}
@@ -74,7 +74,7 @@ export default async function Home() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/domains"
-                className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
+                className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50"
               >
                 <Play className="size-4" aria-hidden="true" />
                 Start crawl
@@ -89,7 +89,7 @@ export default async function Home() {
                 className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
               >
                 <Plus className="size-4" aria-hidden="true" />
-                Add domain
+                Add project
                 <InfoTooltip
                   label="Add a new website to verify, crawl, monitor, and report on."
                   passive
@@ -106,7 +106,7 @@ export default async function Home() {
               return (
                 <article
                   key={stat.label}
-                  className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+                  className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:bg-orange-50/30"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-sm font-medium text-slate-500">
@@ -128,7 +128,7 @@ export default async function Home() {
             })}
           </div>
 
-          <section className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <section className="mt-6 overflow-hidden rounded-lg border border-orange-100 bg-white shadow-sm">
             <div className="grid gap-5 p-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
               <div className="rounded-lg border border-orange-100 bg-orange-50 p-5">
                 <p className="text-sm font-semibold text-orange-700">
@@ -191,7 +191,7 @@ export default async function Home() {
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-orange-600">
                   Portfolio command center
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-normal">
@@ -562,7 +562,7 @@ function QuickLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-semibold text-slate-700 transition hover:bg-white hover:text-slate-950"
+      className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-semibold text-slate-700 transition [overflow-wrap:normal] hover:bg-white hover:text-slate-950"
     >
       {label}
     </Link>
@@ -576,7 +576,7 @@ function QuickAction({ href, label }: { href: string; label: string }) {
       className="flex items-center justify-between rounded-md border border-slate-200 bg-slate-50 p-3 text-sm font-semibold text-slate-700 transition hover:bg-white hover:text-slate-950"
     >
       {label}
-      <span aria-hidden="true">→</span>
+      <span aria-hidden="true">-&gt;</span>
     </Link>
   );
 }

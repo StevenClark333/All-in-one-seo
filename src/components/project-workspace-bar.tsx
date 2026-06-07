@@ -117,7 +117,7 @@ export async function ProjectWorkspaceBar({
             <select
               name="domainId"
               defaultValue=""
-              className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+              className="h-10 min-w-0 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-700 outline-none transition focus:border-orange-300 focus:bg-white focus:ring-4 focus:ring-orange-100"
             >
               <option value="">All domains</option>
               {domains.map((domain) => (
@@ -158,11 +158,11 @@ export async function ProjectWorkspaceBar({
             </nav>
 
             <div className="mt-3 flex min-w-0 items-start gap-3">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-blue-50 text-blue-700">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-orange-50 text-orange-600">
                 <Globe2 className="size-5" aria-hidden="true" />
               </div>
               <div className="min-w-0">
-                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">
+                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-orange-600">
                   Active project
                   <InfoTooltip
                     label="Navigation, filters, and actions in this workspace use this domain."
@@ -190,7 +190,7 @@ export async function ProjectWorkspaceBar({
               <select
                 name="domainId"
                 defaultValue={selectedDomain.id}
-                className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                className="h-10 min-w-0 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-700 outline-none transition focus:border-orange-300 focus:bg-white focus:ring-4 focus:ring-orange-100"
               >
                 {domains.map((domain) => (
                   <option key={domain.id} value={domain.id}>
@@ -199,7 +199,7 @@ export async function ProjectWorkspaceBar({
                 ))}
               </select>
             </label>
-            <button className="inline-flex h-10 items-center justify-center self-end rounded-md border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+            <button className="inline-flex h-10 items-center justify-center self-end rounded-md border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-orange-50">
               Switch
             </button>
           </form>
@@ -217,8 +217,8 @@ export async function ProjectWorkspaceBar({
               href={tool.buildHref(selectedDomain.id)}
               className={`inline-flex h-9 items-center rounded-md px-3 text-sm font-semibold transition ${
                 tool.key === active
-                  ? "bg-slate-950 text-white"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                  ? "bg-orange-50 text-orange-700 shadow-[inset_0_-2px_0_#ff642f]"
+                  : "text-slate-600 hover:bg-orange-50 hover:text-slate-950"
               }`}
             >
               {tool.label}

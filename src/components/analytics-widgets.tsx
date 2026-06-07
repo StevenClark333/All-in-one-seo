@@ -38,7 +38,7 @@ export function AnalyticsMetricCard({
           </p>
         </div>
         {Icon ? (
-          <span className="flex size-9 items-center justify-center rounded-md bg-slate-100 text-slate-600">
+          <span className="flex size-9 items-center justify-center rounded-md bg-orange-50 text-orange-600">
             <Icon className="size-4" aria-hidden="true" />
           </span>
         ) : null}
@@ -67,7 +67,7 @@ export function AnalyticsMetricCard({
     return (
       <Link
         href={href}
-        className="block rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+        className="block rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-orange-200 hover:bg-orange-50/30 hover:shadow-md"
       >
         {body}
       </Link>
@@ -101,10 +101,10 @@ export function Sparkline({ points }: { points: SparkPoint[] }) {
       className="h-10 w-24 shrink-0 overflow-visible"
       viewBox="0 0 100 40"
     >
-      <path d={path || "M 0 36"} fill="none" stroke="#2563eb" strokeWidth="3" />
+      <path d={path || "M 0 36"} fill="none" stroke="#ff642f" strokeWidth="3" />
       <path
         d={`${path || "M 0 36"} L 100 40 L 0 40 Z`}
-        fill="#dbeafe"
+        fill="#fff2ec"
         opacity="0.8"
       />
     </svg>
@@ -131,7 +131,7 @@ export function HorizontalBar({
         </span>
       </div>
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-        <div className="h-full rounded-full bg-blue-600" style={{ width: `${width}%` }} />
+        <div className="h-full rounded-full bg-orange-500" style={{ width: `${width}%` }} />
       </div>
     </div>
   );

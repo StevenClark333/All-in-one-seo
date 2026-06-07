@@ -109,12 +109,12 @@ export async function AppSidebar({
   const { activeWorkspaceId, memberships } = await getWorkspaceSwitcherData();
 
   return (
-    <aside className="border-b border-slate-200 bg-white lg:border-b-0 lg:border-r">
+    <aside className="border-b border-slate-200 bg-white/95 lg:border-b-0 lg:border-r">
       <GlobalSearchShortcut />
       <div className="flex min-h-full">
         <nav
           aria-label="Primary product areas"
-          className="hidden w-14 shrink-0 border-r border-slate-200 bg-slate-950 px-2 py-4 lg:grid lg:auto-rows-min lg:gap-2"
+          className="hidden w-14 shrink-0 border-r border-slate-200 bg-[#18324a] px-2 py-4 lg:grid lg:auto-rows-min lg:gap-2"
         >
           {primaryRailItems.map((label) => {
             const item = navItems.find((navItem) => navItem.label === label);
@@ -133,8 +133,8 @@ export async function AppSidebar({
                 title={getDisplayLabel(label)}
                 className={`inline-flex size-10 items-center justify-center rounded-md transition ${
                   label === active
-                    ? "bg-white text-slate-950"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                    ? "bg-white text-orange-600 shadow-sm"
+                    : "text-slate-300 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <Icon className="size-4" aria-hidden="true" />
@@ -145,14 +145,16 @@ export async function AppSidebar({
 
         <div className="min-w-0 flex-1 px-5 py-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-slate-950 text-white lg:hidden">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-500 text-white shadow-sm lg:hidden">
               <Search className="size-5" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-400">
                 All In One
               </p>
-              <h1 className="text-xl font-semibold tracking-normal">SEO Ops</h1>
+              <h1 className="text-xl font-semibold tracking-normal text-slate-900">
+                SEO Ops
+              </h1>
             </div>
           </div>
 
@@ -168,7 +170,7 @@ export async function AppSidebar({
                 name="q"
                 type="search"
                 placeholder="Search or run action"
-                className="h-10 w-full rounded-md border border-slate-300 bg-white pl-9 pr-16 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                className="h-10 w-full rounded-md border border-slate-200 bg-slate-50 pl-9 pr-16 text-sm outline-none transition focus:border-orange-300 focus:bg-white focus:ring-4 focus:ring-orange-100"
               />
               <span className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 sm:inline">
                 Ctrl K
@@ -204,8 +206,8 @@ export async function AppSidebar({
                         href={hrefs[item.label]?.(activeDomainId) ?? "/"}
                         className={`flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium transition ${
                           isActive
-                            ? "bg-slate-950 text-white"
-                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
+                            ? "bg-orange-50 text-orange-700 shadow-[inset_3px_0_0_#ff642f]"
+                            : "text-slate-600 hover:bg-orange-50 hover:text-slate-950"
                         }`}
                       >
                         <Icon className="size-4" aria-hidden="true" />
@@ -237,7 +239,7 @@ export async function AppSidebar({
             <select
               name="workspaceId"
               defaultValue={activeWorkspaceId ?? undefined}
-              className="h-10 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
+              className="h-10 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
             >
               {memberships.map((membership) => (
                 <option
@@ -249,14 +251,14 @@ export async function AppSidebar({
               ))}
             </select>
           </label>
-          <button className="mt-2 h-9 w-full rounded-md border border-slate-200 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
+          <button className="mt-2 h-9 w-full rounded-md border border-slate-200 bg-white text-sm font-medium text-slate-700 transition hover:bg-orange-50">
             Switch
           </button>
             </form>
           ) : null}
 
           <form action="/api/auth/logout" method="post" className="mt-4">
-            <button className="flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950">
+            <button className="flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm font-medium text-slate-600 transition hover:bg-orange-50 hover:text-slate-950">
               <LogOut className="size-4" aria-hidden="true" />
               Log out
             </button>
