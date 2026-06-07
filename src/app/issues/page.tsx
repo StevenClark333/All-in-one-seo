@@ -17,7 +17,7 @@ const severityStyles = {
 };
 
 const statusStyles = {
-  OPEN: "border-red-200 bg-red-50 text-red-700",
+  OPEN: "border-slate-200 bg-white text-slate-700",
   IN_PROGRESS: "border-blue-200 bg-blue-50 text-blue-700",
   REAPPEARED: "border-purple-200 bg-purple-50 text-purple-700",
   FIXED: "border-emerald-200 bg-emerald-50 text-emerald-700",
@@ -217,7 +217,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               </FilterSelect>
 
               <div className="flex gap-2 md:col-span-2 xl:col-span-7">
-                <button className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                   <ListChecks className="size-4" aria-hidden="true" />
                   Apply filters
                   <InfoTooltip
@@ -284,7 +284,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
             </div>
 
             {issues.length ? (
-              <div className="grid gap-3 border-b border-slate-200 bg-slate-50 p-4 lg:grid-cols-3">
+              <div className="grid gap-3 border-b border-slate-100 bg-slate-50 p-4 lg:grid-cols-3">
                 {visibleIssues.slice(0, 3).map((issue) => {
                   const solution = buildIssueSolution({
                     issueType: issue.issueType,
@@ -303,7 +303,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       })}
                       className="rounded-md border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm"
                     >
-                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      <p className="text-sm font-semibold text-slate-500">
                         Top solution
                       </p>
                       <h4 className="mt-2 line-clamp-1 text-sm font-semibold">
@@ -323,7 +323,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       >
                         {solution.fixAvailability.label}
                       </span>
-                      <span className="mt-3 inline-flex h-8 items-center rounded-md bg-slate-950 px-3 text-xs font-semibold text-white">
+                      <span className="mt-3 inline-flex h-8 items-center rounded-md bg-orange-600 px-3 text-xs font-semibold text-white">
                         {solution.actionLabel}
                       </span>
                     </Link>
@@ -334,7 +334,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
 
             <form action={bulkUpdateIssues}>
               {issues.length ? (
-                <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 border-b border-slate-100 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-sm font-medium text-slate-600">
                     {isCompactQueue
                       ? `Showing the top ${visibleIssues.length} problems. ${hiddenIssueCount} lower-priority problems are hidden for now.`
@@ -367,7 +367,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                         </option>
                       ))}
                     </select>
-                    <button className="inline-flex h-9 items-center rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800">
+                    <button className="inline-flex h-9 items-center rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700">
                       Update selected
                       <InfoTooltip
                         label="Apply the chosen workflow status to all checked issues."
@@ -390,7 +390,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       action={
                         <Link
                           href="/domains"
-                          className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                          className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
                         >
                           Scan a project
                         </Link>
@@ -472,7 +472,7 @@ function IssueRow({
 
       <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+          <p className="text-sm font-semibold text-slate-500">
             Best next step
           </p>
           <span
@@ -500,7 +500,7 @@ function IssueRow({
             issueId: issue.id,
             primaryAction: solution.primaryAction,
           })}
-          className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
+          className="inline-flex h-9 items-center gap-2 rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700"
         >
           <AlertTriangle className="size-4" aria-hidden="true" />
           {solution.actionLabel}
@@ -530,7 +530,7 @@ function FilterSelect({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <span className="text-sm font-medium text-slate-600">
         <HelpLabel help={help}>{label}</HelpLabel>
       </span>
       <select

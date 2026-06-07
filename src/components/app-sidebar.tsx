@@ -149,7 +149,7 @@ export async function AppSidebar({
               <Search className="size-5" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-400">
+              <p className="text-sm font-semibold text-slate-400">
                 All In One
               </p>
               <h1 className="text-xl font-semibold tracking-normal text-slate-900">
@@ -261,29 +261,29 @@ export async function AppSidebar({
 
           {memberships.length > 1 ? (
             <form action={switchWorkspaceAction} className="mt-6">
-          <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-            <span className="inline-flex items-center gap-1.5">
-              Workspace
-              <InfoTooltip label="Switch between agency or business workspaces you belong to." />
-            </span>
-            <select
-              name="workspaceId"
-              defaultValue={activeWorkspaceId ?? undefined}
-              className="h-10 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
-            >
-              {memberships.map((membership) => (
-                <option
-                  key={membership.workspaceId}
-                  value={membership.workspaceId}
+              <label className="grid gap-2 text-sm font-medium text-slate-600">
+                <span className="inline-flex items-center gap-1.5">
+                  Workspace
+                  <InfoTooltip label="Switch between agency or business workspaces you belong to." />
+                </span>
+                <select
+                  name="workspaceId"
+                  defaultValue={activeWorkspaceId ?? undefined}
+                  className="h-10 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
                 >
-                  {membership.workspace.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button className="mt-2 h-9 w-full rounded-md border border-slate-200 bg-white text-sm font-medium text-slate-700 transition hover:bg-orange-50">
-            Switch
-          </button>
+                  {memberships.map((membership) => (
+                    <option
+                      key={membership.workspaceId}
+                      value={membership.workspaceId}
+                    >
+                      {membership.workspace.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button className="mt-2 h-9 w-full rounded-md border border-slate-200 bg-white text-sm font-medium text-slate-700 transition hover:bg-orange-50">
+                Switch
+              </button>
             </form>
           ) : null}
 

@@ -91,7 +91,7 @@ export default async function Home() {
               </Link>
               <Link
                 href="/domains/new"
-                className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
+                className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700"
               >
                 <Plus className="size-4" aria-hidden="true" />
                 Add website
@@ -216,7 +216,7 @@ export default async function Home() {
           </section>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
+            <div className="flex flex-col gap-4 border-b border-slate-100 pb-5 xl:flex-row xl:items-start xl:justify-between">
               <div>
                 <p className="text-sm font-semibold text-orange-600">
                   Deeper analytics
@@ -321,7 +321,7 @@ export default async function Home() {
 
           <div className="mt-6 grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
             <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-              <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">
                     <HelpLabel help="Portfolio table showing verification, crawl status, pages, and issue volume across monitored domains.">
@@ -484,7 +484,7 @@ export default async function Home() {
           </div>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
                   <HelpLabel help="The highest-impact SEO work across clients, ranked by severity and analyzer priority.">
@@ -550,7 +550,7 @@ export default async function Home() {
                     <div className="flex items-center lg:justify-end">
                       <Link
                         href="/issues"
-                        className="inline-flex h-9 items-center gap-2 rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
+                        className="inline-flex h-9 items-center gap-2 rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700"
                       >
                         <AlertTriangle className="size-4" aria-hidden="true" />
                         Review

@@ -139,11 +139,11 @@ The product should become a guided SEO assistant dashboard:
 
 ### Batch D: Visual Polish
 
-- [ ] Reduce uppercase labels on user-facing cards.
-- [ ] Use softer section dividers.
-- [ ] Use orange only for primary actions.
+- [x] Reduce uppercase labels on user-facing cards.
+- [x] Use softer section dividers.
+- [x] Use orange only for primary actions.
 - [ ] Use green for healthy/done.
-- [ ] Use amber/red only for actual urgency.
+- [x] Use amber/red only for actual urgency.
 - [x] Make dashboard sections shorter and more scannable.
 
 ### Batch E: Verification

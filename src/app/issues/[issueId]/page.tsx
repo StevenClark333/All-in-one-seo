@@ -111,7 +111,7 @@ export default async function IssueDetailPage({
             <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-5">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                  <p className="text-sm font-semibold text-emerald-700">
                     Recommended solution
                   </p>
                   <h2 className="mt-2 text-xl font-semibold text-emerald-950">
@@ -175,14 +175,14 @@ export default async function IssueDetailPage({
                         name="domainId"
                         value={issue.domain.id}
                       />
-                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                         Generate fix
                       </button>
                     </form>
                   ) : (
                     <form action={generateIssueRecommendations}>
                       <input type="hidden" name="issueId" value={issue.id} />
-                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                      <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                         Generate fix brief
                       </button>
                     </form>
@@ -201,7 +201,7 @@ export default async function IssueDetailPage({
               </div>
             </div>
 
-            <dl className="mt-6 grid gap-4 border-t border-slate-200 pt-6 md:grid-cols-2">
+            <dl className="mt-6 grid gap-4 border-t border-slate-100 pt-6 md:grid-cols-2">
               <Meta label="Workspace" value={workspace?.name ?? "Workspace"} />
               <Meta label="Client" value={issue.client?.name ?? "Unassigned"} />
               <Meta label="Domain" value={issue.domain.domain} />
@@ -270,19 +270,19 @@ export default async function IssueDetailPage({
 
               <form action={generateIssueRecommendations} className="mt-4">
                 <input type="hidden" name="issueId" value={issue.id} />
-                <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                   Generate fix briefs
                 </button>
               </form>
 
-              <div className="mt-4 grid gap-3 border-t border-slate-200 pt-4">
+              <div className="mt-4 grid gap-3 border-t border-slate-100 pt-4">
                 {issue.recommendations.length ? (
                   issue.recommendations.map((recommendation) => (
                     <article
                       key={recommendation.id}
                       className="rounded-md border border-slate-200 bg-slate-50 p-3"
                     >
-                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                      <p className="text-sm font-semibold text-slate-500">
                         {formatEnum(recommendation.type)}
                       </p>
                       <p className="mt-2 text-sm font-semibold">
@@ -322,14 +322,14 @@ export default async function IssueDetailPage({
                     ))}
                   </select>
                 </label>
-                <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                   Update status
                 </button>
               </form>
 
               <form
                 action={assignIssue}
-                className="mt-5 grid gap-3 border-t border-slate-200 pt-5"
+                className="mt-5 grid gap-3 border-t border-slate-100 pt-5"
               >
                 <input type="hidden" name="issueId" value={issue.id} />
                 <label className="grid gap-2">
@@ -393,12 +393,12 @@ export default async function IssueDetailPage({
                   placeholder="Add context, decision notes, or client-facing explanation..."
                   className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
-                <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                   Add note
                 </button>
               </form>
 
-              <div className="mt-5 grid gap-3 border-t border-slate-200 pt-5">
+              <div className="mt-5 grid gap-3 border-t border-slate-100 pt-5">
                 {issue.notes.length ? (
                   issue.notes.map((note) => (
                     <article
@@ -461,7 +461,7 @@ export default async function IssueDetailPage({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <dt className="text-sm font-medium text-slate-500">
         {label}
       </dt>
       <dd className="mt-1 text-sm font-medium text-slate-700">{value}</dd>
