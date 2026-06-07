@@ -1,12 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import {
+  CheckCircle2,
   FileText,
   Globe2,
+  HeartPulse,
   Play,
   Plus,
   Search,
   Settings,
+  ShieldCheck,
   Upload,
 } from "lucide-react";
 import { bulkImportDomainsAction } from "@/app/actions";
@@ -46,6 +49,28 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
   const { workspace, domains } = await getDomainManagementData();
   const visibleDomains = filterDomains(domains, query);
   const groupedDomains = groupDomainsByClient(visibleDomains);
+  const projectSnapshots = domains.map((domain) => ({
+    domain,
+    isVerified: isDomainVerified(domain),
+    metrics: getProjectMetrics(domain),
+  }));
+  const visibleProjectSnapshots = visibleDomains.map((domain) => ({
+    domain,
+    isVerified: isDomainVerified(domain),
+    metrics: getProjectMetrics(domain),
+  }));
+  const projectsNeedingCare = projectSnapshots.filter(
+    ({ metrics }) =>
+      metrics.errors > 0 || metrics.health === null || metrics.health < 75,
+  ).length;
+  const unverifiedProjects = projectSnapshots.filter(
+    ({ isVerified }) => !isVerified,
+  ).length;
+  const readyProjects = visibleProjectSnapshots.filter(
+    ({ isVerified, metrics }) =>
+      isVerified && metrics.health !== null && metrics.errors === 0,
+  ).length;
+  const topProject = [...projectSnapshots].sort(compareProjectRisk).at(0);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -59,11 +84,11 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                 {workspace?.name ?? "Workspace"} / SEO
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Sites and Projects
+                Projects
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Manage every client website from one project table: health,
-                crawl coverage, issue load, fixes, and reporting status.
+                Keep each website moving with a simple health check, a clear
+                next action, and detailed audit data only when you need it.
               </p>
             </div>
 
@@ -89,17 +114,47 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
             />
           ) : null}
 
-          <section className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+          <ProjectCarePlan
+            projectsNeedingCare={projectsNeedingCare}
+            readyProjects={readyProjects}
+            topProjectDomain={topProject?.domain.domain}
+            topProjectHealth={topProject?.metrics.health}
+            unverifiedProjects={unverifiedProjects}
+            visibleCount={visibleDomains.length}
+          />
+
+          {visibleProjectSnapshots.length ? (
+            <section className="mt-6 grid gap-4 md:grid-cols-3">
+              {visibleProjectSnapshots
+                .slice(0, 3)
+                .map(({ domain, isVerified, metrics }) => (
+                  <ProjectSummaryCard
+                    key={domain.id}
+                    domain={domain.domain}
+                    errors={metrics.errors}
+                    health={metrics.health}
+                    href={`/domains/${domain.id}/workspace`}
+                    isVerified={isVerified}
+                    lastUpdatedAt={metrics.lastUpdatedAt}
+                  />
+                ))}
+            </section>
+          ) : null}
+
+          <section
+            id="project-details"
+            className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
                   <HelpLabel help="All active SEO projects grouped by client, including crawl health, technical issue load, fixes, and report status.">
-                    Project audit table
+                    Project details
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Search by client, project, or domain, then open the workspace
-                  to work inside that website.
+                  Search by client, project, or domain when you need the full
+                  audit table.
                 </p>
               </div>
 
@@ -136,7 +191,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     <col className="w-[130px]" />
                     <col className="w-[180px]" />
                   </colgroup>
-                  <thead className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  <thead className="bg-slate-50 text-sm font-medium text-slate-500">
                     <tr>
                       <TableHead>Project</TableHead>
                       <TableHead>
@@ -183,7 +238,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                         <tr className="bg-slate-50/70">
                           <td
                             colSpan={13}
-                            className="px-5 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500"
+                            className="px-5 py-3 text-sm font-medium text-slate-500"
                           >
                             {group.clientName}
                             <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-[11px] text-slate-400">
@@ -388,41 +443,215 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
             )}
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-md bg-slate-100 text-slate-600">
-                <Upload className="size-4" aria-hidden="true" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Add many domains at once using one row per site with optional client, platform, and cadence.">
-                    Bulk import domains
-                  </HelpLabel>
-                </h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Add one domain per line as domain, client name, platform,
+          <section
+            id="bulk-import"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
+          >
+            <details>
+              <summary className="flex items-center gap-3 p-5">
+                <div className="flex size-10 items-center justify-center rounded-md bg-slate-100 text-slate-600">
+                  <Upload className="size-4" aria-hidden="true" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Add many domains at once using one row per site with optional client, platform, and cadence.">
+                      Add many projects at once
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Optional for agencies moving a list of websites into the
+                    portal.
+                  </p>
+                </div>
+              </summary>
+              <div className="border-t border-slate-200 p-5">
+                <p className="text-sm leading-6 text-slate-500">
+                  Add one project per line as domain, client name, platform,
                   crawl cadence.
                 </p>
+                <form
+                  action={bulkImportDomainsAction}
+                  className="mt-4 grid gap-3"
+                >
+                  <textarea
+                    name="domains"
+                    required
+                    rows={4}
+                    placeholder="example.com, Acme Co, WordPress, Weekly"
+                    className="rounded-md border border-slate-300 bg-white px-3 py-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                  />
+                  <div className="flex justify-end">
+                    <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                      Import projects
+                    </button>
+                  </div>
+                </form>
               </div>
-            </div>
-            <form action={bulkImportDomainsAction} className="mt-4 grid gap-3">
-              <textarea
-                name="domains"
-                required
-                rows={4}
-                placeholder="example.com, Acme Co, WordPress, Weekly"
-                className="rounded-md border border-slate-300 bg-white px-3 py-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-              />
-              <div className="flex justify-end">
-                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                  Import domains
-                </button>
-              </div>
-            </form>
+            </details>
           </section>
         </section>
       </div>
     </main>
+  );
+}
+
+function ProjectCarePlan({
+  projectsNeedingCare,
+  readyProjects,
+  topProjectDomain,
+  topProjectHealth,
+  unverifiedProjects,
+  visibleCount,
+}: {
+  projectsNeedingCare: number;
+  readyProjects: number;
+  topProjectDomain?: string;
+  topProjectHealth?: number | null;
+  unverifiedProjects: number;
+  visibleCount: number;
+}) {
+  const firstAction =
+    unverifiedProjects > 0
+      ? `${unverifiedProjects} projects need setup`
+      : projectsNeedingCare > 0
+        ? `${projectsNeedingCare} projects need care`
+        : "Projects look calm";
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Project care plan
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Start with the website that needs the next step.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Keep this page simple: set up unverified projects, open the project
+            with the lowest health, then use the full table only for deeper
+            review.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanTile
+            icon={<ShieldCheck className="size-4" aria-hidden="true" />}
+            label="Do first"
+            value={firstAction}
+            detail="Setup and health problems come before reporting."
+            href="#project-details"
+          />
+          <PlanTile
+            icon={<HeartPulse className="size-4" aria-hidden="true" />}
+            label="Watch closely"
+            value={topProjectDomain ?? "No projects yet"}
+            detail={
+              topProjectDomain
+                ? `Health ${topProjectHealth ?? "pending"}%. Open it first if you are unsure.`
+                : "Add one project to start monitoring."
+            }
+            href="#project-details"
+          />
+          <PlanTile
+            icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
+            label="Ready"
+            value={`${readyProjects} of ${visibleCount} projects`}
+            detail="Verified projects without critical errors are the calm group."
+            href="#project-details"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanTile({
+  detail,
+  href,
+  icon,
+  label,
+  value,
+}: {
+  detail: string;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <a
+      href={href}
+      className="block rounded-lg border border-orange-100 bg-white p-4 shadow-sm transition hover:border-orange-200 hover:bg-white"
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </a>
+  );
+}
+
+function ProjectSummaryCard({
+  domain,
+  errors,
+  health,
+  href,
+  isVerified,
+  lastUpdatedAt,
+}: {
+  domain: string;
+  errors: number;
+  health: number | null;
+  href: string;
+  isVerified: boolean;
+  lastUpdatedAt: Date | null;
+}) {
+  return (
+    <Link
+      href={href}
+      className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-orange-200 hover:bg-orange-50/40"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="truncate text-base font-semibold text-slate-950">
+            {domain}
+          </p>
+          <p className="mt-1 text-sm text-slate-500">
+            {lastUpdatedAt
+              ? `Updated ${formatDate(lastUpdatedAt)}`
+              : "Not scanned yet"}
+          </p>
+        </div>
+        <StatusPill tone={isVerified ? "success" : "warning"}>
+          {isVerified ? "Verified" : "Needs setup"}
+        </StatusPill>
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div>
+          <p className="font-medium text-slate-500">Health</p>
+          <p className="mt-1 text-xl font-semibold text-slate-950">
+            {health === null ? "Pending" : `${health}%`}
+          </p>
+        </div>
+        <div>
+          <p className="font-medium text-slate-500">Critical</p>
+          <p
+            className={
+              errors
+                ? "mt-1 text-xl font-semibold text-red-700"
+                : "mt-1 text-xl font-semibold text-emerald-700"
+            }
+          >
+            {errors}
+          </p>
+        </div>
+      </div>
+    </Link>
   );
 }
 
@@ -457,6 +686,35 @@ function groupDomainsByClient(domains: DomainProject[]) {
     clientName,
     domains: groupedDomains,
   }));
+}
+
+function compareProjectRisk(
+  first: { isVerified: boolean; metrics: ProjectMetrics },
+  second: { isVerified: boolean; metrics: ProjectMetrics },
+) {
+  const firstScore = getProjectRiskScore(first);
+  const secondScore = getProjectRiskScore(second);
+
+  return secondScore - firstScore;
+}
+
+function getProjectRiskScore({
+  isVerified,
+  metrics,
+}: {
+  isVerified: boolean;
+  metrics: ProjectMetrics;
+}) {
+  const healthPenalty =
+    metrics.health === null ? 35 : Math.max(0, 90 - metrics.health);
+
+  return (
+    (isVerified ? 0 : 60) +
+    metrics.errors * 30 +
+    metrics.warnings * 8 +
+    healthPenalty +
+    metrics.fixesPending * 6
+  );
 }
 
 function getProjectMetrics(domain: DomainProject): ProjectMetrics {

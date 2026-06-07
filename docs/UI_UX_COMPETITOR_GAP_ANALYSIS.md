@@ -98,6 +98,7 @@ Gap for us:
 | Billing | Plan, usage, and upgrade choices appear as admin data | Start with reassurance: current plan, usage risk, and the safest next billing action |
 | Pages | Crawl inventory starts with metrics, templates, filters, and a table | Start with a page-care plan: risky pages, repeated template fixes, and easy title checks |
 | Internal Links | Link graph starts as technical metrics, issues, opportunities, and a detailed table | Lead with suggested links, hard-to-find pages, and coverage before showing graph detail |
+| Projects | Wide audit table and bulk import appear as the main experience | Start with setup/health/next-project guidance, then keep the table as detail |
 
 ## Product Direction
 
@@ -287,3 +288,21 @@ Implementation:
 - [x] Rename "Graph issues" to "Link issues" and "Page link metrics" to "Detailed link counts".
 - [x] Replace uppercase technical metadata labels and table headers with softer labels.
 - [x] Add friendlier empty states for no link suggestions, no link issues, and no link data.
+
+### Batch N: Project List Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both organize work around projects/site audits before users drill into detailed tables.
+- The strongest pattern is to show project health and setup state first, then let users open the project that needs attention.
+- For a nontechnical user, bulk import and dense audit columns should be optional detail, not the top-level workflow.
+
+Implementation:
+
+- [x] Rename "Sites and Projects" to the simpler "Projects".
+- [x] Add a plain-language project care plan above the wide audit table.
+- [x] Surface setup gaps, lowest-health project, and ready projects as the first three choices.
+- [x] Add compact project summary cards above the detailed table.
+- [x] Rename "Project audit table" to "Project details".
+- [x] Replace uppercase project table labels and client group labels with softer labels.
+- [x] Collapse bulk import behind an optional "Add many projects at once" panel.
