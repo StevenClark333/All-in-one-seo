@@ -243,24 +243,28 @@ export default async function Home() {
                 icon={CheckCircle2}
                 label="Healthy sites"
                 points={sites.map((site) => ({ value: site.score }))}
+                tone="emerald"
                 value={sites.filter((site) => site.score >= 80).length}
               />
               <AnalyticsMetricCard
                 href="/issues?severity=CRITICAL"
                 icon={AlertTriangle}
                 label="Critical workload"
+                tone="red"
                 value={sites.reduce((total, site) => total + site.critical, 0)}
               />
               <AnalyticsMetricCard
                 href="/issues"
                 icon={CircleDot}
                 label="Warning load"
+                tone="amber"
                 value={sites.reduce((total, site) => total + site.warnings, 0)}
               />
               <AnalyticsMetricCard
                 href="/reports"
                 icon={FileText}
                 label="Reports queue"
+                tone="slate"
                 value={
                   agencyStats.find((stat) => stat.label === "Reports due")
                     ?.value ?? "0"
@@ -275,11 +279,13 @@ export default async function Home() {
                 </h4>
                 <div className="mt-4 grid gap-4">
                   <HorizontalBar
+                    color="emerald"
                     label="80+ healthy"
                     max={Math.max(1, sites.length)}
                     value={sites.filter((site) => site.score >= 80).length}
                   />
                   <HorizontalBar
+                    color="amber"
                     label="60-79 needs attention"
                     max={Math.max(1, sites.length)}
                     value={
@@ -288,6 +294,7 @@ export default async function Home() {
                     }
                   />
                   <HorizontalBar
+                    color="red"
                     label="Below 60 high risk"
                     max={Math.max(1, sites.length)}
                     value={sites.filter((site) => site.score < 60).length}

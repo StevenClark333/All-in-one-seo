@@ -107,7 +107,7 @@ export async function ProjectWorkspaceBar({
           className="flex flex-col gap-3 lg:flex-row lg:items-end"
         >
           <label className="grid flex-1 gap-2">
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <span className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
               Active project
               <InfoTooltip
                 label="Choose a domain to turn this global tool page into a project workspace view."
@@ -127,7 +127,7 @@ export async function ProjectWorkspaceBar({
               ))}
             </select>
           </label>
-          <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+          <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
             Open project view
           </button>
         </form>
@@ -162,7 +162,7 @@ export async function ProjectWorkspaceBar({
                 <Globe2 className="size-5" aria-hidden="true" />
               </div>
               <div className="min-w-0">
-                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-orange-600">
+                <p className="inline-flex items-center gap-2 text-sm font-semibold text-orange-600">
                   Active project
                   <InfoTooltip
                     label="Navigation, filters, and actions in this workspace use this domain."
@@ -184,7 +184,7 @@ export async function ProjectWorkspaceBar({
             className="grid gap-2 sm:grid-cols-[minmax(0,320px)_auto]"
           >
             <label className="grid gap-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              <span className="text-sm font-medium text-slate-600">
                 Switch project
               </span>
               <select

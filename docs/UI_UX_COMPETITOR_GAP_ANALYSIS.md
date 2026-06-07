@@ -142,7 +142,7 @@ The product should become a guided SEO assistant dashboard:
 - [x] Reduce uppercase labels on user-facing cards.
 - [x] Use softer section dividers.
 - [x] Use orange only for primary actions.
-- [ ] Use green for healthy/done.
+- [x] Use green for healthy/done.
 - [x] Use amber/red only for actual urgency.
 - [x] Make dashboard sections shorter and more scannable.
 

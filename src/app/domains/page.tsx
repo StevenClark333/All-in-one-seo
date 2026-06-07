@@ -69,7 +69,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
 
             <Link
               href="/domains/new"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700"
             >
               <Plus className="size-4" aria-hidden="true" />
               Add project
@@ -294,7 +294,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                 <div className="flex items-center gap-2">
                                   <Link
                                     href={`/domains/${domain.id}/workspace`}
-                                    className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
+                                    className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700"
                                   >
                                     Open
                                   </Link>
@@ -365,7 +365,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     ) : (
                       <Link
                         href="/domains/new"
-                        className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                        className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
                       >
                         <Plus className="size-4" aria-hidden="true" />
                         Add your first website
@@ -414,7 +414,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                 className="rounded-md border border-slate-300 bg-white px-3 py-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
               />
               <div className="flex justify-end">
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                   Import domains
                 </button>
               </div>
@@ -621,7 +621,14 @@ function PercentValue({ value }: { value: number | null }) {
     return <span className="text-slate-400">Pending</span>;
   }
 
-  return <span className="font-medium text-slate-800">{value}%</span>;
+  const tone =
+    value >= 90
+      ? "text-emerald-700"
+      : value >= 70
+        ? "text-amber-700"
+        : "text-red-700";
+
+  return <span className={`font-medium ${tone}`}>{value}%</span>;
 }
 
 function StatusPill({

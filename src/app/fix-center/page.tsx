@@ -58,7 +58,7 @@ export default async function FixCenterPage({
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
+                <p className="text-sm font-semibold text-slate-500">
                   Fix Center
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-normal">
@@ -78,7 +78,7 @@ export default async function FixCenterPage({
                     value={selectedDomainId}
                   />
                 ) : null}
-                <button className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                <button className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                   <Play className="size-4" aria-hidden="true" />
                   Generate fixes
                   <InfoTooltip
@@ -324,7 +324,7 @@ export default async function FixCenterPage({
                           name="fixId"
                           value={suggestion.id}
                         />
-                        <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                        <label className="grid gap-1 text-sm font-medium text-slate-600">
                           Suggested URL
                           <input
                             name="suggestedUrl"
@@ -332,7 +332,7 @@ export default async function FixCenterPage({
                             className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
                           />
                         </label>
-                        <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                        <label className="grid gap-1 text-sm font-medium text-slate-600">
                           Anchor text
                           <input
                             name="anchorText"
@@ -350,7 +350,7 @@ export default async function FixCenterPage({
                         <summary className="cursor-pointer text-sm font-semibold text-slate-700">
                           Show full manual instruction
                         </summary>
-                        <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                        <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
                           Manual fix instruction
                           <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client workflow." />
                         </p>
@@ -371,7 +371,7 @@ export default async function FixCenterPage({
                         </summary>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+                            <p className="text-sm font-semibold text-blue-700">
                               Platform fix brief
                             </p>
                             <h5 className="mt-1 text-sm font-semibold text-blue-950">
@@ -392,7 +392,7 @@ export default async function FixCenterPage({
                         </div>
                         <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                           <div className="rounded-md border border-blue-100 bg-white p-3">
-                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                            <p className="text-sm font-semibold text-slate-600">
                               Handoff steps
                             </p>
                             <ol className="mt-2 grid gap-2 text-sm leading-6 text-slate-700">
@@ -402,7 +402,7 @@ export default async function FixCenterPage({
                             </ol>
                           </div>
                           <div className="rounded-md border border-blue-100 bg-white p-3">
-                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                            <p className="text-sm font-semibold text-slate-600">
                               Snippet
                             </p>
                             <pre className="mt-2 max-h-36 overflow-auto rounded-md bg-slate-950 p-3 text-xs leading-5 text-slate-50">
@@ -419,7 +419,7 @@ export default async function FixCenterPage({
                         <summary className="cursor-pointer text-sm font-semibold text-slate-700">
                           Delivery audit and timestamps
                         </summary>
-                        <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                        <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
                           Fix delivery audit
                           <InfoTooltip label="Shows where this fix is after approval, delivery to WordPress or another workflow, website application, and crawl verification." />
                         </p>
@@ -489,7 +489,7 @@ export default async function FixCenterPage({
                             name="fixId"
                             value={suggestion.id}
                           />
-                          <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                          <label className="grid gap-1 text-sm font-medium text-slate-600">
                             Send to workflow
                             <select
                               name="integrationId"
@@ -505,7 +505,7 @@ export default async function FixCenterPage({
                               ))}
                             </select>
                           </label>
-                          <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+                          <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
                             <Download className="size-4" aria-hidden="true" />
                             Send payload
                             <InfoTooltip
@@ -609,13 +609,7 @@ function StatusButton({
     <form action={updateLinkFixAction}>
       <input type="hidden" name="fixId" value={fixId} />
       <input type="hidden" name="status" value={status} />
-      <button
-        className={`inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm font-semibold transition ${
-          subtle
-            ? "border border-slate-200 text-slate-600 hover:bg-slate-50"
-            : "bg-slate-950 text-white hover:bg-slate-800"
-        }`}
-      >
+      <button className={getStatusButtonClass(status, subtle)}>
         {icon}
         {label}
       </button>
@@ -623,10 +617,38 @@ function StatusButton({
   );
 }
 
+function getStatusButtonClass(status: string, subtle: boolean) {
+  if (subtle) {
+    return "inline-flex h-9 items-center gap-2 rounded-md border border-slate-200 px-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50";
+  }
+
+  if (status === "APPROVED" || status === "APPLIED") {
+    return "inline-flex h-9 items-center gap-2 rounded-md bg-emerald-600 px-3 text-sm font-semibold text-white transition hover:bg-emerald-700";
+  }
+
+  if (status === "EXPORTED") {
+    return "inline-flex h-9 items-center gap-2 rounded-md bg-orange-600 px-3 text-sm font-semibold text-white transition hover:bg-orange-700";
+  }
+
+  return "inline-flex h-9 items-center gap-2 rounded-md bg-slate-700 px-3 text-sm font-semibold text-white transition hover:bg-slate-800";
+}
+
 function Metric({ label, value }: { label: string; value: number }) {
+  const isHealthy =
+    label === "Applied" ||
+    label === "Verified fixed" ||
+    label === "Approved" ||
+    label === "Exported";
+  const isProblem = label === "Still failing";
+  const styles = isHealthy
+    ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+    : isProblem
+      ? "border-red-200 bg-red-50 text-red-900"
+      : "border-slate-200 bg-slate-50 text-slate-900";
+
   return (
-    <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+    <div className={`rounded-md border p-3 ${styles}`}>
+      <p className="text-sm font-medium opacity-75">
         {label}
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
@@ -645,7 +667,7 @@ function DetailBlock({
 }) {
   return (
     <div className="min-w-0 rounded-md border border-slate-200 p-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+      <p className="text-sm font-semibold text-slate-600">
         {label}
       </p>
       <p

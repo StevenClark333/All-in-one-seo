@@ -14,6 +14,7 @@ export function AnalyticsMetricCard({
   label,
   points = [],
   suffix = "",
+  tone = "orange",
   value,
 }: {
   delta?: number;
@@ -23,8 +24,10 @@ export function AnalyticsMetricCard({
   label: string;
   points?: SparkPoint[];
   suffix?: string;
+  tone?: "orange" | "emerald" | "amber" | "red" | "slate";
   value: string | number;
 }) {
+  const toneStyles = getToneStyles(tone);
   const body = (
     <>
       <div className="flex items-start justify-between gap-3">
@@ -38,7 +41,9 @@ export function AnalyticsMetricCard({
           </p>
         </div>
         {Icon ? (
-          <span className="flex size-9 items-center justify-center rounded-md bg-orange-50 text-orange-600">
+          <span
+            className={`flex size-9 items-center justify-center rounded-md ${toneStyles.icon}`}
+          >
             <Icon className="size-4" aria-hidden="true" />
           </span>
         ) : null}
@@ -67,7 +72,7 @@ export function AnalyticsMetricCard({
     return (
       <Link
         href={href}
-        className="block rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-orange-200 hover:bg-orange-50/30 hover:shadow-md"
+        className={`block rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${toneStyles.hover}`}
       >
         {body}
       </Link>
@@ -112,15 +117,23 @@ export function Sparkline({ points }: { points: SparkPoint[] }) {
 }
 
 export function HorizontalBar({
+  color = "orange",
   label,
   max,
   value,
 }: {
+  color?: "orange" | "emerald" | "amber" | "red";
   label: string;
   max: number;
   value: number;
 }) {
   const width = Math.max(2, Math.min(100, (value / Math.max(1, max)) * 100));
+  const barColor = {
+    amber: "bg-amber-500",
+    emerald: "bg-emerald-500",
+    orange: "bg-orange-500",
+    red: "bg-red-500",
+  }[color];
 
   return (
     <div>
@@ -131,8 +144,35 @@ export function HorizontalBar({
         </span>
       </div>
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-        <div className="h-full rounded-full bg-orange-500" style={{ width: `${width}%` }} />
+        <div className={`h-full rounded-full ${barColor}`} style={{ width: `${width}%` }} />
       </div>
     </div>
   );
+}
+
+function getToneStyles(tone: "orange" | "emerald" | "amber" | "red" | "slate") {
+  const styles = {
+    amber: {
+      hover: "hover:border-amber-200 hover:bg-amber-50/30",
+      icon: "bg-amber-50 text-amber-600",
+    },
+    emerald: {
+      hover: "hover:border-emerald-200 hover:bg-emerald-50/30",
+      icon: "bg-emerald-50 text-emerald-600",
+    },
+    orange: {
+      hover: "hover:border-orange-200 hover:bg-orange-50/30",
+      icon: "bg-orange-50 text-orange-600",
+    },
+    red: {
+      hover: "hover:border-red-200 hover:bg-red-50/30",
+      icon: "bg-red-50 text-red-600",
+    },
+    slate: {
+      hover: "hover:border-slate-300 hover:bg-slate-50",
+      icon: "bg-slate-100 text-slate-500",
+    },
+  };
+
+  return styles[tone];
 }
