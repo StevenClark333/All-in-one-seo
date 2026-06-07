@@ -2,6 +2,7 @@ import { AlertTriangle, CircleDot, Filter, ListChecks } from "lucide-react";
 import Link from "next/link";
 import { bulkUpdateIssues } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getIssueListData, getIssueTypeGroupKey } from "@/lib/issue-queries";
@@ -384,9 +385,20 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                     <IssueRow key={issue.id} issue={issue} />
                   ))
                 ) : (
-                  <div className="p-8 text-center text-sm text-slate-500">
-                    No SEO issues yet. Run a crawl to let the analyzer populate
-                    this queue.
+                  <div className="p-5">
+                    <EmptyState
+                      action={
+                        <Link
+                          href="/domains"
+                          className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                        >
+                          Scan a project
+                        </Link>
+                      }
+                      description="Run a scan on a verified project and we will turn the findings into a short, prioritized problem list."
+                      icon={ListChecks}
+                      title="No problems in this view"
+                    />
                   </div>
                 )}
               </div>

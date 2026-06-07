@@ -6,6 +6,7 @@ import {
   generateTemplateFixBrief,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getAiRecommendationCenterData } from "@/lib/ai";
 
@@ -244,8 +245,21 @@ export default async function RecommendationsPage({
                   </article>
                 ))
               ) : (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No recommendations generated yet.
+                <div className="p-5">
+                  <EmptyState
+                    action={
+                      <Link
+                        href="/issues"
+                        className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                      >
+                        <WandSparkles className="size-4" aria-hidden="true" />
+                        Find a problem to solve
+                      </Link>
+                    }
+                    description="Open a problem first, then generate a clear fix brief or recommendation from the issue details."
+                    icon={WandSparkles}
+                    title="No content ideas or fix briefs yet"
+                  />
                 </div>
               )}
             </div>

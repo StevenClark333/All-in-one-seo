@@ -14,6 +14,7 @@ import {
   verifyReportWhiteLabelDomainAction,
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import {
@@ -610,9 +611,21 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                   </article>
                 ))
               ) : (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No reports yet. Generate the first client report from the form
-                  above.
+                <div className="p-5">
+                  <EmptyState
+                    action={
+                      <a
+                        href="#generate-report"
+                        className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                      >
+                        <Plus className="size-4" aria-hidden="true" />
+                        Create first report
+                      </a>
+                    }
+                    description="Choose a client or website above, then create a simple report you can share with a client or teammate."
+                    icon={FileText}
+                    title="No reports have been created yet"
+                  />
                 </div>
               )}
             </div>

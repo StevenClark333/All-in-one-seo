@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { bulkImportDomainsAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainManagementData } from "@/lib/management-queries";
 
@@ -351,10 +352,38 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                 </table>
               </div>
             ) : (
-              <div className="px-5 py-10 text-center text-sm text-slate-500">
-                {domains.length
-                  ? "No projects match that search."
-                  : "No domains yet. Add a project to start ownership verification."}
+              <div className="p-5">
+                <EmptyState
+                  action={
+                    domains.length ? (
+                      <Link
+                        href="/domains"
+                        className="inline-flex h-10 items-center rounded-md border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50"
+                      >
+                        Clear search
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/domains/new"
+                        className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                      >
+                        <Plus className="size-4" aria-hidden="true" />
+                        Add your first website
+                      </Link>
+                    )
+                  }
+                  description={
+                    domains.length
+                      ? "Try a simpler website, client, or platform name. Your projects are still here."
+                      : "Add the website you want to improve. We will guide you through verification, scanning, and the first report."
+                  }
+                  icon={Globe2}
+                  title={
+                    domains.length
+                      ? "No projects match this search"
+                      : "Start with one website"
+                  }
+                />
               </div>
             )}
           </section>

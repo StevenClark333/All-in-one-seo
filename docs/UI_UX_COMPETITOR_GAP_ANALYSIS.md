@@ -107,7 +107,7 @@ The product should become a guided SEO assistant dashboard:
 - [x] Add "Today's SEO plan" panel to the dashboard.
 - [x] Translate dashboard actions into plain language.
 - [x] Move dense analytics below the guided plan.
-- [ ] Add friendly empty states for no sites, no issues, and no reports.
+- [x] Add friendly empty states for no sites, no issues, and no reports.
 
 ### Batch B: Navigation Simplification
 
