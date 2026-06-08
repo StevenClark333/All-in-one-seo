@@ -765,3 +765,25 @@ Implementation:
 - [x] Make the watch list full width so message history no longer competes with the main task.
 - [x] Remove the duplicate empty-state setup button so "Add a watch" is the single setup entry point.
 - [x] Replace delivery/routing/escalation wording with message health, backup notification, and watch language.
+
+### Batch AL: Reports Update Calmness
+
+Competitive evidence:
+
+- Semrush report workflows emphasize a quick client-ready report path, with templates and scheduling available after the first report is useful.
+- Ahrefs and Ubersuggest keep exports and recurring reports available, but the first useful action is a simple update someone can read.
+- A nontechnical user should not see formats, schedules, branding, and library tables all competing before understanding how to create the first update.
+
+Implementation:
+
+- [x] Rename the Reports page header to "Client updates".
+- [x] Add soft header copy that frames reports as readable website progress updates.
+- [x] Rename the report count badge from generated reports to ready updates.
+- [x] Rename "Create a client report" to "Create a client update".
+- [x] Move template and date choices into an optional "Choose format and dates" panel.
+- [x] Move the update library directly after the create form so saved client updates are visible before optional setup.
+- [x] Rename domain fields to website language.
+- [x] Rename report templates to saved formats and keep the list collapsed.
+- [x] Rename scheduled reports to scheduled updates and keep the list collapsed.
+- [x] Soften report library wording to "Update library" with sharing and download language.
+- [x] Replace advanced/delivery/export helper text with schedules, saved formats, and downloaded updates.
