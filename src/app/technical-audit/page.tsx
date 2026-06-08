@@ -42,6 +42,15 @@ export default async function TechnicalAuditPage({
   );
   const linkedPageCount = pages.filter((page) => !page.isOrphan).length;
   const topOpportunity = opportunities.at(0);
+  const visibleOpportunities = opportunities.slice(0, 8);
+  const hiddenOpportunityCount = Math.max(
+    opportunities.length - visibleOpportunities.length,
+    0,
+  );
+  const visibleIssues = issues.slice(0, 8);
+  const hiddenIssueCount = Math.max(issues.length - visibleIssues.length, 0);
+  const visiblePages = pages.slice(0, 10);
+  const hiddenPageCount = Math.max(pages.length - visiblePages.length, 0);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -107,14 +116,14 @@ export default async function TechnicalAuditPage({
                   Suggested links to add
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Simple source-to-target links for pages that need more help.
+                  Start here. These are the clearest links to add first.
                 </p>
               </div>
             </div>
 
             <div className="grid divide-y divide-slate-100">
               {opportunities.length ? (
-                opportunities.slice(0, 12).map((opportunity) => (
+                visibleOpportunities.map((opportunity) => (
                   <article
                     key={`${opportunity.sourcePageId}:${opportunity.targetPageId}`}
                     className="grid gap-4 p-5 xl:grid-cols-[minmax(0,1fr)_160px_120px]"
@@ -152,6 +161,11 @@ export default async function TechnicalAuditPage({
                 />
               )}
             </div>
+            {hiddenOpportunityCount > 0 ? (
+              <PreviewLimitNote
+                body={`${hiddenOpportunityCount} more link suggestions are available after these first easy wins.`}
+              />
+            ) : null}
           </section>
 
           <section
@@ -165,15 +179,14 @@ export default async function TechnicalAuditPage({
               <div>
                 <h3 className="text-lg font-semibold">Link issues</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Pages that are too deep, missing from the link path, or not
-                  matching the sitemap.
+                  A short list of pages that may need link support.
                 </p>
               </div>
             </div>
 
             <div className="grid divide-y divide-slate-100">
               {issues.length ? (
-                issues.map((issue) => (
+                visibleIssues.map((issue) => (
                   <article
                     key={issue.id}
                     className="grid gap-4 p-5 xl:grid-cols-[minmax(0,1fr)_160px_120px]"
@@ -208,26 +221,33 @@ export default async function TechnicalAuditPage({
                 />
               )}
             </div>
+            {hiddenIssueCount > 0 ? (
+              <PreviewLimitNote
+                body={`${hiddenIssueCount} more link issues are kept out of this first view so the page stays easier to scan.`}
+                href={`/fix-center${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
+                label="Open fix center"
+              />
+            ) : null}
           </section>
 
-          <section
+          <details
             id="link-details"
             className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
           >
-            <div className="flex items-center gap-3 border-b border-slate-200 p-5">
+            <summary className="flex cursor-pointer list-none items-center gap-3 border-b border-slate-200 p-5 marker:hidden">
               <div className="flex size-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
                 <Network className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">Detailed link counts</h3>
+                <h3 className="text-lg font-semibold">More link detail</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Page-by-page link counts for deeper review.
+                  Optional page-by-page counts for deeper review.
                   {orphanCount
                     ? ` ${orphanCount} possible orphan pages found.`
                     : ""}
                 </p>
               </div>
-            </div>
+            </summary>
 
             <div className="overflow-x-auto">
               <table className="w-full min-w-[860px] text-left text-sm">
@@ -243,7 +263,7 @@ export default async function TechnicalAuditPage({
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {pages.length ? (
-                    pages.map((page) => (
+                    visiblePages.map((page) => (
                       <tr key={page.id}>
                         <td className="px-5 py-4">
                           <p className="max-w-md truncate font-medium">
@@ -291,7 +311,14 @@ export default async function TechnicalAuditPage({
                 </tbody>
               </table>
             </div>
-          </section>
+            {hiddenPageCount > 0 ? (
+              <PreviewLimitNote
+                body={`${hiddenPageCount} more pages are available in the full Pages view when you need the complete inventory.`}
+                href={`/pages${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
+                label="Open pages"
+              />
+            ) : null}
+          </details>
         </section>
       </div>
     </main>
@@ -435,6 +462,30 @@ function EmptyState({ body, title }: { body: string; title: string }) {
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
         {body}
       </p>
+    </div>
+  );
+}
+
+function PreviewLimitNote({
+  body,
+  href,
+  label = "Keep going",
+}: {
+  body: string;
+  href?: string;
+  label?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+      <p>{body}</p>
+      {href ? (
+        <Link
+          href={href}
+          className="inline-flex w-fit items-center justify-center rounded-md border border-orange-200 bg-orange-50 px-3 py-2 font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100"
+        >
+          {label}
+        </Link>
+      ) : null}
     </div>
   );
 }

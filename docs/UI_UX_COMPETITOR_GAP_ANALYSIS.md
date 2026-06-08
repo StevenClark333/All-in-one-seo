@@ -114,6 +114,7 @@ Gap for us:
 | Workspace Depth | Lower workspace sections still create a long scroll and repeated help text in headings | Keep the summary visible, collapse deeper work queues, and make help text quieter |
 | Content Ideas Depth | Content Ideas still opens long page, issue, template, and saved-output lists | Keep the writing plan first, then show short previews with full lists one click away |
 | Tool Labels | Project tool tabs still use mixed labels like Crawled Pages, Google Results, and Rank Tracker | Use short, friendly labels consistently: Pages, Search, Rank, Links, and Ideas |
+| Internal Links Depth | Internal Links still shows too many issues and page-count rows at once | Keep suggested links first, limit issue previews, and collapse detailed link counts |
 
 ## Product Direction
 
@@ -572,3 +573,20 @@ Implementation:
   - Internal Links -> Links
   - Content Ideas -> Ideas
 - [x] Align sidebar display labels for Search, Rank, and Links.
+
+### Batch AB: Internal Links Depth Calmness
+
+Competitive evidence:
+
+- Semrush-style internal linking guidance keeps the next helpful action visible before deeper crawl inventory.
+- Ahrefs and Screaming Frog provide deep link counts, but those details should be optional for nontechnical users.
+- A softer workflow should make suggested links feel like the main path and keep long issue/page lists out of the first view.
+
+Implementation:
+
+- [x] Limit suggested link previews to the first 8 clear actions.
+- [x] Limit link issue previews to the first 8 items.
+- [x] Add plain-language preview notes when more opportunities, issues, or pages exist.
+- [x] Rename "Detailed link counts" to "More link detail".
+- [x] Collapse page-by-page link counts by default.
+- [x] Limit the expanded link-count table to the first 10 pages.
