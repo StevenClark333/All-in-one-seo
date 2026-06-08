@@ -11,6 +11,9 @@ type PagesPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
+type PageInventoryData = Awaited<ReturnType<typeof getPageInventoryData>>;
+type TemplateGroup = PageInventoryData["templateGroups"][number];
+
 export default async function PagesPage({ searchParams }: PagesPageProps) {
   const params = searchParams ? await searchParams : {};
   const selectedDomainId = getSingle(params.domainId);
@@ -31,6 +34,8 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
   const pagesMissingTitles = pages.length - pagesWithTitles;
   const pagesWithIssues = pages.filter((page) => page.issues.length > 0).length;
   const bestTemplateGroup = templateGroups.at(0);
+  const visibleTemplateGroups = templateGroups.slice(0, 8);
+  const hiddenTemplateGroups = templateGroups.slice(8);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -48,7 +53,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                 Review the pages Google and AI search will judge first, without
-                digging through raw crawl data.
+                digging through a long technical list.
               </p>
             </div>
 
@@ -71,16 +76,16 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
           />
 
           <section className="mt-6 grid gap-4 md:grid-cols-4">
-            <Metric label="Crawled pages" value={pages.length} />
-            <Metric label="Templates" value={templateGroups.length} />
-            <Metric label="Critical pages" value={criticalPages} />
-            <Metric label="Pages with title" value={pagesWithTitles} />
+            <Metric label="Pages checked" value={pages.length} />
+            <Metric label="Page patterns" value={templateGroups.length} />
+            <Metric label="Urgent pages" value={criticalPages} />
+            <Metric label="Titles ready" value={pagesWithTitles} />
           </section>
 
           <ProjectWorkspaceBar
             active="pages"
             domainId={selectedDomainId}
-            note="Page inventory and template groups are filtered to this domain."
+            note="Pages and repeated page fixes are filtered to this website."
             returnPath="/pages"
           />
 
@@ -89,7 +94,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
             className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
           >
             <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">Template groups</h3>
+              <h3 className="text-lg font-semibold">Repeated page fixes</h3>
               <p className="mt-1 text-sm text-slate-500">
                 Groups of similar pages, so one fix can improve many pages at
                 once.
@@ -97,31 +102,13 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
             </div>
 
             <div className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-4">
-              {templateGroups.length ? (
-                templateGroups.map((group) => (
-                  <Link
+              {visibleTemplateGroups.length ? (
+                visibleTemplateGroups.map((group) => (
+                  <TemplateGroupCard
                     key={group.key}
-                    href={`/issues?templateKey=${encodeURIComponent(group.key)}${
-                      selectedDomainId ? `&domainId=${selectedDomainId}` : ""
-                    }`}
-                    className="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-orange-200 hover:bg-white"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-semibold">{group.label}</p>
-                        <p className="mt-1 text-sm text-slate-500">
-                          {group.pageCount} pages
-                        </p>
-                      </div>
-                      <span className="rounded-full border border-orange-100 bg-white px-2 py-1 text-xs font-semibold text-orange-700">
-                        Priority {group.priorityScore}
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm text-slate-600">
-                      {group.issueCount} open issues, {group.criticalCount}{" "}
-                      critical
-                    </p>
-                  </Link>
+                    group={group}
+                    selectedDomainId={selectedDomainId}
+                  />
                 ))
               ) : (
                 <EmptyState
@@ -130,6 +117,27 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                 />
               )}
             </div>
+
+            {hiddenTemplateGroups.length ? (
+              <details className="border-t border-slate-100 px-5 py-4">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-700 marker:text-slate-400">
+                  More page patterns ({hiddenTemplateGroups.length})
+                </summary>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  These are kept out of the first view so the most repeated
+                  fixes stay easy to scan.
+                </p>
+                <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                  {hiddenTemplateGroups.map((group) => (
+                    <TemplateGroupCard
+                      key={group.key}
+                      group={group}
+                      selectedDomainId={selectedDomainId}
+                    />
+                  ))}
+                </div>
+              </details>
+            ) : null}
           </section>
 
           <section
@@ -138,11 +146,11 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
           >
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-end xl:justify-between">
               <div>
-                <h3 className="text-lg font-semibold">Page inventory</h3>
+                <h3 className="text-lg font-semibold">Page list</h3>
                 <p className="mt-1 text-sm text-slate-500">
                   {selectedDomain
                     ? `Focused on ${selectedDomain.domain}.`
-                    : "Crawl-backed page list across all agency clients and domains."}
+                    : "Pages found from your website checks."}
                 </p>
               </div>
 
@@ -185,11 +193,11 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                 <>
                   <div className="hidden grid-cols-[minmax(0,1fr)_150px_90px_90px_120px_120px] gap-4 bg-slate-50 px-5 py-3 text-sm font-medium text-slate-500 xl:grid">
                     <span>Page</span>
-                    <span>Template</span>
-                    <span>Status</span>
-                    <span>Issues</span>
+                    <span>Pattern</span>
+                    <span>Response</span>
+                    <span>Problems</span>
                     <span>Links</span>
-                    <span>Last crawl</span>
+                    <span>Last check</span>
                   </div>
 
                   {pages.map((page) => {
@@ -227,17 +235,17 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                           </p>
                         </div>
 
-                        <MetaBlock label="Template">
+                        <MetaBlock label="Pattern">
                           {getTemplateLabel(inferPageTemplate(page))}
                         </MetaBlock>
 
-                        <MetaBlock label="Status">
+                        <MetaBlock label="Response">
                           <span className="whitespace-nowrap">
                             {snapshot?.statusCode ?? "Pending"}
                           </span>
                         </MetaBlock>
 
-                        <MetaBlock label="Issues">
+                        <MetaBlock label="Problems">
                           <span className="whitespace-nowrap">
                             <span className="font-medium text-red-600">
                               {critical}
@@ -257,7 +265,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                           </span>
                         </MetaBlock>
 
-                        <MetaBlock label="Last crawl">
+                        <MetaBlock label="Last check">
                           <span className="whitespace-nowrap">
                             {page.lastCrawledAt
                               ? page.lastCrawledAt.toLocaleDateString()
@@ -270,8 +278,8 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                 </>
               ) : (
                 <EmptyState
-                  title="No pages crawled yet"
-                  body="Verify a project and run the first crawl. Page titles, issues, links, and page groups will appear here."
+                  title="No pages checked yet"
+                  body="Verify a project and run the first website check. Page titles, problems, links, and page groups will appear here."
                 />
               )}
             </div>
@@ -402,10 +410,38 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function FieldLabel({ children }: { children: React.ReactNode }) {
+function TemplateGroupCard({
+  group,
+  selectedDomainId,
+}: {
+  group: TemplateGroup;
+  selectedDomainId?: string;
+}) {
   return (
-    <span className="text-sm font-medium text-slate-500">{children}</span>
+    <Link
+      href={`/issues?templateKey=${encodeURIComponent(group.key)}${
+        selectedDomainId ? `&domainId=${selectedDomainId}` : ""
+      }`}
+      className="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-orange-200 hover:bg-white"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-semibold">{group.label}</p>
+          <p className="mt-1 text-sm text-slate-500">{group.pageCount} pages</p>
+        </div>
+        <span className="rounded-full border border-orange-100 bg-white px-2 py-1 text-xs font-semibold text-orange-700">
+          Priority {group.priorityScore}
+        </span>
+      </div>
+      <p className="mt-3 text-sm text-slate-600">
+        {group.issueCount} open problems, {group.criticalCount} urgent
+      </p>
+    </Link>
   );
+}
+
+function FieldLabel({ children }: { children: React.ReactNode }) {
+  return <span className="text-sm font-medium text-slate-500">{children}</span>;
 }
 
 function MetaBlock({

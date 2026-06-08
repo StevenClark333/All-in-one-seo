@@ -826,3 +826,19 @@ Implementation:
 - [x] Rename AI recommendations to page suggestions with softer helper copy.
 - [x] Move page changes and internal link detail into a closed "More page detail" panel.
 - [x] Browser-check Page Detail desktop and mobile after deployment.
+
+### Batch AO: Page List Concision
+
+Competitive evidence:
+
+- Semrush's Crawled Pages report keeps page-by-page data, filtering, and individual URL drilldowns available, but it also encourages sorting and fixing the most important pages first.
+- Ahrefs Page Explorer supports preset and advanced filters for deep technical analysis, so the depth should stay available without dominating the first view.
+- A softer page inventory should show the most repeated page fixes first, then move the longer pattern list behind an optional panel.
+
+Implementation:
+
+- [x] Rename page inventory labels toward pages checked, page patterns, urgent pages, titles ready, page list, response, problems, and last check.
+- [x] Limit visible repeated page fixes to the first eight groups.
+- [x] Move the remaining page pattern groups into a closed "More page patterns" panel.
+- [x] Replace raw crawl/template wording with website-check and repeated-fix language.
+- [ ] Browser-check Page List desktop and mobile after deployment.
