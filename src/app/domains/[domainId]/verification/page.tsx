@@ -19,26 +19,29 @@ type VerificationPageProps = {
 
 const verificationMethods = [
   {
-    description: "Best for durable ownership verification across any platform.",
+    description:
+      "Best choice for most websites. Add one DNS value and it keeps working across platforms.",
     help: "Add the generated TXT value to DNS. This is the most durable verification method.",
     method: "DNS_TXT",
     name: "DNS TXT",
   },
   {
     description:
-      "Optional fallback: create this file on your website only if you cannot use DNS TXT.",
+      "Use this when you can upload a small file to the website but cannot edit DNS.",
     help: "Create a text file at the specified path on your website and paste in the generated file contents.",
     method: "HTML_FILE",
     name: "HTML file",
   },
   {
-    description: "Add a verification meta tag to the homepage head.",
+    description:
+      "Use this when your platform lets you add a small tag to the homepage head.",
     help: "Place the generated meta tag in the homepage head for ownership verification.",
     method: "META_TAG",
     name: "Meta tag",
   },
   {
-    description: "Use a mapped Google Search Console property.",
+    description:
+      "Use this when this website is already connected in Google Search Console.",
     help: "Verify through a connected Google Search Console property mapped to this domain.",
     method: "GSC_OAUTH",
     name: "Search Console",
@@ -106,13 +109,13 @@ export default async function DomainVerificationPage({
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Domains
+          Projects
         </Link>
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-slate-950 text-white">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
                 <ShieldCheck className="size-5" aria-hidden="true" />
               </div>
               <div>
@@ -120,8 +123,12 @@ export default async function DomainVerificationPage({
                   {domain.client?.name ?? "Unassigned"}
                 </p>
                 <h1 className="text-2xl font-semibold tracking-normal">
-                  Verify {domain.domain}
+                  Confirm ownership
                 </h1>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  Prove that you control {domain.domain} so crawls and fixes can
+                  run safely.
+                </p>
               </div>
             </div>
 
@@ -140,6 +147,11 @@ export default async function DomainVerificationPage({
             </span>
           </div>
 
+          <VerificationComfortPlan
+            hasGeneratedValue={Boolean(selectedVerification)}
+            isDomainVerified={isDomainVerified}
+          />
+
           {isDomainVerified ? (
             <div className="mt-6 flex items-start gap-3 rounded-md border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
               <CheckCircle2
@@ -147,7 +159,7 @@ export default async function DomainVerificationPage({
                 aria-hidden="true"
               />
               <div>
-                <h2 className="font-semibold">Domain ownership verified</h2>
+                <h2 className="font-semibold">Ownership is confirmed</h2>
                 <p className="mt-1 text-sm leading-6">
                   Full production crawls can run for this domain
                   {verifiedVerification
@@ -205,7 +217,7 @@ export default async function DomainVerificationPage({
                 <div>
                   <h2 className="font-semibold">
                     <HelpLabel help="Choose one ownership method. Once any method passes, the domain is verified.">
-                      Choose verification method
+                      Choose one verification method
                     </HelpLabel>
                   </h2>
                   <p className="mt-1 text-sm leading-6 text-slate-500">
@@ -239,7 +251,7 @@ export default async function DomainVerificationPage({
                   ))}
                 </select>
                 <button className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                  Use method
+                  Show instructions
                 </button>
               </form>
 
@@ -291,8 +303,8 @@ export default async function DomainVerificationPage({
                         name="method"
                         value={selectedMethod.method}
                       />
-                      <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                        Check {selectedMethod.name}
+                      <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                        Check ownership
                         <InfoTooltip
                           label="Run this ownership check now and update the domain verification status."
                           passive
@@ -313,8 +325,8 @@ export default async function DomainVerificationPage({
                       name="method"
                       value={selectedMethod.method}
                     />
-                    <button className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                      Generate {selectedMethod.name} token
+                    <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                      Create setup value
                       <InfoTooltip
                         label="Create a fresh ownership token and show setup instructions for this method."
                         passive
@@ -327,43 +339,117 @@ export default async function DomainVerificationPage({
             </section>
           ) : null}
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold">
-              <HelpLabel help="Recent ownership check attempts and the result returned by each method.">
-                Verification history
-              </HelpLabel>
-            </h2>
-            <div className="mt-4 grid gap-3">
-              {domain.verificationChecks.length ? (
-                domain.verificationChecks.map((check) => (
-                  <div
-                    key={check.id}
-                    className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="font-semibold">
-                        {formatEnum(check.method)}
-                      </span>
-                      <span className="text-xs font-medium text-slate-500">
-                        {check.createdAt.toLocaleString()}
-                      </span>
+          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <details>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 font-semibold">
+                <HelpLabel help="Recent ownership check attempts and the result returned by each method.">
+                  Verification history
+                </HelpLabel>
+                <span className="text-sm font-medium text-slate-500">
+                  {domain.verificationChecks.length} checks
+                </span>
+              </summary>
+              <div className="grid gap-3 border-t border-slate-200 p-5">
+                {domain.verificationChecks.length ? (
+                  domain.verificationChecks.map((check) => (
+                    <div
+                      key={check.id}
+                      className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="font-semibold">
+                          {formatEnum(check.method)}
+                        </span>
+                        <span className="text-xs font-medium text-slate-500">
+                          {check.createdAt.toLocaleString()}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-slate-600">
+                        {formatEnum(check.status)} -{" "}
+                        {check.message ?? "No message recorded"}
+                      </p>
                     </div>
-                    <p className="mt-1 text-slate-600">
-                      {formatEnum(check.status)} -{" "}
-                      {check.message ?? "No message recorded"}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-slate-500">
-                  No verification checks have run yet.
-                </p>
-              )}
-            </div>
+                  ))
+                ) : (
+                  <EmptyNote
+                    title="No checks yet"
+                    message="Create the setup value, add it to the website or DNS, then run the first check."
+                  />
+                )}
+              </div>
+            </details>
           </section>
         </section>
       </div>
     </main>
+  );
+}
+
+function VerificationComfortPlan({
+  hasGeneratedValue,
+  isDomainVerified,
+}: {
+  hasGeneratedValue: boolean;
+  isDomainVerified: boolean;
+}) {
+  const steps = [
+    {
+      done: true,
+      helper: "Pick the ownership option that matches your access.",
+      title: "Choose the easiest method",
+    },
+    {
+      done: hasGeneratedValue || isDomainVerified,
+      helper: "Copy the value into DNS, your site file, or your page head.",
+      title: "Add one setup value",
+    },
+    {
+      done: isDomainVerified,
+      helper: "Run the check once the value is live.",
+      title: "Confirm and continue",
+    },
+  ];
+
+  return (
+    <div className="mt-6 grid gap-3 md:grid-cols-3">
+      {steps.map((step, index) => (
+        <PlanTile key={step.title} stepNumber={index + 1} {...step} />
+      ))}
+    </div>
+  );
+}
+
+function PlanTile({
+  done,
+  helper,
+  stepNumber,
+  title,
+}: {
+  done: boolean;
+  helper: string;
+  stepNumber: number;
+  title: string;
+}) {
+  return (
+    <div className="rounded-md border border-orange-100 bg-orange-50/70 p-4">
+      <div className="flex items-center gap-2">
+        <span
+          className={`flex size-7 items-center justify-center rounded-full border text-xs font-semibold ${
+            done
+              ? "border-emerald-200 bg-white text-emerald-700"
+              : "border-orange-200 bg-white text-orange-700"
+          }`}
+        >
+          {done ? (
+            <CheckCircle2 className="size-4" aria-hidden="true" />
+          ) : (
+            stepNumber
+          )}
+        </span>
+        <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
+      </div>
+      <p className="mt-2 text-sm leading-6 text-slate-600">{helper}</p>
+    </div>
   );
 }
 
@@ -420,13 +506,22 @@ function VerificationInstructions({
 function DnsField({ label, value }: { label: string; value: string }) {
   return (
     <>
-      <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <div className="text-sm font-medium text-slate-500">
         {label}
       </div>
       <code className="overflow-x-auto rounded-md border border-slate-200 bg-white px-3 py-2 font-mono text-sm text-slate-800">
         {value}
       </code>
     </>
+  );
+}
+
+function EmptyNote({ message, title }: { message: string; title: string }) {
+  return (
+    <div className="rounded-md border border-dashed border-slate-300 bg-slate-50 p-4 text-sm">
+      <p className="font-semibold text-slate-700">{title}</p>
+      <p className="mt-1 leading-6 text-slate-500">{message}</p>
+    </div>
   );
 }
 

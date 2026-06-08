@@ -105,6 +105,7 @@ Gap for us:
 | Fixes | Fix Center starts with many statuses, filters, audit details, and delivery mechanics | Start with one calm path: review a fix, send it, then check it |
 | Project Setup | Add-domain and project detail pages start with domain/crawl/settings language | Start with website setup, verification, first crawl, and the clearest next problem |
 | Account Start | Signup, login, reset, and workspace creation feel like bare account forms | Start with reassurance, explain the setup path, and use softer action language |
+| Verification | Ownership, email, and password confirmation pages still feel like technical blockers | Explain why the check matters, show one safe path, and make the next action obvious |
 
 ## Product Direction
 
@@ -433,3 +434,24 @@ Implementation:
 - [x] Rename business and agency onboarding primary actions to "Create workspace".
 - [x] Add a workspace setup plan to the generic create-workspace screen.
 - [x] Rename "Workspace type" to "Best fit".
+
+### Batch U: Verification Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both rely on project setup and verified data sources before deeper analytics become useful, but the best user experience keeps setup blockers short and reassuring.
+- A nontechnical user should understand why ownership, email, and password checks matter before seeing records, tokens, or system actions.
+- Technical history should stay available for support, but it should not dominate the first view.
+
+Implementation:
+
+- [x] Rename the domain verification header to "Confirm ownership".
+- [x] Add a plain-language verification comfort plan above ownership methods.
+- [x] Explain the ownership check in terms of safe crawls and fixes.
+- [x] Rename "Use method" to "Show instructions".
+- [x] Rename verification generation and check actions to "Create setup value" and "Check ownership".
+- [x] Use softer orange primary actions on verification blockers.
+- [x] Collapse verification history into an optional panel.
+- [x] Add a friendlier empty state for no verification checks.
+- [x] Soften email confirmation copy and action language.
+- [x] Soften password reset confirmation copy and action language.
