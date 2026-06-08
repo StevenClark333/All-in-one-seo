@@ -1167,4 +1167,4 @@ Implementation:
 - [x] Rename shared query filters to search-term filters.
 - [x] Rename active project banner language to active website and website workspace.
 - [x] Rewrite keyword research advanced filter and deeper-detail copy away from project/raw-query language.
-- [ ] Browser-check Keyword Research desktop and mobile after deployment.
+- [x] Browser-check Keyword Research desktop and mobile after deployment.
