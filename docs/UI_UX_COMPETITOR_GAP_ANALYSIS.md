@@ -1230,3 +1230,19 @@ Implementation:
 - [x] Rename launch-check labels from project/site/provider/record wording to setup code, launch check, tool, and saved details.
 - [x] Browser-check Connections desktop and mobile locally.
 - [ ] Browser-check Connections desktop and mobile after deployment.
+
+### Batch BL: Client Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep agency/client depth available, but client-facing account screens should start with websites, attention, and updates rather than project and issue jargon.
+- Agency workflows are easier for nontechnical users when urgent work is framed as what needs attention today instead of severity and open-issue counts.
+- A softer client area should say websites, fixes, attention, and behind-the-scenes detail before domains, projects, critical issues, technical detail, or raw severity labels.
+
+Implementation:
+
+- [x] Rename Clients list helper copy from projects and priority issues to websites and attention items.
+- [x] Rename Clients list counts from domains and open issues to websites and needs-attention wording.
+- [x] Rename Client detail priority issues and severity labels to needs-attention, urgent, planned, and fix wording.
+- [x] Browser-check Clients list and Client Detail desktop and mobile locally.
+- [ ] Browser-check Clients list and Client Detail desktop and mobile after deployment.

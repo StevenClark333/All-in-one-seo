@@ -76,7 +76,7 @@ export default async function ClientDetailPage({
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
               Keep this client easy to manage: confirm their website setup,
-              review urgent issues, then send a report when there is progress to
+              review urgent fixes, then send a report when there is progress to
               share.
             </p>
             <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-600">
@@ -109,7 +109,7 @@ export default async function ClientDetailPage({
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
             <div
-              id="client-projects"
+              id="client-websites"
               className="rounded-lg border border-slate-200 bg-white shadow-sm"
             >
               <div className="border-b border-slate-200 p-5">
@@ -169,7 +169,7 @@ export default async function ClientDetailPage({
                 ) : (
                   <EmptyState
                     title="No websites connected"
-                    body="Connect this client's first website so the dashboard can begin checking pages and issues."
+                    body="Connect this client's first website so the dashboard can begin checking pages and fixes."
                   />
                 )}
               </div>
@@ -268,10 +268,10 @@ export default async function ClientDetailPage({
               </section>
 
               <section
-                id="client-issues"
+                id="client-attention"
                 className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
               >
-                <h3 className="font-semibold">Priority issues</h3>
+                <h3 className="font-semibold">Needs attention</h3>
                 <p className="mt-1 text-sm text-slate-500">
                   Start here when the client needs help today.
                 </p>
@@ -285,14 +285,16 @@ export default async function ClientDetailPage({
                       >
                         <p className="text-sm font-semibold">{issue.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(issue.severity)} - {issue.domain.domain}
+                          {`${formatImportance(issue.severity)} on ${
+                            issue.domain.domain
+                          }`}
                         </p>
                       </Link>
                     ))
                   ) : (
                     <EmptyNote
-                      title="No priority issues"
-                      body="This client does not have urgent open issues right now."
+                      title="Nothing urgent today"
+                      body="This client does not have urgent open fixes right now."
                     />
                   )}
                 </div>
@@ -305,7 +307,7 @@ export default async function ClientDetailPage({
                 <h3 className="font-semibold">Recent reports</h3>
                 <p className="mt-1 text-sm text-slate-500">
                   Use client updates to show progress without sending extra
-                  technical detail.
+                  behind-the-scenes detail.
                 </p>
                 <div className="mt-4 grid gap-3">
                   {client.reports.length ? (
@@ -357,7 +359,7 @@ function ClientDetailPlan({
             Keep this account moving without extra digging.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Check website setup first, then handle urgent issues, then use
+            Check website setup first, then handle urgent fixes, then use
             reports to show progress in plain language.
           </p>
         </div>
@@ -374,7 +376,7 @@ function ClientDetailPlan({
             label="Websites"
             value={domainCount ? `${domainCount} connected` : "Connect one"}
             detail="A client needs at least one website before checks can help."
-            href="#client-projects"
+            href="#client-websites"
           />
           <PlanTile
             icon={
@@ -384,12 +386,12 @@ function ClientDetailPlan({
                 <CheckCircle2 className="size-4" aria-hidden="true" />
               )
             }
-            label="Issues"
+            label="Attention"
             value={
-              criticalIssues ? `${criticalIssues} urgent` : "No urgent issues"
+              criticalIssues ? `${criticalIssues} urgent` : "Nothing urgent"
             }
-            detail="Open the highest-impact issue before reviewing details."
-            href="#client-issues"
+            detail="Open the highest-impact fix before reviewing details."
+            href="#client-attention"
           />
           <PlanTile
             icon={<FileText className="size-4" aria-hidden="true" />}
@@ -488,4 +490,16 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatImportance(value: string) {
+  if (value === "CRITICAL") {
+    return "Urgent";
+  }
+
+  if (value === "WARNING") {
+    return "Planned";
+  }
+
+  return formatEnum(value);
 }

@@ -68,8 +68,8 @@ export default async function ClientsPage() {
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">Client list</h3>
               <p className="mt-1 text-sm text-slate-500">
-                Open one client to review their projects, priority issues, and
-                latest report.
+                Open one client to review their websites, today&apos;s attention
+                items, and latest report.
               </p>
             </div>
 
@@ -103,8 +103,8 @@ export default async function ClientsPage() {
                             {client.name}
                           </Link>
                         <p className="mt-1 text-sm text-slate-500">
-                            {client.contactEmail ?? "No contact email"} ·{" "}
-                            {client.domains.length} domain
+                            {client.contactEmail ?? "No contact email"} -{" "}
+                            {client.domains.length} website
                             {client.domains.length === 1 ? "" : "s"}
                           </p>
                         </div>
@@ -121,7 +121,7 @@ export default async function ClientsPage() {
 
                       <div>
                         <p className="text-sm font-medium text-slate-500">
-                          Open issues
+                          Needs attention
                         </p>
                         <p className="mt-2 text-sm font-medium">
                           <span className="text-red-600">{critical}</span>
@@ -213,7 +213,7 @@ function ClientCarePlan({
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
             Start with the client that has no website connected or open urgent
-            issues. Keep the full client table as detail below.
+            fixes. Keep the full client table as detail below.
           </p>
         </div>
 
@@ -243,7 +243,7 @@ function ClientCarePlan({
                 ? `${clientsWithCriticalIssues} need review`
                 : "No urgent clients"
             }
-            detail="Open the client with critical issues first."
+            detail="Open the client with urgent work first."
             href="#client-list"
           />
           <PlanTile
