@@ -1054,3 +1054,19 @@ Implementation:
 - [x] Translate stored top-problem titles into plain-language dashboard labels.
 - [x] Soften internal setup checklist names and descriptions away from crawler/analyzer/source-of-truth language.
 - [ ] Browser-check Dashboard desktop and mobile after deployment.
+
+### Batch BA: Global Search Calmness
+
+Competitive evidence:
+
+- Semrush keeps global navigation and project search close to practical actions like opening a project, rerunning a check, or creating a report.
+- Ahrefs navigation patterns make project, report, and site-audit entry points quick to reach without asking users to know the technical feature name first.
+- A softer global search should say website, problem, update, and check website before domain, issue, command surface, URL, or run crawl wording.
+
+Implementation:
+
+- [x] Rename global search help text from domains/issues/reports to websites/problems/updates.
+- [x] Rename default search actions from crawl/domain/Fix Center/technical feature names to check website, add website, open fixes, and simple growth labels.
+- [x] Rename result categories from Domain, Issue, and Report to Website, Problem, and Update.
+- [x] Translate stored problem titles in search results into plain-language labels.
+- [ ] Browser-check Global Search desktop and mobile after deployment.

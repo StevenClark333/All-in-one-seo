@@ -153,7 +153,7 @@ export async function AppSidebar({
           <form action="/search" className="mt-5">
             <label className="relative block">
               <span className="sr-only">
-                Search domains, clients, pages, issues, reports, and actions
+                Search websites, clients, pages, problems, updates, and actions
               </span>
               <Search
                 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"

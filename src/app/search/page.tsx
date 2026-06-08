@@ -30,8 +30,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 Search
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Find projects, clients, pages, issues, reports, and common
-                actions from one command surface.
+                Find websites, clients, pages, problems, updates, and common
+                actions from one calm place.
               </p>
             </div>
           </header>
@@ -47,7 +47,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 name="q"
                 type="search"
                 defaultValue={query}
-                placeholder="Search domain, client, page, issue, report, or action"
+                placeholder="Search website, client, page, problem, update, or action"
                 className="h-11 w-full rounded-md border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
               />
             </form>
@@ -92,8 +92,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               ))
             ) : (
               <div className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">
-                No results found. Try a domain, client, URL, issue title,
-                report title, or action such as run crawl.
+                No results found. Try a website, client, page, problem, update,
+                or action such as check website.
               </div>
             )}
           </section>

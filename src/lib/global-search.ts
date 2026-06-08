@@ -17,7 +17,7 @@ import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
 export type GlobalSearchResult = {
-  category: "Action" | "Client" | "Domain" | "Issue" | "Page" | "Report";
+  category: "Action" | "Client" | "Page" | "Problem" | "Update" | "Website";
   description: string;
   href: string;
   icon: LucideIcon;
@@ -27,66 +27,66 @@ export type GlobalSearchResult = {
 const actionResults: GlobalSearchResult[] = [
   {
     category: "Action",
-    description: "Open the projects table to start a verified domain crawl.",
+    description: "Open Projects to run a fresh check for a verified website.",
     href: "/domains",
     icon: Play,
-    title: "Run crawl",
+    title: "Check website",
   },
   {
     category: "Action",
-    description: "Create a report from current crawl, issue, and score data.",
+    description: "Create a simple update from current health, problems, and fixes.",
     href: "/reports",
     icon: FileText,
-    title: "Create report",
+    title: "Create update",
   },
   {
     category: "Action",
-    description: "Register a new website project for monitoring.",
+    description: "Add a new website and keep its work organized.",
     href: "/domains/new",
     icon: Plus,
-    title: "Add domain",
+    title: "Add website",
   },
   {
     category: "Action",
-    description: "Review approved and exported internal-link fixes.",
+    description: "Review, send, and track fixes in one place.",
     href: "/fix-center",
     icon: Hammer,
-    title: "Open Fix Center",
+    title: "Open fixes",
   },
   {
     category: "Action",
-    description: "Compare owned projects by visibility, pages, issues, and top organic demand.",
+    description: "Compare your website against competitors and spot useful opportunities.",
     href: "/competitive-analysis",
     icon: Crosshair,
-    title: "Open Competitive Analysis",
+    title: "Open competitors",
   },
   {
     category: "Action",
-    description: "Find Search Console keyword opportunities, intent groups, and content gaps.",
+    description: "Find useful keyword and content ideas.",
     href: "/keyword-research",
     icon: KeyRound,
-    title: "Open Keyword Research",
+    title: "Open keywords",
   },
   {
     category: "Action",
-    description: "Track owned and competitor keyword positions with imported volume metrics.",
+    description: "See how keyword positions are moving.",
     href: "/rank-tracking",
     icon: LineChart,
-    title: "Open Rank Tracking",
+    title: "Open rank",
   },
   {
     category: "Action",
-    description: "Review imported Search Console clicks, impressions, queries, and pages.",
+    description: "Review Google clicks, impressions, top searches, and top pages.",
     href: "/search-performance",
     icon: BarChart3,
-    title: "Open Search Performance",
+    title: "Open search growth",
   },
   {
     category: "Action",
-    description: "Connect Search Console, Analytics, CMS, and workflow tools.",
+    description: "Connect Google, your website platform, alerts, and helper tools.",
     href: "/integrations",
     icon: Settings,
-    title: "Connect integration",
+    title: "Connect tools",
   },
 ];
 
@@ -179,7 +179,7 @@ export async function getGlobalSearchResults(
         title: client.name,
       })),
       ...domains.map((domain) => ({
-        category: "Domain" as const,
+        category: "Website" as const,
         description: domain.client?.name ?? "Unassigned client",
         href: `/domains/${domain.id}/workspace`,
         icon: Globe2,
@@ -195,16 +195,16 @@ export async function getGlobalSearchResults(
         title: page.url,
       })),
       ...issues.map((issue) => ({
-        category: "Issue" as const,
+        category: "Problem" as const,
         description: `${issue.domain.domain}${
           issue.page ? ` - ${issue.page.url}` : ""
         }`,
         href: `/issues/${issue.id}`,
         icon: Hammer,
-        title: issue.title,
+        title: softenGlobalSearchProblemTitle(issue.title),
       })),
       ...reports.map((report) => ({
-        category: "Report" as const,
+        category: "Update" as const,
         description:
           report.domain?.domain ?? report.client?.name ?? "Workspace report",
         href: `/reports/${report.id}`,
@@ -229,4 +229,60 @@ function filterActionResults(query: string) {
       .toLowerCase()
       .includes(normalized),
   );
+}
+
+function softenGlobalSearchProblemTitle(value: string) {
+  const exactMatches: Record<string, string> = {
+    "Sitemap URL is not internally linked":
+      "Page is in the page list but needs links",
+    "Sitemap Url Not Internally Linked":
+      "Page is in the page list but needs links",
+    "Internally Linked Url Missing From Sitemap":
+      "Linked page missing from page list",
+    "Robots Txt Unavailable Or Malformed": "Robots file needs attention",
+    "Sitemap Unavailable": "Page list needs attention",
+    "Missing H1": "Main heading missing",
+    "Multiple H1": "Too many main headings",
+    "Missing Image Alt": "Image description missing",
+    "Missing Canonical": "Preferred page link missing",
+    "Duplicate Content Cluster": "Repeated content group",
+    "Duplicate Meta Description": "Repeated page description",
+    "Duplicate Title": "Repeated page title",
+    "Duplicate title": "Repeated page title",
+    "Duplicate meta descriptions across page template":
+      "Page template repeats the same description",
+    "Missing Schema": "Page details for Google missing",
+    "Missing Meta Description": "Page description missing",
+    "Missing Title": "Page title missing",
+    "Missing page title": "Page title missing",
+    "Add a unique meta description": "Write a clear page description",
+    "Add a unique title tag": "Write a clear page title",
+    "Restore indexability": "Make page visible to Google",
+    "Homepage Blocked By Robots": "Homepage blocked from Google",
+    "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Product template canonical points to non-200 URLs":
+      "Product template points to a broken preferred page",
+    "Homepage became noindex after latest deploy":
+      "Homepage was hidden from Google after deploy",
+    "Critical Regression": "Urgent change",
+  };
+
+  const exactMatch = exactMatches[value];
+
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return value
+    .replace(/\bSitemap\b/g, "page list")
+    .replace(/\bURLs?\b/g, "pages")
+    .replace(/\bUrl\b/g, "page")
+    .replace(/\bRobots Txt\b/g, "robots file")
+    .replace(/\bH1\b/g, "main heading")
+    .replace(/\bMeta Description\b/g, "page description")
+    .replace(/\bSchema\b/g, "page details for Google")
+    .replace(/\bNoindex\b/g, "hidden from Google")
+    .replace(/\bCanonical\b/g, "preferred page link")
+    .replace(/\bindexability\b/gi, "visibility in Google")
+    .replace(/\btitle tag\b/gi, "page title");
 }
