@@ -192,14 +192,14 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
 
                 <FilterSelect
                   label="Urgency"
-                  help="Critical problems are urgent, warnings should be planned, suggestions are optional improvements."
+                  help="Urgent problems should be handled first, planned work can follow, and ideas are optional improvements."
                   name="severity"
                   value={filters.severity}
                 >
                   <option value="">All urgency levels</option>
                   {severityOptions.map((severity) => (
                     <option key={severity} value={severity}>
-                      {formatEnum(severity)}
+                      {getImportanceLabel(severity)}
                     </option>
                   ))}
                 </FilterSelect>
@@ -210,10 +210,10 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                   name="status"
                   value={filters.status}
                 >
-                  <option value="">All statuses</option>
+                  <option value="">All progress</option>
                   {statusOptions.map((status) => (
                     <option key={status} value={status}>
-                      {formatEnum(status)}
+                      {getProgressLabel(status)}
                     </option>
                   ))}
                 </FilterSelect>
@@ -310,7 +310,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition hover:bg-white"
                     >
                       {softenProblemTitle(group.label)}: {group.issueCount}{" "}
-                      {pluralize(group.issueCount, "problem")}, P
+                      {pluralize(group.issueCount, "problem")}, priority{" "}
                       {group.priorityScore}
                     </Link>
                   ))}
@@ -426,7 +426,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       >
                         {statusOptions.map((status) => (
                           <option key={status} value={status}>
-                            {formatEnum(status)}
+                            {getProgressLabel(status)}
                           </option>
                         ))}
                       </select>
@@ -520,8 +520,8 @@ function ProblemSolvingPlan({
           />
           <PlanCard
             label="Urgency"
-            value={`${criticalCount} critical`}
-            detail={`${warningCount} warnings can be planned after critical work.`}
+            value={`${criticalCount} urgent`}
+            detail={`${warningCount} planned ${pluralize(warningCount, "item")} can wait until urgent work is handled.`}
           />
         </div>
 
@@ -587,12 +587,12 @@ function IssueRow({
           <span
             className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${severityStyles[issue.severity]}`}
           >
-            {formatEnum(issue.severity)}
+            {getImportanceLabel(issue.severity)}
           </span>
           <span
             className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${statusStyles[issue.status]}`}
           >
-            {formatEnum(issue.status)}
+            {getProgressLabel(issue.status)}
           </span>
           <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600">
             {solution.effort}
@@ -731,9 +731,32 @@ function formatIssueType(value: string) {
   return softenProblemTitle(technicalLabel);
 }
 
+function getImportanceLabel(value: string) {
+  const labels: Record<string, string> = {
+    CRITICAL: "Urgent",
+    SUGGESTION: "Idea",
+    WARNING: "Planned",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function getProgressLabel(value: string) {
+  const labels: Record<string, string> = {
+    FIXED: "Fixed",
+    IGNORED: "Set aside",
+    IN_PROGRESS: "Being fixed",
+    OPEN: "Open",
+    REAPPEARED: "Needs another look",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
 function getSoftActionLabel(label: string) {
   return label
     .replace(/^Generate\b/i, "Create")
+    .replace(/\bmeta\b/i, "description")
     .replace(/\bbrief\b/i, "note")
     .replace(/\bindexability\b/i, "page visibility")
     .replace(/\bsolution\b/i, "fix steps");
@@ -806,6 +829,7 @@ function softenProblemTitle(value: string) {
     .replace(/\bHomepage Blocked By Robots\b/gi, exactMatches["Homepage Blocked By Robots"])
     .replace(/\bHomepage blocked by robots\.txt\b/gi, exactMatches["Homepage blocked by robots.txt"])
     .replace(/\bCritical Regression\b/gi, exactMatches["Critical Regression"])
+    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
     .replace(/\bProduct template canonical points to non-200 URLs\b/gi, exactMatches["Product template canonical points to non-200 URLs"])
     .replace(/\bHomepage became noindex after latest deploy\b/gi, exactMatches["Homepage became noindex after latest deploy"])
     .replace(/\bURLs?\b/g, "pages")
@@ -823,6 +847,8 @@ function softenProblemTitle(value: string) {
 function softenProblemText(value: string) {
   return value
     .replace(/\banalyzer-generated\b/gi, "website-check")
+    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
+    .replace(/\bcritical regression\b/gi, "urgent change")
     .replace(/\banalyzer pass\b/gi, "website check")
     .replace(/\blatest crawl\b/gi, "latest website check")
     .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")

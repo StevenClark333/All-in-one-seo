@@ -70,7 +70,7 @@ export default async function IssueDetailPage({
       : []),
     ...issue.notes.map((note) => ({
       id: note.id,
-      label: `${formatEnum(note.visibility)} note`,
+      label: `${formatNoteVisibility(note.visibility)} note`,
       detail: note.body,
       date: note.createdAt,
     })),
@@ -91,10 +91,10 @@ export default async function IssueDetailPage({
           <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone={issue.severity === "CRITICAL" ? "red" : "amber"}>
-                {formatEnum(issue.severity)}
+                {getImportanceLabel(issue.severity)}
               </Badge>
               <Badge tone={issue.status === "FIXED" ? "emerald" : "slate"}>
-                {formatEnum(issue.status)}
+                {getProgressLabel(issue.status)}
               </Badge>
               <span className="text-sm font-medium text-slate-500">
                 Priority score {issue.priorityScore}
@@ -102,7 +102,7 @@ export default async function IssueDetailPage({
             </div>
 
             <h1 className="mt-4 text-3xl font-semibold tracking-normal">
-              {issue.title}
+              {softenProblemTitle(issue.title)}
             </h1>
             <p className="mt-3 text-sm leading-6 text-slate-600">
               {softenProblemText(issue.description)}
@@ -115,7 +115,7 @@ export default async function IssueDetailPage({
                     Best next step
                   </p>
                   <h2 className="mt-2 text-xl font-semibold text-emerald-950">
-                    {solution.title}
+                    {softenProblemTitle(solution.title)}
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-emerald-900">
                     {softenProblemText(solution.detail)}
@@ -285,7 +285,7 @@ export default async function IssueDetailPage({
                       className="rounded-md border border-slate-200 bg-slate-50 p-3"
                     >
                       <p className="text-sm font-semibold text-slate-500">
-                        {formatEnum(recommendation.type)}
+                        {formatRecommendationType(recommendation.type)}
                       </p>
                       <p className="mt-2 text-sm font-semibold">
                         {readPayload(recommendation.recommendationJson).title}
@@ -322,7 +322,7 @@ export default async function IssueDetailPage({
                   >
                     {statuses.map((status) => (
                       <option key={status} value={status}>
-                        {formatEnum(status)}
+                        {getProgressLabel(status)}
                       </option>
                     ))}
                   </select>
@@ -388,8 +388,8 @@ export default async function IssueDetailPage({
                   defaultValue="INTERNAL"
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="INTERNAL">Internal note</option>
-                  <option value="CLIENT_VISIBLE">Client-visible note</option>
+                  <option value="INTERNAL">Team-only note</option>
+                  <option value="CLIENT_VISIBLE">Client-friendly note</option>
                 </select>
                 <textarea
                   name="body"
@@ -418,7 +418,7 @@ export default async function IssueDetailPage({
                               : "slate"
                           }
                         >
-                          {formatEnum(note.visibility)}
+                          {formatNoteVisibility(note.visibility)}
                         </Badge>
                         <span className="text-xs text-slate-500">
                           {note.author?.name ?? note.author?.email ?? "Unknown"}
@@ -505,15 +505,138 @@ function formatEnum(value: string) {
 }
 
 function formatIssueType(value: string) {
-  return value
+  return softenProblemTitle(value
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+    .join(" "));
+}
+
+function getImportanceLabel(value: string) {
+  const labels: Record<string, string> = {
+    CRITICAL: "Urgent",
+    SUGGESTION: "Idea",
+    WARNING: "Planned",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function getProgressLabel(value: string) {
+  const labels: Record<string, string> = {
+    FIXED: "Fixed",
+    IGNORED: "Set aside",
+    IN_PROGRESS: "Being fixed",
+    OPEN: "Open",
+    REAPPEARED: "Needs another look",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatNoteVisibility(value: string) {
+  const labels: Record<string, string> = {
+    CLIENT_VISIBLE: "Client-friendly",
+    INTERNAL: "Team-only",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatRecommendationType(value: string) {
+  const normalized = value.toLowerCase();
+
+  if (normalized.includes("template")) {
+    return "Shared note";
+  }
+
+  if (normalized.includes("issue") || normalized.includes("fix")) {
+    return "Fix note";
+  }
+
+  if (normalized.includes("internal")) {
+    return "Link idea";
+  }
+
+  if (normalized.includes("schema")) {
+    return "Page detail idea";
+  }
+
+  if (normalized.includes("h1")) {
+    return "Heading idea";
+  }
+
+  if (normalized.includes("title")) {
+    return "Title idea";
+  }
+
+  if (normalized.includes("description")) {
+    return "Description idea";
+  }
+
+  if (normalized.includes("content")) {
+    return "Content idea";
+  }
+
+  return formatEnum(value);
+}
+
+function softenProblemTitle(value: string) {
+  const exactMatches: Record<string, string> = {
+    "Duplicate Meta Description": "Repeated page description",
+    "Duplicate Title": "Repeated page title",
+    "Homepage Blocked By Robots": "Homepage blocked from Google",
+    "Homepage became noindex after latest deploy":
+      "Homepage was hidden from Google after deploy",
+    "Critical Regression": "Urgent change",
+    "Internally Linked Url Missing From Sitemap":
+      "Linked page missing from page list",
+    "Missing Canonical": "Preferred page link missing",
+    "Missing H1": "Main heading missing",
+    "Missing Image Alt": "Image description missing",
+    "Missing Meta Description": "Page description missing",
+    "Missing Schema": "Page details for Google missing",
+    "Missing Title": "Page title missing",
+    "Missing page title": "Page title missing",
+    "Multiple H1": "Too many main headings",
+    "Poor Heading Hierarchy": "Heading order needs attention",
+    "Product template canonical points to non-200 URLs":
+      "Product template points to a broken preferred page",
+    "Robots Txt Unavailable Or Malformed": "Robots file needs attention",
+    "Sitemap Unavailable": "Page list needs attention",
+    "Sitemap Url Not Internally Linked":
+      "Page is in the page list but needs links",
+    "Sitemap URL is not internally linked":
+      "Page is in the page list but needs links",
+  };
+
+  const exactMatch = exactMatches[value];
+
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return value
+    .replace(/\bURLs?\b/g, "pages")
+    .replace(/\bUrl\b/g, "page")
+    .replace(/\bSitemap\b/g, "page list")
+    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
+    .replace(/\bRobots Txt\b/g, "robots file")
+    .replace(/\bH1\b/g, "main heading")
+    .replace(/\bMeta Description\b/g, "page description")
+    .replace(/\bSchema\b/g, "page details for Google")
+    .replace(/\bNoindex\b/g, "hidden from Google")
+    .replace(/\bCanonical\b/g, "preferred page link");
 }
 
 function softenProblemText(value: string) {
   return value
     .replace(/\banalyzer pass\b/gi, "website check")
+    .replace(
+      /\brestore indexable canonical signals\b/gi,
+      "restore the right visibility and preferred page settings",
+    )
+    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
+    .replace(/\bcritical regression\b/gi, "urgent change")
     .replace(/\blatest crawl\b/gi, "latest website check")
     .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")
     .replace(/\ballow crawling\b/gi, "allow search-engine access")
@@ -526,6 +649,9 @@ function softenProblemText(value: string) {
     .replace(/\bcrawl\b/gi, "website check")
     .replace(/\bcrawlers\b/gi, "search engines")
     .replace(/\bcrawler\b/gi, "search engine")
+    .replace(/\bindexable\b/gi, "visible in Google")
+    .replace(/\bcanonical signals\b/gi, "preferred page settings")
+    .replace(/\bindexability\b/gi, "visibility in Google")
     .replace(/\bissue\b/gi, "problem");
 }
 

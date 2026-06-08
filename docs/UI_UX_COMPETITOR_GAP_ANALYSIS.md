@@ -1422,3 +1422,19 @@ Implementation:
 - [x] Rename the public report header from published report to shared SEO update.
 - [x] Browser-check private and shared report detail status labels desktop and mobile locally.
 - [ ] Browser-check private and shared report detail status labels after deployment.
+
+### Batch BX: Problem Progress Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs issue queues keep severity, status, and recommendation detail available, but the first-read labels still need to say what the user should do next.
+- Nontechnical users should see urgent, planned, idea, being fixed, set aside, needs another look, and client-friendly wording before critical, warning, suggestion, in-progress, ignored, reappeared, or client-visible status names.
+- The Problems flow should feel like a guided fix list, not a technical status console.
+
+Implementation:
+
+- [x] Translate Problems filter, row, and bulk-update urgency/progress labels into plain-language wording.
+- [x] Replace template priority shorthand with a readable priority label.
+- [x] Translate Problem detail badges, progress options, note visibility, and fix idea types into softer wording.
+- [x] Browser-check Problems list and Problem detail status labels desktop and mobile locally.
+- [ ] Browser-check Problems list and Problem detail status labels after deployment.
