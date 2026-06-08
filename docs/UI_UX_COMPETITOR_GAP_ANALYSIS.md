@@ -1152,3 +1152,19 @@ Implementation:
 - [x] Replace numeric importance scores with plain priority labels.
 - [x] Translate common page-link problem descriptions into plain guidance.
 - [x] Browser-check Website Link Health Detail desktop and mobile after deployment.
+
+### Batch BG: Website Filter Wording Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project-level scoping available, but the visible filter flow should still read as choosing a website and search term, not an internal project/query object.
+- Semrush keyword research keeps deeper keyword and competitor detail available behind compact views, while the first read stays focused on search ideas, opportunity, and next action.
+- A softer shared filter and keyword research flow should say website, all websites, search term, and your website trails before project, raw query inventory, or data-model wording.
+
+Implementation:
+
+- [x] Rename shared project filters to website filters and all websites.
+- [x] Rename shared query filters to search-term filters.
+- [x] Rename active project banner language to active website and website workspace.
+- [x] Rewrite keyword research advanced filter and deeper-detail copy away from project/raw-query language.
+- [ ] Browser-check Keyword Research desktop and mobile after deployment.

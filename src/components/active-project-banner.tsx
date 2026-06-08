@@ -13,7 +13,7 @@ export function ActiveProjectBanner({
   clientName,
   domain,
   domainId,
-  note = "This view is scoped to one website project.",
+  note = "This view is focused on one selected website.",
 }: ActiveProjectBannerProps) {
   return (
     <section className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-950">
@@ -24,9 +24,9 @@ export function ActiveProjectBanner({
           </div>
           <div className="min-w-0">
             <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">
-              Active project
+              Active website
               <InfoTooltip
-                label="All data and actions on this screen are filtered to this domain."
+                label="All data and actions on this screen are filtered to this website."
                 passive
                 side="right"
               />
@@ -44,7 +44,7 @@ export function ActiveProjectBanner({
           className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-blue-200 bg-white px-4 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Project workspace
+          Website workspace
         </Link>
       </div>
     </section>

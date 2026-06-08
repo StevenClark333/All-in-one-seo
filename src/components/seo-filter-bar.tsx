@@ -25,14 +25,14 @@ export function SeoFilterBar({
     >
       <label className="grid gap-2">
         <span className="text-sm font-medium text-slate-600">
-          Project
+          Website
         </span>
         <select
           name="domainId"
           defaultValue={domainId ?? ""}
           className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
         >
-          <option value="">All projects</option>
+          <option value="">All websites</option>
           {domains.map((domain) => (
             <option key={domain.id} value={domain.id}>
               {domain.domain}
@@ -42,7 +42,7 @@ export function SeoFilterBar({
       </label>
       <label className="grid gap-2">
         <span className="text-sm font-medium text-slate-600">
-          Query
+          Search term
         </span>
         <input
           name="query"

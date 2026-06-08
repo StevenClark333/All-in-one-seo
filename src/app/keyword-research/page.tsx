@@ -265,8 +265,8 @@ export default async function KeywordResearchPage({
                     Adjust keyword filters
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Open this only when you want a specific project, query,
-                    country, device, or reporting range.
+                    Open this only when you want a specific website, search
+                    term, country, device, or date range.
                   </p>
                 </div>
                 <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
@@ -275,13 +275,13 @@ export default async function KeywordResearchPage({
               </div>
             </summary>
             <form className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-[minmax(0,230px)_repeat(5,minmax(0,1fr))_auto]">
-              <FilterLabel label="Project">
+              <FilterLabel label="Website">
                 <select
                   name="domainId"
                   defaultValue={selectedDomainId ?? ""}
                   className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="">All projects</option>
+                  <option value="">All websites</option>
                   {data.domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>
                       {domain.domain}
@@ -289,7 +289,7 @@ export default async function KeywordResearchPage({
                   ))}
                 </select>
               </FilterLabel>
-              <FilterLabel label="Query">
+              <FilterLabel label="Search term">
                 <input
                   name="query"
                   defaultValue={query ?? ""}
@@ -367,8 +367,8 @@ export default async function KeywordResearchPage({
                 <div>
                   <h3 className="text-lg font-semibold">More search detail</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Optional competitor gaps, intent groups, and raw query
-                    inventory for deeper review.
+                    Optional competitor gaps, intent groups, and search-term
+                    detail for deeper review.
                   </p>
                 </div>
                 <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
@@ -489,7 +489,7 @@ function IntentPanel({
       <div className="border-b border-slate-200 p-5">
         <h3 className="text-lg font-semibold">Intent groups</h3>
         <p className="mt-1 text-sm text-slate-500">
-          Query demand grouped by likely search intent.
+          Search-term demand grouped by likely search intent.
         </p>
       </div>
       <div className="divide-y divide-slate-100">
@@ -502,7 +502,7 @@ function IntentPanel({
               <div>
                 <p className="font-semibold">{formatIntent(item.intent)}</p>
                 <p className="mt-1 text-sm text-slate-500">
-                  {item.queries} query groups
+                  {item.queries} search-term groups
                 </p>
               </div>
               <Meta label="Clicks" value={item.clicks.toLocaleString()} />
@@ -514,7 +514,7 @@ function IntentPanel({
           ))
         ) : (
           <p className="p-8 text-center text-sm text-slate-500">
-            No query intents to group yet.
+            No search-term intents to group yet.
           </p>
         )}
       </div>
@@ -589,7 +589,7 @@ function CompetitorGapList({
       <div className="border-b border-slate-200 p-5">
         <h3 className="text-lg font-semibold">Competitor content gap</h3>
         <p className="mt-1 text-sm text-slate-500">
-          Tracked keywords where a competitor ranks and this project trails or
+          Tracked keywords where a competitor ranks and your website trails or
           has no owned position.
         </p>
       </div>
@@ -638,16 +638,16 @@ function QueryTable({
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 p-5">
-        <h3 className="text-lg font-semibold">Query inventory</h3>
+        <h3 className="text-lg font-semibold">Search-term detail</h3>
         <p className="mt-1 text-sm text-slate-500">
-          Raw Search Console rows for deeper review.
+          Search Console rows kept for deeper review.
         </p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[620px] text-left text-sm">
           <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
-              <th className="px-5 py-3 font-semibold">Query</th>
+              <th className="px-5 py-3 font-semibold">Search term</th>
               <th className="px-5 py-3 font-semibold">Clicks</th>
               <th className="px-5 py-3 font-semibold">Impressions</th>
               <th className="px-5 py-3 font-semibold">CTR</th>
