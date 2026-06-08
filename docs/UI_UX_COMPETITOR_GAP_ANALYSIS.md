@@ -1070,3 +1070,21 @@ Implementation:
 - [x] Rename result categories from Domain, Issue, and Report to Website, Problem, and Update.
 - [x] Translate stored problem titles in search results into plain-language labels.
 - [ ] Browser-check Global Search desktop and mobile after deployment.
+
+### Batch BB: Website Detail Calmness
+
+Competitive evidence:
+
+- Semrush project and audit detail flows keep page and technical depth available, but the first screen still orients users around health, most important problems, and the next check.
+- Ahrefs preserves crawl/page inventory detail for deeper review, while the easier beginner path is to summarize what was checked and what needs attention.
+- A softer website detail page should say website check, pages to review, priority problems, and setup files before crawl, artifacts, status codes, or raw issue wording.
+
+Implementation:
+
+- [x] Rename the saved-website primary action from crawl language to "Check website".
+- [x] Rewrite website detail helper text, metrics, plan cards, and error messages around website checks and problems.
+- [x] Cap the visible page list to the first ten pages and link to the full Pages area for the rest.
+- [x] Cap priority problems to the first five and link to the full Problems area for the rest.
+- [x] Translate stored problem titles on the website detail page into plain-language labels.
+- [x] Rename optional setup, lifecycle, install, and setup-file panels away from crawl/script/artifact wording.
+- [ ] Browser-check Website Detail desktop and mobile after deployment.

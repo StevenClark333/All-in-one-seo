@@ -66,6 +66,16 @@ export default async function DomainDetailPage({
   const warningIssues = domain.issues.filter(
     (issue) => issue.severity === "WARNING",
   ).length;
+  const visiblePages = domain.pages.slice(0, 10);
+  const hiddenPageCount = Math.max(
+    domain.pages.length - visiblePages.length,
+    0,
+  );
+  const visibleIssues = domain.issues.slice(0, 5);
+  const hiddenIssueCount = Math.max(
+    domain.issues.length - visibleIssues.length,
+    0,
+  );
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -87,7 +97,7 @@ export default async function DomainDetailPage({
             >
               Project workspace
               <InfoTooltip
-                label="Open the domain-scoped workspace for pages, issues, fixes, reports, and integrations."
+                label="Open the focused website workspace for pages, problems, fixes, updates, and connections."
                 passive
                 side="left"
               />
@@ -99,7 +109,7 @@ export default async function DomainDetailPage({
               <ShieldCheck className="size-4" aria-hidden="true" />
               Verification
               <InfoTooltip
-                label="Open setup instructions and ownership checks for this domain."
+                label="Open setup instructions and ownership checks for this website."
                 passive
                 side="left"
               />
@@ -109,15 +119,15 @@ export default async function DomainDetailPage({
           <header className="mt-6 flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                {workspace?.name ?? "Workspace"} ·{" "}
+                {workspace?.name ?? "Workspace"} -{" "}
                 {domain.client?.name ?? "Unassigned client"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 {domain.domain}
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Keep this project simple: finish setup, run a crawl, then open
-                the problem that matters most.
+                Keep this website simple: finish setup, run a website check,
+                then open the problem that matters most.
               </p>
             </div>
 
@@ -133,9 +143,9 @@ export default async function DomainDetailPage({
                 className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-slate-300"
               >
                 <Play className="size-4" aria-hidden="true" />
-                Run crawl
+                Check website
                 <InfoTooltip
-                  label="Run a fresh crawl to collect metadata, links, schema, robots.txt, sitemap, and issue changes."
+                  label="Run a fresh website check to update pages, links, setup files, and problem changes."
                   passive
                   side="left"
                 />
@@ -145,7 +155,7 @@ export default async function DomainDetailPage({
 
           {error ? (
             <StatusNotice
-              title="Crawl could not finish"
+              title="Website check could not finish"
               message={getDomainErrorMessage(error)}
             />
           ) : null}
@@ -159,23 +169,23 @@ export default async function DomainDetailPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-4">
             <Metric
-              help="Current SEO health score calculated from site issues and crawl signals."
+              help="Current website health based on open problems and recent check signals."
               label="Health"
               value={domain.healthScore ?? "Pending"}
             />
             <Metric
-              help="Known URLs for this domain from crawler discovery and snapshots."
-              label="Pages"
+              help="Pages currently known from recent website checks."
+              label="Pages checked"
               value={domain.pages.length}
             />
             <Metric
-              help="Critical problems first, warnings second. Use this to prioritize work."
-              label="Critical / warnings"
+              help="Urgent problems first, planned work second. Use this to decide what to open."
+              label="Urgent / planned"
               value={`${criticalIssues} / ${warningIssues}`}
             />
             <Metric
-              help="Most recent crawl run state for this domain."
-              label="Last crawl"
+              help="Most recent website check state."
+              label="Last check"
               value={
                 latestCrawl ? formatEnum(latestCrawl.status) : "Not started"
               }
@@ -185,8 +195,8 @@ export default async function DomainDetailPage({
           {latestScore ? (
             <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Human-readable reasons behind the latest health score.">
-                  Score explanation
+                <HelpLabel help="Plain notes behind the latest website health score.">
+                  Health notes
                 </HelpLabel>
               </h3>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -209,13 +219,13 @@ export default async function DomainDetailPage({
             >
               <div className="border-b border-slate-200 p-5">
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Crawled page inventory with status codes, titles, issues, and last crawl dates.">
-                    Pages
+                  <HelpLabel help="The first pages worth reviewing from this website. More detail stays tucked away below.">
+                    Pages to review
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Latest crawled pages with metadata, issue load, and status
-                  code.
+                  A short page list with response, title, open problems, and the
+                  last check date.
                 </p>
               </div>
 
@@ -223,32 +233,32 @@ export default async function DomainDetailPage({
                 <table className="w-full min-w-[760px] text-left text-sm">
                   <thead className="bg-slate-50 text-sm text-slate-500">
                     <tr>
-                      <th className="px-5 py-3 font-semibold">URL</th>
+                      <th className="px-5 py-3 font-semibold">Page</th>
                       <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="HTTP status captured during the latest snapshot.">
-                          Status
+                        <HelpLabel help="Whether the page answered normally during the latest check.">
+                          Response
                         </HelpLabel>
                       </th>
                       <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Page title found in the latest crawled HTML.">
+                        <HelpLabel help="Page title found during the latest check.">
                           Title
                         </HelpLabel>
                       </th>
                       <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Number of open SEO issues attached to this page.">
-                          Issues
+                        <HelpLabel help="Number of open problems attached to this page.">
+                          Problems
                         </HelpLabel>
                       </th>
                       <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Date this page was last crawled.">
-                          Crawled
+                        <HelpLabel help="Date this page was last checked.">
+                          Last check
                         </HelpLabel>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {domain.pages.length ? (
-                      domain.pages.map((page) => {
+                    {visiblePages.length ? (
+                      visiblePages.map((page) => {
                         const snapshot = page.snapshots.at(0);
 
                         return (
@@ -262,7 +272,7 @@ export default async function DomainDetailPage({
                               </Link>
                             </td>
                             <td className="px-5 py-4 text-slate-600">
-                              {snapshot?.statusCode ?? "Pending"}
+                              {formatPageResponse(snapshot?.statusCode)}
                             </td>
                             <td className="max-w-[280px] truncate px-5 py-4 text-slate-600">
                               {snapshot?.title ?? "Missing"}
@@ -284,14 +294,33 @@ export default async function DomainDetailPage({
                           className="px-5 py-8 text-center text-slate-500"
                           colSpan={5}
                         >
-                          No pages crawled yet. Run the first crawl after
-                          verification to see page health here.
+                          No pages checked yet. Run the first website check
+                          after verification to see page health here.
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
+              {hiddenPageCount ? (
+                <details className="border-t border-slate-200">
+                  <summary className="cursor-pointer list-none p-5 text-sm font-semibold text-orange-700">
+                    Show {hiddenPageCount.toLocaleString()} more pages
+                  </summary>
+                  <div className="border-t border-slate-200 p-5 text-sm leading-6 text-slate-500">
+                    Open the full Pages area when you need the complete list.
+                    This view keeps the first decision short.
+                    <div className="mt-3">
+                      <Link
+                        href={`/pages?domainId=${domain.id}`}
+                        className="inline-flex h-9 items-center rounded-md border border-orange-200 bg-white px-3 text-sm font-medium text-orange-700 transition hover:bg-orange-50"
+                      >
+                        Open all pages
+                      </Link>
+                    </div>
+                  </div>
+                </details>
+              ) : null}
             </div>
 
             <aside className="grid gap-6">
@@ -302,12 +331,12 @@ export default async function DomainDetailPage({
                 <details>
                   <summary className="p-5">
                     <h3 className="font-semibold">
-                      <HelpLabel help="Operational settings that control ownership grouping, CMS context, and crawl frequency.">
-                        Project details
+                      <HelpLabel help="Optional setup details for client, website platform, and check rhythm.">
+                        Website details
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Optional setup details for client, platform, crawl rhythm,
+                      Optional setup details for client, platform, check rhythm,
                       and install status.
                     </p>
                   </summary>
@@ -351,8 +380,8 @@ export default async function DomainDetailPage({
 
                       <label className="grid gap-2">
                         <span className="text-sm font-medium text-slate-700">
-                          <HelpLabel help="How often this project should be recrawled when scheduled crawling is enabled.">
-                            Crawl rhythm
+                          <HelpLabel help="How often this website should be checked when scheduled checks are enabled.">
+                            Check rhythm
                           </HelpLabel>
                         </span>
                         <select
@@ -369,14 +398,14 @@ export default async function DomainDetailPage({
                       </label>
 
                       <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                        Save project details
+                        Save website details
                       </button>
                     </form>
 
                     <dl className="mt-5 grid gap-4 border-t border-slate-200 pt-5">
                       <Meta
-                        help="Whether ownership has been confirmed for this project."
-                        label="Verification"
+                        help="Whether ownership has been confirmed for this website."
+                        label="Ownership"
                         value={
                           isVerified
                             ? "Verified"
@@ -384,14 +413,16 @@ export default async function DomainDetailPage({
                         }
                       />
                       <Meta
-                        help="Whether the JavaScript monitoring snippet has reported data."
-                        label="Script"
+                        help="Whether the optional website tag has reported page data."
+                        label="Website tag"
                         value={formatEnum(domain.scriptStatus)}
                       />
                       <Meta
-                        help="Most recent ownership token created for this project."
-                        label="Latest token"
-                        value={latestVerification?.token ?? "No token generated"}
+                        help="Most recent ownership value created for this website."
+                        label="Latest setup value"
+                        value={
+                          latestVerification?.token ?? "No setup value yet"
+                        }
                       />
                     </dl>
                   </div>
@@ -402,29 +433,37 @@ export default async function DomainDetailPage({
                 <details>
                   <summary className="p-5">
                     <h3 className="font-semibold text-slate-800">
-                      <HelpLabel help="Archive hides a project from active workflows. Delete permanently removes it and its history.">
-                        Project lifecycle
+                      <HelpLabel help="Archive hides a website from active views. Delete permanently removes it and its history.">
+                        Website safety
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Optional controls for archiving or deleting this project.
+                      Optional controls for hiding or deleting this website.
                     </p>
                   </summary>
                   <div className="border-t border-slate-200 p-5">
                     <p className="text-sm leading-6 text-slate-500">
-                      Archive hides this project from active dashboards. Delete
-                      removes the project and its crawl history permanently.
+                      Archive hides this website from active dashboards. Delete
+                      removes the website and its check history permanently.
                     </p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       <form action={archiveDomainAction}>
-                        <input type="hidden" name="domainId" value={domain.id} />
+                        <input
+                          type="hidden"
+                          name="domainId"
+                          value={domain.id}
+                        />
                         <button className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
                           <Archive className="size-4" aria-hidden="true" />
                           Archive
                         </button>
                       </form>
                       <form action={deleteDomainAction}>
-                        <input type="hidden" name="domainId" value={domain.id} />
+                        <input
+                          type="hidden"
+                          name="domainId"
+                          value={domain.id}
+                        />
                         <button className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-red-200 bg-white px-4 text-sm font-medium text-red-700 transition hover:bg-red-50">
                           <Trash2 className="size-4" aria-hidden="true" />
                           Delete
@@ -439,31 +478,30 @@ export default async function DomainDetailPage({
                 <details>
                   <summary className="p-5">
                     <h3 className="font-semibold">
-                      <HelpLabel help="Small JavaScript snippet that collects rendered SEO signals and SPA route changes.">
-                        Install script
+                      <HelpLabel help="Small optional website tag that helps collect rendered page signals.">
+                        Website tag
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Optional tracking tag for rendered SEO signals.
+                      Optional tag for pages that need a browser-style check.
                     </p>
                   </summary>
                   <div className="border-t border-slate-200 p-5">
                     <p className="text-sm leading-6 text-slate-500">
                       Add this tag before the closing head tag to capture
-                      rendered SEO signals, SPA route changes, and Core Web
-                      Vitals.
+                      rendered page details and Core Web Vitals.
                     </p>
                     <code className="mt-4 block break-all rounded-md border border-slate-200 bg-slate-950 p-3 font-mono text-xs leading-6 text-white">
                       {scriptSnippet}
                     </code>
                     <dl className="mt-4 grid gap-4">
                       <Meta
-                        help="Unique project identifier used by the monitoring script."
+                        help="Unique website identifier used by the optional tag."
                         label="Site ID"
                         value={domain.id}
                       />
                       <Meta
-                        help="Whether the install script has sent any page data for this project."
+                        help="Whether the optional tag has sent any page data."
                         label="Status"
                         value={formatEnum(domain.scriptStatus)}
                       />
@@ -476,12 +514,12 @@ export default async function DomainDetailPage({
                 <details>
                   <summary className="p-5">
                     <h3 className="font-semibold">
-                      <HelpLabel help="Robots.txt, sitemap, and other crawl artifacts collected before page analysis.">
-                        Crawl files
+                      <HelpLabel help="Optional setup files found before deeper page checks.">
+                        Website setup files
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Optional robots.txt and sitemap files from the last crawl.
+                      Optional setup files found during the last website check.
                     </p>
                   </summary>
                   <div className="grid gap-3 border-t border-slate-200 p-5">
@@ -501,8 +539,8 @@ export default async function DomainDetailPage({
                       ))
                     ) : (
                       <EmptyNote
-                        title="No crawl files yet"
-                        body="Run a crawl to collect robots.txt, sitemap, and similar setup files."
+                        title="No setup files yet"
+                        body="Run a website check to look for page-list and access-helper files."
                       />
                     )}
                   </div>
@@ -514,31 +552,41 @@ export default async function DomainDetailPage({
                 className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
               >
                 <h3 className="font-semibold">
-                  <HelpLabel help="Highest-priority issues detected for this domain.">
-                    Priority issues
+                  <HelpLabel help="The first problems worth opening for this website.">
+                    Priority problems
                   </HelpLabel>
                 </h3>
                 <div className="mt-4 grid gap-3">
-                  {domain.issues.length ? (
-                    domain.issues.map((issue) => (
+                  {visibleIssues.length ? (
+                    visibleIssues.map((issue) => (
                       <Link
                         key={issue.id}
                         href={`/issues/${issue.id}`}
                         className="rounded-md border border-slate-200 bg-slate-50 p-3 transition hover:bg-white"
                       >
-                        <p className="text-sm font-semibold">{issue.title}</p>
+                        <p className="text-sm font-semibold">
+                          {softenWebsiteProblemTitle(issue.title)}
+                        </p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(issue.severity)} ·{" "}
-                          {issue.page?.url ?? "Site-level"}
+                          {formatProblemImportance(issue.severity)} -{" "}
+                          {issue.page?.url ?? "Whole website"}
                         </p>
                       </Link>
                     ))
                   ) : (
                     <EmptyNote
-                      title="No open issues"
-                      body="This project does not have priority issues right now."
+                      title="No open problems"
+                      body="This website does not have priority problems right now."
                     />
                   )}
+                  {hiddenIssueCount ? (
+                    <Link
+                      href={`/issues?domainId=${domain.id}`}
+                      className="rounded-md border border-orange-200 bg-orange-50/70 p-3 text-sm font-semibold text-orange-700 transition hover:bg-orange-50"
+                    >
+                      Open {hiddenIssueCount.toLocaleString()} more problems
+                    </Link>
+                  ) : null}
                 </div>
               </section>
             </aside>
@@ -567,14 +615,14 @@ function ProjectDetailPlan({
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div>
           <p className="text-sm font-semibold text-orange-700">
-            Project care plan
+            Website care plan
           </p>
           <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
-            Finish setup, crawl, then fix the clearest problem.
+            Finish setup, check, then fix the clearest problem.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
             Start with verification if the website is new. Once it is verified,
-            run a crawl and open the highest-priority issue.
+            run a website check and open the highest-priority problem.
           </p>
         </div>
 
@@ -583,14 +631,14 @@ function ProjectDetailPlan({
             icon={<ShieldCheck className="size-4" aria-hidden="true" />}
             label="Setup"
             value={isVerified ? "Verified" : "Verify first"}
-            detail="Ownership must be confirmed before a full crawl can run."
+            detail="Ownership must be confirmed before a full check can run."
             href="#project-settings"
           />
           <PlanTile
             icon={<Play className="size-4" aria-hidden="true" />}
-            label="Crawl"
-            value={pageCount ? `${pageCount} pages found` : "Run first crawl"}
-            detail="A crawl collects pages, metadata, links, and issue signals."
+            label="Website check"
+            value={pageCount ? `${pageCount} pages found` : "Run first check"}
+            detail="A check collects pages, titles, links, and problem signals."
             href="#project-pages"
           />
           <PlanTile
@@ -603,7 +651,7 @@ function ProjectDetailPlan({
             }
             label="Problems"
             value={issueCount ? `${issueCount} need review` : "Nothing urgent"}
-            detail="Open priority issues after the crawl finishes."
+            detail="Open priority problems after the check finishes."
             href="#project-issues"
           />
         </div>
@@ -712,6 +760,84 @@ function formatEnum(value: string) {
     .join(" ");
 }
 
+function formatPageResponse(statusCode: number | null | undefined) {
+  if (!statusCode) {
+    return "Pending";
+  }
+
+  if (statusCode >= 200 && statusCode < 300) {
+    return "Good";
+  }
+
+  if (statusCode >= 300 && statusCode < 400) {
+    return "Redirects";
+  }
+
+  if (statusCode >= 400) {
+    return "Needs review";
+  }
+
+  return statusCode.toString();
+}
+
+function formatProblemImportance(severity: string) {
+  if (severity === "CRITICAL") {
+    return "Urgent";
+  }
+
+  if (severity === "WARNING") {
+    return "Planned";
+  }
+
+  return "Idea";
+}
+
+function softenWebsiteProblemTitle(title: string) {
+  const exact: Record<string, string> = {
+    "Canonical URL could not be checked": "Preferred page needs a check",
+    "Canonical points to a non-200 URL": "Preferred page is not loading",
+    "Duplicate H1": "Page heading repeats",
+    "Duplicate meta description": "Page description repeats",
+    "Duplicate meta descriptions across page template":
+      "Page template repeats the same description",
+    "Duplicate title": "Page title repeats",
+    "Duplicate titles across page template":
+      "Page template repeats the same title",
+    "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Missing canonical tag": "Preferred page is missing",
+    "Missing H1": "Main heading is missing",
+    "Missing image alt text": "Image description is missing",
+    "Missing meta description": "Page description is missing",
+    "Missing schema markup": "Page details for Google are missing",
+    "Missing title": "Page title is missing",
+    "Page marked noindex": "Page hidden from Google",
+    "Product schema missing": "Product details for Google are missing",
+    "Redirect chain": "Page takes too many redirects",
+    "Sitemap URL is not internally linked":
+      "Page list includes a hard-to-find page",
+    "Weak meta description": "Page description could be clearer",
+    "Weak title": "Page title could be clearer",
+  };
+
+  const mapped = exact[title] ?? title;
+
+  return mapped
+    .replace(/\bURLs?\b/g, "pages")
+    .replace(/\bH1\b/g, "main heading")
+    .replace(/\bMeta Description\b/g, "page description")
+    .replace(/\bmeta description\b/g, "page description")
+    .replace(/\bCanonical\b/g, "preferred page")
+    .replace(/\bcanonical\b/g, "preferred page")
+    .replace(/\bSchema\b/g, "Google details")
+    .replace(/\bschema\b/g, "Google details")
+    .replace(/\bSitemap\b/g, "page list")
+    .replace(/\bsitemap\b/g, "page list")
+    .replace(/\bRobots\.txt\b/g, "robots file")
+    .replace(/\brobots\.txt\b/g, "robots file")
+    .replace(/\bNoindex\b/g, "hidden from Google")
+    .replace(/\bnoindex\b/g, "hidden from Google");
+}
+
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
@@ -719,17 +845,17 @@ function getSingle(value: string | string[] | undefined) {
 function getDomainErrorMessage(error: string) {
   const messages: Record<string, string> = {
     "crawl-failed":
-      "The crawler could not complete this site from local development. The failed crawl run is recorded when one is created.",
-    "crawl-invalid": "The crawl request was missing a valid domain.",
-    "crawl-not-verified": "Verify the domain before starting a full crawl.",
+      "The website check could not complete from local development. The failed check is recorded when one is created.",
+    "crawl-invalid": "The check request was missing a valid website.",
+    "crawl-not-verified": "Verify the website before starting a full check.",
     "crawl-page-limit":
-      "This workspace has reached its page crawl limit for the current plan.",
+      "This workspace has reached its page-check limit for the current plan.",
     "crawl-plan-limit":
-      "This crawl cadence is not available on the current workspace plan.",
-    "domain-access": "You do not have access to that domain.",
+      "This check rhythm is not available on the current workspace plan.",
+    "domain-access": "You do not have access to that website.",
   };
 
-  return messages[error] ?? "Please try again or inspect the domain settings.";
+  return messages[error] ?? "Please try again or inspect the website settings.";
 }
 
 function StatusNotice({ message, title }: { message: string; title: string }) {
