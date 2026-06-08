@@ -807,3 +807,22 @@ Implementation:
 - [x] Move Vercel, Netlify, Zapier/Make, and saved connection records into a closed "Advanced connection settings" panel.
 - [x] Replace deployment/webhook/workflow language in the advanced panel with launch checks, message URLs, and saved connections.
 - [x] Browser-check Connections desktop and mobile after deployment.
+
+### Batch AN: Page Detail Calmness
+
+Competitive evidence:
+
+- Semrush URL and on-page views keep detailed SEO fields available, but the useful first question is which page fix to handle next.
+- Ahrefs Page Explorer and Site Audit URL detail provide strong evidence, but a nontechnical user should not start with raw snapshot, canonical, robots, or workflow wording.
+- Ubersuggest-style recommendations are closer to the target tone when they frame issues as practical page improvements.
+
+Implementation:
+
+- [x] Add a plain-language page care plan above page metrics.
+- [x] Surface the first open page problem, search-result basics, and suggestion generation as the first three choices.
+- [x] Rename page metrics from HTTP/open/critical/internal-link language to page response, open problems, urgent problems, and helpful links.
+- [x] Rename "Latest SEO snapshot" to "What Google sees" with plain labels for title, description, heading, preferred page, search visibility, and page copy.
+- [x] Rename "Issue history" to "Problems on this page" and replace severity/status labels with importance/progress.
+- [x] Rename AI recommendations to page suggestions with softer helper copy.
+- [x] Move page changes and internal link detail into a closed "More page detail" panel.
+- [ ] Browser-check Page Detail desktop and mobile after deployment.

@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Bot, GitBranch, Link2 } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Bot,
+  CheckCircle2,
+  FileText,
+  GitBranch,
+  Link2,
+} from "lucide-react";
 import { generatePageRecommendations } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getPageDetailData } from "@/lib/management-queries";
@@ -24,6 +32,17 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
   const criticalIssues = openIssues.filter(
     (issue) => issue.severity === "CRITICAL",
   ).length;
+  const firstIssue = openIssues.at(0);
+  const hasSearchVisibilityProblem = openIssues.some((issue) =>
+    `${issue.title} ${issue.issueType}`
+      .toLowerCase()
+      .match(/noindex|robots|canonical|blocked/),
+  );
+  const hasTitle = Boolean(latestSnapshot?.title);
+  const hasDescription = Boolean(latestSnapshot?.metaDescription);
+  const isSearchable =
+    latestSnapshot?.robotsDirective?.toLowerCase().includes("noindex") !==
+      true && !hasSearchVisibilityProblem;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -53,66 +72,95 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
             <h2 className="mt-2 break-words text-3xl font-semibold tracking-normal">
               {page.url}
             </h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
+              Start with the next page fix, then review what search engines see
+              on this URL. Deeper link and change detail is still available when
+              you need it.
+            </p>
           </header>
+
+          <PageFocusPlan
+            firstIssue={firstIssue}
+            hasDescription={hasDescription}
+            hasTitle={hasTitle}
+            isSearchable={isSearchable}
+            pageId={page.id}
+          />
 
           <section className="mt-6 grid gap-4 md:grid-cols-4">
             <Metric
-              label="HTTP status"
+              label="Page response"
               value={latestSnapshot?.statusCode ?? "Pending"}
             />
-            <Metric label="Open issues" value={openIssues.length} />
-            <Metric label="Critical issues" value={criticalIssues} />
+            <Metric label="Open problems" value={openIssues.length} />
+            <Metric label="Urgent problems" value={criticalIssues} />
             <Metric
-              label="Internal links"
+              label="Helpful links"
               value={`${page.incomingLinks.length} in / ${page.outgoingLinks.length} out`}
             />
           </section>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
             <div className="grid gap-6">
-              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="text-lg font-semibold">Latest SEO snapshot</h3>
+              <section
+                id="page-basics"
+                className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+              >
+                <h3 className="text-lg font-semibold">What Google sees</h3>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  These are the page basics that usually shape the search result
+                  and whether the page can be shown.
+                </p>
                 {latestSnapshot ? (
                   <dl className="mt-5 grid gap-4 md:grid-cols-2">
                     <Meta
-                      label="Title"
+                      label="Page title"
                       value={latestSnapshot.title ?? "Missing"}
                     />
                     <Meta
-                      label="Meta description"
+                      label="Search description"
                       value={latestSnapshot.metaDescription ?? "Missing"}
                     />
-                    <Meta label="H1" value={latestSnapshot.h1 ?? "Missing"} />
                     <Meta
-                      label="Canonical"
+                      label="Main heading"
+                      value={latestSnapshot.h1 ?? "Missing"}
+                    />
+                    <Meta
+                      label="Preferred page"
                       value={latestSnapshot.canonical ?? "Missing"}
                     />
                     <Meta
-                      label="Robots"
-                      value={latestSnapshot.robotsDirective ?? "Not set"}
+                      label="Search visibility"
+                      value={getSearchVisibilityLabel(
+                        latestSnapshot.robotsDirective,
+                      )}
                     />
                     <Meta
-                      label="Word count"
+                      label="Page copy"
                       value={latestSnapshot.wordCount ?? "Unknown"}
                     />
                   </dl>
                 ) : (
                   <p className="mt-3 text-sm text-slate-500">
-                    This page has not been snapshotted by a crawl yet.
+                    This page has not been checked yet. Run a website check to
+                    see the title, description, heading, and visibility status.
                   </p>
                 )}
               </section>
 
               <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
                 <div className="border-b border-slate-200 p-5">
-                  <h3 className="text-lg font-semibold">Issue history</h3>
+                  <h3 className="text-lg font-semibold">
+                    Problems on this page
+                  </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Page-level issues with owner and workflow state.
+                    Open the first important item, follow the suggested fix, and
+                    come back here to check the page again.
                   </p>
                 </div>
                 <div className="grid divide-y divide-slate-100">
-                  {page.issues.length ? (
-                    page.issues.map((issue) => (
+                  {openIssues.length ? (
+                    openIssues.map((issue) => (
                       <Link
                         key={issue.id}
                         href={`/issues/${issue.id}`}
@@ -125,15 +173,18 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                           </p>
                         </div>
                         <Meta
-                          label="Severity"
-                          value={formatEnum(issue.severity)}
+                          label="Importance"
+                          value={getImportanceLabel(issue.severity)}
                         />
-                        <Meta label="Status" value={formatEnum(issue.status)} />
+                        <Meta
+                          label="Progress"
+                          value={getProgressLabel(issue.status)}
+                        />
                       </Link>
                     ))
                   ) : (
                     <div className="p-8 text-center text-sm text-slate-500">
-                      No page-level issues detected.
+                      No open problems on this page. Nice and quiet here.
                     </div>
                   )}
                 </div>
@@ -141,11 +192,18 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
             </div>
 
             <aside className="grid gap-6">
-              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <section
+                id="page-suggestions"
+                className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+              >
                 <div className="flex items-center gap-2">
                   <Bot className="size-5 text-slate-500" aria-hidden="true" />
-                  <h3 className="font-semibold">AI recommendations</h3>
+                  <h3 className="font-semibold">Page suggestions</h3>
                 </div>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  Create plain title, description, and content ideas for this
+                  page.
+                </p>
                 <form action={generatePageRecommendations} className="mt-4">
                   <input type="hidden" name="pageId" value={page.id} />
                   <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
@@ -175,49 +233,70 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                     ))
                   ) : (
                     <p className="text-sm text-slate-500">
-                      No AI recommendations generated for this page yet.
+                      No suggestions generated for this page yet.
                     </p>
                   )}
                 </div>
               </section>
 
-              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <GitBranch
-                    className="size-5 text-slate-500"
-                    aria-hidden="true"
+              <details className="group rounded-lg border border-slate-200 bg-white shadow-sm">
+                <summary className="flex items-center justify-between gap-4 p-5">
+                  <div>
+                    <h3 className="font-semibold">More page detail</h3>
+                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                      Open this for page changes and internal-link detail.
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                    Show detail
+                  </span>
+                  <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                    Hide
+                  </span>
+                </summary>
+                <div className="grid gap-5 border-t border-slate-100 p-5">
+                  <section>
+                    <div className="flex items-center gap-2">
+                      <GitBranch
+                        className="size-5 text-slate-500"
+                        aria-hidden="true"
+                      />
+                      <h3 className="font-semibold">Page changes</h3>
+                    </div>
+                    <div className="mt-4 grid gap-3">
+                      {page.changeEvents.length ? (
+                        page.changeEvents.map((event) => (
+                          <div
+                            key={event.id}
+                            className="rounded-md border border-slate-200 bg-slate-50 p-3"
+                          >
+                            <p className="text-sm font-semibold">
+                              {formatIssueType(event.changeType)}
+                            </p>
+                            <p className="mt-1 text-xs text-slate-500">
+                              {event.createdAt.toLocaleString()}
+                            </p>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-slate-500">
+                          No tracked page changes yet.
+                        </p>
+                      )}
+                    </div>
+                  </section>
+
+                  <LinkPanel
+                    title="Links pointing here"
+                    links={page.incomingLinks}
+                    inbound
                   />
-                  <h3 className="font-semibold">Change timeline</h3>
+                  <LinkPanel
+                    title="Links from this page"
+                    links={page.outgoingLinks}
+                  />
                 </div>
-                <div className="mt-4 grid gap-3">
-                  {page.changeEvents.length ? (
-                    page.changeEvents.map((event) => (
-                      <div
-                        key={event.id}
-                        className="rounded-md border border-slate-200 bg-slate-50 p-3"
-                      >
-                        <p className="text-sm font-semibold">
-                          {formatIssueType(event.changeType)}
-                        </p>
-                        <p className="mt-1 text-xs text-slate-500">
-                          {event.createdAt.toLocaleString()}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-slate-500">
-                      No tracked page changes yet.
-                    </p>
-                  )}
-                </div>
-              </section>
-
-              <LinkPanel
-                title="Incoming links"
-                links={page.incomingLinks}
-                inbound
-              />
-              <LinkPanel title="Outgoing links" links={page.outgoingLinks} />
+              </details>
             </aside>
           </section>
         </section>
@@ -281,12 +360,113 @@ function LinkPanel({
   );
 }
 
+function PageFocusPlan({
+  firstIssue,
+  hasDescription,
+  hasTitle,
+  isSearchable,
+  pageId,
+}: {
+  firstIssue?: {
+    id: string;
+    issueType: string;
+    severity: string;
+    title: string;
+  };
+  hasDescription: boolean;
+  hasTitle: boolean;
+  isSearchable: boolean;
+  pageId: string;
+}) {
+  const pageBasicsReady = hasTitle && hasDescription && isSearchable;
+
+  const plan = [
+    {
+      detail: firstIssue
+        ? `${getImportanceLabel(firstIssue.severity)}: ${formatIssueType(
+            firstIssue.issueType,
+          )}`
+        : "No open page problem is waiting right now.",
+      href: firstIssue ? `/issues/${firstIssue.id}` : "#page-basics",
+      icon: firstIssue ? (
+        <AlertTriangle className="size-4" aria-hidden="true" />
+      ) : (
+        <CheckCircle2 className="size-4" aria-hidden="true" />
+      ),
+      label: firstIssue ? "Fix this first" : "Page looks calm",
+      value: firstIssue?.title ?? "No urgent fix",
+    },
+    {
+      detail: pageBasicsReady
+        ? "Title, description, and visibility are ready."
+        : "Check the title, description, and search visibility before deeper work.",
+      href: "#page-basics",
+      icon: <FileText className="size-4" aria-hidden="true" />,
+      label: "Search result basics",
+      value: pageBasicsReady ? "Looks ready" : "Needs a quick look",
+    },
+    {
+      detail:
+        "Create a plain suggestion when the page needs better copy or a clearer search result.",
+      href: "#page-suggestions",
+      icon: <Bot className="size-4" aria-hidden="true" />,
+      label: "Need wording help?",
+      value: "Generate suggestions",
+    },
+  ];
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Page care plan
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-normal text-slate-950">
+            Open the next useful thing for this page.
+          </h3>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            This keeps the page focused on decisions, not audit fields. Start
+            with an open problem, then check the search result basics.
+          </p>
+        </div>
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        {plan.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="rounded-md border border-orange-100 bg-white p-4 text-left transition hover:border-orange-200 hover:bg-orange-50"
+          >
+            <span className="inline-flex size-8 items-center justify-center rounded-md bg-orange-50 text-orange-600">
+              {item.icon}
+            </span>
+            <span className="mt-3 block text-sm font-semibold text-slate-950">
+              {item.label}
+            </span>
+            <span className="mt-2 block text-sm font-medium text-orange-700">
+              {item.value}
+            </span>
+            <span className="mt-2 block text-sm leading-6 text-slate-500">
+              {item.detail}
+            </span>
+          </Link>
+        ))}
+      </div>
+      <form action={generatePageRecommendations} className="mt-4">
+        <input type="hidden" name="pageId" value={pageId} />
+        <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
+          Generate page suggestions
+        </button>
+      </form>
+    </section>
+  );
+}
+
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );
@@ -295,12 +475,42 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-        {label}
-      </dt>
+      <dt className="text-sm font-medium text-slate-500">{label}</dt>
       <dd className="mt-1 text-sm font-medium text-slate-700">{value}</dd>
     </div>
   );
+}
+
+function getImportanceLabel(value: string) {
+  if (value === "CRITICAL") {
+    return "Urgent";
+  }
+
+  if (value === "WARNING") {
+    return "Needs attention";
+  }
+
+  return "Suggestion";
+}
+
+function getProgressLabel(value: string) {
+  const labels: Record<string, string> = {
+    FIXED: "Fixed",
+    IN_PROGRESS: "Being handled",
+    OPEN: "Open",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function getSearchVisibilityLabel(value: string | null | undefined) {
+  if (!value) {
+    return "Allowed unless the page says otherwise";
+  }
+
+  return value.toLowerCase().includes("noindex")
+    ? "Blocked from search"
+    : "Allowed in search";
 }
 
 function formatEnum(value: string) {
