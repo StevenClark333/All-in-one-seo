@@ -209,6 +209,7 @@ export default async function DomainWorkspacePage({
                     <Play className="size-4" aria-hidden="true" />
                     Run new check
                     <InfoTooltip
+                      decorative
                       label="Run a fresh domain crawl and update pages, issues, scores, and fix verification."
                       passive
                       side="left"
@@ -657,8 +658,28 @@ export default async function DomainWorkspacePage({
             </div>
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-            <div className="grid gap-6">
+          <details className="group mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex cursor-pointer list-none flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-orange-700">
+                  More project details
+                </p>
+                <h3 className="mt-1 text-xl font-semibold tracking-normal text-slate-950">
+                  Open the deeper work queue when you need it
+                </h3>
+                <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-600">
+                  Issues, page previews, crawl history, reports, and search
+                  metrics stay here, but they no longer make the main workspace
+                  feel endless.
+                </p>
+              </div>
+              <span className="inline-flex h-9 w-fit items-center justify-center rounded-md border border-orange-200 bg-orange-50 px-3 text-sm font-semibold text-orange-700 transition group-open:bg-orange-600 group-open:text-white">
+                <span className="group-open:hidden">Show details</span>
+                <span className="hidden group-open:inline">Hide details</span>
+              </span>
+            </summary>
+            <div className="grid gap-6 border-t border-slate-200 p-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+              <div className="grid gap-6">
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-lg font-semibold">
@@ -973,8 +994,9 @@ export default async function DomainWorkspacePage({
                   )}
                 </div>
               </section>
-            </aside>
-          </section>
+              </aside>
+            </div>
+          </details>
         </section>
       </div>
     </main>

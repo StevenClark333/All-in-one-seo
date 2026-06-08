@@ -1,12 +1,16 @@
 import { Info } from "lucide-react";
 
 type InfoTooltipProps = {
+  ariaLabel?: string;
+  decorative?: boolean;
   label: string;
   passive?: boolean;
   side?: "left" | "right";
 };
 
 export function InfoTooltip({
+  ariaLabel,
+  decorative = false,
   label,
   passive = false,
   side = "right",
@@ -18,16 +22,25 @@ export function InfoTooltip({
 
   return (
     <span className="group relative inline-flex align-middle">
-      {passive ? (
-        <span className={iconClass} aria-label={label}>
+      {decorative ? (
+        <span className={iconClass} aria-hidden="true">
+          <Info className="size-3.5" aria-hidden="true" />
+        </span>
+      ) : passive ? (
+        <span className={iconClass} aria-label={ariaLabel ?? label}>
           <Info className="size-3.5" aria-hidden="true" />
         </span>
       ) : (
-        <button type="button" aria-label={label} className={iconClass}>
+        <button
+          type="button"
+          aria-label={ariaLabel ?? label}
+          className={iconClass}
+        >
           <Info className="size-3.5" aria-hidden="true" />
         </button>
       )}
       <span
+        aria-hidden="true"
         role="tooltip"
         className={`pointer-events-none absolute top-6 z-30 w-[min(18rem,calc(100vw-2rem))] scale-95 rounded-md border border-slate-200 bg-slate-950 px-3 py-2 text-left text-xs font-medium leading-5 text-white opacity-0 shadow-lg transition group-hover:scale-100 group-hover:opacity-100 group-focus-within:scale-100 group-focus-within:opacity-100 ${sideClass}`}
       >
@@ -49,7 +62,7 @@ export function HelpLabel({
   return (
     <span className="inline-flex items-center gap-1.5">
       {children}
-      <InfoTooltip label={help} side={side} />
+      <InfoTooltip decorative label={help} side={side} />
     </span>
   );
 }

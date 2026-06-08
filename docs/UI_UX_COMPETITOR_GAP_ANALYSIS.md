@@ -111,6 +111,7 @@ Gap for us:
 | Reports | Report detail and shared reports still start like analytics summaries | Start with the client story: main takeaway, what changed, and next fix before metrics |
 | Crawl Runs | Individual crawl pages start with raw artifacts, detected changes, and snapshots | Start with a crawl recap: result, changed pages, failed pages, and what to open next |
 | Project Workspace | Domain workspace still reads like a command center with dense labels and many paths | Start with a short website focus plan, softer actions, and calmer section labels before deeper analytics |
+| Workspace Depth | Lower workspace sections still create a long scroll and repeated help text in headings | Keep the summary visible, collapse deeper work queues, and make help text quieter |
 
 ## Product Direction
 
@@ -519,3 +520,18 @@ Implementation:
 - [x] Replace command-center/cockpit language with calmer project-plan wording.
 - [x] Remove uppercase tracking from workspace helper cards and metadata.
 - [x] Limit workspace page inventory to a short preview with a direct full-pages action.
+
+### Batch Y: Workspace Depth Calmness
+
+Competitive evidence:
+
+- Semrush and Ubersuggest keep the first audit screen focused on status, top work, and a few drill-down paths instead of exposing every lower table at once.
+- Ahrefs keeps deep detail available, but the summary and filters guide the user before raw inventory.
+- A nontechnical user benefits when extra analytics are visible on demand without making the first page feel endless.
+
+Implementation:
+
+- [x] Move lower workspace detail into a single "More project details" expandable panel.
+- [x] Keep work queue, search performance, priority issues, page preview, readiness, crawl history, changes, and reports available inside that panel.
+- [x] Make help icons use a short accessible label instead of repeating full tooltip copy in headings.
+- [x] Add a short explanation that the deeper analytics are optional and can be opened when needed.
