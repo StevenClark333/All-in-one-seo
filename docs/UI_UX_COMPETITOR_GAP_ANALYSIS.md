@@ -1438,3 +1438,18 @@ Implementation:
 - [x] Translate Problem detail badges, progress options, note visibility, and fix idea types into softer wording.
 - [x] Browser-check Problems list and Problem detail status labels desktop and mobile locally.
 - [ ] Browser-check Problems list and Problem detail status labels after deployment.
+
+### Batch BY: Website Detail Setup Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs project detail screens keep crawl, verification, and setup file detail available, but beginner users need a plain-language website state first.
+- Nontechnical users should see websites, website workspace, WordPress site, every week/day, ownership confirmed, tag connected, robots file, page list, and finished/checking wording before project, platform enum, crawl frequency, verification status, script status, or artifact type labels.
+- The Website detail page should feel like a calm setup-and-check path, not a technical project record.
+
+Implementation:
+
+- [x] Rename Website detail navigation from project wording toward website wording.
+- [x] Translate website platform, check rhythm, ownership, website tag, setup file, and latest-check statuses into softer labels.
+- [x] Browser-check Website detail setup/status labels desktop and mobile locally.
+- [ ] Browser-check Website detail setup/status labels after deployment.

@@ -89,13 +89,13 @@ export default async function DomainDetailPage({
               className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
             >
               <ArrowLeft className="size-4" aria-hidden="true" />
-              Projects
+              Websites
             </Link>
             <Link
               href={`/domains/${domain.id}/workspace`}
               className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700"
             >
-              Project workspace
+              Website workspace
               <InfoTooltip
                 label="Open the focused website workspace for pages, problems, fixes, updates, and connections."
                 passive
@@ -187,7 +187,9 @@ export default async function DomainDetailPage({
               help="Most recent website check state."
               label="Last check"
               value={
-                latestCrawl ? formatEnum(latestCrawl.status) : "Not started"
+                latestCrawl
+                  ? formatWebsiteCheckStatus(latestCrawl.status)
+                  : "Not started"
               }
             />
           </section>
@@ -372,7 +374,7 @@ export default async function DomainDetailPage({
                         >
                           {platforms.map((platform) => (
                             <option key={platform} value={platform}>
-                              {formatEnum(platform)}
+                              {formatWebsitePlatform(platform)}
                             </option>
                           ))}
                         </select>
@@ -391,7 +393,7 @@ export default async function DomainDetailPage({
                         >
                           {crawlFrequencies.map((frequency) => (
                             <option key={frequency} value={frequency}>
-                              {formatEnum(frequency)}
+                              {formatCheckRhythm(frequency)}
                             </option>
                           ))}
                         </select>
@@ -408,14 +410,14 @@ export default async function DomainDetailPage({
                         label="Ownership"
                         value={
                           isVerified
-                            ? "Verified"
-                            : formatEnum(domain.verificationStatus)
+                            ? "Ownership confirmed"
+                            : formatOwnershipStatus(domain.verificationStatus)
                         }
                       />
                       <Meta
                         help="Whether the optional website tag has reported page data."
                         label="Website tag"
-                        value={formatEnum(domain.scriptStatus)}
+                        value={formatWebsiteTagStatus(domain.scriptStatus)}
                       />
                       <Meta
                         help="Most recent ownership value created for this website."
@@ -502,8 +504,8 @@ export default async function DomainDetailPage({
                       />
                       <Meta
                         help="Whether the optional tag has sent any page data."
-                        label="Status"
-                        value={formatEnum(domain.scriptStatus)}
+                        label="Tag status"
+                        value={formatWebsiteTagStatus(domain.scriptStatus)}
                       />
                     </dl>
                   </div>
@@ -530,7 +532,7 @@ export default async function DomainDetailPage({
                           className="rounded-md border border-slate-200 bg-slate-50 p-3"
                         >
                           <p className="text-sm font-semibold">
-                            {formatEnum(artifact.type)}
+                            {formatSetupFileType(artifact.type)}
                           </p>
                           <p className="mt-1 truncate text-xs text-slate-500">
                             {artifact.url}
@@ -630,7 +632,7 @@ function ProjectDetailPlan({
           <PlanTile
             icon={<ShieldCheck className="size-4" aria-hidden="true" />}
             label="Setup"
-            value={isVerified ? "Verified" : "Verify first"}
+            value={isVerified ? "Ownership confirmed" : "Verify first"}
             detail="Ownership must be confirmed before a full check can run."
             href="#project-settings"
           />
@@ -760,6 +762,72 @@ function formatEnum(value: string) {
     .join(" ");
 }
 
+function formatWebsitePlatform(value: string) {
+  const labels: Record<string, string> = {
+    CUSTOM: "Custom website",
+    SHOPIFY: "Shopify store",
+    SQUARESPACE: "Squarespace site",
+    UNKNOWN: "Website platform unknown",
+    WEBFLOW: "Webflow site",
+    WIX: "Wix site",
+    WORDPRESS: "WordPress site",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatCheckRhythm(value: string) {
+  const labels: Record<string, string> = {
+    DAILY: "Every day",
+    MANUAL: "Only when I start it",
+    WEEKLY: "Every week",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatWebsiteCheckStatus(value: string) {
+  const labels: Record<string, string> = {
+    CANCELLED: "Stopped",
+    COMPLETED: "Finished",
+    FAILED: "Needs review",
+    QUEUED: "Waiting to start",
+    RUNNING: "Checking now",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatOwnershipStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs setup help",
+    PENDING: "Waiting for setup",
+    UNVERIFIED: "Waiting for setup",
+    VERIFIED: "Ownership confirmed",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatWebsiteTagStatus(value: string) {
+  const labels: Record<string, string> = {
+    DETECTED: "Tag connected",
+    DISABLED: "Tag turned off",
+    NOT_INSTALLED: "Tag not connected",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatSetupFileType(value: string) {
+  const labels: Record<string, string> = {
+    ROBOTS_TXT: "Robots file",
+    SITEMAP: "Page list",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
 function formatPageResponse(statusCode: number | null | undefined) {
   if (!statusCode) {
     return "Pending";
@@ -804,6 +872,8 @@ function softenWebsiteProblemTitle(title: string) {
     "Duplicate titles across page template":
       "Page template repeats the same title",
     "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Homepage became noindex after latest deploy":
+      "Homepage was hidden from Google after deploy",
     "Missing canonical tag": "Preferred page is missing",
     "Missing H1": "Main heading is missing",
     "Missing image alt text": "Image description is missing",
