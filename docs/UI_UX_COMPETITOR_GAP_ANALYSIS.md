@@ -825,4 +825,4 @@ Implementation:
 - [x] Rename "Issue history" to "Problems on this page" and replace severity/status labels with importance/progress.
 - [x] Rename AI recommendations to page suggestions with softer helper copy.
 - [x] Move page changes and internal link detail into a closed "More page detail" panel.
-- [ ] Browser-check Page Detail desktop and mobile after deployment.
+- [x] Browser-check Page Detail desktop and mobile after deployment.
