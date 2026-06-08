@@ -53,6 +53,8 @@ export default async function Home() {
     sites,
   });
   const priorityIssues = issues.slice(0, 5);
+  const visibleSites = sites.slice(0, 6);
+  const hiddenSiteCount = Math.max(sites.length - visibleSites.length, 0);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -289,8 +291,9 @@ export default async function Home() {
                     label="60-79 needs attention"
                     max={Math.max(1, sites.length)}
                     value={
-                      sites.filter((site) => site.score >= 60 && site.score < 80)
-                        .length
+                      sites.filter(
+                        (site) => site.score >= 60 && site.score < 80,
+                      ).length
                     }
                   />
                   <HorizontalBar
@@ -308,7 +311,10 @@ export default async function Home() {
                 <div className="mt-4 grid gap-2">
                   <QuickAction href="/domains/new" label="Add website" />
                   <QuickAction href="/domains" label="Scan project" />
-                  <QuickAction href="/recommendations" label="Generate briefs" />
+                  <QuickAction
+                    href="/recommendations"
+                    label="Generate briefs"
+                  />
                   <QuickAction href="/rank-tracking" label="Track keywords" />
                 </div>
               </div>
@@ -326,169 +332,192 @@ export default async function Home() {
             </section>
           ) : null}
 
-          <div className="mt-6 grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
-            <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-              <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Portfolio table showing verification, crawl status, pages, and issue volume across monitored domains.">
-                      {isAgency ? "All client sites" : "Monitored sites"}
-                    </HelpLabel>
-                  </h3>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Verification, scan status, and issue volume across your
-                    active projects.
-                  </p>
-                </div>
-                <button className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                  <FileText className="size-4" aria-hidden="true" />
-                  Export
-                  <InfoTooltip
-                    label="Prepare this table for client or internal reporting."
-                    passive
-                    side="left"
-                  />
-                </button>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 border-b border-slate-100 p-5 marker:hidden">
+              <div>
+                <h3 className="text-lg font-semibold">More workspace detail</h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Optional project tables and setup notes for deeper review.
+                </p>
               </div>
+              <span className="rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
+                Open details
+              </span>
+            </summary>
 
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[760px] text-left text-sm">
-                  <thead className="bg-slate-50 text-xs text-slate-500">
-                    <tr>
-                      <th className="px-5 py-3 font-semibold">Client</th>
-                      <th className="px-5 py-3 font-semibold">Domain</th>
-                      <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Latest site health score calculated from crawler and analyzer results.">
-                          Score
-                        </HelpLabel>
-                      </th>
-                      <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Number of URLs currently known for this monitored domain.">
-                          Pages
-                        </HelpLabel>
-                      </th>
-                      <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Critical issues first, warnings second. Use this to prioritize work.">
-                          Issues
-                        </HelpLabel>
-                      </th>
-                      <th className="px-5 py-3 font-semibold">
-                        <HelpLabel help="Most recent crawler run state for this domain.">
-                          Last crawl
-                        </HelpLabel>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {sites.length ? (
-                      sites.map((site) => (
-                        <tr key={site.domain} className="align-middle">
-                          <td className="px-5 py-4 font-medium text-slate-950">
-                            {site.client}
-                          </td>
-                          <td className="px-5 py-4">
-                            <div className="flex flex-col">
-                              <span className="font-medium">{site.domain}</span>
-                              <span className="text-xs text-slate-500">
-                                {site.platform}
+            <div className="grid gap-6 p-5 xl:grid-cols-[1.35fr_0.65fr]">
+              <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      <HelpLabel help="Portfolio table showing verification, crawl status, pages, and issue volume across monitored domains.">
+                        {isAgency ? "Client site detail" : "Website detail"}
+                      </HelpLabel>
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Verification, scan status, and issue volume when you need
+                      to compare projects.
+                    </p>
+                  </div>
+                  <button className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
+                    <FileText className="size-4" aria-hidden="true" />
+                    Export
+                    <InfoTooltip
+                      label="Prepare this table for client or internal reporting."
+                      passive
+                      side="left"
+                    />
+                  </button>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[760px] text-left text-sm">
+                    <thead className="bg-slate-50 text-xs text-slate-500">
+                      <tr>
+                        <th className="px-5 py-3 font-semibold">Client</th>
+                        <th className="px-5 py-3 font-semibold">Domain</th>
+                        <th className="px-5 py-3 font-semibold">
+                          <HelpLabel help="Latest site health score calculated from crawler and analyzer results.">
+                            Score
+                          </HelpLabel>
+                        </th>
+                        <th className="px-5 py-3 font-semibold">
+                          <HelpLabel help="Number of URLs currently known for this monitored domain.">
+                            Pages
+                          </HelpLabel>
+                        </th>
+                        <th className="px-5 py-3 font-semibold">
+                          <HelpLabel help="Critical issues first, warnings second. Use this to prioritize work.">
+                            Issues
+                          </HelpLabel>
+                        </th>
+                        <th className="px-5 py-3 font-semibold">
+                          <HelpLabel help="Most recent crawler run state for this domain.">
+                            Last crawl
+                          </HelpLabel>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {sites.length ? (
+                        visibleSites.map((site) => (
+                          <tr key={site.domain} className="align-middle">
+                            <td className="px-5 py-4 font-medium text-slate-950">
+                              {site.client}
+                            </td>
+                            <td className="px-5 py-4">
+                              <div className="flex flex-col">
+                                <span className="font-medium">
+                                  {site.domain}
+                                </span>
+                                <span className="text-xs text-slate-500">
+                                  {site.platform}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="px-5 py-4">
+                              {site.verification === "verified" ? (
+                                <span className="font-semibold">
+                                  {site.score}
+                                </span>
+                              ) : (
+                                <span className="text-slate-400">Pending</span>
+                              )}
+                            </td>
+                            <td className="px-5 py-4 text-slate-600">
+                              {site.pages.toLocaleString()}
+                            </td>
+                            <td className="px-5 py-4">
+                              <span className="font-medium text-red-600">
+                                {site.critical}
                               </span>
-                            </div>
-                          </td>
-                          <td className="px-5 py-4">
-                            {site.verification === "verified" ? (
-                              <span className="font-semibold">
-                                {site.score}
+                              <span className="text-slate-400"> / </span>
+                              <span className="font-medium text-amber-600">
+                                {site.warnings}
                               </span>
-                            ) : (
-                              <span className="text-slate-400">Pending</span>
-                            )}
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {site.pages.toLocaleString()}
-                          </td>
-                          <td className="px-5 py-4">
-                            <span className="font-medium text-red-600">
-                              {site.critical}
-                            </span>
-                            <span className="text-slate-400"> / </span>
-                            <span className="font-medium text-amber-600">
-                              {site.warnings}
-                            </span>
-                          </td>
-                          <td className="px-5 py-4 text-slate-600">
-                            {site.lastCrawl}
+                            </td>
+                            <td className="px-5 py-4 text-slate-600">
+                              {site.lastCrawl}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            className="px-5 py-8 text-center text-slate-500"
+                            colSpan={6}
+                          >
+                            No websites yet. Add your first website and we will
+                            guide you through the setup.
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          className="px-5 py-8 text-center text-slate-500"
-                          colSpan={6}
-                        >
-                          No websites yet. Add your first website and we will
-                          guide you through the setup.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
-            <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-lg font-semibold">
-                    <HelpLabel help="A quick view of completed SaaS capability areas from the source-of-truth plan.">
-                      Production build map
-                    </HelpLabel>
-                  </h3>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Completed product capabilities mapped to the source of
-                    truth.
-                  </p>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
-                <CheckCircle2
-                  className="size-5 text-emerald-500"
-                  aria-hidden="true"
-                />
-              </div>
+                {hiddenSiteCount > 0 ? (
+                  <DashboardPreviewNote
+                    body={`${hiddenSiteCount} more websites are kept out of this preview so the dashboard stays calm.`}
+                    href="/domains"
+                    label="Open projects"
+                  />
+                ) : null}
+              </section>
 
-              <div className="mt-5 grid gap-3">
-                {mvpModules.map((module) => {
-                  const Icon = module.icon;
+              <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      <HelpLabel help="A quick view of completed SaaS capability areas from the source-of-truth plan.">
+                        Product setup checklist
+                      </HelpLabel>
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Internal setup notes for the team. Most users can skip
+                      this.
+                    </p>
+                  </div>
+                  <CheckCircle2
+                    className="size-5 text-emerald-500"
+                    aria-hidden="true"
+                  />
+                </div>
 
-                  return (
-                    <article
-                      key={module.name}
-                      className="rounded-md border border-slate-200 p-4"
-                    >
-                      <div className="flex items-start gap-3">
-                        <Icon
-                          className="mt-0.5 size-5 text-slate-500"
-                          aria-hidden="true"
-                        />
-                        <div>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <h4 className="font-medium">{module.name}</h4>
-                            <span
-                              className={`rounded-full border px-2 py-0.5 text-xs font-medium ${statusStyles[module.status]}`}
-                            >
-                              {module.status}
-                            </span>
+                <div className="mt-5 grid gap-3">
+                  {mvpModules.map((module) => {
+                    const Icon = module.icon;
+
+                    return (
+                      <article
+                        key={module.name}
+                        className="rounded-md border border-slate-200 p-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <Icon
+                            className="mt-0.5 size-5 text-slate-500"
+                            aria-hidden="true"
+                          />
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h4 className="font-medium">{module.name}</h4>
+                              <span
+                                className={`rounded-full border px-2 py-0.5 text-xs font-medium ${statusStyles[module.status]}`}
+                              >
+                                {module.status}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-sm leading-6 text-slate-500">
+                              {module.description}
+                            </p>
                           </div>
-                          <p className="mt-1 text-sm leading-6 text-slate-500">
-                            {module.description}
-                          </p>
                         </div>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            </section>
-          </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              </section>
+            </div>
+          </details>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -595,7 +624,7 @@ function getStatHelp(label: string) {
       "Average SEO health across websites that have finished setup.",
     "Active clients":
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
-    "Clients":
+    Clients:
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
     "Critical issues":
       "Problems that can meaningfully hurt search visibility and should be fixed first.",
@@ -634,6 +663,28 @@ function QuickAction({ href, label }: { href: string; label: string }) {
       {label}
       <ArrowRight className="size-4" aria-hidden="true" />
     </Link>
+  );
+}
+
+function DashboardPreviewNote({
+  body,
+  href,
+  label,
+}: {
+  body: string;
+  href: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+      <p>{body}</p>
+      <Link
+        href={href}
+        className="inline-flex w-fit items-center justify-center rounded-md border border-orange-200 bg-orange-50 px-3 py-2 font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100"
+      >
+        {label}
+      </Link>
+    </div>
   );
 }
 
