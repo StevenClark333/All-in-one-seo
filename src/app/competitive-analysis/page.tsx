@@ -42,11 +42,24 @@ export default async function CompetitiveAnalysisPage({
   });
   const topDomain = data.domainRows.at(0);
   const competitorPlan = buildCompetitorPlan({ data, selectedDomainId });
+  const visibleCompetitors = data.competitorRows.slice(0, 6);
+  const hiddenCompetitorCount = Math.max(
+    data.competitorRows.length - visibleCompetitors.length,
+    0,
+  );
+  const visibleDomainRows = data.domainRows.slice(0, 6);
+  const hiddenDomainCount = Math.max(
+    data.domainRows.length - visibleDomainRows.length,
+    0,
+  );
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Competitive Analysis" activeDomainId={selectedDomainId} />
+        <AppSidebar
+          active="Competitive Analysis"
+          activeDomainId={selectedDomainId}
+        />
 
         <section className="min-w-0 px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -55,24 +68,26 @@ export default async function CompetitiveAnalysisPage({
                 {data.workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Competitive analysis
+                Competitor insights
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Domain overview, organic search visibility, and top-page
-                comparisons across your managed SEO projects.
+                See who is ahead, what they are winning, and the next small
+                improvement to make on your own site.
               </p>
             </div>
 
             <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
               <Trophy className="size-4" aria-hidden="true" />
-              {topDomain ? `${topDomain.domain} leads visibility` : "No search data yet"}
+              {topDomain
+                ? `${topDomain.domain} leads visibility`
+                : "No search data yet"}
             </div>
           </header>
 
           <ProjectWorkspaceBar
             active="competitive"
             domainId={selectedDomainId}
-            note="Competitive analysis uses imported Search Console, crawl, page, and issue data."
+            note="Competitor insights use imported Search Console, crawl, page, and issue data."
             returnPath="/competitive-analysis"
           />
 
@@ -98,7 +113,7 @@ export default async function CompetitiveAnalysisPage({
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-700">
                   Compare only what helps the next decision: who is ahead, what
-                  page or keyword is worth copying thoughtfully, and what to do
+                  page or keyword is worth learning from, and what to improve
                   next on your own site.
                 </p>
               </div>
@@ -160,24 +175,84 @@ export default async function CompetitiveAnalysisPage({
             <Metric
               help="Crawled pages included in the compared project set."
               label="Pages"
-              value={data.domainRows.reduce((total, row) => total + row.pageCount, 0)}
+              value={data.domainRows.reduce(
+                (total, row) => total + row.pageCount,
+                0,
+              )}
             />
             <Metric
               help="Open technical and content issues across compared projects."
               label="Open issues"
-              value={data.domainRows.reduce((total, row) => total + row.issueCount, 0)}
+              value={data.domainRows.reduce(
+                (total, row) => total + row.issueCount,
+                0,
+              )}
             />
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Add competitor</h3>
+                <h3 className="text-lg font-semibold">Competitors to watch</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Track external domains against a selected project.
+                  A short list of competitors that are already showing up in
+                  tracked rankings.
                 </p>
               </div>
-              <form action={addCompetitorDomainAction} className="grid gap-4 p-5">
+              <div className="divide-y divide-slate-100">
+                {data.competitorRows.length ? (
+                  visibleCompetitors.map((row) => (
+                    <article
+                      key={row.domain}
+                      className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_120px_110px]"
+                    >
+                      <div className="min-w-0">
+                        <p className="font-semibold">{row.domain}</p>
+                        <p className="mt-1 text-sm text-slate-500">
+                          {row.label ?? row.bestKeyword ?? "Awaiting rank data"}
+                        </p>
+                      </div>
+                      <Meta
+                        label="Avg. position"
+                        value={row.avgPosition?.toString() ?? "Pending"}
+                      />
+                      <Meta
+                        label="Top 10 wins"
+                        value={row.keywordWins.toString()}
+                      />
+                    </article>
+                  ))
+                ) : (
+                  <p className="p-8 text-center text-sm text-slate-500">
+                    Add one competitor when you are ready to see who is ahead.
+                  </p>
+                )}
+              </div>
+              {hiddenCompetitorCount > 0 ? (
+                <PreviewLimitNote
+                  body={`${hiddenCompetitorCount} more competitors are hidden so this view stays easy to scan.`}
+                />
+              ) : null}
+            </section>
+
+            <details className="rounded-lg border border-slate-200 bg-white shadow-sm">
+              <summary className="cursor-pointer list-none border-b border-slate-100 p-5 marker:hidden">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">Add competitor</h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Open this when you want to compare another website.
+                    </p>
+                  </div>
+                  <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                    Show form
+                  </span>
+                </div>
+              </summary>
+              <form
+                action={addCompetitorDomainAction}
+                className="grid gap-4 p-5"
+              >
                 <FilterLabel label="Project">
                   <select
                     name="domainId"
@@ -213,43 +288,7 @@ export default async function CompetitiveAnalysisPage({
                   Save competitor
                 </button>
               </form>
-            </section>
-
-            <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">External competitors</h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Ranking visibility from tracked competitor observations.
-                </p>
-              </div>
-              <div className="divide-y divide-slate-100">
-                {data.competitorRows.length ? (
-                  data.competitorRows.map((row) => (
-                    <article
-                      key={row.domain}
-                      className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_120px_110px]"
-                    >
-                      <div className="min-w-0">
-                        <p className="font-semibold">{row.domain}</p>
-                        <p className="mt-1 text-sm text-slate-500">
-                          {row.label ?? row.bestKeyword ?? "Awaiting rank data"}
-                        </p>
-                      </div>
-                      <Meta
-                        label="Avg. position"
-                        value={row.avgPosition?.toString() ?? "Pending"}
-                      />
-                      <Meta label="Top 10 wins" value={row.keywordWins.toString()} />
-                    </article>
-                  ))
-                ) : (
-                  <p className="p-8 text-center text-sm text-slate-500">
-                    Add competitor domains, then record competitor ranks from
-                    Rank Tracking.
-                  </p>
-                )}
-              </div>
-            </section>
+            </details>
           </section>
 
           <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -258,8 +297,8 @@ export default async function CompetitiveAnalysisPage({
                 <div>
                   <h3 className="text-lg font-semibold">Adjust comparison</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Open this when you want to compare a specific project,
-                    date range, or device.
+                    Open this when you want to compare a specific project, date
+                    range, or device.
                   </p>
                 </div>
                 <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
@@ -267,68 +306,77 @@ export default async function CompetitiveAnalysisPage({
                 </span>
               </div>
             </summary>
-              <form className="grid gap-3 p-5 md:grid-cols-[repeat(4,minmax(0,1fr))_auto]">
-                <FilterLabel label="Project">
-                  <select
-                    name="domainId"
-                    defaultValue={selectedDomainId ?? ""}
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">All projects</option>
-                    {data.domains.map((domain) => (
-                      <option key={domain.id} value={domain.id}>
-                        {domain.domain}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <FilterLabel label="From">
-                  <input
-                    name="startDate"
-                    type="date"
-                    defaultValue={formatInputDate(data.dateRange.start)}
-                    className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <FilterLabel label="To">
-                  <input
-                    name="endDate"
-                    type="date"
-                    defaultValue={formatInputDate(data.dateRange.end)}
-                    className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <FilterLabel label="Device">
-                  <select
-                    name="device"
-                    defaultValue={device ?? ""}
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">All</option>
-                    {data.devices.map((item) => (
-                      <option key={item} value={item}>
-                        {formatEnum(item)}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
-                    <Search className="size-4" aria-hidden="true" />
-                    Compare
-                  </button>
-                </div>
-              </form>
+            <form className="grid gap-3 p-5 md:grid-cols-[repeat(4,minmax(0,1fr))_auto]">
+              <FilterLabel label="Project">
+                <select
+                  name="domainId"
+                  defaultValue={selectedDomainId ?? ""}
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                >
+                  <option value="">All projects</option>
+                  {data.domains.map((domain) => (
+                    <option key={domain.id} value={domain.id}>
+                      {domain.domain}
+                    </option>
+                  ))}
+                </select>
+              </FilterLabel>
+              <FilterLabel label="From">
+                <input
+                  name="startDate"
+                  type="date"
+                  defaultValue={formatInputDate(data.dateRange.start)}
+                  className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </FilterLabel>
+              <FilterLabel label="To">
+                <input
+                  name="endDate"
+                  type="date"
+                  defaultValue={formatInputDate(data.dateRange.end)}
+                  className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </FilterLabel>
+              <FilterLabel label="Device">
+                <select
+                  name="device"
+                  defaultValue={device ?? ""}
+                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                >
+                  <option value="">All</option>
+                  {data.devices.map((item) => (
+                    <option key={item} value={item}>
+                      {formatEnum(item)}
+                    </option>
+                  ))}
+                </select>
+              </FilterLabel>
+              <div className="flex items-end">
+                <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
+                  <Search className="size-4" aria-hidden="true" />
+                  Compare
+                </button>
+              </div>
+            </form>
           </details>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-100 p-5">
-              <h3 className="text-lg font-semibold">Domain overview</h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Compare owned domains by organic visibility, crawl depth, and
-                issue load.
-              </p>
-            </div>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="cursor-pointer list-none border-b border-slate-100 p-5 marker:hidden">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    More comparison detail
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Optional domain table for visibility, pages, health, and
+                    issue counts.
+                  </p>
+                </div>
+                <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                  Open details
+                </span>
+              </div>
+            </summary>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[860px] text-left text-sm">
                 <thead className="bg-slate-50 text-xs text-slate-500">
@@ -345,7 +393,7 @@ export default async function CompetitiveAnalysisPage({
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {data.domainRows.length ? (
-                    data.domainRows.map((row) => (
+                    visibleDomainRows.map((row) => (
                       <tr key={row.id}>
                         <td className="px-5 py-4">
                           <Link
@@ -361,7 +409,9 @@ export default async function CompetitiveAnalysisPage({
                         <td className="px-5 py-4 font-semibold">
                           {row.visibility}%
                         </td>
-                        <td className="px-5 py-4">{row.clicks.toLocaleString()}</td>
+                        <td className="px-5 py-4">
+                          {row.clicks.toLocaleString()}
+                        </td>
                         <td className="px-5 py-4">
                           {row.impressions.toLocaleString()}
                         </td>
@@ -377,7 +427,10 @@ export default async function CompetitiveAnalysisPage({
                     ))
                   ) : (
                     <tr>
-                      <td className="px-5 py-8 text-center text-slate-500" colSpan={8}>
+                      <td
+                        className="px-5 py-8 text-center text-slate-500"
+                        colSpan={8}
+                      >
                         No competitive project data yet. Add domains, run
                         crawls, and import Search Console metrics.
                       </td>
@@ -386,7 +439,14 @@ export default async function CompetitiveAnalysisPage({
                 </tbody>
               </table>
             </div>
-          </section>
+            {hiddenDomainCount > 0 ? (
+              <PreviewLimitNote
+                body={`${hiddenDomainCount} more projects are available in the full Projects view when you need the complete comparison.`}
+                href="/domains"
+                label="Open projects"
+              />
+            ) : null}
+          </details>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-2">
             <TopList
@@ -461,9 +521,7 @@ function TopList({
               className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_100px_120px]"
             >
               <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-500">
-                  {label}
-                </p>
+                <p className="text-sm font-medium text-slate-500">{label}</p>
                 <p className="mt-1 line-clamp-2 font-semibold">{item.key}</p>
               </div>
               <Meta label="Clicks" value={item.clicks.toLocaleString()} />
@@ -492,9 +550,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-slate-600">
-        {label}
-      </span>
+      <span className="text-sm font-medium text-slate-600">{label}</span>
       {children}
     </label>
   );
@@ -503,10 +559,32 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function PreviewLimitNote({
+  body,
+  href,
+  label = "Keep going",
+}: {
+  body: string;
+  href?: string;
+  label?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+      <p>{body}</p>
+      {href ? (
+        <Link
+          href={href}
+          className="inline-flex w-fit items-center justify-center rounded-md border border-orange-200 bg-orange-50 px-3 py-2 font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100"
+        >
+          {label}
+        </Link>
+      ) : null}
     </div>
   );
 }

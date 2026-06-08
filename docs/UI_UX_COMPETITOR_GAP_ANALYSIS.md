@@ -117,6 +117,7 @@ Gap for us:
 | Internal Links Depth   | Internal Links still shows too many issues and page-count rows at once                          | Keep suggested links first, limit issue previews, and collapse detailed link counts                      |
 | Dashboard Depth        | Dashboard still exposes portfolio tables and production build details before problem review     | Keep the plan and top problems visible, then make workspace/build detail optional                        |
 | Search Ideas Depth     | Keyword Research still opens with cockpit language, several full lists, and raw query inventory | Rename to Search Ideas, show short action previews, and make deeper keyword data optional                |
+| Competitor Depth       | Competitive Analysis still leads into setup forms and a full domain comparison table            | Rename to Competitor Insights, keep watchlist previews visible, and make setup/table detail optional     |
 
 ## Product Direction
 
@@ -628,3 +629,22 @@ Implementation:
 - [x] Move competitor gaps, intent groups, and raw query inventory into a closed "More search detail" panel.
 - [x] Limit deeper competitor and query previews inside that panel.
 - [x] Add plain-language preview notes when more ideas or queries exist.
+
+### Batch AE: Competitor Depth Calmness
+
+Competitive evidence:
+
+- Semrush competitor views emphasize who is leading, which competitor is worth watching, and which organic opportunities to act on next.
+- Ahrefs and Ubersuggest keep deeper competitor tables available, but the beginner-friendly path starts with a short watchlist and next action.
+- A nontechnical user should not need to fill a competitor form or read a full domain table before seeing who is ahead.
+
+Implementation:
+
+- [x] Rename the Competitive Analysis page header to "Competitor insights".
+- [x] Soften the header copy toward who is ahead and what to improve next.
+- [x] Rename external competitor list to "Competitors to watch".
+- [x] Limit visible competitor rows to the first 6.
+- [x] Move the Add Competitor form into a closed optional panel.
+- [x] Move the domain comparison table into a closed "More comparison detail" panel.
+- [x] Limit the expanded domain comparison preview to the first 6 projects.
+- [x] Add plain-language preview notes when more competitors or projects exist.
