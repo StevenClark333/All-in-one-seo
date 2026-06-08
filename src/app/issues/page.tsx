@@ -760,8 +760,10 @@ function softenProblemTitle(value: string) {
     "Missing Schema": "Page details for Google missing",
     "Missing Meta Description": "Page description missing",
     "Missing Title": "Page title missing",
+    "Missing page title": "Page title missing",
     "Add a unique meta description": "Write a clear page description",
     "Add a unique title tag": "Write a clear page title",
+    "Restore indexability": "Make page visible to Google",
     "Poor Heading Hierarchy": "Heading order needs attention",
     "Homepage Blocked By Robots": "Homepage blocked from Google",
     "Homepage blocked by robots.txt": "Homepage blocked from Google",
@@ -795,8 +797,10 @@ function softenProblemTitle(value: string) {
     .replace(/\bMissing Schema\b/gi, exactMatches["Missing Schema"])
     .replace(/\bMissing Meta Description\b/gi, exactMatches["Missing Meta Description"])
     .replace(/\bMissing Title\b/gi, exactMatches["Missing Title"])
+    .replace(/\bMissing page title\b/gi, exactMatches["Missing page title"])
     .replace(/\bAdd a unique meta description\b/gi, exactMatches["Add a unique meta description"])
     .replace(/\bAdd a unique title tag\b/gi, exactMatches["Add a unique title tag"])
+    .replace(/\bRestore indexability\b/gi, exactMatches["Restore indexability"])
     .replace(/\bPoor Heading Hierarchy\b/gi, exactMatches["Poor Heading Hierarchy"])
     .replace(/\bHomepage Blocked By Robots\b/gi, exactMatches["Homepage Blocked By Robots"])
     .replace(/\bHomepage blocked by robots\.txt\b/gi, exactMatches["Homepage blocked by robots.txt"])
@@ -831,6 +835,7 @@ function softenProblemText(value: string) {
     .replace(/\bcrawl\b/gi, "website check")
     .replace(/\bcrawlers\b/gi, "search engines")
     .replace(/\bcrawler\b/gi, "search engine")
+    .replace(/\bindexability\b/gi, "visibility in Google")
     .replace(/\bmeta description\b/gi, "page description")
     .replace(/\bmeta descriptions\b/gi, "page descriptions")
     .replace(/\btitle tag\b/gi, "page title")
