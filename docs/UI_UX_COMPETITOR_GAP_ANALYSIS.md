@@ -1005,3 +1005,19 @@ Implementation:
 - [x] Rename issue movement labels to problem movement, new/fixed problems, urgent/planned open, and important changes.
 - [x] Rename report format section options from crawl/recommendation/issue wording to website checks, next steps, and problem movement.
 - [x] Browser-check Client Update Detail desktop and mobile after deployment.
+
+### Batch AX: Problem Detail Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit issue pages keep technical evidence available, but the useful path is still problem, why it matters, recommendation, and follow-up check.
+- Ahrefs Site Audit preserves deep crawl and page evidence, while guiding users through issue groups, affected URLs, and practical fixes.
+- A softer problem detail should say best next step, fix note, progress, page details, and website check before analyzer, workflow, handoff, AI guidance, or recrawl wording.
+
+Implementation:
+
+- [x] Rename issue-detail navigation, timeline, metadata, and action copy toward website workspace, problem found, last seen, website check, and problem area.
+- [x] Rename solution and fix controls from recommended solution, handoff, and fix brief wording to best next step, fix note, and fix workspace.
+- [x] Rename AI guidance and workflow sidebar sections to fix ideas, progress, assigned person, notes, and progress history.
+- [x] Soften shared issue-solution helper labels from CMS/developer/recrawl/handoff language to website editor, site helper, fix note, and new website check.
+- [ ] Browser-check Problem Detail desktop and mobile after deployment.

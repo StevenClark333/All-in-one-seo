@@ -12,11 +12,11 @@ test("maps broken internal links to Fix Center actions", () => {
   assert.equal(solution.primaryAction, "fix-center");
   assert.equal(solution.actionLabel, "Generate link fix");
   assert.equal(solution.effort, "Quick fix");
-  assert.equal(solution.fixAvailability.label, "Yes, apply fix");
+  assert.equal(solution.fixAvailability.label, "Can prepare here");
   assert.match(solution.whyMatters, /Broken links/i);
 });
 
-test("maps schema issues to generated fix briefs", () => {
+test("maps schema problems to generated fix notes", () => {
   const solution = buildIssueSolution({
     issueType: "product_schema_missing",
     platform: "SHOPIFY",
@@ -25,7 +25,7 @@ test("maps schema issues to generated fix briefs", () => {
 
   assert.equal(solution.primaryAction, "recommendations");
   assert.equal(solution.effort, "Template fix");
-  assert.equal(solution.fixAvailability.label, "Needs developer");
+  assert.equal(solution.fixAvailability.label, "Needs site helper");
   assert.match(solution.detail, /structured data/i);
   assert.match(solution.whyMatters, /Schema/i);
 });
@@ -38,7 +38,7 @@ test("maps canonical issues to platform-specific guidance", () => {
   });
 
   assert.equal(solution.title, "Correct the canonical URL");
-  assert.equal(solution.fixAvailability.label, "Needs CMS");
+  assert.equal(solution.fixAvailability.label, "Needs website editor");
   assert.match(solution.detail, /Custom/i);
 });
 
@@ -52,6 +52,6 @@ test("falls back to recommendation text for unknown issues", () => {
 
   assert.equal(solution.detail, "Fix the custom issue.");
   assert.equal(solution.primaryAction, "issue");
-  assert.equal(solution.fixAvailability.label, "Needs developer");
+  assert.equal(solution.fixAvailability.label, "Needs site helper");
   assert.match(solution.whyMatters, /ranking drops/i);
 });

@@ -43,27 +43,27 @@ export default async function IssueDetailPage({
     title: issue.title,
   });
   const canExportHandoff =
-    solution.fixAvailability.label === "Needs CMS" ||
-    solution.fixAvailability.label === "Needs developer";
+    solution.fixAvailability.label === "Needs website editor" ||
+    solution.fixAvailability.label === "Needs site helper";
   const timeline = [
     {
       id: "created",
-      label: "Issue opened",
-      detail: "Analyzer created the workflow item.",
+      label: "Problem found",
+      detail: "A website check added this to the fix list.",
       date: issue.firstDetectedAt,
     },
     {
       id: "detected",
-      label: "Last detected",
-      detail: "Most recent crawl or analyzer pass saw this issue.",
+      label: "Last seen",
+      detail: "The latest website check still saw this problem.",
       date: issue.lastDetectedAt,
     },
     ...(issue.resolvedAt
       ? [
           {
             id: "resolved",
-            label: "Resolved",
-            detail: "Issue was marked fixed.",
+            label: "Solved",
+            detail: "This problem was marked fixed.",
             date: issue.resolvedAt,
           },
         ]
@@ -84,7 +84,7 @@ export default async function IssueDetailPage({
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Project workspace
+          Website workspace
         </Link>
 
         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -97,7 +97,7 @@ export default async function IssueDetailPage({
                 {formatEnum(issue.status)}
               </Badge>
               <span className="text-sm font-medium text-slate-500">
-                Priority {issue.priorityScore}
+                Priority score {issue.priorityScore}
               </span>
             </div>
 
@@ -105,20 +105,20 @@ export default async function IssueDetailPage({
               {issue.title}
             </h1>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              {issue.description}
+              {softenProblemText(issue.description)}
             </p>
 
             <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-5">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-emerald-700">
-                    Recommended solution
+                    Best next step
                   </p>
                   <h2 className="mt-2 text-xl font-semibold text-emerald-950">
                     {solution.title}
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-emerald-900">
-                    {solution.detail}
+                    {softenProblemText(solution.detail)}
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-2 lg:justify-end">
@@ -138,15 +138,15 @@ export default async function IssueDetailPage({
                     Why this matters
                   </p>
                   <p className="mt-1 text-sm leading-6 text-emerald-900">
-                    {solution.whyMatters}
+                    {softenProblemText(solution.whyMatters)}
                   </p>
                 </div>
                 <div className="rounded-md border border-emerald-200 bg-white/70 p-3">
                   <p className="text-sm font-semibold text-emerald-950">
-                    Can I fix this here?
+                    Can I prepare this here?
                   </p>
                   <p className="mt-1 text-sm leading-6 text-emerald-900">
-                    {solution.fixAvailability.detail}
+                    {softenProblemText(solution.fixAvailability.detail)}
                   </p>
                   {canExportHandoff ? (
                     <Link
@@ -154,7 +154,7 @@ export default async function IssueDetailPage({
                       className="mt-3 inline-flex h-9 items-center gap-2 rounded-md border border-emerald-300 bg-white px-3 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-100"
                     >
                       <Download className="size-4" aria-hidden="true" />
-                      Download handoff
+                      Download fix note
                     </Link>
                   ) : null}
                 </div>
@@ -163,7 +163,8 @@ export default async function IssueDetailPage({
                 <ol className="grid gap-2 text-sm leading-6 text-emerald-950">
                   {solution.steps.map((step, index) => (
                     <li key={step}>
-                      <span className="font-semibold">{index + 1}.</span> {step}
+                      <span className="font-semibold">{index + 1}.</span>{" "}
+                      {softenProblemText(step)}
                     </li>
                   ))}
                 </ol>
@@ -176,14 +177,14 @@ export default async function IssueDetailPage({
                         value={issue.domain.id}
                       />
                       <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
-                        Generate fix
+                        Create fix note
                       </button>
                     </form>
                   ) : (
                     <form action={generateIssueRecommendations}>
                       <input type="hidden" name="issueId" value={issue.id} />
                       <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
-                        Generate fix brief
+                        Create fix note
                       </button>
                     </form>
                   )}
@@ -195,7 +196,7 @@ export default async function IssueDetailPage({
                     }
                     className="inline-flex h-10 items-center justify-center rounded-md border border-emerald-300 bg-white px-4 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-100"
                   >
-                    Open workspace
+                    Open fix workspace
                   </Link>
                 </div>
               </div>
@@ -204,14 +205,14 @@ export default async function IssueDetailPage({
             <dl className="mt-6 grid gap-4 border-t border-slate-100 pt-6 md:grid-cols-2">
               <Meta label="Workspace" value={workspace?.name ?? "Workspace"} />
               <Meta label="Client" value={issue.client?.name ?? "Unassigned"} />
-              <Meta label="Domain" value={issue.domain.domain} />
+              <Meta label="Website" value={issue.domain.domain} />
               <Meta
-                label="Issue type"
+                label="Problem area"
                 value={formatIssueType(issue.issueType)}
               />
               <Meta
                 label="Page"
-                value={issue.page?.url ?? "Site-level issue"}
+                value={issue.page?.url ?? "Whole-website problem"}
               />
               <Meta
                 label="Owner"
@@ -224,16 +225,17 @@ export default async function IssueDetailPage({
             </dl>
 
             <div className="mt-6 rounded-md border border-slate-200 bg-slate-50 p-4">
-              <h2 className="font-semibold">Recommended fix</h2>
+              <h2 className="font-semibold">Fix note</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                {issue.recommendation ??
-                  "No recommendation has been generated."}
+                {issue.recommendation
+                  ? softenProblemText(issue.recommendation)
+                  : "No fix note has been created yet."}
               </p>
             </div>
 
             {latestSnapshot ? (
               <div className="mt-6 rounded-md border border-slate-200 bg-white p-4">
-                <h2 className="font-semibold">Latest snapshot</h2>
+                <h2 className="font-semibold">Latest page details</h2>
                 <dl className="mt-4 grid gap-3 text-sm md:grid-cols-2">
                   <Meta
                     label="HTTP status"
@@ -265,13 +267,13 @@ export default async function IssueDetailPage({
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex items-center gap-2">
                 <Bot className="size-5 text-slate-500" aria-hidden="true" />
-                <h2 className="font-semibold">AI fix guidance</h2>
+                <h2 className="font-semibold">Fix ideas</h2>
               </div>
 
               <form action={generateIssueRecommendations} className="mt-4">
                 <input type="hidden" name="issueId" value={issue.id} />
                 <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                  Generate fix briefs
+                  Create fix ideas
                 </button>
               </form>
 
@@ -289,20 +291,23 @@ export default async function IssueDetailPage({
                         {readPayload(recommendation.recommendationJson).title}
                       </p>
                       <p className="mt-1 text-sm leading-6 text-slate-600">
-                        {readPayload(recommendation.recommendationJson).summary}
+                        {softenProblemText(
+                          readPayload(recommendation.recommendationJson)
+                            .summary,
+                        )}
                       </p>
                     </article>
                   ))
                 ) : (
                   <p className="text-sm text-slate-500">
-                    No AI fix guidance generated yet.
+                    No fix ideas created yet.
                   </p>
                 )}
               </div>
             </section>
 
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="font-semibold">Workflow</h2>
+              <h2 className="font-semibold">Progress</h2>
 
               <form action={updateIssueStatus} className="mt-4 grid gap-3">
                 <input type="hidden" name="issueId" value={issue.id} />
@@ -323,7 +328,7 @@ export default async function IssueDetailPage({
                   </select>
                 </label>
                 <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                  Update status
+                  Save progress
                 </button>
               </form>
 
@@ -350,7 +355,7 @@ export default async function IssueDetailPage({
                   </select>
                 </label>
                 <button className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                  Assign issue
+                  Assign person
                 </button>
               </form>
             </section>
@@ -390,7 +395,7 @@ export default async function IssueDetailPage({
                   name="body"
                   required
                   rows={4}
-                  placeholder="Add context, decision notes, or client-facing explanation..."
+                  placeholder="Add context, decision notes, or a client-friendly explanation..."
                   className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
                 <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
@@ -431,7 +436,7 @@ export default async function IssueDetailPage({
             </section>
 
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="font-semibold">Activity timeline</h2>
+              <h2 className="font-semibold">Progress history</h2>
               <div className="mt-4 grid gap-3">
                 {timeline.map((event) => (
                   <article
@@ -461,9 +466,7 @@ export default async function IssueDetailPage({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-sm font-medium text-slate-500">
-        {label}
-      </dt>
+      <dt className="text-sm font-medium text-slate-500">{label}</dt>
       <dd className="mt-1 text-sm font-medium text-slate-700">{value}</dd>
     </div>
   );
@@ -508,6 +511,20 @@ function formatIssueType(value: string) {
     .join(" ");
 }
 
+function softenProblemText(value: string) {
+  return value
+    .replace(/\banalyzer pass\b/gi, "website check")
+    .replace(/\blatest crawl\b/gi, "latest website check")
+    .replace(/\beasier to crawl\b/gi, "easier for search engines to read")
+    .replace(/\bcrawlability\b/gi, "findability")
+    .replace(/\bcrawlable\b/gi, "easy for search engines to read")
+    .replace(/\brecrawl\b/gi, "run a new website check")
+    .replace(/\bcrawl\b/gi, "website check")
+    .replace(/\bcrawlers\b/gi, "search engines")
+    .replace(/\bcrawler\b/gi, "search engine")
+    .replace(/\bissue\b/gi, "problem");
+}
+
 function readPayload(value: unknown) {
   if (
     value &&
@@ -518,5 +535,5 @@ function readPayload(value: unknown) {
     return value as { title: string; summary: string };
   }
 
-  return { title: "Recommendation", summary: "Stored recommendation output." };
+  return { title: "Fix idea", summary: "Saved fix idea." };
 }

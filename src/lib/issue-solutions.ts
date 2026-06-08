@@ -3,10 +3,10 @@ import type { DomainPlatform } from "@prisma/client";
 export type IssueSolution = {
   actionLabel: string;
   detail: string;
-  effort: "Quick fix" | "Template fix" | "Developer fix" | "Content fix";
+  effort: "Quick fix" | "Template fix" | "Specialist fix" | "Content fix";
   fixAvailability: {
     detail: string;
-    label: "Yes, apply fix" | "Needs CMS" | "Needs developer";
+    label: "Can prepare here" | "Needs website editor" | "Needs site helper";
     tone: "emerald" | "amber" | "blue";
   };
   primaryAction: "fix-center" | "issue" | "recommendations";
@@ -24,26 +24,27 @@ export function buildIssueSolution(input: {
   const type = input.issueType.toLowerCase();
   const platform = formatPlatform(input.platform);
   const recommendation =
-    input.recommendation ?? "Update the affected page, publish, and recrawl.";
+    input.recommendation ??
+    "Update the affected page, publish, and run a new website check.";
 
   if (type.startsWith("broken_internal_link:")) {
     return {
       actionLabel: "Generate link fix",
       detail:
-        "Replace the broken destination with a live internal URL. The portal can suggest the closest matching page and export the exact handoff.",
+        "Replace the broken destination with a live internal URL. The portal can suggest the closest matching page and prepare a simple fix note.",
       effort: "Quick fix",
       fixAvailability: {
         detail:
-          "The portal can suggest the replacement URL and prepare the handoff from Fix Center.",
-        label: "Yes, apply fix",
+          "The portal can suggest the replacement URL and prepare the fix note from Fix Center.",
+        label: "Can prepare here",
         tone: "emerald",
       },
       primaryAction: "fix-center",
       steps: [
-        "Open Fix Center for this project.",
-        "Generate or refresh link fixes.",
+        "Open Fix Center for this website.",
+        "Create or refresh link fixes.",
         "Approve the suggested replacement URL.",
-        "Send, export, or mark applied, then recrawl.",
+        "Send, download, or mark applied, then run a new website check.",
       ],
       title: "Replace the broken internal link",
       whyMatters:
@@ -64,15 +65,15 @@ export function buildIssueSolution(input: {
       fixAvailability: {
         detail:
           "The portal can suggest the source page, target page, and anchor text in Fix Center.",
-        label: "Yes, apply fix",
+        label: "Can prepare here",
         tone: "emerald",
       },
       primaryAction: "fix-center",
       steps: [
-        "Open Fix Center for this project.",
-        "Generate internal link opportunities.",
+        "Open Fix Center for this website.",
+        "Create internal link ideas.",
         "Approve the best source page and anchor text.",
-        "Publish and recrawl to verify the link graph.",
+        "Publish and run a new website check to confirm the links.",
       ],
       title: "Improve internal discovery",
       whyMatters:
@@ -87,16 +88,16 @@ export function buildIssueSolution(input: {
       effort: "Template fix",
       fixAvailability: {
         detail:
-          "Generate the brief here, then add the schema in the CMS template or website code.",
-        label: "Needs developer",
+          "Create the fix note here, then add the schema in the website editor, template, or code.",
+        label: "Needs site helper",
         tone: "blue",
       },
       primaryAction: "recommendations",
       steps: [
-        "Generate a fix brief for this issue.",
+        "Create a fix note for this problem.",
         "Add JSON-LD to the page or shared template.",
         "Validate the rendered schema.",
-        "Recrawl after publishing.",
+        "Run a new website check after publishing.",
       ],
       title: "Add valid structured data",
       whyMatters:
@@ -111,16 +112,16 @@ export function buildIssueSolution(input: {
       effort: "Template fix",
       fixAvailability: {
         detail:
-          "Generate the fix brief here, then update the canonical field in the CMS or template.",
-        label: "Needs CMS",
+          "Create the fix note here, then update the canonical field in the website editor or template.",
+        label: "Needs website editor",
         tone: "amber",
       },
       primaryAction: "recommendations",
       steps: [
-        "Generate a fix brief for this issue.",
+        "Create a fix note for this problem.",
         "Update the canonical tag on the affected page or template.",
         "Confirm it points to a live indexable URL.",
-        "Recrawl to verify.",
+        "Run a new website check to confirm it is fixed.",
       ],
       title: "Correct the canonical URL",
       whyMatters:
@@ -136,16 +137,16 @@ export function buildIssueSolution(input: {
       effort: "Content fix",
       fixAvailability: {
         detail:
-          "Generate the copy here, then paste it into the page SEO field in the CMS.",
-        label: "Needs CMS",
+          "Create the copy here, then paste it into the page SEO field in the website editor.",
+        label: "Needs website editor",
         tone: "amber",
       },
       primaryAction: "recommendations",
       steps: [
-        "Generate a suggested description.",
-        "Add it to the CMS field or template metadata.",
+        "Create a suggested description.",
+        "Add it to the website editor field or template metadata.",
         "Keep it specific to the page.",
-        "Publish and recrawl.",
+        "Publish and run a new website check.",
       ],
       title: "Add a unique meta description",
       whyMatters:
@@ -161,16 +162,16 @@ export function buildIssueSolution(input: {
       effort: "Content fix",
       fixAvailability: {
         detail:
-          "Generate the title here, then paste it into the page SEO field in the CMS.",
-        label: "Needs CMS",
+          "Create the title here, then paste it into the page SEO field in the website editor.",
+        label: "Needs website editor",
         tone: "amber",
       },
       primaryAction: "recommendations",
       steps: [
-        "Generate a suggested SEO title.",
-        "Add it to the CMS field or template metadata.",
+        "Create a suggested SEO title.",
+        "Add it to the website editor field or template metadata.",
         "Confirm the rendered title is unique.",
-        "Publish and recrawl.",
+        "Publish and run a new website check.",
       ],
       title: "Add a unique title tag",
       whyMatters:
@@ -186,16 +187,16 @@ export function buildIssueSolution(input: {
       effort: "Content fix",
       fixAvailability: {
         detail:
-          "Generate the heading here, then update the visible page content in the CMS.",
-        label: "Needs CMS",
+          "Create the heading here, then update the visible page content in the website editor.",
+        label: "Needs website editor",
         tone: "amber",
       },
       primaryAction: "recommendations",
       steps: [
-        "Generate a suggested heading.",
+        "Create a suggested heading.",
         "Update the visible page H1.",
         "Avoid duplicate or empty H1s.",
-        "Publish and recrawl.",
+        "Publish and run a new website check.",
       ],
       title: "Fix the main heading",
       whyMatters:
@@ -208,11 +209,11 @@ export function buildIssueSolution(input: {
       actionLabel: "Fix indexability",
       detail:
         "Remove accidental blocking rules or noindex directives if the page should appear in search results.",
-      effort: "Developer fix",
+      effort: "Specialist fix",
       fixAvailability: {
         detail:
-          "Generate the fix brief here, then ask a developer or site admin to remove the blocking rule.",
-        label: "Needs developer",
+          "Create the fix note here, then ask a site helper or website admin to remove the blocking rule.",
+        label: "Needs site helper",
         tone: "blue",
       },
       primaryAction: "recommendations",
@@ -220,7 +221,7 @@ export function buildIssueSolution(input: {
         "Check robots meta tags, X-Robots-Tag headers, and robots.txt rules.",
         "Remove the blocking directive for indexable pages.",
         "Publish or deploy the change.",
-        "Recrawl and verify the page is indexable.",
+        "Run a new website check and confirm the page can be indexed.",
       ],
       title: "Restore indexability",
       whyMatters:
@@ -231,19 +232,21 @@ export function buildIssueSolution(input: {
   return {
     actionLabel: "View solution",
     detail: recommendation,
-    effort: type.includes("template") ? "Template fix" : "Developer fix",
+    effort: type.includes("template") ? "Template fix" : "Specialist fix",
     fixAvailability: {
       detail:
-        "Use the issue detail page to create a handoff and decide whether the CMS or codebase needs the change.",
-      label: type.includes("content") ? "Needs CMS" : "Needs developer",
+        "Use this page to create a fix note and decide whether the website editor or codebase needs the change.",
+      label: type.includes("content")
+        ? "Needs website editor"
+        : "Needs site helper",
       tone: type.includes("content") ? "amber" : "blue",
     },
     primaryAction: "issue",
     steps: [
-      "Review the affected page and rendered HTML.",
-      "Apply the recommended fix in the CMS, template, or codebase.",
+      "Review the affected page and page details.",
+      "Apply the recommended fix in the website editor, template, or codebase.",
       "Publish the change.",
-      "Recrawl to verify the issue is gone.",
+      "Run a new website check to confirm the problem is gone.",
     ],
     title: input.title,
     whyMatters:

@@ -3,7 +3,7 @@ import test from "node:test";
 import { buildIssueHandoffBrief } from "@/lib/issue-handoff";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 
-test("builds plain-language CMS handoff markdown for an issue", () => {
+test("builds plain-language website editor fix note markdown for a problem", () => {
   const solution = buildIssueSolution({
     issueType: "missing_meta_description",
     platform: "SHOPIFY",
@@ -22,14 +22,14 @@ test("builds plain-language CMS handoff markdown for an issue", () => {
     title: "Missing meta description",
   });
 
-  assert.equal(brief.owner, "CMS editor or site manager");
+  assert.equal(brief.owner, "Website editor or site manager");
   assert.match(brief.exportFilename, /urbanthread-store/);
   assert.match(brief.markdown, /## What is wrong/);
-  assert.match(brief.markdown, /Needs CMS/);
-  assert.match(brief.markdown, /Run a fresh scan/);
+  assert.match(brief.markdown, /Needs website editor/);
+  assert.match(brief.markdown, /Run a fresh website check/);
 });
 
-test("builds developer handoff markdown for indexability issues", () => {
+test("builds site helper fix note markdown for indexability problems", () => {
   const solution = buildIssueSolution({
     issueType: "homepage_blocked_by_robots",
     platform: "CUSTOM",
@@ -45,7 +45,7 @@ test("builds developer handoff markdown for indexability issues", () => {
     title: "Homepage blocked by robots",
   });
 
-  assert.equal(brief.owner, "Developer or site admin");
-  assert.match(brief.markdown, /Developer or site admin/);
-  assert.match(brief.markdown, /Site-wide issue on example\.com/);
+  assert.equal(brief.owner, "Site helper or website admin");
+  assert.match(brief.markdown, /Site helper or website admin/);
+  assert.match(brief.markdown, /Whole-website problem on example\.com/);
 });

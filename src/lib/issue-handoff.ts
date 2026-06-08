@@ -16,14 +16,14 @@ export type IssueHandoffInput = {
 
 export function buildIssueHandoffBrief(input: IssueHandoffInput) {
   const platformLabel = formatLabel(input.platform);
-  const target = input.pageUrl ?? `Site-wide issue on ${input.domain}`;
+  const target = input.pageUrl ?? `Whole-website problem on ${input.domain}`;
   const owner =
-    input.solution.fixAvailability.label === "Needs CMS"
-      ? "CMS editor or site manager"
-      : "Developer or site admin";
+    input.solution.fixAvailability.label === "Needs website editor"
+      ? "Website editor or site manager"
+      : "Site helper or website admin";
 
   return {
-    exportFilename: `${slugify(input.domain)}-${slugify(input.title)}-handoff.md`,
+    exportFilename: `${slugify(input.domain)}-${slugify(input.title)}-fix-note.md`,
     markdown: renderIssueHandoffMarkdown({
       ...input,
       owner,
@@ -50,7 +50,7 @@ function renderIssueHandoffMarkdown(
     `Client: ${input.clientName ?? "Unassigned"}`,
     `Platform: ${input.platformLabel}`,
     `Severity: ${formatLabel(input.severity)}`,
-    `Issue type: ${formatIssueType(input.issueType)}`,
+    `Problem area: ${formatIssueType(input.issueType)}`,
     `Owner: ${input.owner}`,
     `Target: ${input.target}`,
     "",
@@ -60,7 +60,7 @@ function renderIssueHandoffMarkdown(
     "## Why it matters",
     input.solution.whyMatters,
     "",
-    "## Recommended solution",
+    "## Best next step",
     input.solution.title,
     "",
     input.solution.detail,
@@ -71,14 +71,14 @@ function renderIssueHandoffMarkdown(
     "## Can this be fixed in the portal?",
     `${input.solution.fixAvailability.label}: ${input.solution.fixAvailability.detail}`,
     "",
-    "## Existing recommendation",
-    input.recommendation ?? "No extra recommendation has been generated yet.",
+    "## Saved fix note",
+    input.recommendation ?? "No extra fix note has been created yet.",
     "",
-    "## Verification",
-    "1. Publish the website or CMS change.",
+    "## Check it after the fix",
+    "1. Publish the website or website-editor change.",
     "2. Open the affected page and confirm the visible or technical fix is present.",
-    "3. Run a fresh scan in All In One SEO.",
-    "4. Mark the problem fixed only after the scan no longer reports it.",
+    "3. Run a fresh website check in All In One SEO.",
+    "4. Mark the problem fixed only after the new check no longer reports it.",
   ].join("\n");
 }
 
