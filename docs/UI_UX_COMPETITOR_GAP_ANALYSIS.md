@@ -743,3 +743,25 @@ Implementation:
 - [x] Use the send icon and plain send wording on the fix send action.
 - [x] Soften the shared Fixes navigation description away from export and technical-detail language.
 - [x] Keep platform instructions, snippets, and timestamps available inside optional detail panels.
+
+### Batch AK: Alerts Watch Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make monitoring easier by showing high-level health and important changes before notification plumbing.
+- Ubersuggest-style beginner flows work better when setup language says what the user wants to watch, not how routing is configured.
+- A nontechnical user should see "what is being watched?" before delivery history, escalation, or channel details.
+
+Implementation:
+
+- [x] Rename the Alerts page header to "Watch changes".
+- [x] Soften the header copy toward important website changes and simple notifications.
+- [x] Rename the primary action to "Check now".
+- [x] Move alert-rule creation into a closed "Add a watch" panel.
+- [x] Rename rule setup fields to watch name, website, change to watch, importance, and send by.
+- [x] Move backup notification fields into a nested optional panel.
+- [x] Rename "Alert rules" to "Watching now".
+- [x] Move delivery history into a closed "Message history" panel.
+- [x] Make the watch list full width so message history no longer competes with the main task.
+- [x] Remove the duplicate empty-state setup button so "Add a watch" is the single setup entry point.
+- [x] Replace delivery/routing/escalation wording with message health, backup notification, and watch language.

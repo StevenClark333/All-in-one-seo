@@ -40,18 +40,18 @@ export default async function AlertsPage() {
                 {workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Alerts
+                Watch changes
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Keep important SEO changes visible without watching every
-                crawl, report, and integration by hand.
+                Choose the website changes that matter most, then let the portal
+                tell you when something needs a look.
               </p>
             </div>
 
             <form action={evaluateAlertsAction}>
               <button className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800">
                 <Play className="size-4" aria-hidden="true" />
-                Check alerts now
+                Check now
               </button>
             </form>
           </header>
@@ -67,31 +67,30 @@ export default async function AlertsPage() {
             }
           />
 
-          <section
+          <details
             id="create-alert"
-            className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+            className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
           >
-            <div className="flex items-center gap-2">
+            <summary className="flex cursor-pointer items-center gap-2 p-5">
               <Bell className="size-5 text-orange-600" aria-hidden="true" />
-              <div>
-                <h3 className="text-lg font-semibold">Create alert rule</h3>
-                <p className="mt-1 text-sm leading-6 text-slate-500">
-                  Choose what matters, who should hear about it, and where the
-                  message should go.
-                </p>
-              </div>
-            </div>
+              <span>
+                <span className="block text-lg font-semibold">Add a watch</span>
+                <span className="mt-1 block text-sm leading-6 text-slate-500">
+                  Optional setup for what to watch and who should be told.
+                </span>
+              </span>
+            </summary>
 
             <form
               action={createAlertRuleAction}
-              className="mt-4 grid gap-3 md:grid-cols-2 2xl:grid-cols-4"
+              className="grid gap-3 border-t border-slate-100 p-5 md:grid-cols-2 2xl:grid-cols-4"
             >
               <label className="grid gap-2 xl:col-span-2">
-                <FieldLabel>Rule name</FieldLabel>
+                <FieldLabel>Watch name</FieldLabel>
                 <input
                   name="name"
                   required
-                  placeholder="Critical technical SEO changes"
+                  placeholder="Important website changes"
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -103,29 +102,29 @@ export default async function AlertsPage() {
                   </option>
                 ))}
               </Select>
-              <Select label="Domain" name="domainId">
-                <option value="">All domains</option>
+              <Select label="Website" name="domainId">
+                <option value="">All websites</option>
                 {domains.map((domain) => (
                   <option key={domain.id} value={domain.id}>
                     {domain.domain}
                   </option>
                 ))}
               </Select>
-              <Select label="Event" name="eventType">
+              <Select label="Change to watch" name="eventType">
                 {eventTypes.map((eventType) => (
                   <option key={eventType} value={eventType}>
                     {formatEnum(eventType)}
                   </option>
                 ))}
               </Select>
-              <Select label="Severity" name="severityThreshold">
+              <Select label="Importance" name="severityThreshold">
                 {severities.map((severity) => (
                   <option key={severity} value={severity}>
                     {formatEnum(severity)}
                   </option>
                 ))}
               </Select>
-              <Select label="Channel" name="channel">
+              <Select label="Send by" name="channel">
                 {channels.map((channel) => (
                   <option key={channel} value={channel}>
                     {formatEnum(channel)}
@@ -137,7 +136,7 @@ export default async function AlertsPage() {
                 <input
                   name="targetEmail"
                   type="email"
-                  placeholder="ops@example.com"
+                  placeholder="hello@example.com"
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -150,49 +149,56 @@ export default async function AlertsPage() {
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
-              <Select label="Escalation" name="escalationChannel">
-                <option value="">None</option>
-                {channels.map((channel) => (
-                  <option key={channel} value={channel}>
-                    {formatEnum(channel)}
-                  </option>
-                ))}
-              </Select>
-              <label className="grid gap-2 md:col-span-2">
-                <FieldLabel>Escalation email</FieldLabel>
-                <input
-                  name="escalationTargetEmail"
-                  type="email"
-                  placeholder="lead@example.com"
-                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                />
-              </label>
-              <label className="grid gap-2 md:col-span-2">
-                <FieldLabel>Escalation URL</FieldLabel>
-                <input
-                  name="escalationTargetUrl"
-                  type="url"
-                  placeholder="https://hooks.slack.com/services/..."
-                  className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                />
-              </label>
+              <details className="rounded-md border border-slate-200 bg-slate-50 p-3 md:col-span-2 2xl:col-span-4">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-700">
+                  Add backup notification
+                </summary>
+                <div className="mt-3 grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
+                  <Select label="Backup send by" name="escalationChannel">
+                    <option value="">None</option>
+                    {channels.map((channel) => (
+                      <option key={channel} value={channel}>
+                        {formatEnum(channel)}
+                      </option>
+                    ))}
+                  </Select>
+                  <label className="grid gap-2">
+                    <FieldLabel>Backup email</FieldLabel>
+                    <input
+                      name="escalationTargetEmail"
+                      type="email"
+                      placeholder="lead@example.com"
+                      className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <FieldLabel>Backup URL</FieldLabel>
+                    <input
+                      name="escalationTargetUrl"
+                      type="url"
+                      placeholder="https://hooks.slack.com/services/..."
+                      className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                    />
+                  </label>
+                </div>
+              </details>
               <div className="md:col-span-2 2xl:col-span-4">
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Create rule
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
+                  Add watch
                 </button>
               </div>
             </form>
-          </section>
+          </details>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+          <section className="mt-6 grid gap-4">
             <div
               id="alert-rules"
               className="rounded-lg border border-slate-200 bg-white shadow-sm"
             >
               <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Alert rules</h3>
+                <h3 className="text-lg font-semibold">Watching now</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  The short list of changes this workspace is watching.
+                  The short list of website changes this workspace is watching.
                 </p>
               </div>
               <div className="grid divide-y divide-slate-100">
@@ -212,12 +218,12 @@ export default async function AlertsPage() {
                         </p>
                       </div>
                       <Meta
-                        label="Threshold"
+                        label="Importance"
                         value={formatEnum(rule.severityThreshold)}
                       />
-                      <Meta label="Channel" value={formatEnum(rule.channel)} />
+                      <Meta label="Sends by" value={formatEnum(rule.channel)} />
                       <Meta
-                        label="Destination"
+                        label="Send place"
                         value={
                           rule.targetUrl || rule.targetEmail
                             ? "Configured"
@@ -225,41 +231,39 @@ export default async function AlertsPage() {
                         }
                       />
                       <Meta
-                        label="Escalation"
+                        label="Backup"
                         value={
                           rule.escalationChannel
                             ? formatEnum(rule.escalationChannel)
                             : "None"
                         }
                       />
-                      <Meta
-                        label="Enabled"
-                        value={rule.enabled ? "Yes" : "No"}
-                      />
+                      <Meta label="On" value={rule.enabled ? "Yes" : "No"} />
                     </article>
                   ))
                 ) : (
                   <EmptyState
                     title="No alert rules yet"
-                    body="Start with one rule for critical website changes, then add quieter rules later."
-                    href="#create-alert"
-                    action="Create the first rule"
+                    body="Open Add a watch above to start with one important website change, then add quieter watches later."
                   />
                 )}
               </div>
             </div>
 
-            <aside
-              id="delivery-history"
+            <details
+              id="message-history"
               className="rounded-lg border border-slate-200 bg-white shadow-sm"
             >
-              <div className="border-b border-slate-200 p-5">
-                <h3 className="text-lg font-semibold">Delivery history</h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Recent messages and whether they reached the right channel.
-                </p>
-              </div>
-              <div className="grid divide-y divide-slate-100">
+              <summary className="cursor-pointer p-5">
+                <span className="block text-lg font-semibold">
+                  Message history
+                </span>
+                <span className="mt-1 block text-sm text-slate-500">
+                  Optional detail showing recent messages and whether they
+                  arrived.
+                </span>
+              </summary>
+              <div className="grid divide-y divide-slate-100 border-t border-slate-100">
                 {alerts.length ? (
                   alerts.map((alert) => (
                     <article key={alert.id} className="p-5">
@@ -271,7 +275,7 @@ export default async function AlertsPage() {
                       <div className="mt-3 grid grid-cols-2 gap-3">
                         <Meta label="Status" value={formatEnum(alert.status)} />
                         <Meta
-                          label="Escalated"
+                          label="Backup sent"
                           value={
                             alert.escalatedAt
                               ? alert.escalatedAt.toLocaleString()
@@ -279,7 +283,7 @@ export default async function AlertsPage() {
                           }
                         />
                         <Meta
-                          label="Sent"
+                          label="Sent at"
                           value={
                             alert.sentAt
                               ? alert.sentAt.toLocaleString()
@@ -292,13 +296,11 @@ export default async function AlertsPage() {
                 ) : (
                   <EmptyState
                     title="No alert deliveries yet"
-                    body="Run a check after creating a rule to see delivery status here."
-                    href="#create-alert"
-                    action="Set up alerts"
+                    body="Run a check after adding a watch to see message status here."
                   />
                 )}
               </div>
-            </aside>
+            </details>
           </section>
         </section>
       </div>
@@ -323,43 +325,39 @@ function AlertComfortPlan({
     <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,2fr)]">
         <div>
-          <p className="text-sm font-semibold text-orange-700">
-            Alert comfort plan
-          </p>
+          <p className="text-sm font-semibold text-orange-700">Watch plan</p>
           <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
             Watch the important changes, skip the noise.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Use alerts like a simple assistant: decide what matters, check if
-            delivery is healthy, and only adjust advanced routing when needed.
+            Use this like a simple assistant: pick what matters, check that
+            messages are healthy, and keep backup notifications optional.
           </p>
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
           <SummaryTile
             icon={<ShieldCheck className="size-4" aria-hidden="true" />}
-            label="Rules watching"
+            label="Watching"
             value={`${enabledRuleCount} active`}
-            detail="Create one broad rule first, then narrow it later."
+            detail="Add one broad watch first, then narrow it later."
             href="#alert-rules"
           />
           <SummaryTile
             icon={<Clock className="size-4" aria-hidden="true" />}
-            label="Delivery health"
+            label="Message health"
             value={
-              needsAttention
-                ? `${needsAttention} needs review`
-                : "Looks quiet"
+              needsAttention ? `${needsAttention} needs review` : "Looks quiet"
             }
-            detail="Failed or pending messages are the only alerts to chase."
-            href="#delivery-history"
+            detail="Failed or pending messages are the only ones to chase."
+            href="#message-history"
           />
           <SummaryTile
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Latest signal"
             value={latestAlertLabel}
-            detail="Use the latest delivery to confirm routing is working."
-            href="#delivery-history"
+            detail="Use the latest message to confirm notifications are working."
+            href="#message-history"
           />
         </div>
       </div>
@@ -420,9 +418,7 @@ function Select({
 }
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-sm font-medium text-slate-500">{children}</span>
-  );
+  return <span className="text-sm font-medium text-slate-500">{children}</span>;
 }
 
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
@@ -434,29 +430,13 @@ function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function EmptyState({
-  action,
-  body,
-  href,
-  title,
-}: {
-  action: string;
-  body: string;
-  href: string;
-  title: string;
-}) {
+function EmptyState({ body, title }: { body: string; title: string }) {
   return (
     <div className="p-8 text-center">
       <p className="text-base font-semibold text-slate-900">{title}</p>
       <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">
         {body}
       </p>
-      <a
-        href={href}
-        className="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700"
-      >
-        {action}
-      </a>
     </div>
   );
 }
