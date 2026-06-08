@@ -697,6 +697,7 @@ function softenDashboardProblemTitle(value: string) {
     "Duplicate Content Cluster": "Repeated content group",
     "Duplicate Meta Description": "Repeated page description",
     "Duplicate Title": "Repeated page title",
+    "Duplicate title": "Repeated page title",
     "Duplicate meta descriptions across page template":
       "Page template repeats the same description",
     "Missing Schema": "Page details for Google missing",
