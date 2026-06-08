@@ -246,6 +246,7 @@ function softenGlobalSearchProblemTitle(value: string) {
     "Missing Image Alt": "Image description missing",
     "Missing Canonical": "Preferred page link missing",
     "Duplicate Content Cluster": "Repeated content group",
+    "Duplicate content detected": "Page content repeats",
     "Duplicate Meta Description": "Repeated page description",
     "Duplicate Title": "Repeated page title",
     "Duplicate title": "Repeated page title",
@@ -280,6 +281,7 @@ function softenGlobalSearchProblemTitle(value: string) {
     .replace(/\bRobots Txt\b/g, "robots file")
     .replace(/\bH1\b/g, "main heading")
     .replace(/\bMeta Description\b/g, "page description")
+    .replace(/\bduplicate content\b/gi, "repeated page content")
     .replace(/\bSchema\b/g, "page details for Google")
     .replace(/\bNoindex\b/g, "hidden from Google")
     .replace(/\bCanonical\b/g, "preferred page link")
