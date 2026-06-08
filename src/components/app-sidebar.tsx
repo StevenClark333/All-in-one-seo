@@ -47,8 +47,7 @@ const navHelp: Record<string, string> = {
   "Fix Center":
     "Approve, send, and track fixes without digging through extra detail.",
   AI: "Create page writing ideas, fix notes, and simple next steps.",
-  Technical:
-    "Review internal links, crawlability, schema, and rendering signals.",
+  Technical: "Find pages that need better links and easier paths.",
   Reports: "Create simple reports for clients, teammates, or your own records.",
   Alerts: "Get notified when something important changes.",
   Integrations: "Connect Google, CMS, hosting, alerts, and automation tools.",

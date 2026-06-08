@@ -64,11 +64,11 @@ export default async function TechnicalAuditPage({
                 {workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Internal links
+                Website links
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Find pages that need more helpful links, then choose the easiest
-                link to add first.
+                Find pages that need better paths, then choose the easiest link
+                to add first.
               </p>
             </div>
           </header>
@@ -91,16 +91,16 @@ export default async function TechnicalAuditPage({
           <ProjectWorkspaceBar
             active="technical"
             domainId={selectedDomainId}
-            note="Internal link checks and link suggestions are filtered to this project."
+            note="Helpful link ideas and page-path checks are filtered to this project."
             returnPath="/technical-audit"
           />
 
           <div className="mt-6 grid gap-4 md:grid-cols-5">
-            <Metric label="Tracked pages" value={pages.length} />
-            <Metric label="Incoming links" value={totalIncoming} />
-            <Metric label="Outgoing links" value={totalOutgoing} />
-            <Metric label="Deep pages" value={deepPageCount} />
-            <Metric label="Sitemap gaps" value={sitemapMismatchCount} />
+            <Metric label="Pages checked" value={pages.length} />
+            <Metric label="Links pointing in" value={totalIncoming} />
+            <Metric label="Links going out" value={totalOutgoing} />
+            <Metric label="Hard-to-find pages" value={deepPageCount} />
+            <Metric label="Page list gaps" value={sitemapMismatchCount} />
           </div>
 
           <section
@@ -116,7 +116,7 @@ export default async function TechnicalAuditPage({
                   Suggested links to add
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Start here. These are the clearest links to add first.
+                  Start here. These are the simplest links to add first.
                 </p>
               </div>
             </div>
@@ -147,9 +147,12 @@ export default async function TechnicalAuditPage({
                         {opportunity.client} - {opportunity.domain}
                       </p>
                     </div>
-                    <Meta label="Anchor" value={opportunity.anchorText} />
                     <Meta
-                      label="Priority"
+                      label="Suggested words"
+                      value={opportunity.anchorText}
+                    />
+                    <Meta
+                      label="Importance"
                       value={`${opportunity.priorityScore}`}
                     />
                   </article>
@@ -157,13 +160,13 @@ export default async function TechnicalAuditPage({
               ) : (
                 <EmptyState
                   title="No link suggestions yet"
-                  body="Run a crawl after pages are connected. Suggested links will appear here when a page needs more internal support."
+                  body="Run a website check after pages are connected. Link ideas will appear here when a page needs more support."
                 />
               )}
             </div>
             {hiddenOpportunityCount > 0 ? (
               <PreviewLimitNote
-                body={`${hiddenOpportunityCount} more link suggestions are available after these first easy wins.`}
+                body={`${hiddenOpportunityCount} more link ideas are available after these first easy wins.`}
               />
             ) : null}
           </section>
@@ -177,9 +180,9 @@ export default async function TechnicalAuditPage({
                 <AlertTriangle className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">Link issues</h3>
+                <h3 className="text-lg font-semibold">Pages that need help</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  A short list of pages that may need link support.
+                  A short list of pages where better links may help.
                 </p>
               </div>
             </div>
@@ -208,22 +211,22 @@ export default async function TechnicalAuditPage({
                       </p>
                     </div>
                     <Meta
-                      label="Type"
+                      label="Needs"
                       value={formatGraphIssue(issue.issueType)}
                     />
-                    <Meta label="Priority" value={`${issue.priorityScore}`} />
+                    <Meta label="Importance" value={`${issue.priorityScore}`} />
                   </article>
                 ))
               ) : (
                 <EmptyState
-                  title="No link issues active"
-                  body="Nice. When a crawl finds deep pages, orphan pages, or sitemap mismatches, they will appear here with a direct issue link."
+                  title="No pages need link help"
+                  body="Nice. When a website check finds pages that are hard to reach or missing from the page list, they will appear here with a direct fix link."
                 />
               )}
             </div>
             {hiddenIssueCount > 0 ? (
               <PreviewLimitNote
-                body={`${hiddenIssueCount} more link issues are kept out of this first view so the page stays easier to scan.`}
+                body={`${hiddenIssueCount} more page-link problems are kept out of this first view so the page stays easier to scan.`}
                 href={`/fix-center${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
                 label="Open fix center"
               />
@@ -239,11 +242,12 @@ export default async function TechnicalAuditPage({
                 <Network className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">More link detail</h3>
+                <h3 className="text-lg font-semibold">More page link counts</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Optional page-by-page counts for deeper review.
+                  Optional page-by-page counts when you want to check the full
+                  list.
                   {orphanCount
-                    ? ` ${orphanCount} possible orphan pages found.`
+                    ? ` ${orphanCount} pages may need more links.`
                     : ""}
                 </p>
               </div>
@@ -256,8 +260,8 @@ export default async function TechnicalAuditPage({
                     <th className="px-5 py-3 font-semibold">Page</th>
                     <th className="px-5 py-3 font-semibold">Client</th>
                     <th className="px-5 py-3 font-semibold">Domain</th>
-                    <th className="px-5 py-3 font-semibold">Incoming</th>
-                    <th className="px-5 py-3 font-semibold">Outgoing</th>
+                    <th className="px-5 py-3 font-semibold">Links in</th>
+                    <th className="px-5 py-3 font-semibold">Links out</th>
                     <th className="px-5 py-3 font-semibold">Signal</th>
                   </tr>
                 </thead>
@@ -288,7 +292,7 @@ export default async function TechnicalAuditPage({
                         <td className="px-5 py-4">
                           {page.isOrphan ? (
                             <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
-                              Possible orphan
+                              Needs links
                             </span>
                           ) : (
                             <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
@@ -304,7 +308,8 @@ export default async function TechnicalAuditPage({
                         className="px-5 py-8 text-center text-slate-500"
                         colSpan={6}
                       >
-                        No link data yet. Run a crawl to collect internal links.
+                        No link data yet. Run a website check to collect page
+                        links.
                       </td>
                     </tr>
                   )}
@@ -360,14 +365,14 @@ function LinkCarePlan({
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div>
           <p className="text-sm font-semibold text-orange-700">
-            Link care plan
+            Page links plan
           </p>
           <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
             Help important pages feel easier to find.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Start with suggested links, then review deep pages or sitemap gaps
-            only when something needs attention.
+            Start with suggested links, then review hard-to-find pages or page
+            list gaps only when something needs attention.
           </p>
         </div>
 
@@ -379,15 +384,15 @@ function LinkCarePlan({
             detail={
               topOpportunityLabel
                 ? `Start with ${topOpportunityLabel}.`
-                : "Run a crawl when you want fresh link ideas."
+                : "Run a website check when you want fresh link ideas."
             }
             href={opportunityCount > 0 ? "#link-opportunities" : "#link-issues"}
           />
           <PlanTile
             icon={<Route className="size-4" aria-hidden="true" />}
-            label="Watch depth"
+            label="Find hidden pages"
             value={`${deepPageCount + orphanCount} hard-to-find pages`}
-            detail="Deep or orphan pages may need links from stronger pages."
+            detail="Hard-to-find pages may need links from stronger pages."
             href="#link-issues"
           />
           <PlanTile
@@ -396,8 +401,8 @@ function LinkCarePlan({
             value={coverage}
             detail={
               sitemapMismatchCount
-                ? `${sitemapMismatchCount} sitemap gaps need review.`
-                : "Sitemap matching looks quiet."
+                ? `${sitemapMismatchCount} page list gaps need review.`
+                : "The page list looks quiet."
             }
             href="#link-details"
           />

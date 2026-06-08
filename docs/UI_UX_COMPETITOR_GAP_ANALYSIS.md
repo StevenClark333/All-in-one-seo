@@ -909,3 +909,23 @@ Implementation:
 - [x] Rename the billing guidance card to "Account comfort plan".
 - [x] Soften sidebar Billing copy and display label to "Plan".
 - [x] Browser-check Plan and Usage desktop and mobile after deployment.
+
+### Batch AS: Website Links Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit keeps internal linking and crawl evidence available, but the useful first view is issue priority and what to fix next.
+- Ahrefs Site Audit preserves page/link depth for analysis, while still grouping problems into understandable issue areas and reports.
+- A softer link page should answer "which page needs a better path?" before exposing crawl, sitemap, orphan, or raw technical language.
+
+Implementation:
+
+- [x] Rename Internal links to "Website links".
+- [x] Rewrite header and project note around better page paths and helpful link ideas.
+- [x] Rename metric labels to pages checked, links pointing in, links going out, hard-to-find pages, and page list gaps.
+- [x] Rename suggested-link details from anchor/priority to suggested words and importance.
+- [x] Rename link issues to pages that need help.
+- [x] Replace crawl, orphan, sitemap, and deep-page wording with website checks, pages needing links, page list gaps, and hard-to-find pages.
+- [x] Rename "More link detail" to "More page link counts".
+- [x] Soften sidebar Links helper copy away from crawlability/schema/rendering language.
+- [ ] Browser-check Website Links desktop and mobile after deployment.
