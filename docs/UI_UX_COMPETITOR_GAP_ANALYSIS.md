@@ -1184,3 +1184,18 @@ Implementation:
 - [x] Rewrite empty-state and plan-card copy away from project/crawl/domain wording.
 - [x] Rename focused workspace breadcrumb and navigation aria label from project tools to website tools.
 - [x] Browser-check Competitor Insights desktop and mobile after deployment.
+
+### Batch BI: Page Review Calmness
+
+Competitive evidence:
+
+- Semrush page and audit lists keep detailed checks available, but the beginner path starts with pages needing attention and plain problem counts.
+- Ahrefs and Screaming Frog expose large URL inventories, while a softer product should summarize checked pages, repeated page patterns, and the next page to improve first.
+- A softer Pages flow should say website, pages checked, page problems, and priority labels before project, crawl, audit fields, or numeric priority scores.
+
+Implementation:
+
+- [x] Rename Pages list filters, empty states, and loading copy away from project/crawl language.
+- [x] Replace page-pattern numeric priority scores with plain priority labels.
+- [x] Rename page-detail workspace and audit-field copy to website/decision language.
+- [ ] Browser-check Pages list and Page Detail desktop and mobile after deployment.

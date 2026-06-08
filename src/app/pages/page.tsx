@@ -56,7 +56,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                 Review the pages Google and AI search will judge first, without
-                digging through a long technical list.
+                digging through a long checklist.
               </p>
             </div>
 
@@ -116,7 +116,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
               ) : (
                 <EmptyState
                   title="No page patterns yet"
-                  body="Run a crawl after adding a project, then similar pages will be grouped here."
+                  body="Add a website and run the first website check, then similar pages will be grouped here."
                 />
               )}
             </div>
@@ -159,13 +159,13 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
 
               <form className="grid gap-2 sm:grid-cols-[minmax(0,260px)_auto_auto]">
                 <label className="grid gap-2">
-                  <FieldLabel>Project</FieldLabel>
+                  <FieldLabel>Website</FieldLabel>
                   <select
                     name="domainId"
                     defaultValue={selectedDomainId ?? ""}
                     className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   >
-                    <option value="">All sites</option>
+                    <option value="">All websites</option>
                     {domains.map((domain) => (
                       <option key={domain.id} value={domain.id}>
                         {domain.domain}
@@ -228,7 +228,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
               ) : (
                 <EmptyState
                   title="No pages checked yet"
-                  body="Verify a project and run the first website check. Page titles, problems, links, and page groups will appear here."
+                  body="Verify a website and run the first website check. Page titles, problems, links, and page groups will appear here."
                 />
               )}
             </div>
@@ -254,13 +254,13 @@ function PageCarePlan({
   topTemplateIssues: number;
   topTemplateLabel?: string;
 }) {
-  const scope = selectedDomain ?? "all projects";
+  const scope = selectedDomain ?? "all websites";
   const firstAction =
     criticalPages > 0
       ? `${criticalPages} critical pages need care`
       : pagesWithIssues > 0
-        ? `${pagesWithIssues} pages have fixable issues`
-        : "No urgent page issues";
+        ? `${pagesWithIssues} pages have fixable problems`
+        : "No urgent page problems";
 
   return (
     <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
@@ -291,7 +291,7 @@ function PageCarePlan({
             label="Best group fix"
             value={
               topTemplateLabel
-                ? `${topTemplateLabel}: ${topTemplateIssues} issues`
+                ? `${topTemplateLabel}: ${topTemplateIssues} problems`
                 : "No template group yet"
             }
             detail="Use page groups when the same problem repeats."
@@ -379,7 +379,7 @@ function TemplateGroupCard({
           <p className="mt-1 text-sm text-slate-500">{group.pageCount} pages</p>
         </div>
         <span className="rounded-full border border-orange-100 bg-white px-2 py-1 text-xs font-semibold text-orange-700">
-          Priority {group.priorityScore}
+          {getPriorityLabel(group.priorityScore)}
         </span>
       </div>
       <p className="mt-3 text-sm text-slate-600">
@@ -491,4 +491,16 @@ function EmptyState({ body, title }: { body: string; title: string }) {
 
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function getPriorityLabel(score: number) {
+  if (score >= 80) {
+    return "High priority";
+  }
+
+  if (score >= 45) {
+    return "Medium priority";
+  }
+
+  return "Low priority";
 }

@@ -55,7 +55,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
             className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            Project workspace
+            Website workspace
           </Link>
 
           <header className="mt-6 border-b border-slate-200 pb-6">
@@ -426,7 +426,7 @@ function PageFocusPlan({
             Open the next useful thing for this page.
           </h3>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-            This keeps the page focused on decisions, not audit fields. Start
+            This keeps the page focused on decisions, not extra fields. Start
             with an open problem, then check the search result basics.
           </p>
         </div>
