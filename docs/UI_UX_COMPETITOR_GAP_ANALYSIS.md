@@ -966,4 +966,4 @@ Implementation:
 - [x] Rename owner/admin/member/viewer permissions toward websites, checks, problems, updates, alerts, and connections.
 - [x] Replace role-guide helper text with safer access-level wording.
 - [x] Soften the shared Projects sidebar helper from scan wording to website-check wording.
-- [ ] Browser-check Team Access desktop and mobile after deployment.
+- [x] Browser-check Team Access desktop and mobile after deployment.
