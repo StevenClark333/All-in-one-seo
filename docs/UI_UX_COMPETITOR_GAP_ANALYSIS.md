@@ -1246,3 +1246,19 @@ Implementation:
 - [x] Rename Client detail priority issues and severity labels to needs-attention, urgent, planned, and fix wording.
 - [x] Browser-check Clients list and Client Detail desktop and mobile locally.
 - [x] Browser-check Clients list and Client Detail desktop and mobile after deployment.
+
+### Batch BM: Report Detail Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep report sections and audit evidence available, but shareable report detail should read like a client update before it reads like an issue ledger.
+- Client-friendly reporting works better when the top metrics say website health, needs attention, fixed items, and fix movement instead of health score, open issues, severity, or problem movement.
+- A softer report detail page should preserve change and check evidence while translating the first-read labels into plain update language.
+
+Implementation:
+
+- [x] Rename report detail metrics from health score and open issues to website health and needs attention.
+- [x] Rename report movement labels from problem/issue language to item and fix language.
+- [x] Translate change severity labels into urgent/planned wording.
+- [x] Browser-check Report Detail desktop and mobile locally.
+- [ ] Browser-check Report Detail desktop and mobile after deployment.

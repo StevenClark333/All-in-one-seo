@@ -33,7 +33,7 @@ export default async function ReportDetailPage({
   const topRecommendation = summary.recommendations.at(0);
   const healthLabel =
     summary.score === null || summary.score === undefined
-      ? "Health score pending"
+      ? "Website health pending"
       : summary.score >= 85
         ? "Website health looks strong"
         : summary.score >= 70
@@ -150,7 +150,7 @@ export default async function ReportDetailPage({
                 detail={
                   summary.score === null || summary.score === undefined
                     ? "Run a fresh website check before sending this update."
-                    : `${summary.openIssues.length} open issues and ${summary.fixedIssues.length} fixes are included in this period.`
+                    : `${summary.openIssues.length} items need attention and ${summary.fixedIssues.length} fixes are included in this period.`
                 }
               />
               <StoryTile
@@ -179,10 +179,10 @@ export default async function ReportDetailPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-5">
             {summary.sections.healthScore ? (
-              <Metric label="Health score" value={summary.score ?? "Pending"} />
+              <Metric label="Website health" value={summary.score ?? "Pending"} />
             ) : null}
             <Metric label="Pages" value={summary.pageCount} />
-            <Metric label="Open issues" value={summary.openIssues.length} />
+            <Metric label="Needs attention" value={summary.openIssues.length} />
             <Metric
               label="Fixed this period"
               value={summary.fixedIssues.length}
@@ -208,7 +208,7 @@ export default async function ReportDetailPage({
                         <article key={change.id} className="p-5">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                              {formatEnum(change.severity)}
+                              {formatImportance(change.severity)}
                             </span>
                             <span className="text-xs text-slate-500">
                               {change.createdAt.toLocaleDateString()}
@@ -303,14 +303,14 @@ export default async function ReportDetailPage({
 
               {summary.sections.issueMovement ? (
                 <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                  <h3 className="font-semibold">Problem movement</h3>
+                  <h3 className="font-semibold">Fix movement</h3>
                   <dl className="mt-4 grid gap-4">
                     <Meta
-                      label="New problems"
+                      label="New items"
                       value={summary.newIssues.length}
                     />
                     <Meta
-                      label="Fixed problems"
+                      label="Fixed items"
                       value={summary.fixedIssues.length}
                     />
                     <Meta
@@ -406,4 +406,16 @@ function formatEnum(value: string) {
 
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function formatImportance(value: string) {
+  if (value === "CRITICAL") {
+    return "Urgent";
+  }
+
+  if (value === "WARNING") {
+    return "Planned";
+  }
+
+  return formatEnum(value);
 }
