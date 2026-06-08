@@ -104,6 +104,7 @@ Gap for us:
 | Content Ideas | AI recommendation center starts with generation lists and quota wording | Start with page copy, fix briefs, and repeated-page help in plain language |
 | Fixes | Fix Center starts with many statuses, filters, audit details, and delivery mechanics | Start with one calm path: review a fix, send it, then check it |
 | Project Setup | Add-domain and project detail pages start with domain/crawl/settings language | Start with website setup, verification, first crawl, and the clearest next problem |
+| Account Start | Signup, login, reset, and workspace creation feel like bare account forms | Start with reassurance, explain the setup path, and use softer action language |
 
 ## Product Direction
 
@@ -412,3 +413,23 @@ Implementation:
 - [x] Collapse lifecycle controls, install script, and crawl files behind optional panels.
 - [x] Replace uppercase project metrics and table labels with softer labels.
 - [x] Add friendlier empty states for no crawled pages, no crawl files, and no open issues.
+
+### Batch T: Account Start Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both rely on account, project, and workspace setup before users reach audit data, so the entry flow must reduce uncertainty.
+- A nontechnical user should know what will happen after signup before being asked for workspace details.
+- Login and password reset should feel safe and reassuring instead of like bare system forms.
+
+Implementation:
+
+- [x] Add a three-step start plan to signup.
+- [x] Rename the signup workspace label to "Workspace name".
+- [x] Rename the signup action to "Create my workspace".
+- [x] Add calming context copy and orange primary action treatment to login.
+- [x] Add privacy-safe helper copy and orange primary action treatment to password reset.
+- [x] Add gentle setup plans to business and agency onboarding.
+- [x] Rename business and agency onboarding primary actions to "Create workspace".
+- [x] Add a workspace setup plan to the generic create-workspace screen.
+- [x] Rename "Workspace type" to "Best fit".

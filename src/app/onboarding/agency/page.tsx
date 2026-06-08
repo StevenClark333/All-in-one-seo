@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ArrowLeft, BriefcaseBusiness } from "lucide-react";
+import type React from "react";
+import {
+  ArrowLeft,
+  BriefcaseBusiness,
+  FileText,
+  UsersRound,
+} from "lucide-react";
 import { createWorkspace } from "@/app/actions";
 
 export default function AgencyOnboardingPage() {
@@ -16,7 +22,7 @@ export default function AgencyOnboardingPage() {
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-slate-950 text-white">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
               <BriefcaseBusiness className="size-5" aria-hidden="true" />
             </div>
             <div>
@@ -28,6 +34,32 @@ export default function AgencyOnboardingPage() {
               </h1>
             </div>
           </div>
+          <p className="mt-4 text-sm leading-6 text-slate-500">
+            Set up one agency workspace for clients, websites, fixes, and
+            reports. You can invite teammates after the workspace is ready.
+          </p>
+
+          <OnboardingPlan
+            items={[
+              {
+                icon: (
+                  <BriefcaseBusiness className="size-4" aria-hidden="true" />
+                ),
+                title: "Name the agency",
+                body: "Use the name clients and teammates recognize.",
+              },
+              {
+                icon: <UsersRound className="size-4" aria-hidden="true" />,
+                title: "Add clients next",
+                body: "Keep each client grouped with their websites and reports.",
+              },
+              {
+                icon: <FileText className="size-4" aria-hidden="true" />,
+                title: "Share progress",
+                body: "Reports can explain what improved without raw audit detail.",
+              },
+            ]}
+          />
 
           <form action={createWorkspace} className="mt-6 grid gap-5">
             <input type="hidden" name="type" value="AGENCY" />
@@ -43,12 +75,40 @@ export default function AgencyOnboardingPage() {
               />
             </label>
 
-            <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-              Create agency workspace
+            <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+              Create workspace
             </button>
           </form>
         </section>
       </div>
     </main>
+  );
+}
+
+function OnboardingPlan({
+  items,
+}: {
+  items: Array<{ body: string; icon: React.ReactNode; title: string }>;
+}) {
+  return (
+    <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">
+      <p className="text-sm font-semibold text-orange-700">Gentle setup plan</p>
+      <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        {items.map((item) => (
+          <div
+            key={item.title}
+            className="rounded-lg border border-orange-100 bg-white p-3"
+          >
+            <span className="inline-flex size-7 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+              {item.icon}
+            </span>
+            <p className="mt-2 text-sm font-semibold text-slate-950">
+              {item.title}
+            </p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

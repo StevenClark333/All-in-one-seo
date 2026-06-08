@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { LogIn, Search } from "lucide-react";
 
 export default async function LoginPage({
   searchParams,
@@ -12,16 +12,20 @@ export default async function LoginPage({
     <main className="flex min-h-screen items-center justify-center bg-[#f6f8fb] px-5 py-10 text-slate-950">
       <section className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-lg bg-slate-950 text-white">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
             <Search className="size-5" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
+            <p className="text-sm font-semibold text-orange-700">
               All In One
             </p>
             <h1 className="text-xl font-semibold tracking-normal">SEO Ops</h1>
           </div>
         </div>
+        <p className="mt-4 text-sm leading-6 text-slate-500">
+          Welcome back. Log in to see today&apos;s SEO plan, the clearest
+          problems, and the next button to press.
+        </p>
 
         {params.error ? (
           <div className="mt-5 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -60,7 +64,8 @@ export default async function LoginPage({
               className="h-11 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
             />
           </label>
-          <button className="mt-2 inline-flex h-11 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+          <button className="mt-2 inline-flex h-11 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+            <LogIn className="size-4" aria-hidden="true" />
             Log in
           </button>
         </form>
@@ -69,7 +74,7 @@ export default async function LoginPage({
           New workspace?{" "}
           <Link
             href="/signup"
-            className="font-medium text-slate-800 underline-offset-4 hover:underline"
+            className="font-medium text-orange-700 underline-offset-4 hover:underline"
           >
             Create an account
           </Link>
@@ -78,7 +83,7 @@ export default async function LoginPage({
           Forgot password?{" "}
           <Link
             href="/password-reset"
-            className="font-medium text-slate-800 underline-offset-4 hover:underline"
+            className="font-medium text-orange-700 underline-offset-4 hover:underline"
           >
             Reset it
           </Link>

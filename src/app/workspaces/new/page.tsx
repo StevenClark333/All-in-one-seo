@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, Building2 } from "lucide-react";
+import type React from "react";
+import { ArrowLeft, Building2, BriefcaseBusiness, Globe2 } from "lucide-react";
 import { createWorkspace } from "@/app/actions";
 
 export default function NewWorkspacePage() {
@@ -16,7 +17,7 @@ export default function NewWorkspacePage() {
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-slate-950 text-white">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
               <Building2 className="size-5" aria-hidden="true" />
             </div>
             <div>
@@ -26,6 +27,28 @@ export default function NewWorkspacePage() {
               </h1>
             </div>
           </div>
+          <p className="mt-4 text-sm leading-6 text-slate-500">
+            Choose the workspace shape that matches how you work. You can change
+            clients, websites, and settings later.
+          </p>
+
+          <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">
+            <p className="text-sm font-semibold text-orange-700">
+              Workspace setup plan
+            </p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <WorkspaceTile
+                icon={<BriefcaseBusiness className="size-4" aria-hidden="true" />}
+                title="Agency"
+                body="Best when you manage multiple clients and send reports."
+              />
+              <WorkspaceTile
+                icon={<Globe2 className="size-4" aria-hidden="true" />}
+                title="Business"
+                body="Best when you manage one brand or company website."
+              />
+            </div>
+          </section>
 
           <form action={createWorkspace} className="mt-6 grid gap-5">
             <label className="grid gap-2">
@@ -42,7 +65,7 @@ export default function NewWorkspacePage() {
 
             <label className="grid gap-2">
               <span className="text-sm font-medium text-slate-700">
-                Workspace type
+                Best fit
               </span>
               <select
                 name="type"
@@ -61,7 +84,7 @@ export default function NewWorkspacePage() {
               >
                 Cancel
               </Link>
-              <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+              <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
                 Create workspace
               </button>
             </div>
@@ -69,5 +92,25 @@ export default function NewWorkspacePage() {
         </section>
       </div>
     </main>
+  );
+}
+
+function WorkspaceTile({
+  body,
+  icon,
+  title,
+}: {
+  body: string;
+  icon: React.ReactNode;
+  title: string;
+}) {
+  return (
+    <div className="rounded-lg border border-orange-100 bg-white p-3">
+      <span className="inline-flex size-7 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+        {icon}
+      </span>
+      <p className="mt-2 text-sm font-semibold text-slate-950">{title}</p>
+      <p className="mt-1 text-xs leading-5 text-slate-500">{body}</p>
+    </div>
   );
 }
