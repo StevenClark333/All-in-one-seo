@@ -48,6 +48,14 @@ type ThematicReport = {
   value: string;
 };
 
+type ProjectFocusItem = {
+  detail: string;
+  href: string;
+  label: string;
+  tone: "good" | "neutral" | "warning" | "critical";
+  value: string;
+};
+
 export default async function DomainWorkspacePage({
   params,
   searchParams,
@@ -112,6 +120,19 @@ export default async function DomainWorkspacePage({
     latestReportId: latestReport?.id,
     warningIssues,
   });
+  const projectFocusItems = buildProjectFocusItems({
+    criticalIssues,
+    domainId: domain.id,
+    healthScore: domain.healthScore ?? latestScore?.score ?? 0,
+    isVerified,
+    latestCrawlHref: latestCrawl
+      ? `/crawl-runs/${latestCrawl.id}`
+      : `/domains/${domain.id}/workspace`,
+    latestCrawlStatus: latestCrawl ? formatEnum(latestCrawl.status) : "Not run",
+    latestReportHref: shareHref,
+    latestReportStatus: latestReport ? formatEnum(latestReport.status) : "No report yet",
+    warningIssues,
+  });
   const scorePoints = domain.scoreHistory
     .slice()
     .reverse()
@@ -140,11 +161,11 @@ export default async function DomainWorkspacePage({
             </Link>
             <ChevronRight className="size-4" aria-hidden="true" />
             <Link href="/domains" className="font-medium hover:text-slate-950">
-              SEO
+              Projects
             </Link>
             <ChevronRight className="size-4" aria-hidden="true" />
             <Link href="/domains" className="font-medium hover:text-slate-950">
-              Site Audit
+              Workspace
             </Link>
             <ChevronRight className="size-4" aria-hidden="true" />
             <span className="font-semibold text-slate-800">
@@ -160,12 +181,12 @@ export default async function DomainWorkspacePage({
                   {domain.client?.name ?? "Unassigned client"}
                 </p>
                 <h2 className="mt-2 break-words text-3xl font-semibold tracking-normal">
-                  Site Audit: {domain.domain}
+                  {domain.domain}
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Active project workspace for this website. Audit, pages,
-                  issues, fixes, reports, integrations, and settings stay scoped
-                  to one domain.
+                  A simple workspace for this website. Start with the next
+                  helpful action, then open deeper audit, page, report, and
+                  integration details when you need them.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -178,10 +199,10 @@ export default async function DomainWorkspacePage({
                   />
                   <button
                     disabled={!isVerified}
-                    className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md bg-slate-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                    className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-slate-300"
                   >
                     <Play className="size-4" aria-hidden="true" />
-                    Rerun crawl
+                    Run new check
                     <InfoTooltip
                       label="Run a fresh domain crawl and update pages, issues, scores, and fix verification."
                       passive
@@ -198,7 +219,7 @@ export default async function DomainWorkspacePage({
                   />
                   <button className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
                     <FileText className="size-4" aria-hidden="true" />
-                    Generate report
+                    Create report
                   </button>
                 </form>
                 <ActionLink
@@ -208,7 +229,7 @@ export default async function DomainWorkspacePage({
                       ? `/reports/${latestReport.id}/pdf`
                       : `/reports?domainId=${domain.id}`
                   }
-                  label="PDF"
+                  label="Download PDF"
                 >
                   <Download className="size-4" aria-hidden="true" />
                 </ActionLink>
@@ -294,18 +315,21 @@ export default async function DomainWorkspacePage({
             <StatusNotice message={getDomainErrorMessage(error)} />
           ) : null}
 
+          <ProjectFocusPlan items={projectFocusItems} />
+
           <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
-                  Project command center
+                <p className="text-sm font-semibold text-orange-700">
+                  Today&apos;s project plan
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-normal">
-                  {domain.domain} SEO cockpit
+                  What needs attention now
                 </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                   Health, search visibility, crawl coverage, and priority work
-                  in one place, with every metric linked to its next step.
+                  stay together here. Each card opens the next useful place to
+                  review or fix.
                 </p>
               </div>
               <div className="grid gap-2 sm:grid-cols-3">
@@ -365,8 +389,8 @@ export default async function DomainWorkspacePage({
 
             <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
               <div>
-                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
-                  Analytics distribution
+                <h4 className="text-sm font-semibold text-slate-500">
+                  Page health mix
                 </h4>
                 <div className="mt-4 grid gap-4">
                   <HorizontalBar
@@ -387,8 +411,8 @@ export default async function DomainWorkspacePage({
                 </div>
               </div>
               <div>
-                <h4 className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-400">
-                  Action queue
+                <h4 className="text-sm font-semibold text-slate-500">
+                  Next actions
                 </h4>
                 <div className="mt-4 grid gap-2">
                   {commandQueue.map((item) => (
@@ -484,7 +508,7 @@ export default async function DomainWorkspacePage({
             <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Breakdown of crawled pages by latest snapshot status, issue load, redirects, and robots directives.">
-                  Crawled Pages
+                  Pages crawled
                 </HelpLabel>
               </h3>
               <div className="mt-4 grid gap-3 sm:grid-cols-5">
@@ -1111,13 +1135,13 @@ function buildProjectTabs(domainId: string) {
       active: false,
       href: `/pages?domainId=${domainId}`,
       icon: ClipboardList,
-      label: "Crawled Pages",
+      label: "Pages",
     },
     {
       active: false,
       href: `/search-performance?domainId=${domainId}`,
       icon: BarChart3,
-      label: "Search Performance",
+      label: "Search",
     },
     {
       active: false,
@@ -1153,9 +1177,123 @@ function buildProjectTabs(domainId: string) {
       active: false,
       href: `/recommendations?domainId=${domainId}`,
       icon: Bot,
-      label: "AI",
+      label: "Ideas",
     },
   ];
+}
+
+function buildProjectFocusItems({
+  criticalIssues,
+  domainId,
+  healthScore,
+  isVerified,
+  latestCrawlHref,
+  latestCrawlStatus,
+  latestReportHref,
+  latestReportStatus,
+  warningIssues,
+}: {
+  criticalIssues: number;
+  domainId: string;
+  healthScore: number;
+  isVerified: boolean;
+  latestCrawlHref: string;
+  latestCrawlStatus: string;
+  latestReportHref: string;
+  latestReportStatus: string;
+  warningIssues: number;
+}): ProjectFocusItem[] {
+  const firstAction = !isVerified
+    ? {
+        detail: "Confirm ownership so the portal can safely crawl and recommend fixes.",
+        href: `/domains/${domainId}/verification`,
+        label: "Do first",
+        tone: "warning" as const,
+        value: "Confirm ownership",
+      }
+    : criticalIssues > 0
+      ? {
+          detail: "These are the issues most likely to hurt visitors or search visibility.",
+          href: `/issues?domainId=${domainId}&severity=CRITICAL`,
+          label: "Do first",
+          tone: "critical" as const,
+          value: `${criticalIssues} critical fixes`,
+        }
+      : warningIssues > 0
+        ? {
+            detail: "No critical issues are blocking you. Review the warning list next.",
+            href: `/issues?domainId=${domainId}&severity=WARNING`,
+            label: "Do first",
+            tone: "warning" as const,
+            value: `${warningIssues} warnings`,
+          }
+        : {
+            detail: "The project looks calm. Keep monitoring and share a fresh update.",
+            href: `/reports?domainId=${domainId}`,
+            label: "Do first",
+            tone: "good" as const,
+            value: "Share progress",
+          };
+
+  return [
+    firstAction,
+    {
+      detail: `Site health is ${healthScore}/100. Open the latest crawl for what changed.`,
+      href: latestCrawlHref,
+      label: "Check health",
+      tone: healthScore >= 80 ? "good" : healthScore >= 60 ? "warning" : "critical",
+      value: latestCrawlStatus,
+    },
+    {
+      detail: "Use the report when you need a client-friendly summary instead of raw data.",
+      href: latestReportHref,
+      label: "Share update",
+      tone: latestReportStatus === "Published" ? "good" : "neutral",
+      value: latestReportStatus,
+    },
+  ];
+}
+
+function ProjectFocusPlan({ items }: { items: ProjectFocusItem[] }) {
+  const toneStyles = {
+    critical: "border-red-200 bg-red-50 text-red-800",
+    good: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    neutral: "border-slate-200 bg-slate-50 text-slate-800",
+    warning: "border-orange-200 bg-orange-50 text-orange-800",
+  };
+
+  return (
+    <section className="mt-6 rounded-lg border border-orange-200 bg-orange-50/70 p-5 shadow-sm">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Website focus plan
+          </p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-normal text-slate-950">
+            Start with these three steps
+          </h3>
+        </div>
+        <p className="max-w-xl text-sm leading-6 text-slate-600">
+          A shorter path through the project: fix what matters, check the last
+          crawl, then share the update.
+        </p>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        {items.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className={`rounded-md border p-4 transition hover:bg-white ${toneStyles[item.tone]}`}
+          >
+            <p className="text-sm font-medium opacity-80">{item.label}</p>
+            <p className="mt-2 text-lg font-semibold">{item.value}</p>
+            <p className="mt-2 text-sm leading-5 opacity-80">{item.detail}</p>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function buildSearchSummary(metrics: DomainWorkspace["gscMetrics"]) {
@@ -1358,9 +1496,7 @@ function BreakdownItem({
 
   return (
     <div className={`rounded-md border p-3 ${styles[tone]}`}>
-      <p className="text-xs font-semibold uppercase tracking-[0.12em]">
-        {label}
-      </p>
+      <p className="text-sm font-medium">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );
@@ -1394,9 +1530,7 @@ function SignalCard({
 function ContextItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
-      <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-        {label}
-      </dt>
+      <dt className="text-sm font-medium text-slate-500">{label}</dt>
       <dd className="mt-1 truncate text-sm font-semibold text-slate-700">
         {value}
       </dd>
@@ -1487,7 +1621,7 @@ function Metric({
 }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         <HelpLabel help={help}>{label}</HelpLabel>
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
@@ -1511,7 +1645,7 @@ function QueueCard({
       href={href}
       className="rounded-md border border-slate-200 bg-slate-50 p-4 transition hover:bg-white"
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         <HelpLabel help={help}>{label}</HelpLabel>
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>

@@ -110,6 +110,7 @@ Gap for us:
 | Verification | Ownership, email, and password confirmation pages still feel like technical blockers | Explain why the check matters, show one safe path, and make the next action obvious |
 | Reports | Report detail and shared reports still start like analytics summaries | Start with the client story: main takeaway, what changed, and next fix before metrics |
 | Crawl Runs | Individual crawl pages start with raw artifacts, detected changes, and snapshots | Start with a crawl recap: result, changed pages, failed pages, and what to open next |
+| Project Workspace | Domain workspace still reads like a command center with dense labels and many paths | Start with a short website focus plan, softer actions, and calmer section labels before deeper analytics |
 
 ## Product Direction
 
@@ -498,3 +499,22 @@ Implementation:
 - [x] Collapse robots/sitemap artifacts behind an optional panel.
 - [x] Collapse page snapshots behind an optional panel.
 - [x] Add friendlier empty states for missing artifacts and snapshots.
+
+### Batch X: Project Workspace Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit overview leads with status, top issues, and direct rerun/report actions before deeper audit detail.
+- Ahrefs and Ubersuggest keep audit depth available, but the useful first step is a short health summary and clear next action.
+- A nontechnical user should not have to choose between every SEO module before knowing what to do today.
+
+Implementation:
+
+- [x] Rename the workspace header away from "Site Audit" language.
+- [x] Add a plain-language website focus plan above the workspace analytics.
+- [x] Surface the first fix, latest crawl, and report update as three clear choices.
+- [x] Rename "Rerun crawl" to "Run new check" and make it the softer orange primary action.
+- [x] Rename "Generate report" to "Create report" and "PDF" to "Download PDF".
+- [x] Rename workspace tabs from "Crawled Pages", "Search Performance", and "AI" to shorter labels.
+- [x] Replace command-center/cockpit language with calmer project-plan wording.
+- [x] Remove uppercase tracking from workspace helper cards and metadata.
