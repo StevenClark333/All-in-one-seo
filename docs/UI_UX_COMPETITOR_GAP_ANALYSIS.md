@@ -1036,4 +1036,4 @@ Implementation:
 - [x] Rename top solution cards to next best fix cards and soften stored solution text before display.
 - [x] Rename repeated-row action tooltip from resolving an issue to opening clear fix steps.
 - [x] Replace visible issue/scan/crawl wording in list cards, empty states, and plan cards with problem and website-check language.
-- [ ] Browser-check Problems List desktop and mobile after deployment.
+- [x] Browser-check Problems List desktop and mobile after deployment.
