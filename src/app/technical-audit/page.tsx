@@ -199,7 +199,7 @@ export default async function TechnicalAuditPage({
                         href={`/issues/${issue.id}`}
                         className="font-semibold underline-offset-4 hover:underline"
                       >
-                        {issue.title}
+                        {formatFriendlyIssueTitle(issue.title, issue.issueType)}
                       </Link>
                       <p className="mt-1 text-sm leading-6 text-slate-500">
                         {issue.description}
@@ -353,7 +353,7 @@ function LinkCarePlan({
     opportunityCount > 0
       ? `${opportunityCount} suggested links`
       : issueCount > 0
-        ? `${issueCount} link issues`
+        ? `${issueCount} pages need help`
         : "Links look calm";
   const coverage =
     pageCount > 0
@@ -498,10 +498,40 @@ function PreviewLimitNote({
 function formatGraphIssue(issueType: string) {
   const type = issueType.split(":")[0] ?? issueType;
 
+  if (type.includes("sitemap")) {
+    return "Page list gap";
+  }
+
+  if (type.includes("deep_page") || type.includes("orphan")) {
+    return "Hard-to-find page";
+  }
+
   return type
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatFriendlyIssueTitle(title: string, issueType: string) {
+  const type = issueType.split(":")[0] ?? issueType;
+
+  if (type.includes("sitemap_url_not_internally_linked")) {
+    return "Page is listed but needs a link";
+  }
+
+  if (type.includes("internally_linked_url_missing_from_sitemap")) {
+    return "Linked page is missing from the page list";
+  }
+
+  if (type.includes("deep_page")) {
+    return "Page is hard to reach";
+  }
+
+  if (type.includes("orphan")) {
+    return "Page needs links from other pages";
+  }
+
+  return title;
 }
 
 function getSingle(value: string | string[] | undefined) {

@@ -927,5 +927,6 @@ Implementation:
 - [x] Rename link issues to pages that need help.
 - [x] Replace crawl, orphan, sitemap, and deep-page wording with website checks, pages needing links, page list gaps, and hard-to-find pages.
 - [x] Rename "More link detail" to "More page link counts".
+- [x] Translate stored technical issue titles into plain page-link wording on the Links page.
 - [x] Soften sidebar Links helper copy away from crawlability/schema/rendering language.
 - [ ] Browser-check Website Links desktop and mobile after deployment.
