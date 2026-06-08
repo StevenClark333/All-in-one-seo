@@ -1104,7 +1104,7 @@ Implementation:
 - [x] Rename Critical/Errors/Warnings labels to urgent and planned work.
 - [x] Rename deeper table labels from crawlability, internal SEO, and markup to Google access, page links, and Google details.
 - [x] Rename bulk import copy from domains/projects/crawl cadence to websites and check rhythm.
-- [ ] Browser-check Projects desktop and mobile after deployment.
+- [x] Browser-check Projects desktop and mobile after deployment.
 
 ### Batch BD: Website Check Recap Calmness
 
@@ -1120,4 +1120,20 @@ Implementation:
 - [x] Rename setup-file panels away from robots/sitemap discovery and translate setup file types into access-helper and page-list labels.
 - [x] Rename detected changes and page snapshots into page changes and more page detail.
 - [x] Translate change severities, change types, and response codes into plain-language labels.
-- [ ] Browser-check Website Check Recap desktop and mobile after deployment.
+- [x] Browser-check Website Check Recap desktop and mobile after deployment.
+
+### Batch BE: Website Workspace Wording Cleanup
+
+Competitive evidence:
+
+- Semrush project workspaces keep audit history and detail cards available, but the main path still uses project health, next action, and issue priority labels that are easy to scan.
+- Ahrefs keeps technical evidence behind site-audit and page detail areas, while the project overview can stay focused on health, problems, and recent checks.
+- A softer website workspace should say website checks, page coverage, priority problems, health areas, and recent checks before crawl coverage, technical audit, robots/sitemap, raw data, or issue/audit jargon.
+
+Implementation:
+
+- [x] Rename workspace summary labels from domain/crawl/rendering language to website, pages checked, browser check, and last check language.
+- [x] Rename metric and health-card labels from crawl coverage, critical/warnings, errors, and audit details to page coverage, urgent/planned, and health details.
+- [x] Rename thematic health cards from robots/sitemap/crawlability/internal linking/markup/canonicals/JS rendering to access file, page list, Google access, page links, Google details, preferred pages, and browser check.
+- [x] Rename deeper workspace queue, page, recent-check, and error copy away from issues, crawl runs, crawler, and domain settings language.
+- [ ] Browser-check Website Workspace desktop and mobile after deployment.

@@ -77,8 +77,8 @@ export default async function DomainWorkspacePage({
   const lastUpdatedAt =
     latestCrawl?.completedAt ?? latestCrawl?.createdAt ?? domain.updatedAt;
   const jsRenderingStatus = latestCrawl?.renderedCaptures.length
-    ? "Rendered fallback used"
-    : "Standard crawler";
+    ? "Browser check used"
+    : "Standard check";
   const shareHref =
     latestReport?.status === "PUBLISHED" && latestReport.shareToken
       ? `/share/reports/${latestReport.shareToken}`
@@ -133,7 +133,9 @@ export default async function DomainWorkspacePage({
     latestCrawlHref: latestCrawl
       ? `/crawl-runs/${latestCrawl.id}`
       : `/domains/${domain.id}/workspace`,
-    latestCrawlStatus: latestCrawl ? formatEnum(latestCrawl.status) : "Not run",
+    latestCrawlStatus: latestCrawl
+      ? formatCheckStatus(latestCrawl.status)
+      : "Not checked",
     latestReportHref: shareHref,
     latestReportStatus: latestReport ? formatEnum(latestReport.status) : "No report yet",
     warningIssues,
@@ -190,8 +192,8 @@ export default async function DomainWorkspacePage({
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                   A simple workspace for this website. Start with the next
-                  helpful action, then open deeper audit, page, report, and
-                  integration details when you need them.
+                  helpful action, then open deeper page, report, and connection
+                  details when you need them.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -210,7 +212,7 @@ export default async function DomainWorkspacePage({
                     Run new check
                     <InfoTooltip
                       decorative
-                      label="Run a fresh domain crawl and update pages, issues, scores, and fix verification."
+                      label="Check this website again and refresh pages, problems, health, and fix progress."
                       passive
                       side="left"
                     />
@@ -247,7 +249,7 @@ export default async function DomainWorkspacePage({
                 </ActionLink>
                 <ActionLink
                   href={`/api/exports/issues?domainId=${domain.id}`}
-                  label="Issues CSV"
+                  label="Problems CSV"
                 >
                   <Download className="size-4" aria-hidden="true" />
                 </ActionLink>
@@ -267,7 +269,7 @@ export default async function DomainWorkspacePage({
             </div>
 
             <dl className="mt-5 grid gap-3 border-t border-slate-200 pt-5 sm:grid-cols-2 xl:grid-cols-7">
-              <ContextItem label="Domain" value={domain.domain} />
+              <ContextItem label="Website" value={domain.domain} />
               <ContextItem
                 label="Client"
                 value={domain.client?.name ?? "Unassigned"}
@@ -277,14 +279,14 @@ export default async function DomainWorkspacePage({
                 value={formatDate(lastUpdatedAt)}
               />
               <ContextItem
-                label="Pages crawled"
+                label="Pages checked"
                 value={`${latestCrawl?.pagesCrawled ?? 0} / ${domain.pages.length}`}
               />
               <ContextItem
                 label="Platform"
                 value={formatEnum(domain.platform)}
               />
-              <ContextItem label="JS rendering" value={jsRenderingStatus} />
+              <ContextItem label="Browser check" value={jsRenderingStatus} />
               <ContextItem
                 label="Verification"
                 value={
@@ -327,13 +329,13 @@ export default async function DomainWorkspacePage({
             <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 xl:flex-row xl:items-start xl:justify-between">
               <div>
                 <p className="text-sm font-semibold text-orange-700">
-                  Today&apos;s project plan
+                  Today&apos;s website plan
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-normal">
                   What needs attention now
                 </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Health, search visibility, crawl coverage, and priority work
+                  Health, search visibility, checked pages, and priority work
                   stay together here. Each card opens the next useful place to
                   review or fix.
                 </p>
@@ -374,10 +376,10 @@ export default async function DomainWorkspacePage({
                 value={searchSummary.visibility}
               />
               <AnalyticsMetricCard
-                help="Pages crawled in the latest crawl"
+                help="Pages checked in the latest website check"
                 href={`/pages?domainId=${domain.id}`}
                 icon={ClipboardList}
-                label="Crawl coverage"
+                label="Page coverage"
                 suffix="%"
                 value={calculateCoverage(
                   latestCrawl?.pagesCrawled ?? 0,
@@ -385,10 +387,10 @@ export default async function DomainWorkspacePage({
                 )}
               />
               <AnalyticsMetricCard
-                help="Open critical and warning issues"
+                help="Open urgent and planned problems"
                 href={`/issues?domainId=${domain.id}`}
                 icon={AlertTriangle}
-                label="Priority issues"
+                label="Priority problems"
                 value={`${criticalIssues} / ${warningIssues}`}
               />
             </div>
@@ -405,7 +407,7 @@ export default async function DomainWorkspacePage({
                     value={auditOverview.pageBreakdown.healthy}
                   />
                   <HorizontalBar
-                    label="Pages with issues"
+                    label="Pages with problems"
                     max={Math.max(1, domain.pages.length)}
                     value={auditOverview.pageBreakdown.haveIssues}
                   />
@@ -442,25 +444,27 @@ export default async function DomainWorkspacePage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
-              help="Latest site health score for this domain."
+              help="Latest site health score for this website."
               label="Health score"
               value={domain.healthScore ?? latestScore?.score ?? "Pending"}
             />
             <Metric
-              help="Pages known for this domain from crawler discovery."
+              help="Pages known for this website."
               label="Pages"
               value={domain.pages.length}
             />
             <Metric
-              help="Critical problems first, warnings second."
-              label="Critical / warnings"
+              help="Urgent problems first, planned work second."
+              label="Urgent / planned"
               value={`${criticalIssues} / ${warningIssues}`}
             />
             <Metric
-              help="Most recent crawl run state."
-              label="Last crawl"
+              help="Most recent website check state."
+              label="Last check"
               value={
-                latestCrawl ? formatEnum(latestCrawl.status) : "Not started"
+                latestCrawl
+                  ? formatCheckStatus(latestCrawl.status)
+                  : "Not started"
               }
             />
           </section>
@@ -470,19 +474,19 @@ export default async function DomainWorkspacePage({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Gauge-style score from the latest site health value and crawl score history.">
+                    <HelpLabel help="Gauge-style score from the latest site health value and website check history.">
                       Site Health
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Latest technical audit score.
+                    Latest website health score.
                   </p>
                 </div>
                 <Link
                   href={`/issues?domainId=${domain.id}`}
                   className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline"
                 >
-                  View all issues
+                  View all problems
                 </Link>
               </div>
               <div className="mt-5 flex items-center gap-5">
@@ -513,8 +517,8 @@ export default async function DomainWorkspacePage({
 
             <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Breakdown of crawled pages by latest snapshot status, issue load, redirects, and robots directives.">
-                  Pages crawled
+                <HelpLabel help="Breakdown of checked pages by response, problem load, redirects, and Google visibility.">
+                  Pages checked
                 </HelpLabel>
               </h3>
               <div className="mt-4 grid gap-3 sm:grid-cols-5">
@@ -529,7 +533,7 @@ export default async function DomainWorkspacePage({
                   value={auditOverview.pageBreakdown.broken}
                 />
                 <BreakdownItem
-                  label="Have issues"
+                  label="Have problems"
                   tone="warning"
                   value={auditOverview.pageBreakdown.haveIssues}
                 />
@@ -549,13 +553,13 @@ export default async function DomainWorkspacePage({
             <div className="grid gap-4">
               <SignalCard
                 detail={auditOverview.errorTrend}
-                label="Errors"
+                label="Urgent"
                 tone="error"
                 value={criticalIssues}
               />
               <SignalCard
-                detail={`${auditOverview.topWarnings.length} top warning categories`}
-                label="Warnings"
+                detail={`${auditOverview.topWarnings.length} planned-work categories`}
+                label="Planned"
                 tone="warning"
                 value={warningIssues}
               />
@@ -567,12 +571,12 @@ export default async function DomainWorkspacePage({
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="A search-AI accessibility score based on robots.txt and page-level robots directives.">
+                    <HelpLabel help="A search-AI visibility score based on access-helper files and page-level visibility settings.">
                       AI Search Health
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    AI crawler and search bot accessibility.
+                    AI search and Google access.
                   </p>
                 </div>
                 <span className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
@@ -600,8 +604,8 @@ export default async function DomainWorkspacePage({
 
             <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Most common warning issues for this website.">
-                  Top warnings
+                <HelpLabel help="Most common planned problems for this website.">
+                  Top planned work
                 </HelpLabel>
               </h3>
               <div className="mt-4 grid gap-3">
@@ -624,7 +628,7 @@ export default async function DomainWorkspacePage({
                   ))
                 ) : (
                   <p className="text-sm text-slate-500">
-                    No warning categories in the current issue sample.
+                    No planned-work categories in the current problem sample.
                   </p>
                 )}
               </div>
@@ -635,20 +639,20 @@ export default async function DomainWorkspacePage({
             <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Focused audit categories for this website, mapped from crawler artifacts, page snapshots, issues, and rendered crawl signals.">
-                    Thematic Reports
+                  <HelpLabel help="Focused health areas for this website, mapped from setup files, checked pages, problems, and browser-check signals.">
+                    Health areas
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Quick health cards for the technical areas users usually
-                  inspect first.
+                  Quick health cards for the website areas users usually check
+                  first.
                 </p>
               </div>
               <Link
                 href={`/technical-audit?domainId=${domain.id}`}
                 className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
-                View audit details
+                View health details
               </Link>
             </div>
             <div className="grid gap-3 p-5 sm:grid-cols-2 xl:grid-cols-5">
@@ -662,13 +666,13 @@ export default async function DomainWorkspacePage({
             <summary className="flex cursor-pointer list-none flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold text-orange-700">
-                  More project details
+                  More website detail
                 </p>
                 <h3 className="mt-1 text-xl font-semibold tracking-normal text-slate-950">
                   Open the deeper work queue when you need it
                 </h3>
                 <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-600">
-                  Issues, page previews, crawl history, reports, and search
+                  Problems, page previews, check history, reports, and search
                   metrics stay here, but they no longer make the main workspace
                   feel endless.
                 </p>
@@ -683,22 +687,22 @@ export default async function DomainWorkspacePage({
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Domain-scoped work queue so one client site can be managed without cross-domain noise.">
-                      Project work queue
+                    <HelpLabel help="Website-scoped work queue so one client site can be managed without cross-website noise.">
+                      Website work queue
                     </HelpLabel>
                   </h3>
                   <Link
                     href={`/issues?domainId=${domain.id}`}
                     className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline"
                   >
-                    View all issues
+                    View all problems
                   </Link>
                 </div>
                 <div className="mt-4 grid gap-3 md:grid-cols-3">
                   <QueueCard
-                    help="Open issues that should be triaged or assigned."
+                    help="Open problems that should be reviewed or assigned."
                     href={`/issues?domainId=${domain.id}`}
-                    label="Open issues"
+                    label="Open problems"
                     value={domain.issues.length}
                   />
                   <QueueCard
@@ -767,19 +771,19 @@ export default async function DomainWorkspacePage({
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Highest-priority issues for this website only.">
-                        Priority issues
+                      <HelpLabel help="Highest-priority problems for this website only.">
+                        Priority problems
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Critical and high-priority domain findings.
+                      Urgent and high-priority website findings.
                     </p>
                   </div>
                   <Link
                     href={`/fix-center?domainId=${domain.id}`}
                     className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                   >
-                    Open Fix Center
+                    Open fixes
                   </Link>
                 </div>
                 <div className="divide-y divide-slate-100">
@@ -793,17 +797,17 @@ export default async function DomainWorkspacePage({
                         <div className="min-w-0">
                           <p className="font-semibold">{issue.title}</p>
                           <p className="mt-1 truncate text-sm text-slate-500">
-                            {issue.page?.url ?? "Site-level issue"}
+                            {issue.page?.url ?? "Whole website problem"}
                           </p>
                         </div>
                         <span className="w-fit rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                          {formatEnum(issue.severity)}
+                          {formatProblemSeverity(issue.severity)}
                         </span>
                       </Link>
                     ))
                   ) : (
                     <p className="px-5 py-8 text-sm text-slate-500">
-                      No active issues for this domain.
+                      No active problems for this website.
                     </p>
                   )}
                 </div>
@@ -813,7 +817,7 @@ export default async function DomainWorkspacePage({
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Recently crawled pages for this website.">
+                      <HelpLabel help="Recently checked pages for this website.">
                         Page inventory
                       </HelpLabel>
                     </h3>
@@ -850,7 +854,7 @@ export default async function DomainWorkspacePage({
                               </p>
                             </div>
                             <span className="text-sm font-semibold text-slate-600">
-                              {page.issues.length} issues
+                              {page.issues.length} problems
                             </span>
                           </Link>
                         );
@@ -872,7 +876,7 @@ export default async function DomainWorkspacePage({
                     </>
                   ) : (
                     <p className="px-5 py-8 text-sm text-slate-500">
-                      No pages crawled yet.
+                      No pages checked yet.
                     </p>
                   )}
                 </div>
@@ -882,14 +886,14 @@ export default async function DomainWorkspacePage({
             <aside className="grid gap-6">
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <h3 className="font-semibold">
-                  <HelpLabel help="Readiness signals for this website project.">
-                    Project readiness
+                  <HelpLabel help="Readiness signals for this website.">
+                    Website readiness
                   </HelpLabel>
                 </h3>
                 <div className="mt-4 grid gap-3">
                   <ReadinessItem
                     complete={isVerified}
-                    label="Domain verified"
+                    label="Website verified"
                     value={
                       isVerified ? "Ownership confirmed" : "Verify ownership"
                     }
@@ -911,8 +915,8 @@ export default async function DomainWorkspacePage({
 
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <h3 className="font-semibold">
-                  <HelpLabel help="Latest crawl runs for this domain only.">
-                    Recent crawls
+                  <HelpLabel help="Latest website checks for this website only.">
+                    Recent checks
                   </HelpLabel>
                 </h3>
                 <div className="mt-4 grid gap-3">
@@ -924,23 +928,23 @@ export default async function DomainWorkspacePage({
                         className="rounded-md border border-slate-200 bg-slate-50 p-3 transition hover:bg-white"
                       >
                         <p className="text-sm font-semibold">
-                          {formatEnum(crawl.status)}
+                          {formatCheckStatus(crawl.status)}
                         </p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {crawl.pagesCrawled} crawled / {crawl.pagesFailed}{" "}
-                          failed
+                          {crawl.pagesCrawled} checked / {crawl.pagesFailed}{" "}
+                          need another look
                         </p>
                       </Link>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-500">No crawl runs yet.</p>
+                    <p className="text-sm text-slate-500">No checks yet.</p>
                   )}
                 </div>
               </section>
 
               <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <h3 className="font-semibold">
-                  <HelpLabel help="Recent monitoring events from crawls, robots.txt, sitemap, templates, and page changes.">
+                  <HelpLabel help="Recent monitoring events from website checks, setup files, templates, and page changes.">
                     Recent changes
                   </HelpLabel>
                 </h3>
@@ -961,7 +965,7 @@ export default async function DomainWorkspacePage({
                     ))
                   ) : (
                     <p className="text-sm text-slate-500">
-                      No changes detected yet.
+                      No important changes found yet.
                     </p>
                   )}
                 </div>
@@ -1072,30 +1076,30 @@ function buildThematicReports(domain: DomainWorkspace): ThematicReport[] {
   return [
     {
       detail: robotsArtifact
-        ? `Fetched ${formatDate(robotsArtifact.createdAt)}`
-        : "Not fetched yet",
+        ? `Checked ${formatDate(robotsArtifact.createdAt)}`
+        : "Not checked yet",
       href: baseHref,
-      label: "Robots.txt",
+      label: "Access file",
       status: artifactStatus(robotsArtifact),
       value: robotsArtifact?.statusCode
-        ? String(robotsArtifact.statusCode)
+        ? formatResponseLabel(robotsArtifact.statusCode)
         : "Pending",
     },
     {
       detail: sitemapArtifact
-        ? `Fetched ${formatDate(sitemapArtifact.createdAt)}`
-        : "Not fetched yet",
+        ? `Checked ${formatDate(sitemapArtifact.createdAt)}`
+        : "Not checked yet",
       href: baseHref,
-      label: "Sitemap",
+      label: "Page list",
       status: artifactStatus(sitemapArtifact),
       value: sitemapArtifact?.statusCode
-        ? String(sitemapArtifact.statusCode)
+        ? formatResponseLabel(sitemapArtifact.statusCode)
         : "Pending",
     },
     {
-      detail: `${healthyPages} crawlable pages checked`,
+      detail: `${healthyPages} pages ready for Google`,
       href: `/pages?domainId=${domain.id}`,
-      label: "Crawlability",
+      label: "Google access",
       status: scoreStatus(crawlabilityScore),
       value: formatPercent(crawlabilityScore),
     },
@@ -1108,53 +1112,53 @@ function buildThematicReports(domain: DomainWorkspace): ThematicReport[] {
     },
     {
       detail: internalIssues
-        ? `${internalIssues} internal SEO issues`
-        : "No internal link issues in current sample",
+        ? `${internalIssues} page-link problems`
+        : "No page-link problems in current sample",
       href: `/technical-audit?domainId=${domain.id}`,
-      label: "Internal Linking",
+      label: "Page links",
       status: issueStatus(internalIssues),
       value: internalIssues ? String(internalIssues) : "Clear",
     },
     {
-      detail: `${schemaPages} pages with schema detected`,
+      detail: `${schemaPages} pages with Google details detected`,
       href: `/pages?domainId=${domain.id}`,
-      label: "Markup",
+      label: "Google details",
       status: scoreStatus(markupScore),
       value: formatPercent(markupScore),
     },
     {
       detail: latestCrawl
-        ? `${latestCrawl.pagesFailed} failed pages in latest crawl`
-        : "No crawl run yet",
+        ? `${latestCrawl.pagesFailed} pages need another look`
+        : "No website check yet",
       href: latestCrawl ? `/crawl-runs/${latestCrawl.id}` : baseHref,
-      label: "Performance",
+      label: "Page response",
       status: scoreStatus(performanceScore),
       value: formatPercent(performanceScore),
     },
     {
       detail: noindexPages
-        ? `${noindexPages} noindex pages`
-        : "No noindex pages in current sample",
+        ? `${noindexPages} pages hidden from Google`
+        : "No hidden pages in current sample",
       href: `/pages?domainId=${domain.id}`,
-      label: "Indexability",
+      label: "Google visibility",
       status: scoreStatus(indexabilityScore),
       value: formatPercent(indexabilityScore),
     },
     {
       detail: canonicalIssues
-        ? `${canonicalIssues} canonical issues`
-        : "No canonical issues in priority queue",
+        ? `${canonicalIssues} preferred-page problems`
+        : "No preferred-page problems in priority queue",
       href: `/issues?domainId=${domain.id}`,
-      label: "Canonicals",
+      label: "Preferred pages",
       status: issueStatus(canonicalIssues),
       value: canonicalIssues ? String(canonicalIssues) : "Clear",
     },
     {
       detail: jsRenderingUsed
-        ? "Rendered crawl fallback was used"
-        : "Standard crawler data",
+        ? "Browser check was used"
+        : "Standard page check",
       href: baseHref,
-      label: "JS Rendering",
+      label: "Browser check",
       status: jsRenderingUsed ? "warning" : "good",
       value: jsRenderingUsed ? "Used" : "Stable",
     },
@@ -1173,7 +1177,7 @@ function buildProjectTabs(domainId: string) {
       active: false,
       href: `/issues?domainId=${domainId}`,
       icon: AlertTriangle,
-      label: "Issues",
+      label: "Problems",
     },
     {
       active: false,
@@ -1191,13 +1195,13 @@ function buildProjectTabs(domainId: string) {
       active: false,
       href: `/technical-audit?domainId=${domainId}`,
       icon: Link2,
-      label: "Internal Links",
+      label: "Page Links",
     },
     {
       active: false,
       href: `/technical-audit?domainId=${domainId}`,
       icon: CalendarClock,
-      label: "Changes",
+      label: "Updates",
     },
     {
       active: false,
@@ -1249,7 +1253,7 @@ function buildProjectFocusItems({
 }): ProjectFocusItem[] {
   const firstAction = !isVerified
     ? {
-        detail: "Confirm ownership so the portal can safely crawl and recommend fixes.",
+        detail: "Confirm ownership so the portal can safely check the website and recommend fixes.",
         href: `/domains/${domainId}/verification`,
         label: "Do first",
         tone: "warning" as const,
@@ -1257,22 +1261,22 @@ function buildProjectFocusItems({
       }
     : criticalIssues > 0
       ? {
-          detail: "These are the issues most likely to hurt visitors or search visibility.",
+          detail: "These are the problems most likely to hurt visitors or search visibility.",
           href: `/issues?domainId=${domainId}&severity=CRITICAL`,
           label: "Do first",
           tone: "critical" as const,
-          value: `${criticalIssues} critical fixes`,
+          value: `${criticalIssues} urgent fixes`,
         }
       : warningIssues > 0
         ? {
-            detail: "No critical issues are blocking you. Review the warning list next.",
+            detail: "No urgent problems are blocking you. Review the planned list next.",
             href: `/issues?domainId=${domainId}&severity=WARNING`,
             label: "Do first",
             tone: "warning" as const,
-            value: `${warningIssues} warnings`,
+            value: `${warningIssues} planned fixes`,
           }
         : {
-            detail: "The project looks calm. Keep monitoring and share a fresh update.",
+            detail: "The website looks calm. Keep watching it and share a fresh update.",
             href: `/reports?domainId=${domainId}`,
             label: "Do first",
             tone: "good" as const,
@@ -1282,14 +1286,14 @@ function buildProjectFocusItems({
   return [
     firstAction,
     {
-      detail: `Site health is ${healthScore}/100. Open the latest crawl for what changed.`,
+      detail: `Site health is ${healthScore}/100. Open the latest check for what changed.`,
       href: latestCrawlHref,
       label: "Check health",
       tone: healthScore >= 80 ? "good" : healthScore >= 60 ? "warning" : "critical",
       value: latestCrawlStatus,
     },
     {
-      detail: "Use the report when you need a client-friendly summary instead of raw data.",
+      detail: "Use the report when you need a client-friendly summary.",
       href: latestReportHref,
       label: "Share update",
       tone: latestReportStatus === "Published" ? "good" : "neutral",
@@ -1318,8 +1322,8 @@ function ProjectFocusPlan({ items }: { items: ProjectFocusItem[] }) {
           </h3>
         </div>
         <p className="max-w-xl text-sm leading-6 text-slate-600">
-          A shorter path through the project: fix what matters, check the last
-          crawl, then share the update.
+          A shorter path through the website: fix what matters, check the last
+          website update, then share progress.
         </p>
       </div>
 
@@ -1382,12 +1386,12 @@ function buildCommandQueue({
     {
       count: criticalIssues,
       href: `/issues?domainId=${domainId}&severity=CRITICAL`,
-      label: "Fix critical issues",
+      label: "Fix urgent problems",
     },
     {
       count: warningIssues,
       href: `/issues?domainId=${domainId}&severity=WARNING`,
-      label: "Review warnings",
+      label: "Review planned work",
     },
     {
       count: approvedFixes,
@@ -1397,7 +1401,7 @@ function buildCommandQueue({
     {
       count: isVerified ? 1 : 0,
       href: `/domains/${domainId}/verification`,
-      label: isVerified ? "Verification ready" : "Verify domain",
+      label: isVerified ? "Verification ready" : "Verify website",
     },
     {
       count: latestReportId ? 1 : 0,
@@ -1509,7 +1513,7 @@ function buildAuditOverview(domain: DomainWorkspace) {
     healthScore: latestScore,
     healthTrend:
       previousScore === undefined
-        ? "Run another crawl to compare score movement."
+        ? "Run another website check to compare score movement."
         : latestScore >= previousScore
           ? "The latest score is holding or improving."
           : "The latest score moved down and should be reviewed.",
@@ -1725,7 +1729,7 @@ function ReadinessItem({
 function StatusNotice({ message }: { message: string }) {
   return (
     <div className="mt-6 rounded-md border border-red-200 bg-red-50 p-4 text-red-900">
-      <p className="text-sm font-semibold">Crawl could not finish</p>
+      <p className="text-sm font-semibold">Website check could not finish</p>
       <p className="mt-1 text-sm leading-6">{message}</p>
     </div>
   );
@@ -1812,11 +1816,63 @@ function formatEnum(value: string) {
     .join(" ");
 }
 
+function formatCheckStatus(value: string) {
+  const labels: Record<string, string> = {
+    COMPLETED: "Complete",
+    FAILED: "Needs attention",
+    QUEUED: "Waiting",
+    RUNNING: "Checking",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatProblemSeverity(value: string) {
+  const labels: Record<string, string> = {
+    CRITICAL: "Urgent",
+    WARNING: "Planned",
+    INFO: "Idea",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatResponseLabel(statusCode: number) {
+  if (statusCode >= 200 && statusCode < 300) {
+    return "Good";
+  }
+
+  if (statusCode >= 300 && statusCode < 400) {
+    return "Redirects";
+  }
+
+  return "Needs review";
+}
+
 function formatIssueType(value: string) {
+  const labels: Record<string, string> = {
+    canonical_non_200: "Preferred page is not loading",
+    duplicate_meta_description: "Page description repeats",
+    duplicate_title: "Page title repeats",
+    missing_canonical: "Preferred page missing",
+    missing_h1: "Main heading missing",
+    missing_meta_description: "Page description missing",
+    missing_title: "Page title missing",
+    page_noindex: "Page hidden from Google",
+  };
+
+  if (labels[value]) {
+    return labels[value];
+  }
+
   return value
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+    .join(" ")
+    .replace(/\bMeta Description\b/g, "Page description")
+    .replace(/\bH1\b/g, "Main heading")
+    .replace(/\bCanonical\b/g, "Preferred page")
+    .replace(/\bNoindex\b/g, "Hidden from Google");
 }
 
 function formatDate(value: Date) {
@@ -1833,15 +1889,15 @@ function getSingle(value: string | string[] | undefined) {
 
 function getDomainErrorMessage(error: string) {
   const messages: Record<string, string> = {
-    "crawl-failed": "The crawler could not complete this site.",
-    "crawl-invalid": "The crawl request was missing a valid domain.",
-    "crawl-not-verified": "Verify the domain before starting a full crawl.",
+    "crawl-failed": "The website check could not finish.",
+    "crawl-invalid": "The check request was missing a valid website.",
+    "crawl-not-verified": "Verify the website before starting a full check.",
     "crawl-page-limit":
-      "This workspace has reached its page crawl limit for the current plan.",
+      "This workspace has reached its page-check limit for the current plan.",
     "crawl-plan-limit":
-      "This crawl cadence is not available on the current workspace plan.",
-    "domain-access": "You do not have access to that domain.",
+      "This check rhythm is not available on the current workspace plan.",
+    "domain-access": "You do not have access to that website.",
   };
 
-  return messages[error] ?? "Please try again or inspect the domain settings.";
+  return messages[error] ?? "Please try again or inspect the website settings.";
 }
