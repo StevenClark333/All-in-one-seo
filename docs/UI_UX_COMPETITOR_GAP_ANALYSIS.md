@@ -1168,3 +1168,19 @@ Implementation:
 - [x] Rename active project banner language to active website and website workspace.
 - [x] Rewrite keyword research advanced filter and deeper-detail copy away from project/raw-query language.
 - [x] Browser-check Keyword Research desktop and mobile after deployment.
+
+### Batch BH: Competitor Comparison Calmness
+
+Competitive evidence:
+
+- Semrush competitive views start with website-vs-competitor visibility and practical opportunities before exposing deeper tables.
+- Ahrefs keeps deep comparison data available, but its Site Explorer and competitor views still orient users around competing websites, top pages, and organic keywords.
+- A softer competitor page should say your website, competitor website, pages checked, problems, and search terms before project, domain table, crawls, or issue counts.
+
+Implementation:
+
+- [x] Rename competitor comparison filters from project/domain language to website language.
+- [x] Rename competitor metrics and deeper table labels to pages checked, problems, websites, and search terms.
+- [x] Rewrite empty-state and plan-card copy away from project/crawl/domain wording.
+- [x] Rename focused workspace breadcrumb and navigation aria label from project tools to website tools.
+- [ ] Browser-check Competitor Insights desktop and mobile after deployment.

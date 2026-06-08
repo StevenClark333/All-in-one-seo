@@ -149,7 +149,7 @@ export async function ProjectWorkspaceBar({
               </Link>
               <ChevronRight className="size-4" aria-hidden="true" />
               <Link href="/domains" className="hover:text-slate-950">
-                Projects
+                Websites
               </Link>
               <ChevronRight className="size-4" aria-hidden="true" />
               <span className="font-medium text-slate-700">
@@ -208,7 +208,7 @@ export async function ProjectWorkspaceBar({
 
       <div className="overflow-x-auto">
         <nav
-          aria-label="Project tools"
+          aria-label="Website tools"
           className="flex min-w-max gap-1 px-4 py-3"
         >
           {projectTools.map((tool) => (

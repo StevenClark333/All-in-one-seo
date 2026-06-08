@@ -87,7 +87,7 @@ export default async function CompetitiveAnalysisPage({
           <ProjectWorkspaceBar
             active="competitive"
             domainId={selectedDomainId}
-            note="Competitor insights use imported Search Console, crawl, page, and issue data."
+            note="Competitor insights use search, page, and problem data already connected to this website."
             returnPath="/competitive-analysis"
           />
 
@@ -162,7 +162,7 @@ export default async function CompetitiveAnalysisPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
-              help="Impression-weighted organic visibility across compared projects."
+              help="A simple visibility estimate across the websites in this comparison."
               label="Visibility"
               suffix="%"
               value={data.summary.visibility}
@@ -173,16 +173,16 @@ export default async function CompetitiveAnalysisPage({
               value={data.summary.impressions}
             />
             <Metric
-              help="Crawled pages included in the compared project set."
-              label="Pages"
+              help="Checked pages included in the compared website set."
+              label="Pages checked"
               value={data.domainRows.reduce(
                 (total, row) => total + row.pageCount,
                 0,
               )}
             />
             <Metric
-              help="Open technical and content issues across compared projects."
-              label="Open issues"
+              help="Open content and website problems across compared websites."
+              label="Problems"
               value={data.domainRows.reduce(
                 (total, row) => total + row.issueCount,
                 0,
@@ -253,14 +253,14 @@ export default async function CompetitiveAnalysisPage({
                 action={addCompetitorDomainAction}
                 className="grid gap-4 p-5"
               >
-                <FilterLabel label="Project">
+                <FilterLabel label="Your website">
                   <select
                     name="domainId"
                     defaultValue={selectedDomainId ?? ""}
                     required
                     className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   >
-                    <option value="">Choose project</option>
+                    <option value="">Choose website</option>
                     {data.domains.map((domain) => (
                       <option key={domain.id} value={domain.id}>
                         {domain.domain}
@@ -268,7 +268,7 @@ export default async function CompetitiveAnalysisPage({
                     ))}
                   </select>
                 </FilterLabel>
-                <FilterLabel label="Competitor domain">
+                <FilterLabel label="Competitor website">
                   <input
                     name="competitorDomain"
                     placeholder="competitor.com"
@@ -297,7 +297,7 @@ export default async function CompetitiveAnalysisPage({
                 <div>
                   <h3 className="text-lg font-semibold">Adjust comparison</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Open this when you want to compare a specific project, date
+                    Open this when you want to compare a specific website, date
                     range, or device.
                   </p>
                 </div>
@@ -307,13 +307,13 @@ export default async function CompetitiveAnalysisPage({
               </div>
             </summary>
             <form className="grid gap-3 p-5 md:grid-cols-[repeat(4,minmax(0,1fr))_auto]">
-              <FilterLabel label="Project">
+              <FilterLabel label="Website">
                 <select
                   name="domainId"
                   defaultValue={selectedDomainId ?? ""}
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="">All projects</option>
+                  <option value="">All websites</option>
                   {data.domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>
                       {domain.domain}
@@ -368,8 +368,8 @@ export default async function CompetitiveAnalysisPage({
                     More comparison detail
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Optional domain table for visibility, pages, health, and
-                    issue counts.
+                    Optional website table for visibility, checked pages,
+                    health, and problems.
                   </p>
                 </div>
                 <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
@@ -381,14 +381,14 @@ export default async function CompetitiveAnalysisPage({
               <table className="w-full min-w-[860px] text-left text-sm">
                 <thead className="bg-slate-50 text-xs text-slate-500">
                   <tr>
-                    <th className="px-5 py-3 font-semibold">Domain</th>
+                    <th className="px-5 py-3 font-semibold">Website</th>
                     <th className="px-5 py-3 font-semibold">Visibility</th>
                     <th className="px-5 py-3 font-semibold">Clicks</th>
                     <th className="px-5 py-3 font-semibold">Impressions</th>
                     <th className="px-5 py-3 font-semibold">Avg. position</th>
                     <th className="px-5 py-3 font-semibold">Health</th>
-                    <th className="px-5 py-3 font-semibold">Pages</th>
-                    <th className="px-5 py-3 font-semibold">Issues</th>
+                    <th className="px-5 py-3 font-semibold">Pages checked</th>
+                    <th className="px-5 py-3 font-semibold">Problems</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -431,8 +431,8 @@ export default async function CompetitiveAnalysisPage({
                         className="px-5 py-8 text-center text-slate-500"
                         colSpan={8}
                       >
-                        No competitive project data yet. Add domains, run
-                        crawls, and import Search Console metrics.
+                        No comparison data yet. Add your website, run a website
+                        check, and connect Search Console metrics.
                       </td>
                     </tr>
                   )}
@@ -441,9 +441,9 @@ export default async function CompetitiveAnalysisPage({
             </div>
             {hiddenDomainCount > 0 ? (
               <PreviewLimitNote
-                body={`${hiddenDomainCount} more projects are available in the full Projects view when you need the complete comparison.`}
+                body={`${hiddenDomainCount} more websites are available in the full Websites view when you need the complete comparison.`}
                 href="/domains"
-                label="Open projects"
+                label="Open websites"
               />
             ) : null}
           </details>
@@ -457,8 +457,8 @@ export default async function CompetitiveAnalysisPage({
             />
             <TopList
               items={data.topQueries}
-              label="Query"
-              title="Organic Search Console"
+              label="Search term"
+              title="Top search terms"
               type="query"
             />
           </section>
@@ -620,12 +620,12 @@ function buildCompetitorPlan({
   if (!data.domainRows.length) {
     return [
       {
-        action: "Add project",
+        action: "Add website",
         badge: "Setup",
         badgeClass:
           "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
         detail:
-          "Add and scan at least one project so competitor comparisons have a real baseline.",
+          "Add and check at least one website so competitor comparisons have a real baseline.",
         href: "/domains/new",
         icon: Plus,
         title: "Start with your website",
@@ -646,18 +646,18 @@ function buildCompetitorPlan({
 
   return [
     {
-      action: "Open project",
+      action: "Open website",
       badge: "Leader",
       badgeClass:
         "rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700",
       detail: topOwnedDomain
         ? `${topOwnedDomain.domain} has the strongest visibility in this view. Keep its best pages fresh.`
-        : "Use your strongest project as the reference point before changing lower-performing sites.",
+        : "Use your strongest website as the reference point before changing lower-performing sites.",
       href: topOwnedDomain
         ? `/domains/${topOwnedDomain.id}/workspace`
         : `/domains${domainSuffix}`,
       icon: ShieldCheck,
-      title: "Protect your strongest project",
+      title: "Protect your strongest website",
     },
     {
       action: "Review terms",
@@ -667,7 +667,7 @@ function buildCompetitorPlan({
         : "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
       detail: competitorWinner
         ? `${competitorWinner.domain} is visible in tracked rankings. Check which terms they win, then improve your matching pages.`
-        : "Add one competitor domain so the portal can show where they are ahead.",
+        : "Add one competitor website so the portal can show where they are ahead.",
       href: `/rank-tracking${domainSuffix}`,
       icon: Eye,
       title: "See who is ahead",
