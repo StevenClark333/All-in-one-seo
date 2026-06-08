@@ -1214,3 +1214,19 @@ Implementation:
 - [x] Rename the all-projects filter option to all websites.
 - [x] Rename the query filter label to search term.
 - [ ] Browser-check Google Search Growth filters desktop and mobile after deployment.
+
+### Batch BK: Connections Setup Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep integration setup details available, but setup screens work better when the first labels describe the user task rather than internal IDs.
+- WordPress, Shopify, Vercel, and Netlify setup flows still need exact paste values, but those values can be framed as setup codes, message links, and launch checks.
+- A softer Connections page should say websites, setup codes, tools, and saved connection details before domains, project IDs, site IDs, providers, or raw records.
+
+Implementation:
+
+- [x] Rename the manual connection website option from all domains to all websites.
+- [x] Rename WordPress setup labels from domain and Site ID language to website and setup-code language.
+- [x] Rename launch-check labels from project/site/provider/record wording to setup code, launch check, tool, and saved details.
+- [x] Browser-check Connections desktop and mobile locally.
+- [ ] Browser-check Connections desktop and mobile after deployment.

@@ -243,7 +243,7 @@ export default async function IntegrationsPage({
                 name="domainId"
                 defaultValue={selectedDomainId ?? ""}
               >
-                <option value="">All domains</option>
+                <option value="">All websites</option>
                 {domains.map((domain) => (
                   <option key={domain.id} value={domain.id}>
                     {domain.domain}
@@ -594,7 +594,7 @@ export default async function IntegrationsPage({
                 />
                 <Meta label="App URL" value={appUrl} />
                 <Meta
-                  label="Eligible domains"
+                  label="WordPress websites"
                   value={wordpressDomains.length}
                 />
               </div>
@@ -604,8 +604,8 @@ export default async function IntegrationsPage({
                   <p className="font-semibold">Download the WordPress plugin</p>
                   <p className="mt-1 text-sm leading-6 text-slate-500">
                     Upload this ZIP in WordPress admin under Plugins &gt; Add
-                    Plugin &gt; Upload Plugin, then save the App URL, Site ID,
-                    and connection key below.
+                    Plugin &gt; Upload Plugin, then save the app link, website
+                    setup code, and connection key below.
                   </p>
                   <p className="mt-2 break-all rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-600">
                     {wordpressPluginDownloadUrl}
@@ -657,11 +657,11 @@ export default async function IntegrationsPage({
                           <div>
                             <p className="font-semibold">{domain.domain}</p>
                             <p className="mt-1 text-sm text-slate-500">
-                              Paste this Site ID in Settings &gt; All In One SEO
-                              after the plugin is active.
+                              Paste this website setup code in Settings &gt; All
+                              In One SEO after the plugin is active.
                             </p>
                           </div>
-                          <Meta label="Site ID" value={domain.id} />
+                          <Meta label="Website setup code" value={domain.id} />
                           <Meta
                             label="Script"
                             value={formatEnum(domain.scriptStatus)}
@@ -681,7 +681,7 @@ export default async function IntegrationsPage({
                               Values to paste into WordPress
                             </p>
                             <InfoTooltip
-                              label="Use these exact values in the WordPress plugin settings for this domain."
+                              label="Use these exact values in the WordPress plugin settings for this website."
                               passive
                               side="right"
                             />
@@ -867,8 +867,8 @@ export default async function IntegrationsPage({
                 Upload the plugin ZIP through WordPress admin or copy the{" "}
                 <span className="font-medium">all-in-one-seo</span> folder to{" "}
                 <span className="font-medium">wp-content/plugins</span>. After
-                activation, save the App URL and Site ID from this panel. Full
-                install notes live in{" "}
+                activation, save the app link and website setup code from this
+                panel. Full install notes live in{" "}
                 <span className="font-medium">docs/WORDPRESS_PLUGIN.md</span>.
               </div>
             </div>
@@ -886,7 +886,7 @@ export default async function IntegrationsPage({
               </h3>
               <p className="mt-1 text-sm text-slate-500">
                 Connect a store, choose the matching website, and keep store SEO
-                checks tied to the right project.
+                checks tied to the right website.
               </p>
             </div>
 
@@ -1178,7 +1178,7 @@ export default async function IntegrationsPage({
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
                   Keep launch checks, no-code messages, and saved connection
-                  records here when you need them.
+                  details here when you need them.
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
@@ -1207,7 +1207,7 @@ export default async function IntegrationsPage({
                   >
                     <label className="grid gap-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                        Project ID
+                        Vercel setup code
                       </span>
                       <input
                         name="projectId"
@@ -1218,7 +1218,7 @@ export default async function IntegrationsPage({
                     </label>
                     <label className="grid gap-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                        Project name
+                        Website launch name
                       </span>
                       <input
                         name="projectName"
@@ -1257,7 +1257,7 @@ export default async function IntegrationsPage({
                       value={`${appUrl}/api/integrations/vercel/webhook`}
                     />
                     <Meta
-                      label="Saved projects"
+                      label="Saved launch checks"
                       value={vercelIntegrations.length}
                     />
                     <Meta
@@ -1291,7 +1291,10 @@ export default async function IntegrationsPage({
                                   "Not matched to a website"}
                               </p>
                             </div>
-                            <Meta label="Project ID" value={config.projectId} />
+                            <Meta
+                              label="Setup code"
+                              value={config.projectId}
+                            />
                             <Meta
                               label="Status"
                               value={formatEnum(integration.status)}
@@ -1356,7 +1359,7 @@ export default async function IntegrationsPage({
                   >
                     <label className="grid gap-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                        Site ID
+                        Netlify setup code
                       </span>
                       <input
                         name="siteId"
@@ -1406,7 +1409,7 @@ export default async function IntegrationsPage({
                       value={`${appUrl}/api/integrations/netlify/webhook`}
                     />
                     <Meta
-                      label="Saved sites"
+                      label="Saved launch checks"
                       value={netlifyIntegrations.length}
                     />
                     <Meta
@@ -1440,7 +1443,7 @@ export default async function IntegrationsPage({
                                   "Not matched to a website"}
                               </p>
                             </div>
-                            <Meta label="Site ID" value={config.siteId} />
+                            <Meta label="Setup code" value={config.siteId} />
                             <Meta
                               label="Status"
                               value={formatEnum(integration.status)}
@@ -1505,7 +1508,7 @@ export default async function IntegrationsPage({
                     action={connectAutomationIntegrationAction}
                     className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[160px_minmax(0,1fr)_minmax(0,2fr)_auto]"
                   >
-                    <Select label="Provider" name="provider">
+                    <Select label="Tool" name="provider">
                       <option value="ZAPIER">Zapier</option>
                       <option value="MAKE">Make</option>
                     </Select>
@@ -1560,7 +1563,7 @@ export default async function IntegrationsPage({
                               </p>
                             </div>
                             <Meta
-                              label="Provider"
+                              label="Tool"
                               value={formatEnum(integration.provider)}
                             />
                             <Meta
@@ -1583,12 +1586,12 @@ export default async function IntegrationsPage({
                 <div className="border-b border-slate-200 p-5">
                   <h3 className="text-lg font-semibold">
                     <HelpLabel help="All saved connections for this workspace, client, or website.">
-                      Saved connections
+                      Saved connection details
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
                     Saved analytics, search, website, message, and launch-check
-                    connections.
+                    details.
                   </p>
                 </div>
 
@@ -1615,7 +1618,7 @@ export default async function IntegrationsPage({
                         />
                         <Meta
                           label="Website"
-                          value={integration.domain?.domain ?? "All domains"}
+                          value={integration.domain?.domain ?? "All websites"}
                         />
                         <Meta
                           label="Created"
