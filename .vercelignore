@@ -5,3 +5,7 @@
 .next
 node_modules
 coverage
+/*.png
+/*.log
+/*.err.log
+/next-*.log
