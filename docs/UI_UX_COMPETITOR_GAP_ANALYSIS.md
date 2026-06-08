@@ -1309,4 +1309,4 @@ Implementation:
 - [x] Rename setup tiles and form labels from crawl rhythm to check rhythm.
 - [x] Replace domain/crawl permission wording with website and check wording.
 - [x] Browser-check Add website desktop and mobile locally.
-- [ ] Browser-check Add website desktop and mobile after deployment.
+- [x] Browser-check Add website desktop and mobile after deployment.
