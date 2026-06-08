@@ -1020,4 +1020,4 @@ Implementation:
 - [x] Rename solution and fix controls from recommended solution, handoff, and fix brief wording to best next step, fix note, and fix workspace.
 - [x] Rename AI guidance and workflow sidebar sections to fix ideas, progress, assigned person, notes, and progress history.
 - [x] Soften shared issue-solution helper labels from CMS/developer/recrawl/handoff language to website editor, site helper, fix note, and new website check.
-- [ ] Browser-check Problem Detail desktop and mobile after deployment.
+- [x] Browser-check Problem Detail desktop and mobile after deployment.
