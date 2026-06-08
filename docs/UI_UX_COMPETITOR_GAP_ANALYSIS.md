@@ -986,4 +986,4 @@ Implementation:
 - [x] Replace recrawl wording with running a new website check.
 - [x] Normalize visible separator characters in Fix Center metadata.
 - [x] Soften the shared active-project selector from domain/project-view language to website work language.
-- [ ] Browser-check Fix Send desktop and mobile after deployment.
+- [x] Browser-check Fix Send desktop and mobile after deployment.
