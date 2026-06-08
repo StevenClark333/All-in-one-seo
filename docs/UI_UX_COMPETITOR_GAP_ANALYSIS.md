@@ -1278,3 +1278,19 @@ Implementation:
 - [x] Add website check summary and fix movement sections to shared report links when those sections are enabled.
 - [x] Browser-check Shared Report Link desktop and mobile locally.
 - [ ] Browser-check Shared Report Link desktop and mobile after deployment.
+
+### Batch BO: Ideas And Fix Notes Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep AI/content suggestions connected to audit evidence, but beginner-friendly idea generation should read like page ideas, fix notes, and shared notes rather than raw issue or priority metadata.
+- Nontechnical users need the note queue to say website, urgent/planned, saved idea, and saved note before domain separators, severity labels, or P-score shorthand.
+- A softer ideas-and-fixes page should preserve page, problem, and repeated-template depth while making each row feel like choosing the next helpful note to create.
+
+Implementation:
+
+- [x] Rename Ideas and fixes row metadata from domain/severity shorthand to website and urgent/planned wording.
+- [x] Replace repeated-page P-score badges with plain priority labels.
+- [x] Use natural singular/plural labels for saved ideas and notes.
+- [x] Browser-check Ideas and fixes desktop and mobile locally.
+- [ ] Browser-check Ideas and fixes desktop and mobile after deployment.

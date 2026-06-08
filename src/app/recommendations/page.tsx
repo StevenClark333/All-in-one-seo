@@ -114,11 +114,12 @@ export default async function RecommendationsPage({
                             {page.url}
                           </Link>
                           <p className="mt-1 text-sm text-slate-500">
-                            {page.domain.client?.name ?? "Unassigned"} ·{" "}
+                            {page.domain.client?.name ?? "Unassigned"} - Website:{" "}
                             {page.domain.domain}
                           </p>
                           <p className="mt-2 text-sm text-slate-500">
-                            {page.recommendations.length} saved ideas
+                            {page.recommendations.length}{" "}
+                            {pluralize(page.recommendations.length, "saved idea")}
                           </p>
                         </div>
                         <form action={generatePageRecommendations}>
@@ -178,10 +179,12 @@ export default async function RecommendationsPage({
                             {issue.title}
                           </Link>
                           <p className="mt-1 text-sm text-slate-500">
-                            {formatEnum(issue.severity)} · {issue.domain.domain}
+                            {formatImportance(issue.severity)} - Website:{" "}
+                            {issue.domain.domain}
                           </p>
                           <p className="mt-2 text-sm text-slate-500">
-                            {issue.recommendations.length} saved notes
+                            {issue.recommendations.length}{" "}
+                            {pluralize(issue.recommendations.length, "saved note")}
                           </p>
                         </div>
                         <form action={generateIssueRecommendations}>
@@ -247,16 +250,20 @@ export default async function RecommendationsPage({
                             {group.label} page group
                           </Link>
                           <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                            P{group.priorityScore}
+                            {formatPriority(group.priorityScore)}
                           </span>
                         </div>
                         <p className="mt-1 text-sm text-slate-500">
-                          {group.clientName ?? "Unassigned"} · {group.domain}
+                          {group.clientName ?? "Unassigned"} - Website:{" "}
+                          {group.domain}
                         </p>
                         <p className="mt-2 text-sm text-slate-500">
-                          {group.issueCount} problems across {group.pageCount}{" "}
-                          pages, {group.criticalCount} urgent,{" "}
-                          {group.recommendations.length} saved notes
+                          {group.issueCount}{" "}
+                          {pluralize(group.issueCount, "problem")} across{" "}
+                          {group.pageCount} {pluralize(group.pageCount, "page")}
+                          , {group.criticalCount} urgent,{" "}
+                          {group.recommendations.length}{" "}
+                          {pluralize(group.recommendations.length, "saved note")}
                         </p>
                       </div>
                       <form action={generateTemplateFixBrief}>
@@ -309,7 +316,7 @@ export default async function RecommendationsPage({
                     <article key={recommendation.id} className="p-5">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                          {formatEnum(recommendation.type)}
+                          {formatRecommendationType(recommendation.type)}
                         </span>
                         <span className="text-xs text-slate-500">
                           {recommendation.createdAt.toLocaleString()}
@@ -506,6 +513,52 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatImportance(value: string) {
+  if (value === "CRITICAL") {
+    return "Urgent";
+  }
+
+  if (value === "WARNING") {
+    return "Planned";
+  }
+
+  return formatEnum(value);
+}
+
+function formatPriority(score: number) {
+  if (score >= 80) {
+    return "Urgent priority";
+  }
+
+  if (score >= 50) {
+    return "High priority";
+  }
+
+  return "Planned priority";
+}
+
+function formatRecommendationType(value: string) {
+  const normalized = value.toLowerCase();
+
+  if (normalized.includes("template")) {
+    return "Shared note";
+  }
+
+  if (normalized.includes("issue") || normalized.includes("fix")) {
+    return "Fix note";
+  }
+
+  if (normalized.includes("page")) {
+    return "Page idea";
+  }
+
+  return formatEnum(value);
+}
+
+function pluralize(count: number, singular: string, plural = `${singular}s`) {
+  return count === 1 ? singular : plural;
 }
 
 function getSingle(value: string | string[] | undefined) {
