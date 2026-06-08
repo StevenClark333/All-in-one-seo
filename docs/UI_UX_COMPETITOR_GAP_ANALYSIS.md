@@ -1277,7 +1277,7 @@ Implementation:
 - [x] Translate shared report change severity labels into urgent/planned wording.
 - [x] Add website check summary and fix movement sections to shared report links when those sections are enabled.
 - [x] Browser-check Shared Report Link desktop and mobile locally.
-- [ ] Browser-check Shared Report Link desktop and mobile after deployment.
+- [x] Browser-check Shared Report Link desktop and mobile after deployment.
 
 ### Batch BO: Ideas And Fix Notes Calmness
 
@@ -1293,4 +1293,4 @@ Implementation:
 - [x] Replace repeated-page P-score badges with plain priority labels.
 - [x] Use natural singular/plural labels for saved ideas and notes.
 - [x] Browser-check Ideas and fixes desktop and mobile locally.
-- [ ] Browser-check Ideas and fixes desktop and mobile after deployment.
+- [x] Browser-check Ideas and fixes desktop and mobile after deployment.
