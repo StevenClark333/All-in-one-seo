@@ -113,7 +113,7 @@ export default async function BillingPage() {
               </div>
               <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
                 <UsageMeter
-                  label="Projects"
+                  label="Websites"
                   limit={currentPlan.domainLimit}
                   used={usage.domains}
                 />
@@ -180,14 +180,14 @@ export default async function BillingPage() {
                     </div>
 
                     <dl className="mt-5 grid gap-3 text-sm">
-                      <PlanLimit label="Domains" value={plan.domainLimit} />
+                      <PlanLimit label="Websites" value={plan.domainLimit} />
                       <PlanLimit
                         label="Pages checked"
                         value={plan.pageCrawlLimit.toLocaleString()}
                       />
                       <PlanLimit
                         label="Check rhythm"
-                        value={formatEnum(plan.crawlFrequency)}
+                        value={formatCheckRhythm(plan.crawlFrequency)}
                       />
                       <PlanLimit
                         label="Ideas and fixes"
@@ -262,7 +262,7 @@ function BillingComfortPlan({
     {
       detail: currentPlanName
         ? "Your current plan is active here. Check room left before changing anything."
-        : "Pick a plan only after you know how many sites, pages, reports, and teammates you need.",
+        : "Pick a plan only after you know how many websites, pages, reports, and teammates you need.",
       href: "#current-plan",
       label: currentPlanName ? "Your plan" : "Choose a plan",
       value: currentPlanName ?? "Not selected",
@@ -417,4 +417,20 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatCheckRhythm(value: string) {
+  if (value === "DAILY") {
+    return "Every day";
+  }
+
+  if (value === "WEEKLY") {
+    return "Every week";
+  }
+
+  if (value === "MANUAL") {
+    return "Manual checks";
+  }
+
+  return formatEnum(value);
 }

@@ -1326,3 +1326,19 @@ Implementation:
 - [x] Keep technical setup values visible while softening history, error, and status labels.
 - [x] Browser-check Ownership desktop and mobile locally.
 - [x] Browser-check Ownership desktop and mobile after deployment.
+
+### Batch BR: Billing Plan Language Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs price plans around projects, crawl credits, reports, users, and limits, but beginner-friendly billing should translate those limits into what the user can actually do.
+- Nontechnical users should compare websites, pages checked, check rhythm, ideas and fixes, teammates, and updates before domain limits, crawl frequency, or plan mechanics.
+- A softer billing page should preserve exact limits while making plan comparison feel like checking room for work, not reading internal quota names.
+
+Implementation:
+
+- [x] Rename Billing usage and plan limits from projects/domains to websites.
+- [x] Translate raw check rhythm values into every-day/every-week/manual wording.
+- [x] Rewrite plan comfort copy from sites to websites for consistency.
+- [x] Browser-check Billing desktop and mobile locally.
+- [ ] Browser-check Billing desktop and mobile after deployment.
