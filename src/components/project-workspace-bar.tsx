@@ -110,7 +110,7 @@ export async function ProjectWorkspaceBar({
             <span className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
               Active project
               <InfoTooltip
-                label="Choose a domain to turn this global tool page into a project workspace view."
+                label="Choose a website to focus this page on one project."
                 passive
               />
             </span>
@@ -119,7 +119,7 @@ export async function ProjectWorkspaceBar({
               defaultValue=""
               className="h-10 min-w-0 rounded-md border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-700 outline-none transition focus:border-orange-300 focus:bg-white focus:ring-4 focus:ring-orange-100"
             >
-              <option value="">All domains</option>
+              <option value="">All websites</option>
               {domains.map((domain) => (
                 <option key={domain.id} value={domain.id}>
                   {formatDomainOption(domain)}
@@ -128,7 +128,7 @@ export async function ProjectWorkspaceBar({
             </select>
           </label>
           <button className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
-            Open project view
+            Show website work
           </button>
         </form>
       </section>
@@ -149,7 +149,7 @@ export async function ProjectWorkspaceBar({
               </Link>
               <ChevronRight className="size-4" aria-hidden="true" />
               <Link href="/domains" className="hover:text-slate-950">
-                SEO Projects
+                Projects
               </Link>
               <ChevronRight className="size-4" aria-hidden="true" />
               <span className="font-medium text-slate-700">
@@ -165,7 +165,7 @@ export async function ProjectWorkspaceBar({
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-orange-600">
                   Active project
                   <InfoTooltip
-                    label="Navigation, filters, and actions in this workspace use this domain."
+                    label="Navigation, filters, and actions in this workspace use this website."
                     passive
                   />
                 </p>

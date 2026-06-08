@@ -78,9 +78,9 @@ export default async function FixCenterPage({
                   Fixes
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Work through suggested fixes without digging through crawl
-                  data. Review one ready fix, send the instructions, then check
-                  that the website improved.
+                  Work through suggested fixes without digging through website
+                  check data. Review one ready fix, send the instruction, then
+                  check that the website improved.
                 </p>
               </div>
               <form action={generateLinkFixesAction} className="flex gap-2">
@@ -95,7 +95,7 @@ export default async function FixCenterPage({
                   <Play className="size-4" aria-hidden="true" />
                   Generate fixes
                   <InfoTooltip
-                    label="Create or refresh suggested fixes from current internal-link issues."
+                    label="Create or refresh suggested fixes from current website-link problems."
                     passive
                   />
                 </button>
@@ -164,12 +164,12 @@ export default async function FixCenterPage({
               <div>
                 <h3 className="inline-flex items-center gap-2 text-lg font-semibold">
                   Fix list
-                  <InfoTooltip label="Filter and work through approved internal-link fixes by domain and status." />
+                  <InfoTooltip label="Filter and work through suggested website-link fixes by website and progress." />
                 </h3>
                 <p className="mt-1 text-sm text-slate-600">
                   {selectedDomain
                     ? `Showing fixes for ${selectedDomain.domain}.`
-                    : "Showing fixes across all active domains."}
+                    : "Showing fixes across all active websites."}
                 </p>
               </div>
               <details className="rounded-lg border border-slate-200 bg-slate-50 xl:min-w-[520px]">
@@ -185,10 +185,10 @@ export default async function FixCenterPage({
                     defaultValue={selectedDomainId ?? ""}
                     className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-700"
                   >
-                    <option value="">All domains</option>
+                    <option value="">All websites</option>
                     {domains.map((domain) => (
                       <option key={domain.id} value={domain.id}>
-                        {domain.client?.name ? `${domain.client.name} · ` : ""}
+                        {domain.client?.name ? `${domain.client.name} - ` : ""}
                         {domain.domain}
                       </option>
                     ))}
@@ -285,7 +285,7 @@ export default async function FixCenterPage({
                             </span>
                             <span className="text-sm font-medium text-slate-500">
                               {suggestion.domain.client?.name
-                                ? `${suggestion.domain.client.name} · `
+                                ? `${suggestion.domain.client.name} - `
                                 : ""}
                               {suggestion.domain.domain}
                             </span>
@@ -307,7 +307,7 @@ export default async function FixCenterPage({
                             href={`/issues/${suggestion.issue.id}`}
                             className="text-sm font-semibold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline"
                           >
-                            View issue
+                            View problem
                           </Link>
                         ) : null}
                       </div>
@@ -366,15 +366,15 @@ export default async function FixCenterPage({
                           Show full manual instruction
                         </summary>
                         <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
-                          Manual fix instruction
-                          <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client handoff." />
+                          Full fix instruction
+                          <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a teammate note, or a client update." />
                         </p>
                         <p className="mt-2 text-sm leading-6 text-slate-700">
                           {suggestion.manualInstructions}
                         </p>
                         {suggestion.verificationMessage ? (
                           <p className="mt-2 text-sm leading-6 text-slate-600">
-                            <span className="font-semibold">Verification:</span>{" "}
+                            <span className="font-semibold">Check note:</span>{" "}
                             {suggestion.verificationMessage}
                           </p>
                         ) : null}
@@ -382,16 +382,16 @@ export default async function FixCenterPage({
 
                       <details className="mt-4 rounded-md border border-blue-100 bg-blue-50 p-3">
                         <summary className="cursor-pointer text-sm font-semibold text-blue-950">
-                          Platform instructions and export
+                          Website platform steps
                         </summary>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div>
                             <p className="text-sm font-semibold text-blue-700">
-                              Platform fix brief
+                              Fix note
                             </p>
                             <h5 className="mt-1 text-sm font-semibold text-blue-950">
-                              {platformBrief.platformLabel} ·{" "}
-                              {platformBrief.deliveryMode}
+                              {platformBrief.platformLabel} -{" "}
+                              {formatDeliveryMode(platformBrief.deliveryMode)}
                             </h5>
                             <p className="mt-2 text-sm leading-6 text-blue-900">
                               {platformBrief.summary}
@@ -402,13 +402,13 @@ export default async function FixCenterPage({
                             className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-blue-200 bg-white px-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
                           >
                             <Download className="size-4" aria-hidden="true" />
-                            Export brief
+                            Download note
                           </Link>
                         </div>
                         <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                           <div className="rounded-md border border-blue-100 bg-white p-3">
                             <p className="text-sm font-semibold text-slate-600">
-                              Handoff steps
+                              Steps to send
                             </p>
                             <ol className="mt-2 grid gap-2 text-sm leading-6 text-slate-700">
                               {platformBrief.steps.slice(0, 4).map((step) => (
@@ -436,7 +436,7 @@ export default async function FixCenterPage({
                         </summary>
                         <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
                           Fix progress notes
-                          <InfoTooltip label="Shows where this fix is after approval, sending, website application, and crawl verification." />
+                          <InfoTooltip label="Shows where this fix is after approval, sending, website application, and the next website check." />
                         </p>
                         <div className="mt-3 grid gap-2 lg:grid-cols-4">
                           {lifecycleSteps.map((step) => (
@@ -505,7 +505,7 @@ export default async function FixCenterPage({
                             value={suggestion.id}
                           />
                           <label className="grid gap-1 text-sm font-medium text-slate-600">
-                            Send to
+                            Send to connection
                             <select
                               name="integrationId"
                               className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
@@ -515,7 +515,10 @@ export default async function FixCenterPage({
                                   key={integration.id}
                                   value={integration.id}
                                 >
-                                  {integration.label} ({integration.provider})
+                                  {formatConnectionOption(
+                                    integration.label,
+                                    integration.provider,
+                                  )}
                                 </option>
                               ))}
                             </select>
@@ -524,7 +527,7 @@ export default async function FixCenterPage({
                             <Send className="size-4" aria-hidden="true" />
                             Send fix
                             <InfoTooltip
-                              label="Sends this fix to the selected WordPress, Zapier, or Make connection and marks it sent."
+                              label="Sends this fix to the selected connection and marks it sent."
                               passive
                             />
                           </button>
@@ -584,8 +587,8 @@ export default async function FixCenterPage({
                     No fixes ready yet
                   </h4>
                   <p className="mt-2 text-sm text-slate-600">
-                    Generate fixes after a crawl. When the portal finds a
-                    ready-to-send link fix, it will appear here with the next
+                    Generate fixes after a website check. When the portal finds
+                    a ready-to-send link fix, it will appear here with the next
                     button to press.
                   </p>
                 </div>
@@ -651,7 +654,7 @@ function FixComfortPlan({
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Check"
             value={needsCheck ? `${needsCheck} need a check` : "Nothing urgent"}
-            detail="After the fix is applied, recrawl to confirm the page improved."
+            detail="After the fix is applied, run a new check to confirm the page improved."
             href="#fix-list"
           />
         </div>
@@ -824,6 +827,38 @@ function formatVerificationStatus(value: string) {
   }
 
   return "Not checked";
+}
+
+function formatConnectionOption(label: string, provider: string) {
+  const providerLabel = formatConnectionProvider(provider);
+
+  return providerLabel ? `${label} - ${providerLabel}` : label;
+}
+
+function formatConnectionProvider(provider: string) {
+  if (provider === "WORDPRESS_RECEIVER") {
+    return "WordPress";
+  }
+
+  if (provider === "ZAPIER") {
+    return "Zapier";
+  }
+
+  if (provider === "MAKE") {
+    return "Make";
+  }
+
+  return "";
+}
+
+function formatDeliveryMode(value: string) {
+  return value
+    .replace(/receiver or editor handoff/gi, "receiver or editor note")
+    .replace(/theme handoff/gi, "theme note")
+    .replace(/CMS handoff/gi, "CMS note")
+    .replace(/developer handoff/gi, "developer note")
+    .replace(/editor handoff/gi, "editor note")
+    .replace(/handoff/gi, "note");
 }
 
 function getStatusClass(status: string) {

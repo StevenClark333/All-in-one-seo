@@ -967,3 +967,23 @@ Implementation:
 - [x] Replace role-guide helper text with safer access-level wording.
 - [x] Soften the shared Projects sidebar helper from scan wording to website-check wording.
 - [x] Browser-check Team Access desktop and mobile after deployment.
+
+### Batch AV: Fix Send Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit Issues keeps severity and issue depth available, but the useful path is still to review a problem, follow the recommendation, and re-check progress.
+- Ahrefs Site Audit preserves detailed issue evidence and exports, while keeping the first action tied to issue review and practical fixes.
+- A softer Fix Center should say website checks, fix notes, connections, and check notes before crawl data, provider codes, handoff, export, or verification wording.
+
+Implementation:
+
+- [x] Rewrite the Fixes header and generate tooltip away from crawl/internal-link language.
+- [x] Rename Fix list helpers from domains/internal-link/status language to websites, website-link fixes, and progress.
+- [x] Rename issue, manual instruction, platform brief, export, handoff, and verification labels to problem, full fix instruction, fix note, download note, steps to send, and check note.
+- [x] Format platform delivery modes as notes instead of handoffs in the Fix Center UI.
+- [x] Hide raw connection provider codes behind friendly WordPress, Zapier, and Make labels.
+- [x] Replace recrawl wording with running a new website check.
+- [x] Normalize visible separator characters in Fix Center metadata.
+- [x] Soften the shared active-project selector from domain/project-view language to website work language.
+- [ ] Browser-check Fix Send desktop and mobile after deployment.
