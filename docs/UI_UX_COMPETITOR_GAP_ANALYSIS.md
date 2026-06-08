@@ -20,9 +20,11 @@ Make All In One SEO easier, softer, and more beautiful than the common SEO tool 
 - Semrush Position Tracking: https://www.semrush.com/position-tracking/
 - Semrush Position Tracking Overview: https://www.semrush.com/kb/549-position-tracking-overview-manual
 - Semrush pricing: https://www.semrush.com/pricing/
+- Semrush My Reports: https://www.semrush.com/kb/34-my-reports
 - Ahrefs pricing: https://ahrefs.com/pricing
 - Ahrefs limits and usage help: https://help.ahrefs.com/en/articles/9720420-what-is-my-subscription-plan-how-can-i-check-what-i-have
 - Ahrefs Site Audit: https://ahrefs.com/site-audit
+- Ahrefs Report Builder: https://ahrefs.com/report-builder
 - Ahrefs Site Audit Page Explorer filters: https://help.ahrefs.com/en/articles/1399529-how-to-use-site-audit-filters-in-page-explorer-and-link-explorer
 - Ahrefs Site Audit issue settings: https://help.ahrefs.com/using-ahrefs/site-audit-new/how-to-configure-pre-set-issues-within-ahrefs-site-audit/
 - Ubersuggest Site Audit guide: https://ubersuggest.zendesk.com/hc/en-us/articles/4405444013211-Running-a-Site-Audit-With-Ubersuggest
@@ -106,6 +108,7 @@ Gap for us:
 | Project Setup | Add-domain and project detail pages start with domain/crawl/settings language | Start with website setup, verification, first crawl, and the clearest next problem |
 | Account Start | Signup, login, reset, and workspace creation feel like bare account forms | Start with reassurance, explain the setup path, and use softer action language |
 | Verification | Ownership, email, and password confirmation pages still feel like technical blockers | Explain why the check matters, show one safe path, and make the next action obvious |
+| Reports | Report detail and shared reports still start like analytics summaries | Start with the client story: main takeaway, what changed, and next fix before metrics |
 
 ## Product Direction
 
@@ -455,3 +458,23 @@ Implementation:
 - [x] Add a friendlier empty state for no verification checks.
 - [x] Soften email confirmation copy and action language.
 - [x] Soften password reset confirmation copy and action language.
+
+### Batch V: Report Storytelling Calmness
+
+Competitive evidence:
+
+- Semrush My Reports emphasizes client-ready report creation, PDF delivery, scheduling, templates, and branded sharing rather than raw audit tables.
+- Ahrefs Report Builder focuses on shareable, polished SEO reporting with reusable report structures.
+- A nontechnical user should be able to open a report and immediately know what to tell a client before reviewing every metric.
+
+Implementation:
+
+- [x] Add report-focused competitor sources to the roadmap.
+- [x] Rename report creation and setup actions with calmer, client-oriented language.
+- [x] Replace black primary report actions with softer orange primary actions.
+- [x] Add a "Client story" panel to internal report detail pages.
+- [x] Add a "Client summary" panel to public shared report pages.
+- [x] Lead reports with main takeaway, what changed, and next fix before metric blocks.
+- [x] Soften report metric labels by removing uppercase tracking.
+- [x] Improve report empty states for templates and schedules.
+- [x] Make "Create client link" reliably create a share token for draft reports.

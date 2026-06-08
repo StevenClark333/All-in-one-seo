@@ -9,6 +9,7 @@ import {
   formatReportWhiteLabelVerificationValue,
   normalizeReportHostname,
   parseReportSections,
+  publishReportWithPrisma,
   type ReportDetail,
 } from "@/lib/reporting";
 
@@ -208,6 +209,49 @@ test("normalizes and formats white-label report domain verification", () => {
     formatReportWhiteLabelVerificationValue("token_123"),
     "allinone-seo-report-domain=token_123",
   );
+});
+
+test("publishing a report creates a share token when missing", async () => {
+  const updates: unknown[] = [];
+  const prisma = {
+    report: {
+      findUnique: async () => ({ shareToken: null }),
+      update: async (input: unknown) => {
+        updates.push(input);
+        return input;
+      },
+    },
+  };
+
+  await publishReportWithPrisma(prisma as never, "report_1");
+
+  const update = updates[0] as {
+    data: { shareToken?: string; status: string };
+  };
+  assert.equal(update.data.status, "PUBLISHED");
+  assert.equal(typeof update.data.shareToken, "string");
+  assert.ok(update.data.shareToken);
+});
+
+test("publishing a report preserves an existing share token", async () => {
+  const updates: unknown[] = [];
+  const prisma = {
+    report: {
+      findUnique: async () => ({ shareToken: "existing_token" }),
+      update: async (input: unknown) => {
+        updates.push(input);
+        return input;
+      },
+    },
+  };
+
+  await publishReportWithPrisma(prisma as never, "report_1");
+
+  const update = updates[0] as {
+    data: { shareToken?: string; status: string };
+  };
+  assert.equal(update.data.status, "PUBLISHED");
+  assert.equal(update.data.shareToken, "existing_token");
 });
 
 test("generates due scheduled reports and advances next run", async () => {

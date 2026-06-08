@@ -97,7 +97,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
               <Plus className="size-5 text-slate-500" aria-hidden="true" />
               <h3 className="text-lg font-semibold">
                 <HelpLabel help="Create a one-time client-ready report from current crawl, issue, score, and recommendation data.">
-                  Generate report
+                  Create a client report
                 </HelpLabel>
               </h3>
             </div>
@@ -177,8 +177,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 />
               </label>
               <div className="md:col-span-2 2xl:col-span-4">
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Generate report
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                  Create report
                   <InfoTooltip
                     label="Build the report now and add it to the library."
                     passive
@@ -270,8 +270,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 <option value="MONTHLY">Monthly</option>
               </Select>
               <div className="flex items-end">
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Create schedule
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                  Save schedule
                   <InfoTooltip
                     label="Save this recurring reporting workflow."
                     passive
@@ -366,8 +366,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 </div>
               </fieldset>
               <div className="md:col-span-2 2xl:col-span-4">
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Create template
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                  Save template
                   <InfoTooltip
                     label="Save this template for future manual and scheduled reports."
                     passive
@@ -418,7 +418,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 ))
               ) : (
                 <div className="p-8 text-center text-sm text-slate-500">
-                  No custom report templates yet.
+                  No saved report formats yet. Create one after you like the
+                  first report layout.
                 </div>
               )}
             </div>
@@ -476,8 +477,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 ))}
               </Select>
               <div className="flex items-end">
-                <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Add domain
+                <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                  Add branded domain
                   <InfoTooltip
                     label="Create a white-label report hostname and show DNS verification values."
                     passive
@@ -537,7 +538,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                             value={domain.id}
                           />
                           <button className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                            Check DNS
+                            Check branding
                             <InfoTooltip
                               label="Look up the required TXT record and activate the hostname if it matches."
                               passive
@@ -612,7 +613,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 ))
               ) : (
                 <div className="p-8 text-center text-sm text-slate-500">
-                  No scheduled reports yet.
+                  No scheduled reports yet. Create one after the first report is
+                  ready to send.
                 </div>
               )}
             </div>
@@ -674,7 +676,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                     action={
                       <a
                         href="#generate-report"
-                        className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                        className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
                       >
                         <Plus className="size-4" aria-hidden="true" />
                         Create first report

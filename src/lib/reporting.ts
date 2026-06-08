@@ -414,9 +414,24 @@ export async function evaluateReportSchedulesWithPrisma(
 }
 
 export async function publishReport(reportId: string) {
-  return getPrisma().report.update({
+  return publishReportWithPrisma(getPrisma(), reportId);
+}
+
+export async function publishReportWithPrisma(
+  prisma: Pick<PrismaClient, "report">,
+  reportId: string,
+) {
+  const existingReport = await prisma.report.findUnique({
     where: { id: reportId },
-    data: { status: "PUBLISHED" },
+    select: { shareToken: true },
+  });
+
+  return prisma.report.update({
+    where: { id: reportId },
+    data: {
+      status: "PUBLISHED",
+      shareToken: existingReport?.shareToken ?? randomToken(),
+    },
   });
 }
 

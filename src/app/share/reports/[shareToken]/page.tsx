@@ -17,6 +17,16 @@ export default async function PublicReportPage({
     notFound();
   }
 
+  const topRecommendation = summary.recommendations.at(0);
+  const healthLabel =
+    summary.score === null || summary.score === undefined
+      ? "Health score pending"
+      : summary.score >= 85
+        ? "Website health looks strong"
+        : summary.score >= 70
+          ? "Website health needs a little care"
+          : "Website health needs attention";
+
   return (
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-8 text-slate-950 sm:px-8">
       <div className="mx-auto max-w-5xl">
@@ -36,6 +46,47 @@ export default async function PublicReportPage({
             Scope: {summary.brand.reportScope}
           </p>
         </header>
+
+        <section className="mt-6 rounded-lg border border-orange-100 bg-white p-5 shadow-sm">
+          <p className="text-sm font-semibold text-orange-700">
+            Client summary
+          </p>
+          <h2 className="mt-1 text-2xl font-semibold tracking-normal">
+            The short version before the details.
+          </h2>
+          <div className="mt-4 grid gap-3 lg:grid-cols-3">
+            <StoryTile
+              label="Main takeaway"
+              title={healthLabel}
+              detail={
+                summary.score === null || summary.score === undefined
+                  ? "Fresh audit data is still being prepared for this report."
+                  : `${summary.openIssues.length} open issues and ${summary.fixedIssues.length} fixes are included in this update.`
+              }
+            />
+            <StoryTile
+              label="What changed"
+              title={
+                summary.changeEvents.length
+                  ? `${summary.changeEvents.length} tracked changes`
+                  : "No major tracked changes"
+              }
+              detail={
+                summary.changeEvents.length
+                  ? "The most important changes are summarized below."
+                  : "This period is quiet, so the update is intentionally short."
+              }
+            />
+            <StoryTile
+              label="Next fix"
+              title={topRecommendation?.title ?? "No urgent fix to highlight"}
+              detail={
+                topRecommendation?.recommendation ??
+                "There are no active recommendations in this report scope."
+              }
+            />
+          </div>
+        </section>
 
         <section className="mt-6 grid gap-4 md:grid-cols-5">
           {summary.sections.healthScore ? (
@@ -130,10 +181,28 @@ function formatEnum(value: string) {
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+      <p className="text-sm font-medium text-slate-500">
         {label}
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
+  );
+}
+
+function StoryTile({
+  detail,
+  label,
+  title,
+}: {
+  detail: string;
+  label: string;
+  title: string;
+}) {
+  return (
+    <article className="rounded-md border border-slate-200 bg-slate-50 p-4">
+      <p className="text-sm font-medium text-slate-500">{label}</p>
+      <h3 className="mt-2 text-base font-semibold text-slate-950">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-slate-600">{detail}</p>
+    </article>
   );
 }
