@@ -843,4 +843,4 @@ Implementation:
 - [x] Limit visible page rows to the first fifteen pages.
 - [x] Move the remaining page rows into a closed "More pages" panel.
 - [x] Replace raw crawl/template wording with website-check and repeated-fix language.
-- [ ] Browser-check Page List desktop and mobile after deployment.
+- [x] Browser-check Page List desktop and mobile after deployment.
