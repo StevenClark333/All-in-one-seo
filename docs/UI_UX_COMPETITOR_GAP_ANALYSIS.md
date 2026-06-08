@@ -1310,3 +1310,19 @@ Implementation:
 - [x] Replace domain/crawl permission wording with website and check wording.
 - [x] Browser-check Add website desktop and mobile locally.
 - [x] Browser-check Add website desktop and mobile after deployment.
+
+### Batch BQ: Ownership Check Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep ownership and project setup checks necessary, but their first-read setup flows work best when users understand the next permission step without learning crawler terminology.
+- Nontechnical users should see website ownership, setup value, and website check language before domain, verification token, production crawl, or settings-inspection language.
+- A softer ownership page should keep exact DNS/file/meta values copyable while translating status, errors, and success messages into calm next-step wording.
+
+Implementation:
+
+- [x] Rename ownership-page first-read copy away from project/domain/crawl wording.
+- [x] Rename setup/status messages from verification token and production crawl wording to setup value and website check wording.
+- [x] Keep technical setup values visible while softening history, error, and status labels.
+- [x] Browser-check Ownership desktop and mobile locally.
+- [ ] Browser-check Ownership desktop and mobile after deployment.

@@ -21,7 +21,7 @@ const verificationMethods = [
   {
     description:
       "Best choice for most websites. Add one DNS value and it keeps working across platforms.",
-    help: "Add the generated TXT value to DNS. This is the most durable verification method.",
+    help: "Add the generated TXT value to DNS. This is the most durable ownership method.",
     method: "DNS_TXT",
     name: "DNS TXT",
   },
@@ -35,14 +35,14 @@ const verificationMethods = [
   {
     description:
       "Use this when your platform lets you add a small tag to the homepage head.",
-    help: "Place the generated meta tag in the homepage head for ownership verification.",
+    help: "Place the generated meta tag in the homepage head to confirm ownership.",
     method: "META_TAG",
     name: "Meta tag",
   },
   {
     description:
       "Use this when this website is already connected in Google Search Console.",
-    help: "Verify through a connected Google Search Console property mapped to this domain.",
+    help: "Confirm through a connected Google Search Console property mapped to this website.",
     method: "GSC_OAUTH",
     name: "Search Console",
   },
@@ -109,7 +109,7 @@ export default async function DomainVerificationPage({
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Projects
+          Websites
         </Link>
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -126,8 +126,8 @@ export default async function DomainVerificationPage({
                   Confirm ownership
                 </h1>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  Prove that you control {domain.domain} so crawls and fixes can
-                  run safely.
+                  Confirm that you control {domain.domain} so website checks
+                  and fixes can run safely.
                 </p>
               </div>
             </div>
@@ -161,7 +161,7 @@ export default async function DomainVerificationPage({
               <div>
                 <h2 className="font-semibold">Ownership is confirmed</h2>
                 <p className="mt-1 text-sm leading-6">
-                  Full production crawls can run for this domain
+                  Full website checks can run for this website
                   {verifiedVerification
                     ? ` through ${getMethodName(verifiedVerification.method)}.`
                     : "."}
@@ -198,7 +198,7 @@ export default async function DomainVerificationPage({
           {error ? (
             <StatusNotice
               tone="error"
-              title="Verification action could not finish"
+              title="Ownership check could not finish"
               message={getVerificationErrorMessage(error)}
             />
           ) : null}
@@ -216,8 +216,8 @@ export default async function DomainVerificationPage({
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h2 className="font-semibold">
-                    <HelpLabel help="Choose one ownership method. Once any method passes, the domain is verified.">
-                      Choose one verification method
+                    <HelpLabel help="Choose one ownership method. Once any method passes, the website is confirmed.">
+                      Choose one ownership method
                     </HelpLabel>
                   </h2>
                   <p className="mt-1 text-sm leading-6 text-slate-500">
@@ -270,7 +270,7 @@ export default async function DomainVerificationPage({
                   <span className="inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600">
                     {selectedVerification
                       ? formatEnum(selectedVerification.status)
-                      : "Not generated"}
+                      : "Not ready yet"}
                   </span>
                 </div>
 
@@ -343,7 +343,7 @@ export default async function DomainVerificationPage({
             <details>
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-5 font-semibold">
                 <HelpLabel help="Recent ownership check attempts and the result returned by each method.">
-                  Verification history
+                  Ownership check history
                 </HelpLabel>
                 <span className="text-sm font-medium text-slate-500">
                   {domain.verificationChecks.length} checks
@@ -546,32 +546,32 @@ function getSingle(value: string | string[] | undefined) {
 
 function getVerificationErrorMessage(error: string) {
   const messages: Record<string, string> = {
-    "domain-access": "You do not have access to that domain.",
+    "domain-access": "You do not have access to that website.",
     "verification-check-failed":
-      "The verification check could not run right now. Local DNS or remote site checks may fail until the record or file exists.",
+      "The ownership check could not run right now. DNS or website checks may fail until the value is in place.",
     "verification-generate-failed":
-      "A new verification token could not be generated.",
-    "verification-invalid": "The verification request was incomplete.",
+      "A new setup value could not be generated.",
+    "verification-invalid": "The ownership request was incomplete.",
   };
 
-  return messages[error] ?? "Please try again or inspect the domain settings.";
+  return messages[error] ?? "Please try again or review the website settings.";
 }
 
 function getVerificationStatusTitle(status: string) {
   if (status === "verified") {
-    return "Domain verified";
+    return "Website ownership confirmed";
   }
 
   if (status === "verification-generated") {
-    return "Verification token generated";
+    return "Setup value ready";
   }
 
-  return "Verification did not pass";
+  return "Ownership check did not pass";
 }
 
 function getVerificationStatusMessage(status: string) {
   const messages: Record<string, string> = {
-    verified: "Ownership is confirmed and production crawls can run.",
+    verified: "Ownership is confirmed and full website checks can run.",
     "verification-failed":
       "We checked the selected method, but the required ownership signal was not found yet.",
     "verification-generated":
