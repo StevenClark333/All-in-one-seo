@@ -885,4 +885,4 @@ Implementation:
 - [x] Replace crawl/inventory wording with website-check and full-page-list wording.
 - [x] Rename saved ideas and briefs to saved ideas and notes.
 - [x] Rename the shared sidebar label and helper copy to Ideas and fixes.
-- [ ] Browser-check Ideas and Fixes desktop and mobile after deployment.
+- [x] Browser-check Ideas and Fixes desktop and mobile after deployment.
