@@ -864,4 +864,4 @@ Implementation:
 - [x] Move top search-term and page tables into a closed "More search data" panel.
 - [x] Limit each deeper table preview to the first eight rows.
 - [x] Soften the route loading copy.
-- [ ] Browser-check Google Search Growth desktop and mobile after deployment.
+- [x] Browser-check Google Search Growth desktop and mobile after deployment.
