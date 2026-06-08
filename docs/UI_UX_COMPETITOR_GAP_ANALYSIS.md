@@ -1373,7 +1373,7 @@ Implementation:
 - [x] Translate ownership and latest-check statuses into ownership-confirmed and finished/waiting/checking wording.
 - [x] Translate client report status into ready-to-share/shared/needs-review wording.
 - [x] Browser-check Client list and Client detail desktop and mobile locally.
-- [ ] Browser-check Client list and Client detail desktop and mobile after deployment.
+- [x] Browser-check Client list and Client detail desktop and mobile after deployment.
 
 ### Batch BU: Page Suggestion Label Calmness
 
