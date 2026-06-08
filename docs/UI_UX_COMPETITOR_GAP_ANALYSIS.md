@@ -1198,4 +1198,4 @@ Implementation:
 - [x] Rename Pages list filters, empty states, and loading copy away from project/crawl language.
 - [x] Replace page-pattern numeric priority scores with plain priority labels.
 - [x] Rename page-detail workspace and audit-field copy to website/decision language.
-- [ ] Browser-check Pages list and Page Detail desktop and mobile after deployment.
+- [x] Browser-check Pages list and Page Detail desktop and mobile after deployment.
