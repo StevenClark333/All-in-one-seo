@@ -735,6 +735,7 @@ function getSoftActionLabel(label: string) {
   return label
     .replace(/^Generate\b/i, "Create")
     .replace(/\bbrief\b/i, "note")
+    .replace(/\bindexability\b/i, "page visibility")
     .replace(/\bsolution\b/i, "fix steps");
 }
 
@@ -835,6 +836,12 @@ function softenProblemText(value: string) {
     .replace(/\bcrawl\b/gi, "website check")
     .replace(/\bcrawlers\b/gi, "search engines")
     .replace(/\bcrawler\b/gi, "search engine")
+    .replace(
+      /\brestore indexable canonical signals\b/gi,
+      "restore the right visibility and preferred page settings",
+    )
+    .replace(/\bindexable\b/gi, "visible in Google")
+    .replace(/\bcanonical signals\b/gi, "preferred page settings")
     .replace(/\bindexability\b/gi, "visibility in Google")
     .replace(/\bmeta description\b/gi, "page description")
     .replace(/\bmeta descriptions\b/gi, "page descriptions")
