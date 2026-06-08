@@ -806,4 +806,4 @@ Implementation:
 - [x] Rewrite Shopify, Webflow, and Slack setup copy around website matching and messages.
 - [x] Move Vercel, Netlify, Zapier/Make, and saved connection records into a closed "Advanced connection settings" panel.
 - [x] Replace deployment/webhook/workflow language in the advanced panel with launch checks, message URLs, and saved connections.
-- [ ] Browser-check Connections desktop and mobile after deployment.
+- [x] Browser-check Connections desktop and mobile after deployment.
