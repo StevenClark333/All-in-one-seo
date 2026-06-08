@@ -1341,7 +1341,7 @@ Implementation:
 - [x] Translate raw check rhythm values into every-day/every-week/manual wording.
 - [x] Rewrite plan comfort copy from sites to websites for consistency.
 - [x] Browser-check Billing desktop and mobile locally.
-- [ ] Browser-check Billing desktop and mobile after deployment.
+- [x] Browser-check Billing desktop and mobile after deployment.
 
 ### Batch BS: Alert Label Calmness
 
@@ -1357,4 +1357,4 @@ Implementation:
 - [x] Translate alert importance labels from critical/warning/suggestion to urgent/planned/idea.
 - [x] Translate message delivery status from pending/failed wording to waiting/needs-review wording.
 - [x] Browser-check Alerts label desktop and mobile locally.
-- [ ] Browser-check Alerts label desktop and mobile after deployment.
+- [x] Browser-check Alerts label desktop and mobile after deployment.
