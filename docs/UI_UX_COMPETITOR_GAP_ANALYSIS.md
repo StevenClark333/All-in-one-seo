@@ -865,3 +865,24 @@ Implementation:
 - [x] Limit each deeper table preview to the first eight rows.
 - [x] Soften the route loading copy.
 - [x] Browser-check Google Search Growth desktop and mobile after deployment.
+
+### Batch AQ: Ideas And Fix Notes Calmness
+
+Competitive evidence:
+
+- Semrush On Page SEO Checker frames work as optimization ideas and explains why the ideas help, which is easier than asking a beginner to understand prompts or handoffs.
+- Semrush Content Toolkit keeps content ideas, title suggestions, meta suggestions, and search intent analysis grouped around writing help.
+- Ahrefs Site Audit preserves recommendations for how to fix issues, but a softer product should translate those into short notes and instructions before showing technical detail.
+
+Implementation:
+
+- [x] Rename Content Ideas to "Ideas and fixes".
+- [x] Rewrite header and workspace copy away from crawled pages, AI prompts, templates, briefs, and handoffs.
+- [x] Rename page copy ideas to page writing ideas.
+- [x] Rename fix briefs to fix notes and use instruction language.
+- [x] Rename repeated-page briefs to repeated-page notes.
+- [x] Replace developer/CMS/client handoff wording with simple note and instruction wording.
+- [x] Replace crawl/inventory wording with website-check and full-page-list wording.
+- [x] Rename saved ideas and briefs to saved ideas and notes.
+- [x] Rename the shared sidebar label and helper copy to Ideas and fixes.
+- [ ] Browser-check Ideas and Fixes desktop and mobile after deployment.

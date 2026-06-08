@@ -34,8 +34,7 @@ const navHelp: Record<string, string> = {
   Clients: "Manage clients, their websites, reports, and SEO workload.",
   Sites:
     "Add websites, verify ownership, run scans, and keep each project organized.",
-  Pages:
-    "Review crawled website pages, titles, descriptions, and page-level problems.",
+  Pages: "Review checked pages, titles, descriptions, and page-level problems.",
   "Search Performance":
     "See Google results, clicks, impressions, top pages, and search demand.",
   "Competitive Analysis":
@@ -47,7 +46,7 @@ const navHelp: Record<string, string> = {
     "See the problems that need attention and the easiest way to solve them.",
   "Fix Center":
     "Approve, send, and track fixes without digging through extra detail.",
-  AI: "Generate content ideas, SEO recommendations, and fix briefs.",
+  AI: "Create page writing ideas, fix notes, and simple next steps.",
   Technical:
     "Review internal links, crawlability, schema, and rendering signals.",
   Reports: "Create simple reports for clients, teammates, or your own records.",
@@ -60,7 +59,7 @@ const navHelp: Record<string, string> = {
 };
 
 const displayLabels: Record<string, string> = {
-  AI: "Content Ideas",
+  AI: "Ideas and fixes",
   Issues: "Problems",
   "Fix Center": "Fixes",
   "Keyword Research": "Keywords",
