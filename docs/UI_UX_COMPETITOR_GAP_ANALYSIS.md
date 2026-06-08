@@ -1088,3 +1088,20 @@ Implementation:
 - [x] Translate stored problem titles on the website detail page into plain-language labels.
 - [x] Rename optional setup, lifecycle, install, and setup-file panels away from crawl/script/artifact wording.
 - [x] Browser-check Website Detail desktop and mobile after deployment.
+
+### Batch BC: Projects Page Wording Cleanup
+
+Competitive evidence:
+
+- Semrush project lists keep deeper audit controls available, but the top-level project list reads like a website portfolio with health and next actions.
+- Ahrefs keeps page and crawl depth available behind project/site audit detail, while the first project screen can stay lighter with setup, health, and urgent-work labels.
+- A softer Projects page should say websites, checks, urgent/planned work, and page access before crawled pages, crawlability, critical errors, or domain import wording.
+
+Implementation:
+
+- [x] Rename the Projects primary action from "Add project" to "Add website".
+- [x] Replace visible crawl/crawled/scanning wording with website-check language.
+- [x] Rename Critical/Errors/Warnings labels to urgent and planned work.
+- [x] Rename deeper table labels from crawlability, internal SEO, and markup to Google access, page links, and Google details.
+- [x] Rename bulk import copy from domains/projects/crawl cadence to websites and check rhythm.
+- [ ] Browser-check Projects desktop and mobile after deployment.

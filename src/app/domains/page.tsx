@@ -88,14 +88,14 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                {workspace?.name ?? "Workspace"} / SEO
+                {workspace?.name ?? "Workspace"} / Websites
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 Projects
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                 Keep each website moving with a simple health check, a clear
-                next action, and detailed audit data only when you need it.
+                next action, and deeper detail only when you need it.
               </p>
             </div>
 
@@ -104,9 +104,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
               className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-orange-700"
             >
               <Plus className="size-4" aria-hidden="true" />
-              Add project
+              Add website
               <InfoTooltip
-                label="Register another website under this workspace so it can be verified, crawled, and monitored."
+                label="Add another website so it can be verified, checked, and watched."
                 passive
                 side="left"
               />
@@ -135,13 +135,13 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
               <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-orange-700">
-                    Project shortlist
+                    Website shortlist
                   </p>
                   <h3 className="mt-1 text-xl font-semibold tracking-normal">
                     Open these websites first
                   </h3>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
-                    Sorted by setup needs, critical problems, and lower health
+                    Sorted by setup needs, urgent problems, and lower health
                     so you do not have to scan the full table.
                   </p>
                 </div>
@@ -179,10 +179,10 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
           >
             <summary className="flex items-center justify-between gap-4 p-5">
               <div>
-                <h3 className="text-lg font-semibold">More project detail</h3>
+                <h3 className="text-lg font-semibold">More website detail</h3>
                 <p className="mt-1 text-sm text-slate-500">
                   Optional full table for searching, comparing, and reporting
-                  across all projects.
+                  across all websites.
                 </p>
               </div>
               <span className="shrink-0 rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
@@ -193,8 +193,8 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
             <div className="border-t border-slate-200">
               <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
                 <p className="max-w-2xl text-sm leading-6 text-slate-500">
-                  Search by client, project, or domain only when you want the
-                  complete project inventory.
+                  Search by client, website, or platform only when you want the
+                  complete website list.
                 </p>
 
                 <form action="/domains" className="relative w-full xl:max-w-sm">
@@ -206,7 +206,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     type="search"
                     name="q"
                     defaultValue={query}
-                    placeholder="Search project, client, or domain"
+                    placeholder="Search website, client, or platform"
                     className="h-10 w-full rounded-md border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   />
                 </form>
@@ -232,15 +232,15 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     </colgroup>
                     <thead className="bg-slate-50 text-sm font-medium text-slate-500">
                       <tr>
-                        <TableHead>Project</TableHead>
+                        <TableHead>Website</TableHead>
                         <TableHead>
-                          <HelpLabel help="Most recent crawl completion date, or the latest crawl start if it is still running.">
+                          <HelpLabel help="Most recent website check completion date, or the latest check start if it is still running.">
                             Last update
                           </HelpLabel>
                         </TableHead>
                         <TableHead>
-                          <HelpLabel help="Pages crawled in the latest run, falling back to pages currently stored.">
-                            Pages crawled
+                          <HelpLabel help="Pages checked in the latest run, falling back to pages currently stored.">
+                            Pages checked
                           </HelpLabel>
                         </TableHead>
                         <TableHead>
@@ -248,22 +248,22 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                             Site health
                           </HelpLabel>
                         </TableHead>
-                        <TableHead>Errors</TableHead>
-                        <TableHead>Warnings</TableHead>
+                        <TableHead>Urgent</TableHead>
+                        <TableHead>Planned</TableHead>
                         <TableHead>
-                          <HelpLabel help="Share of crawled pages that returned a usable status and were not marked noindex.">
-                            Crawlability
+                          <HelpLabel help="Share of checked pages that answered normally and were not hidden from Google.">
+                            Google access
                           </HelpLabel>
                         </TableHead>
                         <TableHead>HTTPS</TableHead>
                         <TableHead>
-                          <HelpLabel help="Estimated internal SEO health based on internal link and sitemap-related issues.">
-                            Internal SEO
+                          <HelpLabel help="Estimated page-link health based on internal link and page-list problems.">
+                            Page links
                           </HelpLabel>
                         </TableHead>
                         <TableHead>
-                          <HelpLabel help="Share of crawled pages where schema or structured data was detected.">
-                            Markup
+                          <HelpLabel help="Share of checked pages where helpful Google details were detected.">
+                            Google details
                           </HelpLabel>
                         </TableHead>
                         <TableHead>Fixes</TableHead>
@@ -283,8 +283,8 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                               <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-[11px] text-slate-400">
                                 {group.domains.length}{" "}
                                 {group.domains.length === 1
-                                  ? "project"
-                                  : "projects"}
+                                  ? "website"
+                                  : "websites"}
                               </span>
                             </td>
                           </tr>
@@ -410,7 +410,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                       />
                                       <IconButton
                                         disabled={!isVerified}
-                                        label="Run crawl"
+                                        label="Check website"
                                         type="submit"
                                       >
                                         <Play
@@ -470,13 +470,13 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     }
                     description={
                       domains.length
-                        ? "Try a simpler website, client, or platform name. Your projects are still here."
-                        : "Add the website you want to improve. We will guide you through verification, scanning, and the first report."
+                        ? "Try a simpler website, client, or platform name. Your websites are still here."
+                        : "Add the website you want to improve. We will guide you through verification, checking, and the first update."
                     }
                     icon={Globe2}
                     title={
                       domains.length
-                        ? "No projects match this search"
+                        ? "No websites match this search"
                         : "Start with one website"
                     }
                   />
@@ -496,8 +496,8 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Add many domains at once using one row per site with optional client, platform, and cadence.">
-                      Add many projects at once
+                    <HelpLabel help="Add many websites at once using one row per site with optional client, platform, and check rhythm.">
+                      Add many websites at once
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
@@ -508,8 +508,8 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
               </summary>
               <div className="border-t border-slate-200 p-5">
                 <p className="text-sm leading-6 text-slate-500">
-                  Add one project per line as domain, client name, platform,
-                  crawl cadence.
+                  Add one website per line as website, client name, platform,
+                  check rhythm.
                 </p>
                 <form
                   action={bulkImportDomainsAction}
@@ -524,7 +524,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                   />
                   <div className="flex justify-end">
                     <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                      Import projects
+                      Import websites
                     </button>
                   </div>
                 </form>
@@ -554,23 +554,23 @@ function ProjectCarePlan({
 }) {
   const firstAction =
     unverifiedProjects > 0
-      ? `${unverifiedProjects} projects need setup`
+      ? `${unverifiedProjects} websites need setup`
       : projectsNeedingCare > 0
-        ? `${projectsNeedingCare} projects need care`
-        : "Projects look calm";
+        ? `${projectsNeedingCare} websites need care`
+        : "Websites look calm";
 
   return (
     <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div>
           <p className="text-sm font-semibold text-orange-700">
-            Project care plan
+            Website care plan
           </p>
           <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
             Start with the website that needs the next step.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Keep this page simple: set up unverified projects, open the project
+            Keep this page simple: set up unverified websites, open the website
             with the lowest health, then use the full table only for deeper
             review.
           </p>
@@ -587,21 +587,21 @@ function ProjectCarePlan({
           <PlanTile
             icon={<HeartPulse className="size-4" aria-hidden="true" />}
             label="Watch closely"
-            value={topProjectDomain ?? "No projects yet"}
+            value={topProjectDomain ?? "No websites yet"}
             detail={
               topProjectDomain
                 ? topProjectHealth === null || topProjectHealth === undefined
                   ? "Health pending. Open it first if you are unsure."
                   : `Health ${topProjectHealth}%. Open it first if you are unsure.`
-                : "Add one project to start monitoring."
+                : "Add one website to start watching."
             }
             href="#project-details"
           />
           <PlanTile
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Ready"
-            value={`${readyProjects} of ${visibleCount} projects`}
-            detail="Verified projects without critical errors are the calm group."
+            value={`${readyProjects} of ${visibleCount} websites`}
+            detail="Verified websites without urgent problems are the calm group."
             href="#project-details"
           />
         </div>
@@ -668,7 +668,7 @@ function ProjectSummaryCard({
           <p className="mt-1 text-sm text-slate-500">
             {lastUpdatedAt
               ? `Updated ${formatDate(lastUpdatedAt)}`
-              : "Not scanned yet"}
+              : "Not checked yet"}
           </p>
         </div>
         <StatusPill tone={isVerified ? "success" : "warning"}>
@@ -683,7 +683,7 @@ function ProjectSummaryCard({
           </p>
         </div>
         <div>
-          <p className="font-medium text-slate-500">Critical</p>
+          <p className="font-medium text-slate-500">Urgent</p>
           <p
             className={
               errors
@@ -882,17 +882,16 @@ function getSingle(value: string | string[] | undefined) {
 function getDomainErrorMessage(error: string) {
   const messages: Record<string, string> = {
     "crawl-failed":
-      "The crawl request was captured, but the crawler could not finish this site from local development.",
-    "crawl-invalid": "The crawl request was missing a valid domain.",
-    "crawl-not-verified": "Verify the domain before starting a full crawl.",
+      "The website check was captured, but it could not finish from local development.",
+    "crawl-invalid": "The check request was missing a valid website.",
+    "crawl-not-verified": "Verify the website before starting a full check.",
     "crawl-page-limit":
-      "This workspace has reached its page crawl limit for the current plan.",
-    "crawl-plan-limit":
-      "This crawl cadence is not available on the current workspace plan.",
-    "domain-access": "You do not have access to that domain.",
+      "This workspace has reached its page-check limit for the current plan.",
+    "crawl-plan-limit": "This check rhythm is not available on the current plan.",
+    "domain-access": "You do not have access to that website.",
   };
 
-  return messages[error] ?? "Please try again or inspect the domain settings.";
+  return messages[error] ?? "Please try again or inspect the website settings.";
 }
 
 function TableHead({ children }: { children: React.ReactNode }) {
