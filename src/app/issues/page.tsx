@@ -284,15 +284,15 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
               <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Analyzer-generated SEO work items across all selected clients, sites, and pages.">
+                    <HelpLabel help="Website problems found across the selected clients, websites, and pages.">
                       {isShowingAll ? "All matching problems" : "Top problems"}
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
                     {isShowingAll
                       ? selectedDomain
-                        ? `All analyzer-generated problems for ${selectedDomain.domain}.`
-                        : "All analyzer-generated problems across clients, projects, and pages."
+                        ? `All website problems for ${selectedDomain.domain}.`
+                        : "All website problems across clients, websites, and pages."
                       : selectedDomain
                         ? `Showing the most important problems for ${selectedDomain.domain} first.`
                         : "Showing the most important problems first so you can act without scrolling forever."}
@@ -307,7 +307,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       }`}
                       className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition hover:bg-white"
                     >
-                      {group.label}: {group.issueCount} issues, P
+                      {group.label}: {group.issueCount} problems, P
                       {group.priorityScore}
                     </Link>
                   ))}
@@ -347,19 +347,19 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       className="rounded-md border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm"
                     >
                       <p className="text-sm font-semibold text-slate-500">
-                        Top solution
+                        Next best fix
                       </p>
                       <h4 className="mt-2 line-clamp-1 text-sm font-semibold">
                         {solution.title}
                       </h4>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
-                        {solution.detail}
+                        {softenProblemText(solution.detail)}
                       </p>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
                         <span className="font-semibold text-slate-800">
                           Why it matters:{" "}
                         </span>
-                        {solution.whyMatters}
+                        {softenProblemText(solution.whyMatters)}
                       </p>
                       <span
                         className={`mt-3 inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${availabilityStyles[solution.fixAvailability.tone]}`}
@@ -367,7 +367,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                         {solution.fixAvailability.label}
                       </span>
                       <span className="mt-3 inline-flex h-8 items-center rounded-md bg-orange-600 px-3 text-xs font-semibold text-white">
-                        {solution.actionLabel}
+                        {getSoftActionLabel(solution.actionLabel)}
                       </span>
                     </Link>
                   );
@@ -453,10 +453,10 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                           href="/domains"
                           className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
                         >
-                          Scan a project
+                          Check a website
                         </Link>
                       }
-                      description="Run a scan on a verified project and we will turn the findings into a short, prioritized problem list."
+                      description="Run a website check on a verified website and we will turn the findings into a short, prioritized problem list."
                       icon={ListChecks}
                       title="No problems in this view"
                     />
@@ -507,7 +507,7 @@ function ProblemSolvingPlan({
             detail={
               firstIssueTitle
                 ? "Open this problem and follow the suggested next step."
-                : "Run a scan when you are ready to find problems."
+                : "Run a website check when you are ready to find problems."
             }
           />
           <PlanCard
@@ -600,7 +600,7 @@ function IssueRow({
         </div>
         <h4 className="mt-3 font-semibold">{issue.title}</h4>
         <p className="mt-1 text-sm leading-6 text-slate-500">
-          {issue.description}
+          {softenProblemText(issue.description)}
         </p>
         <p className="mt-2 text-sm text-slate-500">
           {issue.client?.name ?? "Unassigned"} -{" "}
@@ -625,13 +625,13 @@ function IssueRow({
         </div>
         <h5 className="mt-2 text-sm font-semibold">{solution.title}</h5>
         <p className="mt-1 line-clamp-3 text-sm leading-6 text-slate-600">
-          {solution.detail}
+          {softenProblemText(solution.detail)}
         </p>
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
           <span className="font-semibold text-slate-800">
             Why this matters:{" "}
           </span>
-          {solution.whyMatters}
+          {softenProblemText(solution.whyMatters)}
         </p>
       </div>
 
@@ -645,9 +645,9 @@ function IssueRow({
           className="inline-flex h-9 items-center gap-2 rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700"
         >
           <AlertTriangle className="size-4" aria-hidden="true" />
-          {solution.actionLabel}
+          {getSoftActionLabel(solution.actionLabel)}
           <InfoTooltip
-            label="Open the fastest path to resolve this issue."
+            label="Open the clearest steps to fix this problem."
             passive
             side="left"
           />
@@ -722,6 +722,32 @@ function formatIssueType(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getSoftActionLabel(label: string) {
+  return label
+    .replace(/^Generate\b/i, "Create")
+    .replace(/\bbrief\b/i, "note")
+    .replace(/\bsolution\b/i, "fix steps");
+}
+
+function softenProblemText(value: string) {
+  return value
+    .replace(/\banalyzer-generated\b/gi, "website-check")
+    .replace(/\banalyzer pass\b/gi, "website check")
+    .replace(/\blatest crawl\b/gi, "latest website check")
+    .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")
+    .replace(/\ballow crawling\b/gi, "allow search-engine access")
+    .replace(/\beasier to crawl\b/gi, "easier for search engines to read")
+    .replace(/\bcrawlability\b/gi, "findability")
+    .replace(/\bcrawlable\b/gi, "easy for search engines to read")
+    .replace(/\bcrawling\b/gi, "search-engine access")
+    .replace(/\bcrawled\b/gi, "checked")
+    .replace(/\brecrawl\b/gi, "run a new website check")
+    .replace(/\bcrawl\b/gi, "website check")
+    .replace(/\bcrawlers\b/gi, "search engines")
+    .replace(/\bcrawler\b/gi, "search engine")
+    .replace(/\bissue\b/gi, "problem");
 }
 
 function buildIssuesHref(

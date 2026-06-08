@@ -1021,3 +1021,19 @@ Implementation:
 - [x] Rename AI guidance and workflow sidebar sections to fix ideas, progress, assigned person, notes, and progress history.
 - [x] Soften shared issue-solution helper labels from CMS/developer/recrawl/handoff language to website editor, site helper, fix note, and new website check.
 - [x] Browser-check Problem Detail desktop and mobile after deployment.
+
+### Batch AY: Problems List Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit keeps grouped issue data available, but the list view works best when priority, impact, and a clear fix path are visible before deeper technical detail.
+- Ahrefs Site Audit keeps affected URLs and recommendations available, while still helping users scan by problem importance and move into practical next steps.
+- A softer Problems list should say next best fix, problem, website check, and open fix steps before analyzer-generated work, issue counts, solution jargon, or scan language.
+
+Implementation:
+
+- [x] Rename Problems list helper copy away from analyzer-generated work and toward website problems.
+- [x] Rename top solution cards to next best fix cards and soften stored solution text before display.
+- [x] Rename repeated-row action tooltip from resolving an issue to opening clear fix steps.
+- [x] Replace visible issue/scan/crawl wording in list cards, empty states, and plan cards with problem and website-check language.
+- [ ] Browser-check Problems List desktop and mobile after deployment.
