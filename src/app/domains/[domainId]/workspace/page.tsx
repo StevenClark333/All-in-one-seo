@@ -105,6 +105,11 @@ export default async function DomainWorkspacePage({
   const appliedFixes = domain.linkFixSuggestions.filter(
     (fix) => fix.status === "APPLIED",
   ).length;
+  const visibleWorkspacePages = domain.pages.slice(0, 8);
+  const hiddenWorkspacePages = Math.max(
+    0,
+    domain.pages.length - visibleWorkspacePages.length,
+  );
   const wordpressReady = domain.integrations.some(
     (integration) =>
       integration.provider === "WORDPRESS_RECEIVER" &&
@@ -792,7 +797,8 @@ export default async function DomainWorkspacePage({
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Latest URLs, titles, and page-level issue count.
+                      A short preview of pages that need attention. Open the
+                      full page view for filters and exports.
                     </p>
                   </div>
                   <Link
@@ -804,29 +810,45 @@ export default async function DomainWorkspacePage({
                 </div>
                 <div className="divide-y divide-slate-100">
                   {domain.pages.length ? (
-                    domain.pages.map((page) => {
-                      const snapshot = page.snapshots.at(0);
+                    <>
+                      {visibleWorkspacePages.map((page) => {
+                        const snapshot = page.snapshots.at(0);
 
-                      return (
-                        <Link
-                          key={page.id}
-                          href={`/pages/${page.id}`}
-                          className="grid gap-2 px-5 py-4 transition hover:bg-slate-50 lg:grid-cols-[minmax(0,1fr)_90px]"
-                        >
-                          <div className="min-w-0">
-                            <p className="truncate font-semibold">
-                              {snapshot?.title || page.url}
-                            </p>
-                            <p className="mt-1 truncate text-sm text-slate-500">
-                              {page.url}
-                            </p>
-                          </div>
-                          <span className="text-sm font-semibold text-slate-600">
-                            {page.issues.length} issues
+                        return (
+                          <Link
+                            key={page.id}
+                            href={`/pages/${page.id}`}
+                            className="grid gap-2 px-5 py-4 transition hover:bg-slate-50 lg:grid-cols-[minmax(0,1fr)_90px]"
+                          >
+                            <div className="min-w-0">
+                              <p className="truncate font-semibold">
+                                {snapshot?.title || page.url}
+                              </p>
+                              <p className="mt-1 truncate text-sm text-slate-500">
+                                {page.url}
+                              </p>
+                            </div>
+                            <span className="text-sm font-semibold text-slate-600">
+                              {page.issues.length} issues
+                            </span>
+                          </Link>
+                        );
+                      })}
+                      {hiddenWorkspacePages > 0 ? (
+                        <div className="flex flex-col gap-3 px-5 py-4 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+                          <span>
+                            {hiddenWorkspacePages} more pages are kept in the
+                            full page inventory.
                           </span>
-                        </Link>
-                      );
-                    })
+                          <Link
+                            href={`/pages?domainId=${domain.id}`}
+                            className="inline-flex h-9 w-fit items-center justify-center rounded-md bg-orange-600 px-3 font-semibold text-white transition hover:bg-orange-700"
+                          >
+                            View all pages
+                          </Link>
+                        </div>
+                      ) : null}
+                    </>
                   ) : (
                     <p className="px-5 py-8 text-sm text-slate-500">
                       No pages crawled yet.

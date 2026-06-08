@@ -518,3 +518,4 @@ Implementation:
 - [x] Rename workspace tabs from "Crawled Pages", "Search Performance", and "AI" to shorter labels.
 - [x] Replace command-center/cockpit language with calmer project-plan wording.
 - [x] Remove uppercase tracking from workspace helper cards and metadata.
+- [x] Limit workspace page inventory to a short preview with a direct full-pages action.
