@@ -43,7 +43,10 @@ export default async function ReportDetailPage({
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Reports" activeDomainId={report.domainId ?? undefined} />
+        <AppSidebar
+          active="Reports"
+          activeDomainId={report.domainId ?? undefined}
+        />
 
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <Link
@@ -55,7 +58,7 @@ export default async function ReportDetailPage({
             className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            {report.domainId ? "Project workspace" : "Reports"}
+            {report.domainId ? "Website workspace" : "Client updates"}
           </Link>
 
           <header className="mt-6 flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -146,7 +149,7 @@ export default async function ReportDetailPage({
                 title={healthLabel}
                 detail={
                   summary.score === null || summary.score === undefined
-                    ? "Run or import fresh audit data before sending this report."
+                    ? "Run a fresh website check before sending this update."
                     : `${summary.openIssues.length} open issues and ${summary.fixedIssues.length} fixes are included in this period.`
                 }
               />
@@ -236,11 +239,10 @@ export default async function ReportDetailPage({
               {summary.sections.priorityRecommendations ? (
                 <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
                   <div className="border-b border-slate-200 p-5">
-                    <h3 className="text-lg font-semibold">
-                      Priority recommendations
-                    </h3>
+                    <h3 className="text-lg font-semibold">Next steps</h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Client-readable fixes pulled from the active issue queue.
+                      Client-readable fixes pulled from the current problem
+                      list.
                     </p>
                   </div>
                   <div className="grid divide-y divide-slate-100">
@@ -262,7 +264,7 @@ export default async function ReportDetailPage({
                       ))
                     ) : (
                       <div className="p-8 text-center text-sm text-slate-500">
-                        No active recommendations for this report scope.
+                        No active next steps for this update.
                       </div>
                     )}
                   </div>
@@ -273,7 +275,7 @@ export default async function ReportDetailPage({
             <aside className="grid gap-6">
               {summary.sections.crawlSummary ? (
                 <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                  <h3 className="font-semibold">Crawl summary</h3>
+                  <h3 className="font-semibold">Website check summary</h3>
                   <div className="mt-4 grid gap-3">
                     {summary.crawls.length ? (
                       summary.crawls.map((crawl) => (
@@ -285,14 +287,14 @@ export default async function ReportDetailPage({
                             {formatEnum(crawl.status)}
                           </p>
                           <p className="mt-1 text-xs text-slate-500">
-                            {crawl.pagesCrawled} crawled / {crawl.pagesFailed}{" "}
-                            failed
+                            {crawl.pagesCrawled} pages checked /{" "}
+                            {crawl.pagesFailed} need another look
                           </p>
                         </div>
                       ))
                     ) : (
                       <p className="text-sm text-slate-500">
-                        No crawls in scope.
+                        No website checks are included in this update yet.
                       </p>
                     )}
                   </div>
@@ -301,24 +303,27 @@ export default async function ReportDetailPage({
 
               {summary.sections.issueMovement ? (
                 <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                  <h3 className="font-semibold">Issue movement</h3>
+                  <h3 className="font-semibold">Problem movement</h3>
                   <dl className="mt-4 grid gap-4">
-                    <Meta label="New issues" value={summary.newIssues.length} />
                     <Meta
-                      label="Fixed issues"
+                      label="New problems"
+                      value={summary.newIssues.length}
+                    />
+                    <Meta
+                      label="Fixed problems"
                       value={summary.fixedIssues.length}
                     />
                     <Meta
-                      label="Critical open"
+                      label="Urgent open"
                       value={summary.criticalIssues.length}
                     />
                     <Meta
-                      label="Warnings open"
+                      label="Planned open"
                       value={summary.warningIssues.length}
                     />
                     {summary.sections.changeSummary ? (
                       <Meta
-                        label="Critical changes"
+                        label="Important changes"
                         value={summary.criticalChanges.length}
                       />
                     ) : null}
@@ -336,9 +341,7 @@ export default async function ReportDetailPage({
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );
@@ -347,9 +350,7 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-sm font-medium text-slate-500">
-        {label}
-      </dt>
+      <dt className="text-sm font-medium text-slate-500">{label}</dt>
       <dd className="mt-1 text-sm font-medium text-slate-700">{value}</dd>
     </div>
   );

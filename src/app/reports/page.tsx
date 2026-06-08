@@ -720,10 +720,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
 
 const reportSectionOptions = [
   { label: "Health score", value: "healthScore" },
-  { label: "Crawl summary", value: "crawlSummary" },
-  { label: "Issue movement", value: "issueMovement" },
+  { label: "Website check summary", value: "crawlSummary" },
+  { label: "Problem movement", value: "issueMovement" },
   { label: "Change summary", value: "changeSummary" },
-  { label: "Recommendations", value: "priorityRecommendations" },
+  { label: "Next steps", value: "priorityRecommendations" },
 ];
 
 function ReportPlan({

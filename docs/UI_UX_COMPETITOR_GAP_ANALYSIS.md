@@ -987,3 +987,21 @@ Implementation:
 - [x] Normalize visible separator characters in Fix Center metadata.
 - [x] Soften the shared active-project selector from domain/project-view language to website work language.
 - [x] Browser-check Fix Send desktop and mobile after deployment.
+
+### Batch AW: Client Update Detail Calmness
+
+Competitive evidence:
+
+- Semrush My Reports focuses on polished client-ready reports, PDF sharing, and scheduled delivery rather than forcing users to read raw audit terms first.
+- Ahrefs reporting and dashboard flows keep issue and crawl depth available, but the useful client-facing story is status, progress, and next action.
+- A softer report detail should say update, website check, next steps, and problem movement before audit data, crawl summary, recommendations, or issue movement.
+
+Implementation:
+
+- [x] Rename the report-detail back link from project/report wording to website workspace and client updates.
+- [x] Replace pending audit-data wording with a fresh website-check prompt.
+- [x] Rename priority recommendations to next steps and issue scope to current problem list.
+- [x] Rename crawl summary to website check summary with pages checked and pages needing another look.
+- [x] Rename issue movement labels to problem movement, new/fixed problems, urgent/planned open, and important changes.
+- [x] Rename report format section options from crawl/recommendation/issue wording to website checks, next steps, and problem movement.
+- [ ] Browser-check Client Update Detail desktop and mobile after deployment.
