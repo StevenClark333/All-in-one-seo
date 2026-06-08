@@ -908,4 +908,4 @@ Implementation:
 - [x] Mark a manually assigned workspace plan as current in the plan cards.
 - [x] Rename the billing guidance card to "Account comfort plan".
 - [x] Soften sidebar Billing copy and display label to "Plan".
-- [ ] Browser-check Plan and Usage desktop and mobile after deployment.
+- [x] Browser-check Plan and Usage desktop and mobile after deployment.
