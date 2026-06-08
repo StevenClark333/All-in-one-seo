@@ -109,6 +109,7 @@ Gap for us:
 | Account Start | Signup, login, reset, and workspace creation feel like bare account forms | Start with reassurance, explain the setup path, and use softer action language |
 | Verification | Ownership, email, and password confirmation pages still feel like technical blockers | Explain why the check matters, show one safe path, and make the next action obvious |
 | Reports | Report detail and shared reports still start like analytics summaries | Start with the client story: main takeaway, what changed, and next fix before metrics |
+| Crawl Runs | Individual crawl pages start with raw artifacts, detected changes, and snapshots | Start with a crawl recap: result, changed pages, failed pages, and what to open next |
 
 ## Product Direction
 
@@ -478,3 +479,22 @@ Implementation:
 - [x] Soften report metric labels by removing uppercase tracking.
 - [x] Improve report empty states for templates and schedules.
 - [x] Make "Create client link" reliably create a share token for draft reports.
+
+### Batch W: Crawl Recap Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit and Crawled Pages views emphasize crawl status, issue movement, and crawled-page summaries before deeper technical evidence.
+- Ahrefs-style crawl history is useful, but the first view should explain whether the crawl worked and where to look next.
+- Screaming Frog-style artifacts, response codes, and snapshots should remain available for experts without becoming the first thing a nontechnical user has to parse.
+
+Implementation:
+
+- [x] Rename crawl-run detail to "Crawl recap".
+- [x] Add a plain-language crawl recap plan above metrics.
+- [x] Surface crawl result, changed pages, failed pages, and best next step.
+- [x] Rename "Cancel crawl" to the softer "Stop crawl".
+- [x] Use orange icon treatment and softer metric labels.
+- [x] Collapse robots/sitemap artifacts behind an optional panel.
+- [x] Collapse page snapshots behind an optional panel.
+- [x] Add friendlier empty states for missing artifacts and snapshots.
