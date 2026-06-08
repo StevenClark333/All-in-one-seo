@@ -1374,3 +1374,19 @@ Implementation:
 - [x] Translate client report status into ready-to-share/shared/needs-review wording.
 - [x] Browser-check Client list and Client detail desktop and mobile locally.
 - [ ] Browser-check Client list and Client detail desktop and mobile after deployment.
+
+### Batch BU: Page Suggestion Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep page-level issue and recommendation detail available, but the easier path is to describe page suggestions as title ideas, description ideas, and fix notes.
+- Nontechnical users should see urgent/planned/idea importance and friendly progress labels before raw suggestion, recommendation-type, or issue-status wording.
+- A softer page detail view should preserve page evidence while making the next suggestion feel like a useful writing or fix idea.
+
+Implementation:
+
+- [x] Rename Page Detail suggestion importance from suggestion to idea.
+- [x] Translate page suggestion card types into title idea, description idea, page idea, and fix note wording.
+- [x] Add friendlier page problem progress labels for set-aside and needs-another-look states.
+- [x] Browser-check Page Detail suggestion labels desktop and mobile locally.
+- [ ] Browser-check Page Detail suggestion labels after deployment.

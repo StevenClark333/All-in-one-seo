@@ -217,8 +217,8 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                         key={recommendation.id}
                         className="rounded-md border border-slate-200 bg-slate-50 p-3"
                       >
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                          {formatEnum(recommendation.type)}
+                        <p className="text-xs font-semibold text-slate-500">
+                          {formatRecommendationType(recommendation.type)}
                         </p>
                         <p className="mt-2 text-sm font-semibold">
                           {readPayload(recommendation.recommendationJson).title}
@@ -487,17 +487,19 @@ function getImportanceLabel(value: string) {
   }
 
   if (value === "WARNING") {
-    return "Needs attention";
+    return "Planned";
   }
 
-  return "Suggestion";
+  return "Idea";
 }
 
 function getProgressLabel(value: string) {
   const labels: Record<string, string> = {
     FIXED: "Fixed",
+    IGNORED: "Set aside",
     IN_PROGRESS: "Being handled",
     OPEN: "Open",
+    REAPPEARED: "Needs another look",
   };
 
   return labels[value] ?? formatEnum(value);
@@ -526,6 +528,36 @@ function formatIssueType(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatRecommendationType(value: string) {
+  const normalized = value.toLowerCase();
+
+  if (normalized.includes("template")) {
+    return "Shared note";
+  }
+
+  if (normalized.includes("issue") || normalized.includes("fix")) {
+    return "Fix note";
+  }
+
+  if (normalized.includes("page")) {
+    return "Page idea";
+  }
+
+  if (normalized.includes("title")) {
+    return "Title idea";
+  }
+
+  if (normalized.includes("description")) {
+    return "Description idea";
+  }
+
+  if (normalized.includes("content")) {
+    return "Content idea";
+  }
+
+  return formatEnum(value);
 }
 
 function readPayload(value: unknown) {
