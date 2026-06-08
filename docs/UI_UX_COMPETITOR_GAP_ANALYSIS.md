@@ -1453,3 +1453,18 @@ Implementation:
 - [x] Translate website platform, check rhythm, ownership, website tag, setup file, and latest-check statuses into softer labels.
 - [x] Browser-check Website detail setup/status labels desktop and mobile locally.
 - [ ] Browser-check Website detail setup/status labels after deployment.
+
+### Batch BZ: Add Website Setup Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs onboarding flows ask for project, platform, and crawl settings, but a beginner-friendly first setup should use website and rhythm language before product mechanics.
+- Nontechnical users should see WordPress site, Shopify store, I am not sure yet, every week, every day, and only when I start it before raw platform or crawl-frequency wording.
+- The Add Website page should feel like a gentle first step, not a technical configuration form.
+
+Implementation:
+
+- [x] Translate Add Website platform options into website-type labels.
+- [x] Translate Add Website check rhythm options and helper copy into every-week/every-day/manual-start wording.
+- [x] Browser-check Add Website setup labels desktop and mobile locally.
+- [ ] Browser-check Add Website setup labels after deployment.

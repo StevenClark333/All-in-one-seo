@@ -75,7 +75,7 @@ export default async function NewDomainPage() {
               <SetupTile
                 icon={<CalendarCheck className="size-4" aria-hidden="true" />}
                 title="Check rhythm"
-                body="Weekly is a safe first setting for most websites."
+                body="Every week is a calm first setting for most websites."
               />
             </div>
           </section>
@@ -128,7 +128,7 @@ export default async function NewDomainPage() {
                   >
                     {platforms.map((platform) => (
                       <option key={platform} value={platform}>
-                        {formatEnum(platform)}
+                        {formatWebsitePlatform(platform)}
                       </option>
                     ))}
                   </select>
@@ -145,13 +145,13 @@ export default async function NewDomainPage() {
                   >
                     {crawlFrequencies.map((frequency) => (
                       <option key={frequency} value={frequency}>
-                        {formatEnum(frequency)}
+                        {formatCheckRhythm(frequency)}
                       </option>
                     ))}
                   </select>
                   <span className="text-xs leading-5 text-slate-500">
-                    Weekly keeps checks useful without making the account feel
-                    noisy.
+                    Every week keeps checks useful without making the account
+                    feel noisy.
                   </span>
                 </label>
               </div>
@@ -211,4 +211,28 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatWebsitePlatform(value: string) {
+  const labels: Record<string, string> = {
+    CUSTOM: "Custom website",
+    SHOPIFY: "Shopify store",
+    SQUARESPACE: "Squarespace site",
+    UNKNOWN: "I am not sure yet",
+    WEBFLOW: "Webflow site",
+    WIX: "Wix site",
+    WORDPRESS: "WordPress site",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatCheckRhythm(value: string) {
+  const labels: Record<string, string> = {
+    DAILY: "Every day",
+    MANUAL: "Only when I start it",
+    WEEKLY: "Every week",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
