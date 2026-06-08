@@ -130,7 +130,9 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
 
           <ProblemSolvingPlan
             criticalCount={criticalCount}
-            firstIssueTitle={firstIssue?.title}
+            firstIssueTitle={
+              firstIssue ? softenProblemTitle(firstIssue.title) : undefined
+            }
             guidedFixCount={guidedFixCount}
             issueCount={issues.length}
             warningCount={warningCount}
@@ -253,7 +255,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                   <option value="">All templates</option>
                   {visibleTemplateGroups.map((group) => (
                     <option key={group.key} value={group.key}>
-                      {group.label}
+                      {softenProblemTitle(group.label)}
                     </option>
                   ))}
                 </FilterSelect>
@@ -307,7 +309,8 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                       }`}
                       className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition hover:bg-white"
                     >
-                      {group.label}: {group.issueCount} problems, P
+                      {softenProblemTitle(group.label)}: {group.issueCount}{" "}
+                      {pluralize(group.issueCount, "problem")}, P
                       {group.priorityScore}
                     </Link>
                   ))}
@@ -350,7 +353,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                         Next best fix
                       </p>
                       <h4 className="mt-2 line-clamp-1 text-sm font-semibold">
-                        {solution.title}
+                        {softenProblemTitle(solution.title)}
                       </h4>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
                         {softenProblemText(solution.detail)}
@@ -565,6 +568,8 @@ function IssueRow({
     recommendation: issue.recommendation,
     title: issue.title,
   });
+  const problemTitle = softenProblemTitle(issue.title);
+  const solutionTitle = softenProblemTitle(solution.title);
 
   return (
     <article className="grid gap-4 p-5 xl:grid-cols-[28px_minmax(0,1fr)_minmax(260px,0.75fr)_130px]">
@@ -573,7 +578,7 @@ function IssueRow({
           type="checkbox"
           name="issueId"
           value={issue.id}
-          aria-label={`Select ${issue.title}`}
+          aria-label={`Select ${problemTitle}`}
           className="size-4 rounded border-slate-300 text-slate-950 focus:ring-slate-500"
         />
       </div>
@@ -598,7 +603,7 @@ function IssueRow({
             </HelpLabel>
           </span>
         </div>
-        <h4 className="mt-3 font-semibold">{issue.title}</h4>
+        <h4 className="mt-3 font-semibold">{problemTitle}</h4>
         <p className="mt-1 text-sm leading-6 text-slate-500">
           {softenProblemText(issue.description)}
         </p>
@@ -623,7 +628,7 @@ function IssueRow({
             {solution.fixAvailability.label}
           </span>
         </div>
-        <h5 className="mt-2 text-sm font-semibold">{solution.title}</h5>
+        <h5 className="mt-2 text-sm font-semibold">{solutionTitle}</h5>
         <p className="mt-1 line-clamp-3 text-sm leading-6 text-slate-600">
           {softenProblemText(solution.detail)}
         </p>
@@ -718,10 +723,12 @@ function formatEnum(value: string) {
 }
 
 function formatIssueType(value: string) {
-  return getIssueTypeGroupKey(value)
+  const technicalLabel = getIssueTypeGroupKey(value)
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+
+  return softenProblemTitle(technicalLabel);
 }
 
 function getSoftActionLabel(label: string) {
@@ -729,6 +736,81 @@ function getSoftActionLabel(label: string) {
     .replace(/^Generate\b/i, "Create")
     .replace(/\bbrief\b/i, "note")
     .replace(/\bsolution\b/i, "fix steps");
+}
+
+function softenProblemTitle(value: string) {
+  const exactMatches: Record<string, string> = {
+    "Sitemap URL is not internally linked":
+      "Page is in the page list but needs links",
+    "Sitemap Url Not Internally Linked":
+      "Page is in the page list but needs links",
+    "Internally Linked Url Missing From Sitemap":
+      "Linked page missing from page list",
+    "Robots Txt Unavailable Or Malformed": "Robots file needs attention",
+    "Sitemap Unavailable": "Page list needs attention",
+    "Missing H1": "Main heading missing",
+    "Multiple H1": "Too many main headings",
+    "Missing Image Alt": "Image description missing",
+    "Missing Canonical": "Preferred page link missing",
+    "Duplicate Content Cluster": "Repeated content group",
+    "Duplicate Meta Description": "Repeated page description",
+    "Duplicate Title": "Repeated page title",
+    "Duplicate meta descriptions across page template":
+      "Page template repeats the same description",
+    "Missing Schema": "Page details for Google missing",
+    "Missing Meta Description": "Page description missing",
+    "Missing Title": "Page title missing",
+    "Add a unique meta description": "Write a clear page description",
+    "Poor Heading Hierarchy": "Heading order needs attention",
+    "Homepage Blocked By Robots": "Homepage blocked from Google",
+    "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Product template canonical points to non-200 URLs":
+      "Product template points to a broken preferred page",
+    "Homepage became noindex after latest deploy":
+      "Homepage was hidden from Google after deploy",
+    "Critical Regression": "Urgent change",
+  };
+
+  const exactMatch = exactMatches[value];
+
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return value
+    .replace(/\bSitemap URL is not internally linked\b/gi, exactMatches["Sitemap URL is not internally linked"])
+    .replace(/\bSitemap Url Not Internally Linked\b/gi, exactMatches["Sitemap Url Not Internally Linked"])
+    .replace(/\bInternally Linked Url Missing From Sitemap\b/gi, exactMatches["Internally Linked Url Missing From Sitemap"])
+    .replace(/\bRobots Txt Unavailable Or Malformed\b/gi, exactMatches["Robots Txt Unavailable Or Malformed"])
+    .replace(/\bSitemap Unavailable\b/gi, exactMatches["Sitemap Unavailable"])
+    .replace(/\bMissing H1\b/gi, exactMatches["Missing H1"])
+    .replace(/\bMultiple H1\b/gi, exactMatches["Multiple H1"])
+    .replace(/\bMissing Image Alt\b/gi, exactMatches["Missing Image Alt"])
+    .replace(/\bMissing Canonical\b/gi, exactMatches["Missing Canonical"])
+    .replace(/\bDuplicate Content Cluster\b/gi, exactMatches["Duplicate Content Cluster"])
+    .replace(/\bDuplicate Meta Description\b/gi, exactMatches["Duplicate Meta Description"])
+    .replace(/\bDuplicate meta descriptions across page template\b/gi, exactMatches["Duplicate meta descriptions across page template"])
+    .replace(/\bDuplicate Title\b/gi, exactMatches["Duplicate Title"])
+    .replace(/\bMissing Schema\b/gi, exactMatches["Missing Schema"])
+    .replace(/\bMissing Meta Description\b/gi, exactMatches["Missing Meta Description"])
+    .replace(/\bMissing Title\b/gi, exactMatches["Missing Title"])
+    .replace(/\bAdd a unique meta description\b/gi, exactMatches["Add a unique meta description"])
+    .replace(/\bPoor Heading Hierarchy\b/gi, exactMatches["Poor Heading Hierarchy"])
+    .replace(/\bHomepage Blocked By Robots\b/gi, exactMatches["Homepage Blocked By Robots"])
+    .replace(/\bHomepage blocked by robots\.txt\b/gi, exactMatches["Homepage blocked by robots.txt"])
+    .replace(/\bCritical Regression\b/gi, exactMatches["Critical Regression"])
+    .replace(/\bProduct template canonical points to non-200 URLs\b/gi, exactMatches["Product template canonical points to non-200 URLs"])
+    .replace(/\bHomepage became noindex after latest deploy\b/gi, exactMatches["Homepage became noindex after latest deploy"])
+    .replace(/\bURLs?\b/g, "pages")
+    .replace(/\bUrl\b/g, "page")
+    .replace(/\bSitemap\b/g, "page list")
+    .replace(/\bInternally Linked\b/g, "linked")
+    .replace(/\bRobots Txt\b/g, "robots file")
+    .replace(/\bH1\b/g, "main heading")
+    .replace(/\bMeta Description\b/g, "page description")
+    .replace(/\bSchema\b/g, "page details for Google")
+    .replace(/\bNoindex\b/g, "hidden from Google")
+    .replace(/\bCanonical\b/g, "preferred page link");
 }
 
 function softenProblemText(value: string) {
@@ -747,7 +829,13 @@ function softenProblemText(value: string) {
     .replace(/\bcrawl\b/gi, "website check")
     .replace(/\bcrawlers\b/gi, "search engines")
     .replace(/\bcrawler\b/gi, "search engine")
+    .replace(/\bmeta description\b/gi, "page description")
+    .replace(/\bmeta descriptions\b/gi, "page descriptions")
     .replace(/\bissue\b/gi, "problem");
+}
+
+function pluralize(count: number, singular: string) {
+  return count === 1 ? singular : `${singular}s`;
 }
 
 function buildIssuesHref(
