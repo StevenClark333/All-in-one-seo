@@ -515,9 +515,12 @@ function softenProblemText(value: string) {
   return value
     .replace(/\banalyzer pass\b/gi, "website check")
     .replace(/\blatest crawl\b/gi, "latest website check")
+    .replace(/\ballow crawling\b/gi, "allow search-engine access")
     .replace(/\beasier to crawl\b/gi, "easier for search engines to read")
     .replace(/\bcrawlability\b/gi, "findability")
     .replace(/\bcrawlable\b/gi, "easy for search engines to read")
+    .replace(/\bcrawling\b/gi, "search-engine access")
+    .replace(/\bcrawled\b/gi, "checked")
     .replace(/\brecrawl\b/gi, "run a new website check")
     .replace(/\bcrawl\b/gi, "website check")
     .replace(/\bcrawlers\b/gi, "search engines")
