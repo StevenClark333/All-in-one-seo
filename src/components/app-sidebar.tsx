@@ -68,10 +68,10 @@ const displayLabels: Record<string, string> = {
   Issues: "Problems",
   "Fix Center": "Fixes",
   "Keyword Research": "Keywords",
-  "Rank Tracking": "Rank Tracker",
-  "Search Performance": "Google Results",
+  "Rank Tracking": "Rank",
+  "Search Performance": "Search",
   Sites: "Projects",
-  Technical: "Internal Links",
+  Technical: "Links",
 };
 
 const seoGroups = [

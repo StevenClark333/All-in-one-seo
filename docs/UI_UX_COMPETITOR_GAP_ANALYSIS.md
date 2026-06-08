@@ -113,6 +113,7 @@ Gap for us:
 | Project Workspace | Domain workspace still reads like a command center with dense labels and many paths | Start with a short website focus plan, softer actions, and calmer section labels before deeper analytics |
 | Workspace Depth | Lower workspace sections still create a long scroll and repeated help text in headings | Keep the summary visible, collapse deeper work queues, and make help text quieter |
 | Content Ideas Depth | Content Ideas still opens long page, issue, template, and saved-output lists | Keep the writing plan first, then show short previews with full lists one click away |
+| Tool Labels | Project tool tabs still use mixed labels like Crawled Pages, Google Results, and Rank Tracker | Use short, friendly labels consistently: Pages, Search, Rank, Links, and Ideas |
 
 ## Product Direction
 
@@ -553,3 +554,21 @@ Implementation:
 - [x] Limit repeated-page brief previews to the first 6 groups.
 - [x] Limit saved ideas and briefs to the first 8 outputs.
 - [x] Add friendly preview notes that send users to the full Pages or Problems view when more items exist.
+
+### Batch AA: Navigation Label Calmness
+
+Competitive evidence:
+
+- Semrush product navigation uses short, recognizable labels and keeps deeper concepts inside the page, not in every tab name.
+- A nontechnical user should not have to parse labels like "Crawled Pages" or "Google Results" just to move around.
+- Short labels reduce horizontal overflow and make project tools easier to scan on smaller screens.
+
+Implementation:
+
+- [x] Rename shared project tool labels:
+  - Crawled Pages -> Pages
+  - Google Results -> Search
+  - Rank Tracker -> Rank
+  - Internal Links -> Links
+  - Content Ideas -> Ideas
+- [x] Align sidebar display labels for Search, Rank, and Links.

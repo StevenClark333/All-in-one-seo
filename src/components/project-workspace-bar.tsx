@@ -41,12 +41,12 @@ const projectTools: Array<{
   },
   {
     key: "pages",
-    label: "Crawled Pages",
+    label: "Pages",
     buildHref: (domainId) => `/pages?domainId=${domainId}`,
   },
   {
     key: "search",
-    label: "Google Results",
+    label: "Search",
     buildHref: (domainId) => `/search-performance?domainId=${domainId}`,
   },
   {
@@ -61,12 +61,12 @@ const projectTools: Array<{
   },
   {
     key: "rank",
-    label: "Rank Tracker",
+    label: "Rank",
     buildHref: (domainId) => `/rank-tracking?domainId=${domainId}`,
   },
   {
     key: "technical",
-    label: "Internal Links",
+    label: "Links",
     buildHref: (domainId) => `/technical-audit?domainId=${domainId}`,
   },
   {
@@ -76,7 +76,7 @@ const projectTools: Array<{
   },
   {
     key: "ai",
-    label: "Content Ideas",
+    label: "Ideas",
     buildHref: (domainId) => `/recommendations?domainId=${domainId}`,
   },
   {
