@@ -150,7 +150,7 @@ export default async function ReportDetailPage({
                 detail={
                   summary.score === null || summary.score === undefined
                     ? "Run a fresh website check before sending this update."
-                    : `${summary.openIssues.length} items need attention and ${summary.fixedIssues.length} fixes are included in this period.`
+                    : `${summary.openIssues.length} ${pluralize(summary.openIssues.length, "item")} need attention and ${summary.fixedIssues.length} ${pluralize(summary.fixedIssues.length, "fix", "fixes")} are included in this period.`
                 }
               />
               <StoryTile
@@ -418,4 +418,8 @@ function formatImportance(value: string) {
   }
 
   return formatEnum(value);
+}
+
+function pluralize(count: number, singular: string, plural = `${singular}s`) {
+  return count === 1 ? singular : plural;
 }

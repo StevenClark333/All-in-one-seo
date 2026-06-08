@@ -20,7 +20,7 @@ export default async function PublicReportPage({
   const topRecommendation = summary.recommendations.at(0);
   const healthLabel =
     summary.score === null || summary.score === undefined
-      ? "Health score pending"
+      ? "Website health pending"
       : summary.score >= 85
         ? "Website health looks strong"
         : summary.score >= 70
@@ -52,7 +52,7 @@ export default async function PublicReportPage({
             Client summary
           </p>
           <h2 className="mt-1 text-2xl font-semibold tracking-normal">
-            The short version before the details.
+            Start with the takeaway, then share the details.
           </h2>
           <div className="mt-4 grid gap-3 lg:grid-cols-3">
             <StoryTile
@@ -61,7 +61,7 @@ export default async function PublicReportPage({
               detail={
                 summary.score === null || summary.score === undefined
                   ? "Fresh audit data is still being prepared for this report."
-                  : `${summary.openIssues.length} open issues and ${summary.fixedIssues.length} fixes are included in this update.`
+                  : `${summary.openIssues.length} ${pluralize(summary.openIssues.length, "item")} need attention and ${summary.fixedIssues.length} ${pluralize(summary.fixedIssues.length, "fix", "fixes")} are included in this update.`
               }
             />
             <StoryTile
@@ -90,11 +90,11 @@ export default async function PublicReportPage({
 
         <section className="mt-6 grid gap-4 md:grid-cols-5">
           {summary.sections.healthScore ? (
-            <Metric label="Health score" value={summary.score ?? "Pending"} />
+            <Metric label="Website health" value={summary.score ?? "Pending"} />
           ) : null}
           <Metric label="Pages" value={summary.pageCount} />
-          <Metric label="Open issues" value={summary.openIssues.length} />
-          <Metric label="Fixed" value={summary.fixedIssues.length} />
+          <Metric label="Needs attention" value={summary.openIssues.length} />
+          <Metric label="Fixed this period" value={summary.fixedIssues.length} />
           {summary.sections.changeSummary ? (
             <Metric label="Changes" value={summary.changeEvents.length} />
           ) : null}
@@ -111,7 +111,7 @@ export default async function PublicReportPage({
                   <article key={change.id} className="p-5">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                        {formatEnum(change.severity)}
+                        {formatImportance(change.severity)}
                       </span>
                       <span className="text-xs text-slate-500">
                         {change.createdAt.toLocaleDateString()}
@@ -142,9 +142,10 @@ export default async function PublicReportPage({
         {summary.sections.priorityRecommendations ? (
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 p-5">
-              <h2 className="text-lg font-semibold">
-                Priority recommendations
-              </h2>
+              <h2 className="text-lg font-semibold">Next steps</h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Client-readable fixes pulled from the current problem list.
+              </p>
             </div>
             <div className="grid divide-y divide-slate-100">
               {summary.recommendations.length ? (
@@ -159,12 +160,60 @@ export default async function PublicReportPage({
                 ))
               ) : (
                 <div className="p-8 text-center text-sm text-slate-500">
-                  No active recommendations for this report scope.
+                  No active next steps for this report scope.
                 </div>
               )}
             </div>
           </section>
         ) : null}
+
+        <section className="mt-6 grid gap-6 lg:grid-cols-2">
+          {summary.sections.crawlSummary ? (
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <h2 className="text-lg font-semibold">Website check summary</h2>
+              <div className="mt-4 grid gap-3">
+                {summary.crawls.length ? (
+                  summary.crawls.map((crawl) => (
+                    <div
+                      key={crawl.id}
+                      className="rounded-md border border-slate-200 bg-slate-50 p-3"
+                    >
+                      <p className="text-sm font-semibold">
+                        {formatEnum(crawl.status)}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {crawl.pagesCrawled} pages checked /{" "}
+                        {crawl.pagesFailed} need another look
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-slate-500">
+                    No website checks are included in this update yet.
+                  </p>
+                )}
+              </div>
+            </div>
+          ) : null}
+
+          {summary.sections.issueMovement ? (
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <h2 className="text-lg font-semibold">Fix movement</h2>
+              <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+                <Meta label="New items" value={summary.newIssues.length} />
+                <Meta label="Fixed items" value={summary.fixedIssues.length} />
+                <Meta label="Urgent open" value={summary.criticalIssues.length} />
+                <Meta label="Planned open" value={summary.warningIssues.length} />
+                {summary.sections.changeSummary ? (
+                  <Meta
+                    label="Important changes"
+                    value={summary.criticalChanges.length}
+                  />
+                ) : null}
+              </dl>
+            </div>
+          ) : null}
+        </section>
       </div>
     </main>
   );
@@ -178,6 +227,22 @@ function formatEnum(value: string) {
     .join(" ");
 }
 
+function formatImportance(value: string) {
+  if (value === "CRITICAL") {
+    return "Urgent";
+  }
+
+  if (value === "WARNING") {
+    return "Planned";
+  }
+
+  return formatEnum(value);
+}
+
+function pluralize(count: number, singular: string, plural = `${singular}s`) {
+  return count === 1 ? singular : plural;
+}
+
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -185,6 +250,15 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
         {label}
       </p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function Meta({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div>
+      <dt className="text-sm font-medium text-slate-500">{label}</dt>
+      <dd className="mt-1 text-sm font-medium text-slate-700">{value}</dd>
     </div>
   );
 }

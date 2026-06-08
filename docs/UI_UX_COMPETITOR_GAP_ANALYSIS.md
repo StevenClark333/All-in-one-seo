@@ -1262,3 +1262,19 @@ Implementation:
 - [x] Translate change severity labels into urgent/planned wording.
 - [x] Browser-check Report Detail desktop and mobile locally.
 - [x] Browser-check Report Detail desktop and mobile after deployment.
+
+### Batch BN: Shared Report Link Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep shareable reporting useful by preserving progress, site-check, and issue evidence, but the client-facing read should start as an update, not an audit table.
+- Public report links for nontechnical clients need even softer labels than internal tools because the reader may not know what health score, open issues, severity, or recommendations mean.
+- A softer shared report should say website health, needs attention, next steps, website check summary, and fix movement before raw score, open issues, severity, or priority recommendations.
+
+Implementation:
+
+- [x] Rename shared report story and metric labels to website health, needs attention, and fixed-this-period wording, with natural singular/plural count text.
+- [x] Translate shared report change severity labels into urgent/planned wording.
+- [x] Add website check summary and fix movement sections to shared report links when those sections are enabled.
+- [x] Browser-check Shared Report Link desktop and mobile locally.
+- [ ] Browser-check Shared Report Link desktop and mobile after deployment.
