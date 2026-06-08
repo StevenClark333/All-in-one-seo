@@ -1199,3 +1199,18 @@ Implementation:
 - [x] Replace page-pattern numeric priority scores with plain priority labels.
 - [x] Rename page-detail workspace and audit-field copy to website/decision language.
 - [x] Browser-check Pages list and Page Detail desktop and mobile after deployment.
+
+### Batch BJ: Search Performance Filter Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project-level search performance filters available, but the visible filter language should still feel like choosing a website and search term.
+- Google Search Console-style tables preserve query-level detail, while a softer product can translate the first filter controls before exposing deeper rows.
+- A softer Google search growth page should say website, all websites, and search term before project, query, or data-model wording.
+
+Implementation:
+
+- [x] Rename the Google search growth website filter from project language to website language.
+- [x] Rename the all-projects filter option to all websites.
+- [x] Rename the query filter label to search term.
+- [ ] Browser-check Google Search Growth filters desktop and mobile after deployment.

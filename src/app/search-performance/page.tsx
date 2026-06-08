@@ -213,13 +213,13 @@ export default async function SearchPerformancePage({
               </div>
             </summary>
             <form className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-[minmax(0,260px)_repeat(6,minmax(0,1fr))_auto]">
-              <FilterLabel label="Project">
+              <FilterLabel label="Website">
                 <select
                   name="domainId"
                   defaultValue={selectedDomainId ?? ""}
                   className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="">All projects</option>
+                  <option value="">All websites</option>
                   {data.domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>
                       {formatDomainOption(domain)}
@@ -243,7 +243,7 @@ export default async function SearchPerformancePage({
                   className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </FilterLabel>
-              <FilterLabel label="Query">
+              <FilterLabel label="Search term">
                 <input
                   name="query"
                   defaultValue={query ?? ""}
