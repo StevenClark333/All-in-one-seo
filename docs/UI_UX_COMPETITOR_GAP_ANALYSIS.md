@@ -1213,7 +1213,7 @@ Implementation:
 - [x] Rename the Google search growth website filter from project language to website language.
 - [x] Rename the all-projects filter option to all websites.
 - [x] Rename the query filter label to search term.
-- [ ] Browser-check Google Search Growth filters desktop and mobile after deployment.
+- [x] Browser-check Google Search Growth filters desktop and mobile after deployment.
 
 ### Batch BK: Connections Setup Calmness
 
@@ -1229,7 +1229,7 @@ Implementation:
 - [x] Rename WordPress setup labels from domain and Site ID language to website and setup-code language.
 - [x] Rename launch-check labels from project/site/provider/record wording to setup code, launch check, tool, and saved details.
 - [x] Browser-check Connections desktop and mobile locally.
-- [ ] Browser-check Connections desktop and mobile after deployment.
+- [x] Browser-check Connections desktop and mobile after deployment.
 
 ### Batch BL: Client Care Calmness
 
@@ -1245,4 +1245,4 @@ Implementation:
 - [x] Rename Clients list counts from domains and open issues to websites and needs-attention wording.
 - [x] Rename Client detail priority issues and severity labels to needs-attention, urgent, planned, and fix wording.
 - [x] Browser-check Clients list and Client Detail desktop and mobile locally.
-- [ ] Browser-check Clients list and Client Detail desktop and mobile after deployment.
+- [x] Browser-check Clients list and Client Detail desktop and mobile after deployment.
