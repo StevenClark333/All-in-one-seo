@@ -68,6 +68,26 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
   const visibleIssues = isShowingAll ? issues : issues.slice(0, 12);
   const hiddenIssueCount = Math.max(0, issues.length - visibleIssues.length);
   const isCompactQueue = hiddenIssueCount > 0;
+  const criticalCount = issues.filter(
+    (issue) => issue.severity === "CRITICAL",
+  ).length;
+  const warningCount = issues.filter(
+    (issue) => issue.severity === "WARNING",
+  ).length;
+  const guidedFixCount = issues.filter((issue) => {
+    const solution = buildIssueSolution({
+      issueType: issue.issueType,
+      platform: issue.domain.platform,
+      recommendation: issue.recommendation,
+      title: issue.title,
+    });
+
+    return (
+      solution.primaryAction === "fix-center" ||
+      solution.primaryAction === "recommendations"
+    );
+  }).length;
+  const firstIssue = issues.at(0);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -81,8 +101,12 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                 {workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                SEO issues
+                Problems
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                Start with the clearest problem and use filters only when you
+                want to narrow the list.
+              </p>
             </div>
 
             <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
@@ -100,141 +124,160 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
           <ProjectWorkspaceBar
             active="issues"
             domainId={filters.domainId}
-            note="Issue filters and bulk actions are focused on this domain."
+            note="This problem list is focused on the selected website."
             returnPath="/issues"
           />
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-2">
-              <Filter className="size-5 text-slate-500" aria-hidden="true" />
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="Narrow the issue queue by client, domain, severity, workflow status, owner, type, or template.">
-                  Filters
-                </HelpLabel>
-              </h3>
-            </div>
+          <ProblemSolvingPlan
+            criticalCount={criticalCount}
+            firstIssueTitle={firstIssue?.title}
+            guidedFixCount={guidedFixCount}
+            issueCount={issues.length}
+            warningCount={warningCount}
+          />
 
-            <form
-              action="/issues"
-              className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-7"
-            >
-              <FilterSelect
-                label="Client"
-                help="Show issues for one client account."
-                name="clientId"
-                value={filters.clientId}
-              >
-                <option value="">All clients</option>
-                {clients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {client.name}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Domain"
-                help="Show issues for one monitored website."
-                name="domainId"
-                value={filters.domainId}
-              >
-                <option value="">All domains</option>
-                {domains.map((domain) => (
-                  <option key={domain.id} value={domain.id}>
-                    {domain.domain}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Severity"
-                help="Critical issues are urgent, warnings should be planned, suggestions are optimization opportunities."
-                name="severity"
-                value={filters.severity}
-              >
-                <option value="">All severities</option>
-                {severityOptions.map((severity) => (
-                  <option key={severity} value={severity}>
-                    {formatEnum(severity)}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Status"
-                help="Workflow state for triage, assignment, ignored rules, and completed fixes."
-                name="status"
-                value={filters.status}
-              >
-                <option value="">All statuses</option>
-                {statusOptions.map((status) => (
-                  <option key={status} value={status}>
-                    {formatEnum(status)}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Owner"
-                help="Filter by the teammate assigned to resolve the issue."
-                name="assignedToId"
-                value={filters.assignedToId}
-              >
-                <option value="">All owners</option>
-                {members.map((member) => (
-                  <option key={member.userId} value={member.userId}>
-                    {member.user.name ?? member.user.email}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Type"
-                help="Analyzer rule or issue category, such as missing title or broken internal link."
-                name="issueType"
-                value={filters.issueType}
-              >
-                <option value="">All types</option>
-                {issueTypes.map((issueType) => (
-                  <option key={issueType} value={issueType}>
-                    {formatIssueType(issueType)}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <FilterSelect
-                label="Template"
-                help="Group issues by repeated URL patterns so one route or CMS template can be fixed once."
-                name="templateKey"
-                value={filters.templateKey}
-              >
-                <option value="">All templates</option>
-                {visibleTemplateGroups.map((group) => (
-                  <option key={group.key} value={group.key}>
-                    {group.label}
-                  </option>
-                ))}
-              </FilterSelect>
-
-              <div className="flex gap-2 md:col-span-2 xl:col-span-7">
-                <button className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                  <ListChecks className="size-4" aria-hidden="true" />
-                  Apply filters
-                  <InfoTooltip
-                    label="Refresh the queue using the selected filter values."
-                    passive
-                    side="left"
-                  />
-                </button>
-                <Link
-                  href="/issues"
-                  className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
-                >
-                  Reset
-                </Link>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-orange-50 text-orange-700">
+                  <Filter className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">Refine problem list</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Optional filters for client, website, owner, type, or
+                    repeated template problems.
+                  </p>
+                </div>
               </div>
-            </form>
-          </section>
+              <span className="shrink-0 rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
+                Open filters
+              </span>
+            </summary>
+
+            <div className="border-t border-slate-200 p-5">
+              <form
+                action="/issues"
+                className="grid gap-3 md:grid-cols-2 xl:grid-cols-7"
+              >
+                <FilterSelect
+                  label="Client"
+                  help="Show problems for one client account."
+                  name="clientId"
+                  value={filters.clientId}
+                >
+                  <option value="">All clients</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  label="Website"
+                  help="Show problems for one monitored website."
+                  name="domainId"
+                  value={filters.domainId}
+                >
+                  <option value="">All websites</option>
+                  {domains.map((domain) => (
+                    <option key={domain.id} value={domain.id}>
+                      {domain.domain}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  label="Urgency"
+                  help="Critical problems are urgent, warnings should be planned, suggestions are optional improvements."
+                  name="severity"
+                  value={filters.severity}
+                >
+                  <option value="">All urgency levels</option>
+                  {severityOptions.map((severity) => (
+                    <option key={severity} value={severity}>
+                      {formatEnum(severity)}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  label="Status"
+                  help="Where this problem is in the fix process."
+                  name="status"
+                  value={filters.status}
+                >
+                  <option value="">All statuses</option>
+                  {statusOptions.map((status) => (
+                    <option key={status} value={status}>
+                      {formatEnum(status)}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  label="Owner"
+                  help="Filter by the teammate assigned to resolve the problem."
+                  name="assignedToId"
+                  value={filters.assignedToId}
+                >
+                  <option value="">All owners</option>
+                  {members.map((member) => (
+                    <option key={member.userId} value={member.userId}>
+                      {member.user.name ?? member.user.email}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  label="Type"
+                  help="Problem category, such as missing title or broken internal link."
+                  name="issueType"
+                  value={filters.issueType}
+                >
+                  <option value="">All types</option>
+                  {issueTypes.map((issueType) => (
+                    <option key={issueType} value={issueType}>
+                      {formatIssueType(issueType)}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  label="Template"
+                  help="Group repeated page patterns so one website template can be fixed once."
+                  name="templateKey"
+                  value={filters.templateKey}
+                >
+                  <option value="">All templates</option>
+                  {visibleTemplateGroups.map((group) => (
+                    <option key={group.key} value={group.key}>
+                      {group.label}
+                    </option>
+                  ))}
+                </FilterSelect>
+
+                <div className="flex gap-2 md:col-span-2 xl:col-span-7">
+                  <button className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                    <ListChecks className="size-4" aria-hidden="true" />
+                    Show matching problems
+                    <InfoTooltip
+                      label="Refresh the list using the selected filter values."
+                      passive
+                      side="left"
+                    />
+                  </button>
+                  <Link
+                    href="/issues"
+                    className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                  >
+                    Reset
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </details>
 
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 p-5">
@@ -334,13 +377,13 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
 
             <form action={bulkUpdateIssues}>
               {issues.length ? (
-                <div className="flex flex-col gap-3 border-b border-slate-100 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-sm font-medium text-slate-600">
-                    {isCompactQueue
-                      ? `Showing the top ${visibleIssues.length} problems. ${hiddenIssueCount} lower-priority problems are hidden for now.`
-                      : "Select problems to update status in bulk, including ignored rules."}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
+                <div className="grid gap-3 border-b border-slate-100 bg-slate-50 p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm font-medium text-slate-600">
+                      {isCompactQueue
+                        ? `Showing the top ${visibleIssues.length} problems. ${hiddenIssueCount} lower-priority problems are hidden for now.`
+                        : "Showing the current matching problems."}
+                    </p>
                     {isCompactQueue ? (
                       <Link
                         href={buildIssuesHref(filters, { show: "all" })}
@@ -356,26 +399,44 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                         Show top problems
                       </Link>
                     ) : null}
-                    <select
-                      name="status"
-                      defaultValue="IN_PROGRESS"
-                      className="h-9 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                    >
-                      {statusOptions.map((status) => (
-                        <option key={status} value={status}>
-                          {formatEnum(status)}
-                        </option>
-                      ))}
-                    </select>
-                    <button className="inline-flex h-9 items-center rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700">
-                      Update selected
-                      <InfoTooltip
-                        label="Apply the chosen workflow status to all checked issues."
-                        passive
-                        side="left"
-                      />
-                    </button>
                   </div>
+
+                  <details className="rounded-md border border-slate-200 bg-white">
+                    <summary className="flex items-center justify-between gap-3 px-4 py-3">
+                      <span>
+                        <span className="block text-sm font-semibold text-slate-800">
+                          Change several at once
+                        </span>
+                        <span className="mt-1 block text-sm text-slate-500">
+                          Optional team control for selected checkboxes.
+                        </span>
+                      </span>
+                      <span className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-semibold text-slate-600">
+                        Open
+                      </span>
+                    </summary>
+                    <div className="flex flex-wrap gap-2 border-t border-slate-100 p-4">
+                      <select
+                        name="status"
+                        defaultValue="IN_PROGRESS"
+                        className="h-9 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      >
+                        {statusOptions.map((status) => (
+                          <option key={status} value={status}>
+                            {formatEnum(status)}
+                          </option>
+                        ))}
+                      </select>
+                      <button className="inline-flex h-9 items-center rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700">
+                        Update selected
+                        <InfoTooltip
+                          label="Apply the chosen status to all checked problems."
+                          passive
+                          side="left"
+                        />
+                      </button>
+                    </div>
+                  </details>
                 </div>
               ) : null}
 
@@ -407,6 +468,89 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
         </section>
       </div>
     </main>
+  );
+}
+
+function ProblemSolvingPlan({
+  criticalCount,
+  firstIssueTitle,
+  guidedFixCount,
+  issueCount,
+  warningCount,
+}: {
+  criticalCount: number;
+  firstIssueTitle?: string;
+  guidedFixCount: number;
+  issueCount: number;
+  warningCount: number;
+}) {
+  return (
+    <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div>
+          <p className="text-sm font-semibold text-orange-700">
+            Problem solving plan
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
+            Fix the clearest problem first.
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Start with the first urgent problem, open its guided solution, then
+            use filters only when you want a narrower list.
+          </p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <PlanCard
+            label="Do first"
+            value={firstIssueTitle ?? "No open problems"}
+            detail={
+              firstIssueTitle
+                ? "Open this problem and follow the suggested next step."
+                : "Run a scan when you are ready to find problems."
+            }
+          />
+          <PlanCard
+            label="Guided fixes"
+            value={`${guidedFixCount} ready`}
+            detail="These problems have a recommended path in this portal."
+          />
+          <PlanCard
+            label="Urgency"
+            value={`${criticalCount} critical`}
+            detail={`${warningCount} warnings can be planned after critical work.`}
+          />
+        </div>
+
+        {issueCount ? (
+          <p className="rounded-md bg-white px-4 py-3 text-sm leading-6 text-slate-600 xl:col-span-2">
+            You have {issueCount} matching problems. The page keeps the most
+            important work visible and hides lower-priority items until you ask
+            for them.
+          </p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function PlanCard({
+  detail,
+  label,
+  value,
+}: {
+  detail: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-lg border border-orange-100 bg-white p-4 shadow-sm">
+      <p className="text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-2 line-clamp-2 text-lg font-semibold leading-6 text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
+    </div>
   );
 }
 
@@ -472,9 +616,7 @@ function IssueRow({
 
       <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm font-semibold text-slate-500">
-            Best next step
-          </p>
+          <p className="text-sm font-semibold text-slate-500">Best next step</p>
           <span
             className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${availabilityStyles[solution.fixAvailability.tone]}`}
           >
@@ -601,7 +743,9 @@ function buildIssuesHref(
 }
 
 function getVisibleTemplateGroups(
-  templateGroups: Awaited<ReturnType<typeof getIssueListData>>["templateGroups"],
+  templateGroups: Awaited<
+    ReturnType<typeof getIssueListData>
+  >["templateGroups"],
   selectedTemplateKey?: string,
 ) {
   const topGroups = templateGroups.slice(0, 12);

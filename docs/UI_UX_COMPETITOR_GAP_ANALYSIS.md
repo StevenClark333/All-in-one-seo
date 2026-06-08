@@ -121,6 +121,7 @@ Gap for us:
 | Rank Depth             | Rank Tracking still exposes a full tracked-keyword inventory table in the main view             | Lead with movement/gaps, then make keyword inventory optional and capped                                 |
 | Product Softness       | Shared cards, tables, loading states, and navigation still feel slightly admin-like             | Use calmer canvas, lighter surfaces, softer rows, warmer action states, and quieter loading transitions  |
 | Projects Concision     | Projects page still lets a wide audit table and import tools compete with the first decision    | Lead with a risk-based shortlist, then collapse full inventory and bulk import into optional detail      |
+| Problems Flow          | Problems page still exposed filters and bulk status controls before the actual solve path       | Lead with the clearest fix, then keep filters and multi-change controls optional                         |
 
 ## Product Direction
 
@@ -705,3 +706,21 @@ Implementation:
 - [x] Keep search and the full table available inside the optional detail section.
 - [x] Keep bulk project import collapsed as an agency-only advanced action.
 - [x] Rename the global loading copy from command-center language to "Loading your workspace."
+
+### Batch AI: Problems Flow Calmness
+
+Competitive evidence:
+
+- Semrush Issues views organize problems by severity, but the first useful step is still which item to open and what action to take.
+- Ubersuggest-style beginner flows pair audit findings with simple recommendations before advanced filtering.
+- A nontechnical user should not see filters and bulk controls before the recommended problem-solving path.
+
+Implementation:
+
+- [x] Rename the Problems header away from "SEO issues" language.
+- [x] Add a plain-language "Problem solving plan" above filters and the issue list.
+- [x] Surface the first urgent problem, guided-fix count, and critical/warning mix as the first decision.
+- [x] Move the full filter form into a closed "Refine problem list" section.
+- [x] Replace workflow/filter wording with softer problem/status language.
+- [x] Move bulk status updates into a closed "Change several at once" section.
+- [x] Keep top problems and solution cards visible before advanced controls.
