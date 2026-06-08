@@ -33,7 +33,7 @@ const navHelp: Record<string, string> = {
     "Start here for today's plan, website health, and the next best action.",
   Clients: "Manage clients, their websites, reports, and SEO workload.",
   Sites:
-    "Add websites, verify ownership, run scans, and keep each project organized.",
+    "Add websites, confirm ownership, run checks, and keep each project organized.",
   Pages: "Review checked pages, titles, descriptions, and page-level problems.",
   "Search Performance":
     "See Google results, clicks, impressions, top pages, and search demand.",

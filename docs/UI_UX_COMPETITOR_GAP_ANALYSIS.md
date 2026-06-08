@@ -951,3 +951,19 @@ Implementation:
 - [x] Replace raw audit detail wording with client update and extra technical detail wording.
 - [x] Normalize odd separator characters in client detail metadata.
 - [x] Browser-check Client Care desktop and mobile after deployment.
+
+### Batch AU: Team Access Calmness
+
+Competitive evidence:
+
+- Semrush-style account areas keep permission detail available, but the first decision should still feel like choosing safe access for a teammate.
+- Ahrefs and Ubersuggest-style workflows work better for nontechnical users when setup language explains what people can see or change, not the internal SEO operations behind it.
+- A softer Settings page should say plan, team, clients, websites, checks, problems, updates, alerts, and connections before crawl, workflow, audit, or provider terminology.
+
+Implementation:
+
+- [x] Replace role descriptions that used production workflow, audit, and operator language with plain teammate/client access language.
+- [x] Rename owner/admin/member/viewer permissions toward websites, checks, problems, updates, alerts, and connections.
+- [x] Replace role-guide helper text with safer access-level wording.
+- [x] Soften the shared Projects sidebar helper from scan wording to website-check wording.
+- [ ] Browser-check Team Access desktop and mobile after deployment.

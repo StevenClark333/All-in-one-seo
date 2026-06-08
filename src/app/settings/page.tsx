@@ -33,41 +33,41 @@ const roleProfiles: Record<
   OWNER: {
     title: "Product Owner",
     description:
-      "Primary owner for the All In One SEO workspace and final account authority.",
+      "Primary owner for the workspace, plan, team, and account decisions.",
     permissions: [
-      "Full workspace, billing, team, client, domain, crawl, issue, report, alert, and integration access",
-      "Can manage admins, operators, and viewers",
+      "Full access to plan, team, clients, websites, checks, problems, updates, alerts, and connections",
+      "Can manage admins, teammates, and viewers",
       "Cannot be removed or downgraded from Settings",
     ],
   },
   ADMIN: {
     title: "Agency Admin",
     description:
-      "Senior agency operator who can manage team access and production SEO workflows.",
+      "Trusted teammate who can manage access and everyday SEO work.",
     permissions: [
       "Can invite teammates and change non-owner roles",
-      "Can manage clients, domains, crawls, issues, reports, alerts, and integrations",
+      "Can manage clients, websites, checks, problems, updates, alerts, and connections",
       "Cannot remove or change the Product Owner",
     ],
   },
   MEMBER: {
-    title: "SEO Operator",
+    title: "SEO Teammate",
     description:
-      "SEO specialist focused on execution, fixes, audits, and recommendations.",
+      "Teammate who works on fixes, website checks, problems, and ideas.",
     permissions: [
-      "Can run SEO workflows such as crawls, issue updates, and recommendations",
-      "Can review operational dashboards and reports",
+      "Can run website checks, update problems, and create ideas",
+      "Can review dashboards and client updates",
       "Cannot manage billing, team seats, or workspace-level access",
     ],
   },
   VIEWER: {
     title: "Client Viewer",
     description:
-      "Read-only stakeholder for client review, reporting, and monitoring visibility.",
+      "Read-only teammate or client who can review work and updates.",
     permissions: [
-      "Can view dashboards, reports, issues, and site health",
-      "Useful for clients or executives who need visibility",
-      "Cannot create, edit, delete, invite, crawl, or change workflow state",
+      "Can view dashboards, client updates, problems, and website health",
+      "Useful for clients or leaders who only need visibility",
+      "Can view work, but cannot change clients, websites, checks, invites, or progress",
     ],
   },
 };
@@ -310,7 +310,7 @@ export default async function SettingsPage() {
                 <details>
                   <summary className="p-5">
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Use these production role names when creating accounts or inviting teammates.">
+                      <HelpLabel help="Use this guide when choosing the safest access level for a teammate or client.">
                         Role guide
                       </HelpLabel>
                     </h3>
