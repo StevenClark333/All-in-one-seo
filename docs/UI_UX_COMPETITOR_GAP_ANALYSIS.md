@@ -1325,4 +1325,4 @@ Implementation:
 - [x] Rename setup/status messages from verification token and production crawl wording to setup value and website check wording.
 - [x] Keep technical setup values visible while softening history, error, and status labels.
 - [x] Browser-check Ownership desktop and mobile locally.
-- [ ] Browser-check Ownership desktop and mobile after deployment.
+- [x] Browser-check Ownership desktop and mobile after deployment.
