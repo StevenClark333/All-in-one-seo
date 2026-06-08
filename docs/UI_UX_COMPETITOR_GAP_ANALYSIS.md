@@ -1037,3 +1037,20 @@ Implementation:
 - [x] Rename repeated-row action tooltip from resolving an issue to opening clear fix steps.
 - [x] Replace visible issue/scan/crawl wording in list cards, empty states, and plan cards with problem and website-check language.
 - [x] Browser-check Problems List desktop and mobile after deployment.
+
+### Batch AZ: Dashboard First Impression Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit Overview emphasizes site health, the most important problems, rerun/report actions, and deeper thematic widgets only after the user understands the current state.
+- Semrush Site Audit Issues groups work by severity and trend, which supports a dashboard that says urgent/planned/idea before technical audit language.
+- Ahrefs dashboard and Site Audit materials make Health Score and project-level metrics the first orientation point, with deeper issue detail still available after the overview.
+- A softer home dashboard should say check website, urgent problems, planned work, website health, and client updates before scan, crawl, analyzer, technical SEO, or source-of-truth wording.
+
+Implementation:
+
+- [x] Rename dashboard primary actions from scan/project language to checking a website and adding a website.
+- [x] Rename dashboard metrics and table helpers from critical issues, crawl status, analyzer, and technical SEO wording to urgent problems, recent checks, and website health.
+- [x] Translate stored top-problem titles into plain-language dashboard labels.
+- [x] Soften internal setup checklist names and descriptions away from crawler/analyzer/source-of-truth language.
+- [ ] Browser-check Dashboard desktop and mobile after deployment.

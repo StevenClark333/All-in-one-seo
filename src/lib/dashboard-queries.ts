@@ -33,15 +33,15 @@ const emptyStats: AgencyStat[] = [
     icon: BarChart3,
   },
   {
-    label: "Critical issues",
+    label: "Urgent problems",
     value: "0",
-    detail: "No crawl data has been analyzed",
+    detail: "No website check has run yet",
     icon: AlertTriangle,
   },
   {
     label: "Reports due",
     value: "0",
-    detail: "Reporting starts after crawls exist",
+    detail: "Updates start after the first website check",
     icon: FileText,
   },
 ];
@@ -142,7 +142,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       {
         label: "Clients",
         value: clientCount.toString(),
-        detail: `${domains.length} domain${domains.length === 1 ? "" : "s"} in monitoring scope`,
+        detail: `${domains.length} website${domains.length === 1 ? "" : "s"} being watched`,
         icon: UsersRound,
       },
       {
@@ -152,9 +152,9 @@ export async function getDashboardData(): Promise<DashboardData> {
         icon: BarChart3,
       },
       {
-        label: "Critical issues",
+        label: "Urgent problems",
         value: criticalCount.toString(),
-        detail: "Open critical issues across all clients",
+        detail: "Urgent problems across all clients",
         icon: AlertTriangle,
       },
       {

@@ -65,7 +65,7 @@ export default async function Home() {
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <p className="text-sm font-semibold text-orange-600">
-                {isAgency ? "Agency workspace" : "SEO workspace"}
+                {isAgency ? "Agency workspace" : "Website workspace"}
               </p>
               <h2 className="mt-2 max-w-4xl text-3xl font-semibold tracking-normal text-slate-950">
                 {isAgency
@@ -84,9 +84,9 @@ export default async function Home() {
                 className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50"
               >
                 <Play className="size-4" aria-hidden="true" />
-                Scan project
+                Check website
                 <InfoTooltip
-                  label="Go to Projects to manually scan a verified website."
+                  label="Go to Projects to start a fresh website check."
                   passive
                   side="left"
                 />
@@ -98,7 +98,7 @@ export default async function Home() {
                 <Plus className="size-4" aria-hidden="true" />
                 Add website
                 <InfoTooltip
-                  label="Add a new website to verify, scan, monitor, and report on."
+                  label="Add a new website, confirm ownership, watch progress, and create updates."
                   passive
                   side="left"
                 />
@@ -251,14 +251,14 @@ export default async function Home() {
               <AnalyticsMetricCard
                 href="/issues?severity=CRITICAL"
                 icon={AlertTriangle}
-                label="Critical workload"
+                label="Urgent work"
                 tone="red"
                 value={sites.reduce((total, site) => total + site.critical, 0)}
               />
               <AnalyticsMetricCard
                 href="/issues"
                 icon={CircleDot}
-                label="Warning load"
+                label="Planned work"
                 tone="amber"
                 value={sites.reduce((total, site) => total + site.warnings, 0)}
               />
@@ -277,7 +277,7 @@ export default async function Home() {
             <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
               <div>
                 <h4 className="text-sm font-semibold text-slate-600">
-                  Site health distribution
+                  Website health mix
                 </h4>
                 <div className="mt-4 grid gap-4">
                   <HorizontalBar
@@ -310,10 +310,10 @@ export default async function Home() {
                 </h4>
                 <div className="mt-4 grid gap-2">
                   <QuickAction href="/domains/new" label="Add website" />
-                  <QuickAction href="/domains" label="Scan project" />
+                  <QuickAction href="/domains" label="Check website" />
                   <QuickAction
                     href="/recommendations"
-                    label="Generate briefs"
+                    label="Create fix notes"
                   />
                   <QuickAction href="/rank-tracking" label="Track keywords" />
                 </div>
@@ -350,12 +350,12 @@ export default async function Home() {
                 <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Portfolio table showing verification, crawl status, pages, and issue volume across monitored domains.">
+                      <HelpLabel help="Portfolio table showing ownership, recent check status, pages, and problem volume across monitored websites.">
                         {isAgency ? "Client site detail" : "Website detail"}
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Verification, scan status, and issue volume when you need
+                      Ownership, check status, and problem volume when you need
                       to compare projects.
                     </p>
                   </div>
@@ -377,7 +377,7 @@ export default async function Home() {
                         <th className="px-5 py-3 font-semibold">Client</th>
                         <th className="px-5 py-3 font-semibold">Domain</th>
                         <th className="px-5 py-3 font-semibold">
-                          <HelpLabel help="Latest site health score calculated from crawler and analyzer results.">
+                          <HelpLabel help="Latest website health score from recent checks and open problems.">
                             Score
                           </HelpLabel>
                         </th>
@@ -387,13 +387,13 @@ export default async function Home() {
                           </HelpLabel>
                         </th>
                         <th className="px-5 py-3 font-semibold">
-                          <HelpLabel help="Critical issues first, warnings second. Use this to prioritize work.">
-                            Issues
+                          <HelpLabel help="Urgent problems first, planned problems second. Use this to choose what to fix first.">
+                            Problems
                           </HelpLabel>
                         </th>
                         <th className="px-5 py-3 font-semibold">
-                          <HelpLabel help="Most recent crawler run state for this domain.">
-                            Last crawl
+                          <HelpLabel help="Most recent website check for this project.">
+                            Last check
                           </HelpLabel>
                         </th>
                       </tr>
@@ -468,8 +468,8 @@ export default async function Home() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="A quick view of completed SaaS capability areas from the source-of-truth plan.">
-                        Product setup checklist
+                      <HelpLabel help="A quick view of the main setup areas already working behind the scenes.">
+                        Behind-the-scenes setup
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
@@ -523,7 +523,7 @@ export default async function Home() {
             <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="The highest-impact SEO work across clients, ranked by severity and analyzer priority.">
+                  <HelpLabel help="The most important website problems across clients, ranked by urgency and likely impact.">
                     Top problems to review
                   </HelpLabel>
                 </h3>
@@ -539,7 +539,7 @@ export default async function Home() {
                 <CircleDot className="size-4" aria-hidden="true" />
                 Open all problems
                 <InfoTooltip
-                  label="Open the full Problems page with filters and all current SEO findings."
+                  label="Open the full Problems page with filters and all current website findings."
                   passive
                   side="left"
                 />
@@ -558,13 +558,15 @@ export default async function Home() {
                         <span
                           className={`rounded-full border px-2.5 py-1 text-xs font-semibold capitalize ${severityStyles[issue.severity]}`}
                         >
-                          {issue.severity}
+                          {formatDashboardSeverity(issue.severity)}
                         </span>
                         <span className="text-xs font-medium text-slate-500">
                           {issue.pages} page{issue.pages === 1 ? "" : "s"}
                         </span>
                       </div>
-                      <h4 className="mt-3 font-semibold">{issue.title}</h4>
+                      <h4 className="mt-3 font-semibold">
+                        {softenDashboardProblemTitle(issue.title)}
+                      </h4>
                       <p className="mt-1 text-sm text-slate-500">
                         {issue.client} - {issue.domain}
                       </p>
@@ -596,8 +598,8 @@ export default async function Home() {
                 ))
               ) : (
                 <div className="p-8 text-center text-sm text-slate-500">
-                  No open SEO issues yet. Run a crawl to generate the first
-                  friendly action plan.
+                  No open website problems yet. Run a website check to create
+                  the first friendly action plan.
                 </div>
               )}
             </div>
@@ -626,14 +628,14 @@ function getStatHelp(label: string) {
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
     Clients:
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
-    "Critical issues":
+    "Urgent problems":
       "Problems that can meaningfully hurt search visibility and should be fixed first.",
     "Verified domains":
-      "Domains with ownership confirmed, eligible for full production crawls.",
+      "Websites with ownership confirmed and ready for full checks.",
     "Pages crawled":
-      "Pages collected by the crawler and available for technical SEO analysis.",
+      "Pages checked and ready for page-level review.",
     "Open issues":
-      "Analyzer findings that still need review, assignment, or resolution.",
+      "Website problems that still need review, assignment, or a fix.",
     "Reports due":
       "Reports that are ready for review or still need a clean client update.",
   };
@@ -664,6 +666,73 @@ function QuickAction({ href, label }: { href: string; label: string }) {
       <ArrowRight className="size-4" aria-hidden="true" />
     </Link>
   );
+}
+
+function formatDashboardSeverity(severity: Severity) {
+  if (severity === "critical") {
+    return "Urgent";
+  }
+
+  if (severity === "warning") {
+    return "Planned";
+  }
+
+  return "Idea";
+}
+
+function softenDashboardProblemTitle(value: string) {
+  const exactMatches: Record<string, string> = {
+    "Sitemap URL is not internally linked":
+      "Page is in the page list but needs links",
+    "Sitemap Url Not Internally Linked":
+      "Page is in the page list but needs links",
+    "Internally Linked Url Missing From Sitemap":
+      "Linked page missing from page list",
+    "Robots Txt Unavailable Or Malformed": "Robots file needs attention",
+    "Sitemap Unavailable": "Page list needs attention",
+    "Missing H1": "Main heading missing",
+    "Multiple H1": "Too many main headings",
+    "Missing Image Alt": "Image description missing",
+    "Missing Canonical": "Preferred page link missing",
+    "Duplicate Content Cluster": "Repeated content group",
+    "Duplicate Meta Description": "Repeated page description",
+    "Duplicate Title": "Repeated page title",
+    "Duplicate meta descriptions across page template":
+      "Page template repeats the same description",
+    "Missing Schema": "Page details for Google missing",
+    "Missing Meta Description": "Page description missing",
+    "Missing Title": "Page title missing",
+    "Missing page title": "Page title missing",
+    "Add a unique meta description": "Write a clear page description",
+    "Add a unique title tag": "Write a clear page title",
+    "Restore indexability": "Make page visible to Google",
+    "Homepage Blocked By Robots": "Homepage blocked from Google",
+    "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Product template canonical points to non-200 URLs":
+      "Product template points to a broken preferred page",
+    "Homepage became noindex after latest deploy":
+      "Homepage was hidden from Google after deploy",
+    "Critical Regression": "Urgent change",
+  };
+
+  const exactMatch = exactMatches[value];
+
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return value
+    .replace(/\bSitemap\b/g, "page list")
+    .replace(/\bURLs?\b/g, "pages")
+    .replace(/\bUrl\b/g, "page")
+    .replace(/\bRobots Txt\b/g, "robots file")
+    .replace(/\bH1\b/g, "main heading")
+    .replace(/\bMeta Description\b/g, "page description")
+    .replace(/\bSchema\b/g, "page details for Google")
+    .replace(/\bNoindex\b/g, "hidden from Google")
+    .replace(/\bCanonical\b/g, "preferred page link")
+    .replace(/\bindexability\b/gi, "visibility in Google")
+    .replace(/\btitle tag\b/gi, "page title");
 }
 
 function DashboardPreviewNote({
@@ -703,7 +772,7 @@ function buildDashboardNextSteps({
         action: "Connect database",
         badge: "Required",
         detail:
-          "The app needs a database before it can show real websites, issues, and reports.",
+          "The app needs a database before it can show real websites, problems, and updates.",
         href: "/settings",
         icon: AlertTriangle,
         title: "Connect the product data",
@@ -721,7 +790,7 @@ function buildDashboardNextSteps({
         action: "Create report",
         badge: "Later",
         detail:
-          "After the first crawl, turn the findings into a simple client-ready report.",
+          "After the first website check, turn the findings into a simple client-ready update.",
         href: "/reports",
         icon: FileText,
         title: "Share the results",
@@ -735,7 +804,7 @@ function buildDashboardNextSteps({
         action: "Add project",
         badge: "First step",
         detail:
-          "Add the website you care about. We will guide you through verification and crawling after that.",
+          "Add the website you care about. We will guide you through ownership and the first check after that.",
         href: "/domains/new",
         icon: Plus,
         title: "Add your first website",
@@ -744,7 +813,7 @@ function buildDashboardNextSteps({
         action: "View projects",
         badge: "Easy",
         detail:
-          "Projects keep each website, crawl, issue, and report in one place.",
+          "Projects keep each website, check, problem, and update in one place.",
         href: "/domains",
         icon: CheckCircle2,
         title: "Keep work organized by project",
@@ -790,7 +859,7 @@ function buildDashboardNextSteps({
       ? {
           action: "Fix now",
           badge: "Important",
-          detail: `${criticalIssue.domain} has a critical issue. Open the problem and follow the recommended solution.`,
+          detail: `${criticalIssue.domain} has an urgent problem. Open it and follow the clearest fix steps.`,
           href: "/issues?severity=CRITICAL",
           icon: AlertTriangle,
           title: "Fix the most urgent problem",
@@ -799,25 +868,25 @@ function buildDashboardNextSteps({
         ? {
             action: "Review",
             badge: "Recommended",
-            detail: `${warningIssue.domain} has a warning worth reviewing before it becomes a bigger issue.`,
+            detail: `${warningIssue.domain} has a planned fix worth reviewing before it becomes bigger.`,
             href: "/issues?severity=WARNING",
             icon: CircleDot,
             title: "Review the next warning",
           }
         : {
-            action: "Run crawl",
+            action: "Run check",
             badge: "Refresh",
             detail:
-              "No urgent issues are showing. Refresh crawl data to keep monitoring current.",
+              "No urgent problems are showing. Run a fresh website check to keep progress current.",
             href: "/domains",
             icon: Play,
-            title: "Refresh the latest scan",
+            title: "Refresh the latest check",
           },
     {
       action: "Create report",
       badge: "Share",
       detail:
-        "Turn the latest health, issues, and fixes into a simple report for someone else.",
+        "Turn the latest health, problems, and fixes into a simple update for someone else.",
       href: "/reports",
       icon: FileText,
       title: "Send a clear update",

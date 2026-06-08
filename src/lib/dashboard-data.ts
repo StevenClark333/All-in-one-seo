@@ -55,38 +55,38 @@ export type MvpModule = {
 
 export const mvpModules: MvpModule[] = [
   {
-    name: "Workspace and agency model",
+    name: "Workspace and team setup",
     status: "complete",
     description:
-      "Business workspaces, agency workspaces, clients, domains, and roles.",
+      "Business workspaces, agency workspaces, clients, websites, and teammate access.",
     icon: LayoutDashboard,
   },
   {
-    name: "Domain verification",
+    name: "Website ownership check",
     status: "complete",
     description:
-      "DNS TXT token generation, polling, expiry, and verified domain state.",
+      "Guided ownership checks so each website is ready to watch safely.",
     icon: ShieldCheck,
   },
   {
-    name: "Crawler pipeline",
+    name: "Website checking",
     status: "complete",
     description:
-      "HTTP crawler, sitemap discovery, robots.txt checks, snapshots, and crawl runs.",
+      "Website checks, page discovery, screenshots, and recent check history.",
     icon: Radar,
   },
   {
-    name: "SEO analyzer",
+    name: "Problem finder",
     status: "complete",
     description:
-      "Rule engine for metadata, indexability, canonicals, headings, links, and sitemap issues.",
+      "Plain-language checks for page titles, visibility, headings, links, and page-list gaps.",
     icon: ListChecks,
   },
   {
-    name: "AI recommendations",
+    name: "Fix ideas",
     status: "complete",
     description:
-      "Title, meta, H1, schema, internal linking, content gap, issue explanations, and fix briefs.",
+      "Page titles, descriptions, headings, content ideas, problem explanations, and fix notes.",
     icon: Bot,
   },
   {
