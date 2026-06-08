@@ -74,11 +74,11 @@ export default async function SearchPerformancePage({
                 {data.workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Search performance
+                Google search growth
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Google Search Console visibility, queries, pages, and movement
-                for imported organic search data.
+                See what people searched, which pages earned clicks, and what
+                needs a little care before the next Google update.
               </p>
             </div>
 
@@ -93,7 +93,7 @@ export default async function SearchPerformancePage({
           <ProjectWorkspaceBar
             active="search"
             domainId={selectedDomainId}
-            note="Search Console queries, pages, visibility, and movement are filtered to this domain."
+            note="Google search terms, pages, and movement are filtered to this website."
             returnPath="/search-performance"
           />
 
@@ -120,9 +120,9 @@ export default async function SearchPerformancePage({
                   Search growth plan
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-700">
-                  Keep the top numbers visible, but start with the easiest next
-                  move: protect what is working, fix what is slipping, and turn
-                  search impressions into visits.
+                  Start with the easiest next move: protect the searches that
+                  already work, fix what slipped, and turn more Google views
+                  into visits.
                 </p>
               </div>
 
@@ -171,27 +171,27 @@ export default async function SearchPerformancePage({
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
               delta={visibilityDelta}
-              help="Impression-weighted visibility derived from Search Console average position."
-              label="Visibility"
+              help="A simple score for how visible this website is in Google search results."
+              label="Search visibility"
               suffix="%"
               value={data.summary.visibility}
             />
             <Metric
               delta={clickDelta}
-              help="Organic clicks imported from Google Search Console."
-              label="Clicks"
+              help="Visits from Google search results."
+              label="Visits from Google"
               value={data.summary.clicks}
             />
             <Metric
               delta={impressionDelta}
-              help="Organic search impressions imported from Google Search Console."
-              label="Impressions"
+              help="How often people saw this website in Google results."
+              label="Times seen"
               value={data.summary.impressions}
             />
             <Metric
               delta={positionDelta}
-              help="Impression-weighted average search result position. Positive movement means the average position improved."
-              label="Avg. position"
+              help="The average Google result spot. Positive movement means the website moved closer to the top."
+              label="Average spot"
               value={data.summary.avgPosition || "Pending"}
             />
           </section>
@@ -200,15 +200,15 @@ export default async function SearchPerformancePage({
             <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Adjust filters</h3>
+                  <h3 className="text-lg font-semibold">Narrow the view</h3>
                   <p className="mt-1 text-sm text-slate-500">
                     {selectedDomain
                       ? `Focused on ${selectedDomain.domain}.`
-                      : "Open this only when you want a specific project, date, query, country, or device."}
+                      : "Open this only when you want a specific website, date, search term, country, or device."}
                   </p>
                 </div>
                 <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
-                  Show options
+                  Show filters
                 </span>
               </div>
             </summary>
@@ -298,27 +298,47 @@ export default async function SearchPerformancePage({
 
           <section className="mt-6 grid gap-6 xl:grid-cols-2">
             <MovementPanel
-              empty="No improving queries in the selected range."
+              empty="No search terms moved up in the selected range."
               items={data.improvedQueries}
-              title="Improved queries"
+              title="Search terms moving up"
               tone="up"
             />
             <MovementPanel
-              empty="No declining queries in the selected range."
+              empty="No search terms slipped in the selected range."
               items={data.declinedQueries}
-              title="Declined queries"
+              title="Search terms slipping"
               tone="down"
             />
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-2">
-            <RankingTable
-              items={data.topQueries}
-              label="Query"
-              title="Top queries"
-            />
-            <RankingTable items={data.topPages} label="Page" title="Top pages" />
-          </section>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">More search data</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Open the full search-term and page tables when you want to
+                    compare the deeper numbers.
+                  </p>
+                </div>
+                <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                  Show tables
+                </span>
+              </div>
+            </summary>
+            <div className="grid gap-6 p-5 xl:grid-cols-2">
+              <RankingTable
+                items={data.topQueries}
+                label="Search term"
+                title="Top search terms"
+              />
+              <RankingTable
+                items={data.topPages}
+                label="Page"
+                title="Top pages"
+              />
+            </div>
+          </details>
         </section>
       </div>
     </main>
@@ -353,8 +373,8 @@ function Metric({
         }`}
       >
         {delta >= 0 ? "+" : ""}
-        {Number.isInteger(delta) ? delta.toLocaleString() : delta.toFixed(1)}{" "}
-        vs previous period
+        {Number.isInteger(delta) ? delta.toLocaleString() : delta.toFixed(1)} vs
+        previous period
       </p>
     </article>
   );
@@ -373,6 +393,8 @@ function MovementPanel({
 }) {
   const Icon = tone === "up" ? ArrowUp : ArrowDown;
   const toneClass = tone === "up" ? "text-emerald-700" : "text-red-700";
+  const visibleItems = items.slice(0, 5);
+  const hiddenItems = items.slice(5);
 
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -381,32 +403,50 @@ function MovementPanel({
         <h3 className="text-lg font-semibold">{title}</h3>
       </div>
       <div className="grid divide-y divide-slate-100">
-        {items.length ? (
-          items.map((item) => (
-            <article
-              key={item.key}
-              className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_120px_110px]"
-            >
-              <div className="min-w-0">
-                <p className="truncate font-semibold">{item.key}</p>
-                <p className="mt-1 text-sm text-slate-500">
-                  {item.impressions.toLocaleString()} impressions
-                </p>
-              </div>
-              <Meta label="Clicks" value={item.clicks.toLocaleString()} />
-              <Meta
-                label="Position"
-                value={`${item.avgPosition} (${formatMovement(
-                  item.positionChange,
-                )})`}
-              />
-            </article>
-          ))
+        {visibleItems.length ? (
+          <>
+            {visibleItems.map((item) => (
+              <SearchMovementRow key={item.key} item={item} />
+            ))}
+            {hiddenItems.length ? (
+              <details className="px-5 py-4">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-700 marker:text-slate-400">
+                  More {tone === "up" ? "rising" : "slipping"} search terms (
+                  {hiddenItems.length})
+                </summary>
+                <div className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-100">
+                  {hiddenItems.map((item) => (
+                    <SearchMovementRow key={item.key} item={item} />
+                  ))}
+                </div>
+              </details>
+            ) : null}
+          </>
         ) : (
           <div className="p-8 text-center text-sm text-slate-500">{empty}</div>
         )}
       </div>
     </section>
+  );
+}
+
+function SearchMovementRow({ item }: { item: SearchPerformanceGroup }) {
+  return (
+    <article className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_120px_110px]">
+      <div className="min-w-0">
+        <p className="truncate font-semibold">{item.key}</p>
+        <p className="mt-1 text-sm text-slate-500">
+          {item.impressions.toLocaleString()} times seen
+        </p>
+      </div>
+      <Meta label="Visits" value={item.clicks.toLocaleString()} />
+      <Meta
+        label="Spot"
+        value={`${item.avgPosition || "Pending"} (${formatMovement(
+          item.positionChange,
+        )})`}
+      />
+    </article>
   );
 }
 
@@ -419,6 +459,9 @@ function RankingTable({
   label: string;
   title: string;
 }) {
+  const visibleItems = items.slice(0, 8);
+  const hiddenCount = Math.max(items.length - visibleItems.length, 0);
+
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 p-5">
@@ -429,43 +472,58 @@ function RankingTable({
           <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th className="px-5 py-3 font-semibold">{label}</th>
-              <th className="px-5 py-3 font-semibold">Clicks</th>
-              <th className="px-5 py-3 font-semibold">Impressions</th>
+              <th className="px-5 py-3 font-semibold">Visits</th>
+              <th className="px-5 py-3 font-semibold">Times seen</th>
               <th className="px-5 py-3 font-semibold">CTR</th>
-              <th className="px-5 py-3 font-semibold">Position</th>
+              <th className="px-5 py-3 font-semibold">Spot</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {items.length ? (
-              items.map((item) => (
-                <tr key={item.key}>
-                  <td className="max-w-sm px-5 py-4">
-                    <span className="line-clamp-2 font-medium">
-                      {item.key}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 font-medium">
-                    {item.clicks.toLocaleString()}
-                  </td>
-                  <td className="px-5 py-4">
-                    {item.impressions.toLocaleString()}
-                  </td>
-                  <td className="px-5 py-4">{formatCtr(item.ctr)}</td>
-                  <td className="px-5 py-4">
-                    {item.avgPosition || "Pending"}
-                  </td>
-                </tr>
-              ))
+            {visibleItems.length ? (
+              <>
+                {visibleItems.map((item) => (
+                  <tr key={item.key}>
+                    <td className="max-w-sm px-5 py-4">
+                      <span className="line-clamp-2 font-medium">
+                        {item.key}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 font-medium">
+                      {item.clicks.toLocaleString()}
+                    </td>
+                    <td className="px-5 py-4">
+                      {item.impressions.toLocaleString()}
+                    </td>
+                    <td className="px-5 py-4">{formatCtr(item.ctr)}</td>
+                    <td className="px-5 py-4">
+                      {item.avgPosition || "Pending"}
+                    </td>
+                  </tr>
+                ))}
+                {hiddenCount ? (
+                  <tr>
+                    <td
+                      className="px-5 py-4 text-sm text-slate-500"
+                      colSpan={5}
+                    >
+                      {hiddenCount} more rows are available through filters or
+                      saved reporting.
+                    </td>
+                  </tr>
+                ) : null}
+              </>
             ) : (
               <tr>
-                <td className="px-5 py-8 text-center text-slate-500" colSpan={5}>
-                  No Search Console metrics match these filters. Import GSC
-                  metrics from{" "}
+                <td
+                  className="px-5 py-8 text-center text-slate-500"
+                  colSpan={5}
+                >
+                  No Google search data matches this view. Connect Google from{" "}
                   <Link
                     href="/integrations"
                     className="font-semibold underline-offset-4 hover:underline"
                   >
-                    Integrations
+                    Connections
                   </Link>
                   .
                 </td>
@@ -487,9 +545,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-slate-600">
-        {label}
-      </span>
+      <span className="text-sm font-medium text-slate-600">{label}</span>
       {children}
     </label>
   );
@@ -498,9 +554,7 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
     </div>
   );
@@ -613,7 +667,9 @@ function buildSearchGrowthSteps({
       detail: declinedQuery
         ? `"${declinedQuery.key}" slipped by ${Math.abs(
             declinedQuery.positionChange ?? 0,
-          ).toFixed(1)} positions. Refresh the page title, headings, and answer quality.`
+          ).toFixed(
+            1,
+          )} positions. Refresh the page title, headings, and answer quality.`
         : "No clear ranking drop in this range. Keep watching the next import.",
       href: `/pages${querySuffix}`,
       icon: ArrowDown,

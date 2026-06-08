@@ -844,3 +844,24 @@ Implementation:
 - [x] Move the remaining page rows into a closed "More pages" panel.
 - [x] Replace raw crawl/template wording with website-check and repeated-fix language.
 - [x] Browser-check Page List desktop and mobile after deployment.
+
+### Batch AP: Search Growth Calmness
+
+Competitive evidence:
+
+- Semrush search and position workflows keep visibility, movement, and the next opportunity visible before deeper keyword tables.
+- Ahrefs-style Google Search Console and Page Explorer views preserve query/page depth with filters, but the first view is easier when it answers "what went up, what slipped, and where can we get more clicks?"
+- Ubersuggest-style beginner reporting works best when search metrics use visits, times seen, and practical next steps instead of raw analytics labels.
+
+Implementation:
+
+- [x] Rename Search Performance to "Google search growth".
+- [x] Rewrite header and workspace copy around searches, pages, clicks, and simple Google movement.
+- [x] Rename metric labels to search visibility, visits from Google, times seen, and average spot.
+- [x] Rename filter setup to "Narrow the view" and keep it optional.
+- [x] Limit visible movement lists to the first five search terms.
+- [x] Move extra rising/slipping search terms into closed optional panels.
+- [x] Move top search-term and page tables into a closed "More search data" panel.
+- [x] Limit each deeper table preview to the first eight rows.
+- [x] Soften the route loading copy.
+- [ ] Browser-check Google Search Growth desktop and mobile after deployment.
