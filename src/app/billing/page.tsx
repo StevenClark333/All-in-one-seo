@@ -1,4 +1,4 @@
-import { CreditCard, ShieldCheck } from "lucide-react";
+import { CreditCard, Gauge, ShieldCheck } from "lucide-react";
 import {
   openStripePortalAction,
   startBillingTrialAction,
@@ -17,7 +17,11 @@ export const dynamic = "force-dynamic";
 
 export default async function BillingPage() {
   const { plans, subscription, usage, workspace } = await getBillingPageData();
-  const currentPlan = subscription?.plan ?? plans.at(0);
+  const workspacePlanKey = workspace?.plan?.toLowerCase();
+  const currentPlan =
+    subscription?.plan ??
+    plans.find((plan) => plan.key === workspacePlanKey) ??
+    plans.at(0);
   const nearLimitCount =
     usage && currentPlan
       ? getUsageItems(usage, currentPlan).filter((item) => item.percent >= 80)
@@ -25,7 +29,7 @@ export default async function BillingPage() {
       : 0;
 
   return (
-    <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
+    <main className="min-h-screen bg-[#f7f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
         <AppSidebar active="Billing" />
 
@@ -36,13 +40,17 @@ export default async function BillingPage() {
                 {workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Billing and plans
+                Plan and usage
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                See what is included, how much room is left, and where to change
+                billing details when you need to.
+              </p>
             </div>
 
-            <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
+            <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
               <CreditCard className="size-4" aria-hidden="true" />
-              {billingProvider.name}
+              Billing by {billingProvider.name}
             </div>
           </header>
 
@@ -65,7 +73,7 @@ export default async function BillingPage() {
                 className="size-5 text-slate-500"
                 aria-hidden="true"
               />
-              <h3 className="text-lg font-semibold">Current plan</h3>
+              <h3 className="text-lg font-semibold">What you have now</h3>
             </div>
 
             <div className="mt-4 grid gap-4 md:grid-cols-4">
@@ -74,7 +82,7 @@ export default async function BillingPage() {
                 value={subscription?.plan.name ?? workspace?.plan ?? "Not set"}
               />
               <Meta
-                label="Status"
+                label="Plan state"
                 value={
                   subscription ? formatEnum(subscription.status) : "Manual"
                 }
@@ -83,12 +91,12 @@ export default async function BillingPage() {
                 label="Trial"
                 value={trialStatusLabel(subscription ?? null)}
               />
-              <Meta label="Provider" value={billingProvider.portal} />
+              <Meta label="Billing help" value={billingProvider.portal} />
             </div>
             {subscription?.stripeCustomerId ? (
               <form action={openStripePortalAction} className="mt-5">
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Manage subscription and invoices
+                  Open billing portal
                 </button>
               </form>
             ) : null}
@@ -100,25 +108,22 @@ export default async function BillingPage() {
               className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
             >
               <div className="flex items-center gap-2">
-                <CreditCard
-                  className="size-5 text-slate-500"
-                  aria-hidden="true"
-                />
-                <h3 className="text-lg font-semibold">Usage this month</h3>
+                <Gauge className="size-5 text-slate-500" aria-hidden="true" />
+                <h3 className="text-lg font-semibold">Room left this month</h3>
               </div>
               <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
                 <UsageMeter
-                  label="Domains"
+                  label="Projects"
                   limit={currentPlan.domainLimit}
                   used={usage.domains}
                 />
                 <UsageMeter
-                  label="Pages"
+                  label="Pages checked"
                   limit={currentPlan.pageCrawlLimit}
                   used={usage.pages}
                 />
                 <UsageMeter
-                  label="AI"
+                  label="Ideas and fixes"
                   limit={currentPlan.aiRecommendationLimit}
                   used={usage.aiRecommendations}
                 />
@@ -128,7 +133,7 @@ export default async function BillingPage() {
                   used={usage.teamSeats}
                 />
                 <UsageMeter
-                  label="Reports"
+                  label="Client updates"
                   limit={currentPlan.reportLimit}
                   used={usage.reports}
                 />
@@ -137,9 +142,17 @@ export default async function BillingPage() {
           ) : null}
 
           <section id="plans" className="mt-6">
+            <div className="mb-4 flex flex-col gap-1">
+              <p className="text-sm font-medium text-slate-500">
+                Compare options
+              </p>
+              <h3 className="text-xl font-semibold tracking-normal">
+                Pick the plan that matches your workload.
+              </h3>
+            </div>
             <div className="grid gap-4 xl:grid-cols-4">
               {plans.map((plan) => {
-                const isCurrent = subscription?.plan.key === plan.key;
+                const isCurrent = currentPlan?.key === plan.key;
                 const stripePriceId = getPlanStripePriceId(plan);
 
                 return (
@@ -169,15 +182,15 @@ export default async function BillingPage() {
                     <dl className="mt-5 grid gap-3 text-sm">
                       <PlanLimit label="Domains" value={plan.domainLimit} />
                       <PlanLimit
-                        label="Crawled pages"
+                        label="Pages checked"
                         value={plan.pageCrawlLimit.toLocaleString()}
                       />
                       <PlanLimit
-                        label="Crawl cadence"
+                        label="Check rhythm"
                         value={formatEnum(plan.crawlFrequency)}
                       />
                       <PlanLimit
-                        label="AI recommendations"
+                        label="Ideas and fixes"
                         value={`${plan.aiRecommendationLimit.toLocaleString()}/mo`}
                       />
                       <PlanLimit
@@ -198,7 +211,7 @@ export default async function BillingPage() {
                       >
                         {isCurrent
                           ? "Current plan"
-                          : `Start ${plan.trialDays}-day trial`}
+                          : `Try for ${plan.trialDays} days`}
                       </button>
                     </form>
                     <form action={startStripeCheckoutAction} className="mt-2">
@@ -208,8 +221,8 @@ export default async function BillingPage() {
                         className="inline-flex h-10 w-full items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
                       >
                         {stripePriceId
-                          ? "Subscribe with Stripe"
-                          : "Add Stripe price ID"}
+                          ? "Choose this plan"
+                          : "Plan setup needed"}
                       </button>
                     </form>
                   </article>
@@ -226,9 +239,7 @@ export default async function BillingPage() {
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-sm font-medium text-slate-700">{value}</p>
     </div>
   );
@@ -250,26 +261,26 @@ function BillingComfortPlan({
   const plan = [
     {
       detail: currentPlanName
-        ? "Your current plan is active here. Check the usage card before changing anything."
+        ? "Your current plan is active here. Check room left before changing anything."
         : "Pick a plan only after you know how many sites, pages, reports, and teammates you need.",
       href: "#current-plan",
-      label: currentPlanName ? "Check your plan" : "Choose a plan",
+      label: currentPlanName ? "Your plan" : "Choose a plan",
       value: currentPlanName ?? "Not selected",
     },
     {
       detail: nearLimitCount
-        ? "One or more limits is close. Review usage before starting more crawls or reports."
-        : "Your usage is not near a plan limit right now.",
+        ? "One or more areas is almost full. Check usage before adding more work."
+        : "Your account has room left for more checks and updates.",
       href: "#usage",
-      label: nearLimitCount ? "Review limits" : "Limits look okay",
-      value: nearLimitCount ? `${nearLimitCount} near limit` : "All calm",
+      label: nearLimitCount ? "Check room left" : "Usage looks okay",
+      value: nearLimitCount ? `${nearLimitCount} almost full` : "All calm",
     },
     {
       detail: hasStripeCustomer
-        ? "Use the billing portal only when you need invoices, payment details, or subscription changes."
-        : "Compare plans below when you are ready to start a trial or subscribe.",
+        ? "Open the portal when you need invoices, payment details, or plan changes."
+        : "Compare the options below when you are ready to try a plan.",
       href: hasStripeCustomer ? "#current-plan" : "#plans",
-      label: hasStripeCustomer ? "Invoices and payment" : "Compare simple options",
+      label: hasStripeCustomer ? "Invoices and payment" : "Compare options",
       value: hasStripeCustomer ? "Portal ready" : `${planCount} plans`,
     },
   ];
@@ -279,10 +290,10 @@ function BillingComfortPlan({
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-sm font-medium text-orange-600">
-            Billing comfort plan
+            Account comfort plan
           </p>
           <h3 className="mt-1 text-2xl font-semibold tracking-normal">
-            Know your plan and limits before changing anything.
+            Know what is included before changing anything.
           </h3>
         </div>
         <span className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">

@@ -52,8 +52,7 @@ const navHelp: Record<string, string> = {
   Reports: "Create simple reports for clients, teammates, or your own records.",
   Alerts: "Get notified when something important changes.",
   Integrations: "Connect Google, CMS, hosting, alerts, and automation tools.",
-  Billing:
-    "Manage plan limits, usage, subscriptions, trials, and billing portal access.",
+  Billing: "Check your plan, usage room, invoices, and billing details.",
   Settings:
     "Manage workspace members, roles, invitations, and account settings.",
 };
@@ -65,6 +64,7 @@ const displayLabels: Record<string, string> = {
   "Keyword Research": "Keywords",
   "Rank Tracking": "Rank",
   "Search Performance": "Search",
+  Billing: "Plan",
   Sites: "Projects",
   Technical: "Links",
 };

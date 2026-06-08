@@ -886,3 +886,26 @@ Implementation:
 - [x] Rename saved ideas and briefs to saved ideas and notes.
 - [x] Rename the shared sidebar label and helper copy to Ideas and fixes.
 - [x] Browser-check Ideas and Fixes desktop and mobile after deployment.
+
+### Batch AR: Plan And Usage Calmness
+
+Competitive evidence:
+
+- Semrush keeps the first pricing action simple with a trial path and plain plan choice before deeper account management.
+- Ahrefs pricing presents projects, users, crawl credits, reports, and included tools as plan-fit information rather than exposing billing mechanics first.
+- A softer account page should answer "what do I have, how much room is left, and where do invoices live?" before subscription/provider terminology.
+
+Implementation:
+
+- [x] Rename Billing and plans to "Plan and usage".
+- [x] Add short header copy that explains plan, usage room, and billing details.
+- [x] Rename billing provider, subscription, and status labels into softer billing-help and plan-state language.
+- [x] Rename current plan to "What you have now".
+- [x] Rename usage to "Room left this month".
+- [x] Rename usage meters to projects, pages checked, ideas and fixes, seats, and client updates.
+- [x] Rename plan limits to pages checked, check rhythm, ideas and fixes, team seats, and reports.
+- [x] Soften plan buttons from subscription wording to trial and choose-plan wording.
+- [x] Mark a manually assigned workspace plan as current in the plan cards.
+- [x] Rename the billing guidance card to "Account comfort plan".
+- [x] Soften sidebar Billing copy and display label to "Plan".
+- [ ] Browser-check Plan and Usage desktop and mobile after deployment.
