@@ -1053,7 +1053,7 @@ Implementation:
 - [x] Rename dashboard metrics and table helpers from critical issues, crawl status, analyzer, and technical SEO wording to urgent problems, recent checks, and website health.
 - [x] Translate stored top-problem titles into plain-language dashboard labels.
 - [x] Soften internal setup checklist names and descriptions away from crawler/analyzer/source-of-truth language.
-- [ ] Browser-check Dashboard desktop and mobile after deployment.
+- [x] Browser-check Dashboard desktop and mobile after deployment.
 
 ### Batch BA: Global Search Calmness
 
@@ -1069,7 +1069,7 @@ Implementation:
 - [x] Rename default search actions from crawl/domain/Fix Center/technical feature names to check website, add website, open fixes, and simple growth labels.
 - [x] Rename result categories from Domain, Issue, and Report to Website, Problem, and Update.
 - [x] Translate stored problem titles in search results into plain-language labels.
-- [ ] Browser-check Global Search desktop and mobile after deployment.
+- [x] Browser-check Global Search desktop and mobile after deployment.
 
 ### Batch BB: Website Detail Calmness
 
@@ -1087,4 +1087,4 @@ Implementation:
 - [x] Cap priority problems to the first five and link to the full Problems area for the rest.
 - [x] Translate stored problem titles on the website detail page into plain-language labels.
 - [x] Rename optional setup, lifecycle, install, and setup-file panels away from crawl/script/artifact wording.
-- [ ] Browser-check Website Detail desktop and mobile after deployment.
+- [x] Browser-check Website Detail desktop and mobile after deployment.
