@@ -123,15 +123,15 @@ export default async function IntegrationsPage({
                 {workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Integrations
+                Connections
               </h2>
             </div>
 
             <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
               <PlugZap className="size-4" aria-hidden="true" />
-              {integrations.length} configured
+              {integrations.length} set up
               <InfoTooltip
-                label="Connected or planned provider records in this workspace."
+                label="Tools and website platforms already saved for this workspace."
                 passive
                 side="left"
               />
@@ -161,9 +161,7 @@ export default async function IntegrationsPage({
             }
             needsAttentionCount={
               integrations.filter((integration) =>
-                ["ERROR", "NEEDS_AUTH", "PLANNED"].includes(
-                  integration.status,
-                ),
+                ["ERROR", "NEEDS_AUTH", "PLANNED"].includes(integration.status),
               ).length
             }
           />
@@ -171,7 +169,7 @@ export default async function IntegrationsPage({
           <ProjectWorkspaceBar
             active="integrations"
             domainId={selectedDomainId}
-            note="Integration setup and receiver values are being viewed from this domain workspace."
+            note="Connection steps are shown for this website workspace."
             returnPath="/integrations"
           />
 
@@ -183,13 +181,13 @@ export default async function IntegrationsPage({
                 </span>
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Create a provider record before OAuth mapping, plugin install, or webhook configuration.">
-                      Add integration manually
+                    <HelpLabel help="Add a saved connection only when the guided setup below does not cover the tool you need.">
+                      Add a connection manually
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Use this only when the provider-specific setup below does
-                    not already cover what you need.
+                    Use this only when the guided setup below does not already
+                    cover the tool you want to connect.
                   </p>
                 </div>
               </div>
@@ -206,8 +204,8 @@ export default async function IntegrationsPage({
               className="grid gap-3 border-t border-slate-100 p-5 md:grid-cols-2 2xl:grid-cols-4"
             >
               <Select
-                help="External system or channel this portal should connect to."
-                label="Provider"
+                help="The outside tool or website platform this portal should use."
+                label="Tool"
                 name="provider"
               >
                 {providers.map((provider) => (
@@ -218,7 +216,7 @@ export default async function IntegrationsPage({
               </Select>
               <Select
                 help="Current setup state for this integration."
-                label="Status"
+                label="Setup status"
                 name="status"
               >
                 {statuses.map((status) => (
@@ -228,7 +226,7 @@ export default async function IntegrationsPage({
                 ))}
               </Select>
               <Select
-                help="Attach this provider to one client, or keep it workspace-wide."
+                help="Attach this connection to one client, or keep it for the whole workspace."
                 label="Client"
                 name="clientId"
               >
@@ -240,8 +238,8 @@ export default async function IntegrationsPage({
                 ))}
               </Select>
               <Select
-                help="Attach this provider to one monitored domain."
-                label="Domain"
+                help="Attach this connection to one website."
+                label="Website"
                 name="domainId"
                 defaultValue={selectedDomainId ?? ""}
               >
@@ -258,15 +256,15 @@ export default async function IntegrationsPage({
                 </span>
                 <input
                   name="notes"
-                  placeholder="Property ID, install notes, or next auth step"
+                  placeholder="Account ID, install note, or next setup step"
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
               <div className="md:col-span-2 2xl:col-span-4">
                 <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                  Save integration
+                  Save connection
                   <InfoTooltip
-                    label="Save the provider setup record so it can be mapped or completed later."
+                    label="Save this setup note so it can be finished later."
                     passive
                     side="left"
                   />
@@ -282,13 +280,13 @@ export default async function IntegrationsPage({
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Import owned Search Console properties and map them to monitored domains for query and page demand data.">
+                  <HelpLabel help="Bring in verified Google Search Console sites and match them to websites in this portal.">
                     Google Search Console
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Connect OAuth, import verified Search Console properties, and
-                  map them to monitored domains.
+                  Sign in with Google, bring in verified sites, and match each
+                  one to the right website.
                 </p>
               </div>
               <a
@@ -297,7 +295,7 @@ export default async function IntegrationsPage({
               >
                 Connect Google
                 <InfoTooltip
-                  label="Start Google OAuth and import accessible Search Console sites."
+                  label="Open Google sign-in and bring back the sites this account can access."
                   passive
                   side="left"
                 />
@@ -316,7 +314,7 @@ export default async function IntegrationsPage({
                     value={searchConsoleSites.length}
                   />
                   <Meta
-                    label="Mapped domains"
+                    label="Matched websites"
                     value={mappedSearchConsoleProperties.length}
                   />
                 </div>
@@ -347,7 +345,7 @@ export default async function IntegrationsPage({
                           </p>
                         </div>
                         <Meta
-                          label="Suggested"
+                          label="Best match"
                           value={suggestedDomain?.domain ?? "Manual map"}
                         />
                         <form
@@ -366,7 +364,7 @@ export default async function IntegrationsPage({
                             className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                           >
                             <option value="" disabled>
-                              Select domain
+                              Select website
                             </option>
                             {domains.map((domain) => (
                               <option key={domain.id} value={domain.id}>
@@ -375,7 +373,7 @@ export default async function IntegrationsPage({
                             ))}
                           </select>
                           <button className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                            Map
+                            Match
                           </button>
                         </form>
                       </article>
@@ -386,7 +384,7 @@ export default async function IntegrationsPage({
 
               {mappedSearchConsoleProperties.length ? (
                 <div className="grid gap-3 rounded-md border border-slate-200 p-4">
-                  <h4 className="font-semibold">Mapped properties</h4>
+                  <h4 className="font-semibold">Matched sites</h4>
                   <div className="grid divide-y divide-slate-100">
                     {mappedSearchConsoleProperties.map((integration) => (
                       <article
@@ -416,7 +414,7 @@ export default async function IntegrationsPage({
                               value={integration.domainId}
                             />
                             <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                              Import metrics
+                              Refresh data
                             </button>
                           </form>
                         ) : null}
@@ -435,13 +433,13 @@ export default async function IntegrationsPage({
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Import GA4 properties and traffic metrics to enrich SEO reporting and prioritization.">
+                  <HelpLabel help="Bring in GA4 traffic data so reports can show which SEO pages matter most.">
                     Google Analytics
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Connect GA4, import accessible properties, map them to
-                  domains, and pull traffic metrics.
+                  Connect GA4, choose the right website, and refresh traffic
+                  data when you need updated reports.
                 </p>
               </div>
               <a
@@ -460,11 +458,11 @@ export default async function IntegrationsPage({
                     value={formatEnum(analyticsIntegration.status)}
                   />
                   <Meta
-                    label="Imported properties"
+                    label="Imported accounts"
                     value={analyticsProperties.length}
                   />
                   <Meta
-                    label="Mapped domains"
+                    label="Matched websites"
                     value={mappedAnalyticsProperties.length}
                   />
                 </div>
@@ -503,7 +501,7 @@ export default async function IntegrationsPage({
                           className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                         >
                           <option value="" disabled>
-                            Select domain
+                            Select website
                           </option>
                           {domains.map((domain) => (
                             <option key={domain.id} value={domain.id}>
@@ -512,7 +510,7 @@ export default async function IntegrationsPage({
                           ))}
                         </select>
                         <button className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                          Map
+                          Match
                         </button>
                       </form>
                     </article>
@@ -522,7 +520,7 @@ export default async function IntegrationsPage({
 
               {mappedAnalyticsProperties.length ? (
                 <div className="grid gap-3 rounded-md border border-slate-200 p-4">
-                  <h4 className="font-semibold">Mapped Analytics properties</h4>
+                  <h4 className="font-semibold">Matched traffic accounts</h4>
                   <div className="grid divide-y divide-slate-100">
                     {mappedAnalyticsProperties.map((integration) => (
                       <article
@@ -552,7 +550,7 @@ export default async function IntegrationsPage({
                               value={integration.domainId}
                             />
                             <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                              Import metrics
+                              Refresh data
                             </button>
                           </form>
                         ) : null}
@@ -570,13 +568,13 @@ export default async function IntegrationsPage({
           >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Install the WordPress package to inject the monitoring script through WordPress APIs.">
+                <HelpLabel help="Install the WordPress helper so this portal can check the site and help send fixes.">
                   WordPress plugin
                 </HelpLabel>
               </h3>
               <p className="mt-1 text-sm text-slate-500">
-                Install the All In One SEO plugin on WordPress client sites to
-                load the monitoring script without editing theme files.
+                Install the All In One SEO plugin on WordPress sites without
+                touching theme files.
               </p>
             </div>
 
@@ -607,7 +605,7 @@ export default async function IntegrationsPage({
                   <p className="mt-1 text-sm leading-6 text-slate-500">
                     Upload this ZIP in WordPress admin under Plugins &gt; Add
                     Plugin &gt; Upload Plugin, then save the App URL, Site ID,
-                    and Receiver API key below.
+                    and connection key below.
                   </p>
                   <p className="mt-2 break-all rounded-md bg-slate-50 px-3 py-2 font-mono text-xs text-slate-600">
                     {wordpressPluginDownloadUrl}
@@ -621,7 +619,7 @@ export default async function IntegrationsPage({
                   <Download className="size-4" aria-hidden="true" />
                   Download plugin
                   <InfoTooltip
-                    label="Download the installable WordPress ZIP for client sites."
+                    label="Download the installable WordPress ZIP for websites."
                     passive
                     side="left"
                   />
@@ -659,8 +657,8 @@ export default async function IntegrationsPage({
                           <div>
                             <p className="font-semibold">{domain.domain}</p>
                             <p className="mt-1 text-sm text-slate-500">
-                              Enter this Site ID in Settings &gt; All In One SEO
-                              after activating the plugin.
+                              Paste this Site ID in Settings &gt; All In One SEO
+                              after the plugin is active.
                             </p>
                           </div>
                           <Meta label="Site ID" value={domain.id} />
@@ -669,7 +667,7 @@ export default async function IntegrationsPage({
                             value={formatEnum(domain.scriptStatus)}
                           />
                           <Meta
-                            label="Fix receiver"
+                            label="Fix connection"
                             value={
                               receiverIntegration
                                 ? formatEnum(receiverIntegration.status)
@@ -696,16 +694,16 @@ export default async function IntegrationsPage({
                               >
                                 <div className="flex items-center gap-2">
                                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                                    {item.label}
+                                    {getFriendlyInstallLabel(item.label)}
                                   </p>
                                   <InfoTooltip
-                                    label={item.help}
+                                    label={getFriendlyInstallHelp(item.label)}
                                     passive
                                     side="right"
                                   />
                                 </div>
                                 <code className="mt-2 block break-all rounded-md bg-slate-50 px-3 py-2 font-mono text-xs leading-5 text-slate-700">
-                                  {item.value}
+                                  {getFriendlyInstallValue(item.value)}
                                 </code>
                               </div>
                             ))}
@@ -713,22 +711,22 @@ export default async function IntegrationsPage({
                         </div>
                         <div className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                           <Meta
-                            help="Paste this value into the Receiver API key field inside the WordPress plugin settings."
-                            label="Generated receiver key"
+                            help="Paste this value into the connection key field inside the WordPress plugin settings."
+                            label="Generated connection key"
                             value={
                               receiverConfig.receiverKey ? (
                                 <code className="block break-all rounded-md bg-white px-3 py-2 font-mono text-xs text-slate-700">
                                   {receiverConfig.receiverKey}
                                 </code>
                               ) : (
-                                "Generated when receiver is saved"
+                                "Generated when connection is saved"
                               )
                             }
                           />
                           <div className="grid gap-3">
                             <Meta
-                              help="The plugin sends applied-fix callbacks to this portal after a WordPress admin applies a fix."
-                              label="Callback"
+                              help="The plugin tells this portal when a WordPress fix has been applied."
+                              label="Update link"
                               value={`${appUrl}/api/integrations/wordpress/link-fix-status`}
                             />
                             {receiverIntegration ? (
@@ -739,9 +737,9 @@ export default async function IntegrationsPage({
                                   value={receiverIntegration.id}
                                 />
                                 <button className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                                  Test receiver
+                                  Test connection
                                   <InfoTooltip
-                                    label="Send a harmless signed test event to the WordPress receiver endpoint."
+                                    label="Send a harmless test message to confirm WordPress can talk to this portal."
                                     passive
                                     side="left"
                                   />
@@ -750,8 +748,8 @@ export default async function IntegrationsPage({
                             ) : null}
                           </div>
                           <Meta
-                            help="Latest portal-side test of the WordPress receiver endpoint and API key."
-                            label="Last receiver test"
+                            help="Latest connection test between this portal and the WordPress plugin."
+                            label="Last connection test"
                             value={
                               receiverConfig.lastTestStatus ? (
                                 <span
@@ -773,17 +771,17 @@ export default async function IntegrationsPage({
                             label="Test detail"
                             value={
                               receiverConfig.lastTestMessage ||
-                              "Run a receiver test after saving endpoint and key."
+                              "Run a connection test after saving the site values."
                             }
                           />
                         </div>
                         <div className="rounded-md border border-slate-200 bg-white p-3">
                           <div className="flex items-center gap-2">
                             <p className="font-semibold">
-                              WordPress setup checklist
+                              WordPress setup steps
                             </p>
                             <InfoTooltip
-                              label="Tracks the setup signals needed before this WordPress domain can receive fixes from Fix Center."
+                              label="Shows what is left before this WordPress site can receive fixes."
                               passive
                               side="right"
                             />
@@ -796,7 +794,7 @@ export default async function IntegrationsPage({
                               >
                                 <div className="flex items-start justify-between gap-3">
                                   <p className="text-sm font-semibold text-slate-800">
-                                    {step.label}
+                                    {getFriendlyWordPressStepLabel(step.label)}
                                   </p>
                                   <span
                                     className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${getOnboardingStepClass(
@@ -807,7 +805,7 @@ export default async function IntegrationsPage({
                                   </span>
                                 </div>
                                 <p className="mt-2 text-xs leading-5 text-slate-500">
-                                  {step.detail}
+                                  {getFriendlyWordPressStepDetail(step.detail)}
                                 </p>
                               </div>
                             ))}
@@ -824,7 +822,7 @@ export default async function IntegrationsPage({
                           />
                           <label className="grid gap-2">
                             <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                              Receiver endpoint
+                              WordPress update link
                             </span>
                             <input
                               name="receiverUrl"
@@ -837,7 +835,7 @@ export default async function IntegrationsPage({
                           </label>
                           <label className="grid gap-2">
                             <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                              Receiver API key
+                              WordPress connection key
                             </span>
                             <input
                               name="receiverKey"
@@ -851,7 +849,7 @@ export default async function IntegrationsPage({
                             />
                           </label>
                           <button className="inline-flex h-10 items-center justify-center self-end rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                            Save receiver
+                            Save connection
                           </button>
                         </form>
                       </article>
@@ -860,8 +858,8 @@ export default async function IntegrationsPage({
                 </div>
               ) : (
                 <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-                  No WordPress domains are configured yet. Set a domain platform
-                  to WordPress to show plugin install values here.
+                  No WordPress websites are set up yet. Choose WordPress as the
+                  website platform to show plugin install values here.
                 </div>
               )}
 
@@ -882,13 +880,13 @@ export default async function IntegrationsPage({
           >
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Connect Shopify shops so storefront domains can be mapped to monitoring and deployment signals.">
+                <HelpLabel help="Connect Shopify stores and match them to websites in this portal.">
                   Shopify app
                 </HelpLabel>
               </h3>
               <p className="mt-1 text-sm text-slate-500">
-                Start Shopify OAuth, connect a store, and optionally map it to a
-                monitored domain for commerce-site SEO workflows.
+                Connect a store, choose the matching website, and keep store SEO
+                checks tied to the right project.
               </p>
             </div>
 
@@ -899,7 +897,7 @@ export default async function IntegrationsPage({
               >
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Store
+                    Store URL
                   </span>
                   <input
                     name="shop"
@@ -908,8 +906,8 @@ export default async function IntegrationsPage({
                     className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   />
                 </label>
-                <Select label="Domain" name="domainId">
-                  <option value="">Map later</option>
+                <Select label="Website" name="domainId">
+                  <option value="">Match later</option>
                   {domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>
                       {domain.domain}
@@ -925,11 +923,11 @@ export default async function IntegrationsPage({
 
               <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                 <Meta
-                  label="Callback URL"
-                  value={`${appUrl}/api/integrations/shopify/callback`}
+                  label="Return URL"
+                  value="Available in Shopify app settings"
                 />
                 <Meta
-                  label="Requested scopes"
+                  label="Access needed"
                   value="read_content, read_products"
                 />
                 <Meta
@@ -951,7 +949,7 @@ export default async function IntegrationsPage({
                         </p>
                         <p className="mt-1 text-sm text-slate-500">
                           {integration.domain?.domain ??
-                            "Not mapped to a domain"}
+                            "Not matched to a website"}
                         </p>
                       </div>
                       <Meta
@@ -980,13 +978,13 @@ export default async function IntegrationsPage({
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Connect Webflow, import sites, and map custom domains to monitored domains.">
-                    Webflow integration
+                  <HelpLabel help="Connect Webflow and match imported sites to websites in this portal.">
+                    Webflow site
                   </HelpLabel>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Connect Webflow OAuth, import accessible sites, and map custom
-                  domains to monitored All In One SEO domains.
+                  Sign in to Webflow, bring in sites you can access, and match
+                  each one to the right website.
                 </p>
               </div>
               <a
@@ -1006,7 +1004,7 @@ export default async function IntegrationsPage({
                   />
                   <Meta label="Imported sites" value={webflowSites.length} />
                   <Meta
-                    label="Mapped domains"
+                    label="Matched websites"
                     value={mappedWebflowSites.length}
                   />
                 </div>
@@ -1041,7 +1039,7 @@ export default async function IntegrationsPage({
                           </p>
                         </div>
                         <Meta
-                          label="Suggested"
+                          label="Best match"
                           value={suggestedDomain?.domain ?? "Manual map"}
                         />
                         <form
@@ -1056,7 +1054,7 @@ export default async function IntegrationsPage({
                             className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                           >
                             <option value="" disabled>
-                              Select domain
+                              Select website
                             </option>
                             {domains.map((domain) => (
                               <option key={domain.id} value={domain.id}>
@@ -1065,7 +1063,7 @@ export default async function IntegrationsPage({
                             ))}
                           </select>
                           <button className="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                            Map
+                            Match
                           </button>
                         </form>
                       </article>
@@ -1076,7 +1074,7 @@ export default async function IntegrationsPage({
 
               {mappedWebflowSites.length ? (
                 <div className="grid gap-3 rounded-md border border-slate-200 p-4">
-                  <h4 className="font-semibold">Mapped Webflow sites</h4>
+                  <h4 className="font-semibold">Matched Webflow sites</h4>
                   <div className="grid divide-y divide-slate-100">
                     {mappedWebflowSites.map((integration) => (
                       <article
@@ -1106,13 +1104,13 @@ export default async function IntegrationsPage({
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Send alert notifications to Slack channels through an incoming webhook.">
-                  Slack integration
+                <HelpLabel help="Send important SEO messages to a Slack channel.">
+                  Slack messages
                 </HelpLabel>
               </h3>
               <p className="mt-1 text-sm text-slate-500">
-                Configure a workspace Slack incoming webhook once and reuse it
-                as the default destination for Slack alert rules.
+                Choose the Slack channel that should receive important website
+                changes.
               </p>
             </div>
 
@@ -1134,7 +1132,7 @@ export default async function IntegrationsPage({
                 </label>
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Incoming webhook URL
+                    Slack message URL
                   </span>
                   <input
                     name="webhookUrl"
@@ -1146,7 +1144,7 @@ export default async function IntegrationsPage({
                 </label>
                 <div className="flex items-end">
                   <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                    Save Slack
+                    Save Slack messages
                   </button>
                 </div>
               </form>
@@ -1165,449 +1163,475 @@ export default async function IntegrationsPage({
                   value={slackConfig.channelName || "Not configured"}
                 />
                 <Meta
-                  label="Fallback behavior"
-                  value="Used when Slack alert rule URL is empty"
+                  label="Backup use"
+                  value="Used when a watch does not choose its own Slack URL"
                 />
               </div>
             </div>
           </section>
 
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">
-                Vercel deployment checks
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Register Vercel project webhooks, verify signatures, record
-                deployment events, and queue production recrawls automatically.
-              </p>
-            </div>
-
-            <div className="grid gap-5 p-5">
-              <form
-                action={connectVercelIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
-              >
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Project ID
-                  </span>
-                  <input
-                    name="projectId"
-                    placeholder="prj_..."
-                    required
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Project name
-                  </span>
-                  <input
-                    name="projectName"
-                    placeholder="marketing-site"
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Webhook secret
-                  </span>
-                  <input
-                    name="webhookSecret"
-                    placeholder="Paste Vercel secret or leave blank"
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <Select label="Domain" name="domainId">
-                  <option value="">Map later</option>
-                  {domains.map((domain) => (
-                    <option key={domain.id} value={domain.id}>
-                      {domain.domain}
-                    </option>
-                  ))}
-                </Select>
-                <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                    Save Vercel
-                  </button>
-                </div>
-              </form>
-
-              <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
-                <Meta
-                  label="Webhook URL"
-                  value={`${appUrl}/api/integrations/vercel/webhook`}
-                />
-                <Meta
-                  label="Configured projects"
-                  value={vercelIntegrations.length}
-                />
-                <Meta
-                  label="Recent checks"
-                  value={
-                    deploymentChecks.filter(
-                      (check) => check.provider === "VERCEL",
-                    ).length
-                  }
-                />
+          <details className="group mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="flex items-center justify-between gap-4 p-5">
+              <div>
+                <h3 className="text-lg font-semibold">
+                  Advanced connection settings
+                </h3>
+                <p className="mt-1 text-sm text-slate-500">
+                  Keep launch checks, no-code messages, and saved connection
+                  records here when you need them.
+                </p>
               </div>
-
-              {vercelIntegrations.length ? (
-                <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
-                  {vercelIntegrations.map((integration) => {
-                    const config = readDeploymentIntegrationConfig(
-                      integration.configJson,
-                    );
-
-                    return (
-                      <article
-                        key={integration.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
-                      >
-                        <div>
-                          <p className="font-semibold">
-                            {config.projectName || config.projectId}
-                          </p>
-                          <p className="mt-1 text-sm text-slate-500">
-                            {integration.domain?.domain ??
-                              "Not mapped to a domain"}
-                          </p>
-                        </div>
-                        <Meta label="Project ID" value={config.projectId} />
-                        <Meta
-                          label="Status"
-                          value={formatEnum(integration.status)}
-                        />
-                      </article>
-                    );
-                  })}
+              <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
+                Show settings
+              </span>
+              <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
+                Hide
+              </span>
+            </summary>
+            <div className="border-t border-slate-100 px-5 pb-5">
+              <section className="mt-5 rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">
+                    Vercel launch checks
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Watch Vercel launches and run a fresh website check when the
+                    live site changes.
+                  </p>
                 </div>
-              ) : null}
 
-              {deploymentChecks.some((check) => check.provider === "VERCEL") ? (
-                <div className="grid gap-3 rounded-md border border-slate-200 p-4">
-                  <h4 className="font-semibold">Recent Vercel checks</h4>
-                  <div className="grid divide-y divide-slate-100">
-                    {deploymentChecks
-                      .filter((check) => check.provider === "VERCEL")
-                      .map((check) => (
-                        <article
-                          key={check.id}
-                          className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_140px_160px]"
-                        >
-                          <div>
-                            <p className="font-semibold">
-                              {check.projectName ?? check.projectId ?? "Vercel"}
-                            </p>
-                            <p className="mt-1 text-sm text-slate-500">
-                              {check.deploymentUrl ?? "No deployment URL"}
-                            </p>
-                          </div>
-                          <Meta label="Status" value={check.status} />
-                          <Meta
-                            label="Domain"
-                            value={check.domain?.domain ?? "Unmapped"}
-                          />
-                        </article>
-                      ))}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </section>
-
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">
-                Netlify deployment checks
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Register Netlify deploy notification webhooks, verify JWS
-                signatures, record deploy states, and queue production recrawls.
-              </p>
-            </div>
-
-            <div className="grid gap-5 p-5">
-              <form
-                action={connectNetlifyIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
-              >
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Site ID
-                  </span>
-                  <input
-                    name="siteId"
-                    placeholder="netlify-site-id"
-                    required
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Site name
-                  </span>
-                  <input
-                    name="siteName"
-                    placeholder="marketing-site"
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    JWS secret
-                  </span>
-                  <input
-                    name="webhookSecret"
-                    placeholder="Paste Netlify JWS secret or leave blank"
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <Select label="Domain" name="domainId">
-                  <option value="">Map later</option>
-                  {domains.map((domain) => (
-                    <option key={domain.id} value={domain.id}>
-                      {domain.domain}
-                    </option>
-                  ))}
-                </Select>
-                <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                    Save Netlify
-                  </button>
-                </div>
-              </form>
-
-              <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
-                <Meta
-                  label="Webhook URL"
-                  value={`${appUrl}/api/integrations/netlify/webhook`}
-                />
-                <Meta
-                  label="Configured sites"
-                  value={netlifyIntegrations.length}
-                />
-                <Meta
-                  label="Recent checks"
-                  value={
-                    deploymentChecks.filter(
-                      (check) => check.provider === "NETLIFY",
-                    ).length
-                  }
-                />
-              </div>
-
-              {netlifyIntegrations.length ? (
-                <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
-                  {netlifyIntegrations.map((integration) => {
-                    const config = readDeploymentIntegrationConfig(
-                      integration.configJson,
-                    );
-
-                    return (
-                      <article
-                        key={integration.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
-                      >
-                        <div>
-                          <p className="font-semibold">
-                            {config.siteName || config.siteId}
-                          </p>
-                          <p className="mt-1 text-sm text-slate-500">
-                            {integration.domain?.domain ??
-                              "Not mapped to a domain"}
-                          </p>
-                        </div>
-                        <Meta label="Site ID" value={config.siteId} />
-                        <Meta
-                          label="Status"
-                          value={formatEnum(integration.status)}
-                        />
-                      </article>
-                    );
-                  })}
-                </div>
-              ) : null}
-
-              {deploymentChecks.some(
-                (check) => check.provider === "NETLIFY",
-              ) ? (
-                <div className="grid gap-3 rounded-md border border-slate-200 p-4">
-                  <h4 className="font-semibold">Recent Netlify checks</h4>
-                  <div className="grid divide-y divide-slate-100">
-                    {deploymentChecks
-                      .filter((check) => check.provider === "NETLIFY")
-                      .map((check) => (
-                        <article
-                          key={check.id}
-                          className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_140px_160px]"
-                        >
-                          <div>
-                            <p className="font-semibold">
-                              {check.projectName ??
-                                check.projectId ??
-                                "Netlify"}
-                            </p>
-                            <p className="mt-1 text-sm text-slate-500">
-                              {check.deploymentUrl ?? "No deployment URL"}
-                            </p>
-                          </div>
-                          <Meta label="Status" value={check.status} />
-                          <Meta
-                            label="Domain"
-                            value={check.domain?.domain ?? "Unmapped"}
-                          />
-                        </article>
-                      ))}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </section>
-
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="Forward SEO events to automation platforms through webhook URLs.">
-                  Zapier and Make
-                </HelpLabel>
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Connect no-code automation catch hooks for routing SEO events,
-                deployment checks, and client workflow notifications.
-              </p>
-            </div>
-
-            <div className="grid gap-5 p-5">
-              <form
-                action={connectAutomationIntegrationAction}
-                className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[160px_minmax(0,1fr)_minmax(0,2fr)_auto]"
-              >
-                <Select label="Provider" name="provider">
-                  <option value="ZAPIER">Zapier</option>
-                  <option value="MAKE">Make</option>
-                </Select>
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Label
-                  </span>
-                  <input
-                    name="label"
-                    placeholder="Client handoff workflow"
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Webhook URL
-                  </span>
-                  <input
-                    name="webhookUrl"
-                    type="url"
-                    placeholder="https://hooks.zapier.com/hooks/catch/... or https://hook.us1.make.com/..."
-                    required
-                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </label>
-                <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
-                    Save webhook
-                  </button>
-                </div>
-              </form>
-
-              {automationIntegrations.length ? (
-                <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
-                  {automationIntegrations.map((integration) => {
-                    const config = readAutomationIntegrationConfig(
-                      integration.configJson,
-                    );
-
-                    return (
-                      <article
-                        key={integration.id}
-                        className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_160px_160px]"
-                      >
-                        <div>
-                          <p className="font-semibold">
-                            {config.label || formatEnum(integration.provider)}
-                          </p>
-                          <p className="mt-1 truncate text-sm text-slate-500">
-                            {config.webhookUrl}
-                          </p>
-                        </div>
-                        <Meta
-                          label="Provider"
-                          value={formatEnum(integration.provider)}
-                        />
-                        <Meta
-                          label="Status"
-                          value={formatEnum(integration.status)}
-                        />
-                      </article>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-                  No Zapier or Make webhooks connected yet.
-                </div>
-              )}
-            </div>
-          </section>
-
-          <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5">
-              <h3 className="text-lg font-semibold">
-                <HelpLabel help="All provider records currently saved for this workspace, client, or domain.">
-                  Configured integrations
-                </HelpLabel>
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">
-                Connection records for analytics, search, CMS, alerting, and
-                deployment providers.
-              </p>
-            </div>
-
-            <div className="grid divide-y divide-slate-100">
-              {integrations.length ? (
-                integrations.map((integration) => (
-                  <article
-                    key={integration.id}
-                    className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_150px_150px_140px]"
+                <div className="grid gap-5 p-5">
+                  <form
+                    action={connectVercelIntegrationAction}
+                    className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
                   >
-                    <div>
-                      <p className="font-semibold">
-                        {formatEnum(integration.provider)}
-                      </p>
-                      <p className="mt-1 text-sm text-slate-500">
-                        {integration.client?.name ??
-                          integration.domain?.domain ??
-                          "Workspace-wide"}
-                      </p>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Project ID
+                      </span>
+                      <input
+                        name="projectId"
+                        placeholder="prj_..."
+                        required
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Project name
+                      </span>
+                      <input
+                        name="projectName"
+                        placeholder="marketing-site"
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Signing secret
+                      </span>
+                      <input
+                        name="webhookSecret"
+                        placeholder="Paste Vercel secret or leave blank"
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <Select label="Website" name="domainId">
+                      <option value="">Match later</option>
+                      {domains.map((domain) => (
+                        <option key={domain.id} value={domain.id}>
+                          {domain.domain}
+                        </option>
+                      ))}
+                    </Select>
+                    <div className="flex items-end">
+                      <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                        Save Vercel check
+                      </button>
                     </div>
+                  </form>
+
+                  <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                     <Meta
-                      label="Status"
-                      value={formatEnum(integration.status)}
+                      label="Message URL"
+                      value={`${appUrl}/api/integrations/vercel/webhook`}
                     />
                     <Meta
-                      label="Domain"
-                      value={integration.domain?.domain ?? "All domains"}
+                      label="Saved projects"
+                      value={vercelIntegrations.length}
                     />
                     <Meta
-                      label="Created"
-                      value={integration.createdAt.toLocaleDateString()}
+                      label="Recent checks"
+                      value={
+                        deploymentChecks.filter(
+                          (check) => check.provider === "VERCEL",
+                        ).length
+                      }
                     />
-                  </article>
-                ))
-              ) : (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No integrations configured yet.
+                  </div>
+
+                  {vercelIntegrations.length ? (
+                    <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
+                      {vercelIntegrations.map((integration) => {
+                        const config = readDeploymentIntegrationConfig(
+                          integration.configJson,
+                        );
+
+                        return (
+                          <article
+                            key={integration.id}
+                            className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
+                          >
+                            <div>
+                              <p className="font-semibold">
+                                {config.projectName || config.projectId}
+                              </p>
+                              <p className="mt-1 text-sm text-slate-500">
+                                {integration.domain?.domain ??
+                                  "Not matched to a website"}
+                              </p>
+                            </div>
+                            <Meta label="Project ID" value={config.projectId} />
+                            <Meta
+                              label="Status"
+                              value={formatEnum(integration.status)}
+                            />
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+
+                  {deploymentChecks.some(
+                    (check) => check.provider === "VERCEL",
+                  ) ? (
+                    <div className="grid gap-3 rounded-md border border-slate-200 p-4">
+                      <h4 className="font-semibold">Recent Vercel checks</h4>
+                      <div className="grid divide-y divide-slate-100">
+                        {deploymentChecks
+                          .filter((check) => check.provider === "VERCEL")
+                          .map((check) => (
+                            <article
+                              key={check.id}
+                              className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_140px_160px]"
+                            >
+                              <div>
+                                <p className="font-semibold">
+                                  {check.projectName ??
+                                    check.projectId ??
+                                    "Vercel"}
+                                </p>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  {check.deploymentUrl ?? "No deployment URL"}
+                                </p>
+                              </div>
+                              <Meta label="Status" value={check.status} />
+                              <Meta
+                                label="Website"
+                                value={check.domain?.domain ?? "Not matched"}
+                              />
+                            </article>
+                          ))}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
-              )}
+              </section>
+
+              <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">
+                    Netlify launch checks
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Watch Netlify launches and run a fresh website check when
+                    the live site changes.
+                  </p>
+                </div>
+
+                <div className="grid gap-5 p-5">
+                  <form
+                    action={connectNetlifyIntegrationAction}
+                    className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
+                  >
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Site ID
+                      </span>
+                      <input
+                        name="siteId"
+                        placeholder="netlify-site-id"
+                        required
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Site name
+                      </span>
+                      <input
+                        name="siteName"
+                        placeholder="marketing-site"
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Signing secret
+                      </span>
+                      <input
+                        name="webhookSecret"
+                        placeholder="Paste Netlify JWS secret or leave blank"
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <Select label="Website" name="domainId">
+                      <option value="">Match later</option>
+                      {domains.map((domain) => (
+                        <option key={domain.id} value={domain.id}>
+                          {domain.domain}
+                        </option>
+                      ))}
+                    </Select>
+                    <div className="flex items-end">
+                      <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                        Save Netlify check
+                      </button>
+                    </div>
+                  </form>
+
+                  <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
+                    <Meta
+                      label="Message URL"
+                      value={`${appUrl}/api/integrations/netlify/webhook`}
+                    />
+                    <Meta
+                      label="Saved sites"
+                      value={netlifyIntegrations.length}
+                    />
+                    <Meta
+                      label="Recent checks"
+                      value={
+                        deploymentChecks.filter(
+                          (check) => check.provider === "NETLIFY",
+                        ).length
+                      }
+                    />
+                  </div>
+
+                  {netlifyIntegrations.length ? (
+                    <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
+                      {netlifyIntegrations.map((integration) => {
+                        const config = readDeploymentIntegrationConfig(
+                          integration.configJson,
+                        );
+
+                        return (
+                          <article
+                            key={integration.id}
+                            className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]"
+                          >
+                            <div>
+                              <p className="font-semibold">
+                                {config.siteName || config.siteId}
+                              </p>
+                              <p className="mt-1 text-sm text-slate-500">
+                                {integration.domain?.domain ??
+                                  "Not matched to a website"}
+                              </p>
+                            </div>
+                            <Meta label="Site ID" value={config.siteId} />
+                            <Meta
+                              label="Status"
+                              value={formatEnum(integration.status)}
+                            />
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+
+                  {deploymentChecks.some(
+                    (check) => check.provider === "NETLIFY",
+                  ) ? (
+                    <div className="grid gap-3 rounded-md border border-slate-200 p-4">
+                      <h4 className="font-semibold">Recent Netlify checks</h4>
+                      <div className="grid divide-y divide-slate-100">
+                        {deploymentChecks
+                          .filter((check) => check.provider === "NETLIFY")
+                          .map((check) => (
+                            <article
+                              key={check.id}
+                              className="grid gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_140px_160px]"
+                            >
+                              <div>
+                                <p className="font-semibold">
+                                  {check.projectName ??
+                                    check.projectId ??
+                                    "Netlify"}
+                                </p>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  {check.deploymentUrl ?? "No deployment URL"}
+                                </p>
+                              </div>
+                              <Meta label="Status" value={check.status} />
+                              <Meta
+                                label="Website"
+                                value={check.domain?.domain ?? "Not matched"}
+                              />
+                            </article>
+                          ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              </section>
+
+              <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="Send important SEO updates to Zapier or Make.">
+                      Zapier and Make
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Send important SEO updates to simple automations when a team
+                    wants another tool involved.
+                  </p>
+                </div>
+
+                <div className="grid gap-5 p-5">
+                  <form
+                    action={connectAutomationIntegrationAction}
+                    className="grid gap-3 rounded-md border border-slate-200 bg-slate-50 p-4 lg:grid-cols-2 2xl:grid-cols-[160px_minmax(0,1fr)_minmax(0,2fr)_auto]"
+                  >
+                    <Select label="Provider" name="provider">
+                      <option value="ZAPIER">Zapier</option>
+                      <option value="MAKE">Make</option>
+                    </Select>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Name
+                      </span>
+                      <input
+                        name="label"
+                        placeholder="Client update message"
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <label className="grid gap-2">
+                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                        Message URL
+                      </span>
+                      <input
+                        name="webhookUrl"
+                        type="url"
+                        placeholder="https://hooks.zapier.com/hooks/catch/... or https://hook.us1.make.com/..."
+                        required
+                        className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                      />
+                    </label>
+                    <div className="flex items-end">
+                      <button className="inline-flex h-10 items-center rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-800">
+                        Save automation
+                      </button>
+                    </div>
+                  </form>
+
+                  {automationIntegrations.length ? (
+                    <div className="grid divide-y divide-slate-100 rounded-md border border-slate-200">
+                      {automationIntegrations.map((integration) => {
+                        const config = readAutomationIntegrationConfig(
+                          integration.configJson,
+                        );
+
+                        return (
+                          <article
+                            key={integration.id}
+                            className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_160px_160px]"
+                          >
+                            <div>
+                              <p className="font-semibold">
+                                {config.label ||
+                                  formatEnum(integration.provider)}
+                              </p>
+                              <p className="mt-1 truncate text-sm text-slate-500">
+                                {config.webhookUrl}
+                              </p>
+                            </div>
+                            <Meta
+                              label="Provider"
+                              value={formatEnum(integration.provider)}
+                            />
+                            <Meta
+                              label="Status"
+                              value={formatEnum(integration.status)}
+                            />
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                      No Zapier or Make automations connected yet.
+                    </div>
+                  )}
+                </div>
+              </section>
+
+              <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 p-5">
+                  <h3 className="text-lg font-semibold">
+                    <HelpLabel help="All saved connections for this workspace, client, or website.">
+                      Saved connections
+                    </HelpLabel>
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Saved analytics, search, website, message, and launch-check
+                    connections.
+                  </p>
+                </div>
+
+                <div className="grid divide-y divide-slate-100">
+                  {integrations.length ? (
+                    integrations.map((integration) => (
+                      <article
+                        key={integration.id}
+                        className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_150px_150px_140px]"
+                      >
+                        <div>
+                          <p className="font-semibold">
+                            {formatEnum(integration.provider)}
+                          </p>
+                          <p className="mt-1 text-sm text-slate-500">
+                            {integration.client?.name ??
+                              integration.domain?.domain ??
+                              "Workspace-wide"}
+                          </p>
+                        </div>
+                        <Meta
+                          label="Status"
+                          value={formatEnum(integration.status)}
+                        />
+                        <Meta
+                          label="Website"
+                          value={integration.domain?.domain ?? "All domains"}
+                        />
+                        <Meta
+                          label="Created"
+                          value={integration.createdAt.toLocaleDateString()}
+                        />
+                      </article>
+                    ))
+                  ) : (
+                    <div className="p-8 text-center text-sm text-slate-500">
+                      No connections saved yet.
+                    </div>
+                  )}
+                </div>
+              </section>
             </div>
-          </section>
+          </details>
         </section>
       </div>
     </main>
@@ -1678,25 +1702,31 @@ function IntegrationPlan({
   const plan = [
     {
       detail: analyticsCount
-        ? "Search and traffic data is mapped, so reports can use real performance signals."
+        ? "Search and traffic data is matched, so reports can use real performance signals."
         : "Connect Search Console first so the product can show real clicks, keywords, and pages.",
       href: analyticsCount ? "#google-analytics" : "#search-console",
-      label: analyticsCount ? "Analytics data is ready" : "Start with Google data",
-      value: analyticsCount ? `${analyticsCount} mapped` : "Best first step",
+      label: analyticsCount
+        ? "Analytics data is ready"
+        : "Start with Google data",
+      value: analyticsCount ? `${analyticsCount} matched` : "Best first step",
     },
     {
       detail: cmsCount
-        ? "CMS connections are available for site-specific fix delivery and install steps."
+        ? "Website platform connections are ready for install steps and easier fixes."
         : "Choose the platform your website uses so fixes can become easier to apply.",
       href: cmsCount ? "#configured-integrations" : "#wordpress-plugin",
-      label: cmsCount ? "Website platform connected" : "Connect the website platform",
-      value: cmsCount ? `${cmsCount} ready` : "CMS setup",
+      label: cmsCount
+        ? "Website platform connected"
+        : "Connect the website platform",
+      value: cmsCount ? `${cmsCount} ready` : "Website setup",
     },
     {
       detail: automationCount
-        ? "Alerts, deploy checks, or automation hooks can help keep changes moving."
-        : "Add alerts and deployment checks after the main data and CMS connections are done.",
-      href: automationCount ? "#configured-integrations" : "#configured-integrations",
+        ? "Messages, launch checks, or automations can help keep changes moving."
+        : "Add messages and launch checks after the main data and website connections are done.",
+      href: automationCount
+        ? "#configured-integrations"
+        : "#configured-integrations",
       label: automationCount ? "Keep updates moving" : "Automate after setup",
       value: automationCount ? `${automationCount} active` : "Optional later",
     },
@@ -1767,6 +1797,63 @@ function readConfigString(value: unknown, key: string) {
   const item = (value as Record<string, unknown>)[key];
 
   return typeof item === "string" ? item : "";
+}
+
+function getFriendlyInstallLabel(label: string) {
+  const labels: Record<string, string> = {
+    "callback url": "UPDATE LINK",
+    "receiver api key": "CONNECTION KEY",
+    "receiver endpoint": "WORDPRESS UPDATE LINK",
+  };
+
+  return labels[label.toLowerCase()] ?? label;
+}
+
+function getFriendlyInstallHelp(label: string) {
+  const help: Record<string, string> = {
+    "callback url":
+      "This is where WordPress tells the portal that a fix was applied or reviewed.",
+    "receiver api key":
+      "Paste this key in WordPress so the portal knows the message came from the right site.",
+    "receiver endpoint":
+      "Save this WordPress update link here, then test the connection before sending fixes.",
+  };
+
+  return (
+    help[label.toLowerCase()] ??
+    "Paste this value into the matching WordPress field."
+  );
+}
+
+function getFriendlyInstallValue(value: string) {
+  return value
+    .replaceAll("receiver endpoint", "WordPress update link")
+    .replaceAll("Receiver endpoint", "WordPress update link")
+    .replaceAll("Receiver API key", "Connection key")
+    .replaceAll("receiver", "connection")
+    .replaceAll("callback", "update");
+}
+
+function getFriendlyWordPressStepLabel(label: string) {
+  const labels: Record<string, string> = {
+    "Fix delivery enabled": "Fix sending ready",
+    "Receiver endpoint saved": "Update link saved",
+    "Receiver key generated": "Connection key ready",
+    "Receiver tested": "Connection tested",
+  };
+
+  return labels[label] ?? label;
+}
+
+function getFriendlyWordPressStepDetail(detail: string) {
+  return detail
+    .replaceAll("receiver endpoint", "WordPress update link")
+    .replaceAll("receiver test", "connection test")
+    .replaceAll("receiver", "connection")
+    .replaceAll("endpoint", "update link")
+    .replaceAll("key", "connection key")
+    .replaceAll("Run Test connection", "Run Test connection")
+    .replaceAll("Fix Center", "Fixes");
 }
 
 function getReceiverTestClass(status: string) {

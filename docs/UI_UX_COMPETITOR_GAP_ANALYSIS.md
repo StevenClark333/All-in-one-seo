@@ -787,3 +787,23 @@ Implementation:
 - [x] Rename scheduled reports to scheduled updates and keep the list collapsed.
 - [x] Soften report library wording to "Update library" with sharing and download language.
 - [x] Replace advanced/delivery/export helper text with schedules, saved formats, and downloaded updates.
+
+### Batch AM: Connections Setup Calmness
+
+Competitive evidence:
+
+- Semrush integration setup keeps the first decision around useful data sources and connected projects before users manage deeper settings.
+- Ahrefs and Ubersuggest-style beginner flows work best when setup copy explains what the user will get, not the authentication or webhook plumbing underneath.
+- A nontechnical user should see "connect Google, connect my website platform, send messages" before launch checks, automation URLs, or saved connection records.
+
+Implementation:
+
+- [x] Rename the Integrations page header to "Connections".
+- [x] Soften the configured-count badge away from provider-record language.
+- [x] Rewrite the manual integration panel as optional manual connection setup.
+- [x] Replace Search Console and Analytics map/import wording with match/refresh wording.
+- [x] Rewrite WordPress receiver and callback labels as connection keys, update links, setup steps, and connection tests.
+- [x] Rewrite Shopify, Webflow, and Slack setup copy around website matching and messages.
+- [x] Move Vercel, Netlify, Zapier/Make, and saved connection records into a closed "Advanced connection settings" panel.
+- [x] Replace deployment/webhook/workflow language in the advanced panel with launch checks, message URLs, and saved connections.
+- [ ] Browser-check Connections desktop and mobile after deployment.
