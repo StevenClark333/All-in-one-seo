@@ -50,11 +50,34 @@ export default async function KeywordResearchPage({
     ...data.intentGroups.map((item) => item.impressions),
   );
   const keywordPlan = buildKeywordPlan({ data, selectedDomainId });
+  const visibleOpportunities = data.opportunities.slice(0, 8);
+  const hiddenOpportunityCount = Math.max(
+    data.opportunities.length - visibleOpportunities.length,
+    0,
+  );
+  const visibleCompetitorGaps = data.competitorContentGaps.slice(0, 6);
+  const hiddenCompetitorGapCount = Math.max(
+    data.competitorContentGaps.length - visibleCompetitorGaps.length,
+    0,
+  );
+  const visibleContentGaps = data.contentGaps.slice(0, 6);
+  const hiddenContentGapCount = Math.max(
+    data.contentGaps.length - visibleContentGaps.length,
+    0,
+  );
+  const visibleQueries = data.topQueries.slice(0, 10);
+  const hiddenQueryCount = Math.max(
+    data.topQueries.length - visibleQueries.length,
+    0,
+  );
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <AppSidebar active="Keyword Research" activeDomainId={selectedDomainId} />
+        <AppSidebar
+          active="Keyword Research"
+          activeDomainId={selectedDomainId}
+        />
 
         <section className="min-w-0 px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-slate-200 pb-6 xl:flex-row xl:items-center xl:justify-between">
@@ -63,11 +86,11 @@ export default async function KeywordResearchPage({
                 {data.workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Keyword research
+                Search ideas
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Search Console queries, keyword opportunities, and content gaps
-                prioritized from real impressions, clicks, and position.
+                Find one search term worth improving next, then turn it into a
+                brief, page update, or competitor comparison.
               </p>
             </div>
 
@@ -80,7 +103,7 @@ export default async function KeywordResearchPage({
           <ProjectWorkspaceBar
             active="keywords"
             domainId={selectedDomainId}
-            note="Keyword research uses imported Google Search Console query data."
+            note="Search ideas use imported Google Search Console query data."
             returnPath="/keyword-research"
           />
 
@@ -103,12 +126,12 @@ export default async function KeywordResearchPage({
                   Start here
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-normal">
-                  Keyword growth plan
+                  Search growth plan
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-700">
-                  Pick the next useful keyword, write the missing content, then
-                  watch where competitors are already winning. The detailed
-                  tables stay below for deeper review.
+                  Pick one useful search idea, create a simple brief, then
+                  compare pages only when it helps. Deeper query data is
+                  optional.
                 </p>
               </div>
 
@@ -182,9 +205,9 @@ export default async function KeywordResearchPage({
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex flex-col gap-2 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Demand cockpit</h3>
+                  <h3 className="text-lg font-semibold">Search demand</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Fast read on where query demand is concentrated.
+                    A quick read on what people are searching for most.
                   </p>
                 </div>
                 <span className="text-sm font-semibold text-slate-600">
@@ -193,14 +216,16 @@ export default async function KeywordResearchPage({
               </div>
               <div className="mt-5 grid gap-4">
                 {data.intentGroups.length ? (
-                  data.intentGroups.slice(0, 6).map((item) => (
-                    <HorizontalBar
-                      key={item.intent}
-                      label={`${formatIntent(item.intent)} intent`}
-                      max={maxIntentImpressions}
-                      value={item.impressions}
-                    />
-                  ))
+                  data.intentGroups
+                    .slice(0, 6)
+                    .map((item) => (
+                      <HorizontalBar
+                        key={item.intent}
+                        label={`${formatIntent(item.intent)} intent`}
+                        max={maxIntentImpressions}
+                        value={item.impressions}
+                      />
+                    ))
                 ) : (
                   <p className="rounded-md bg-slate-50 p-5 text-sm text-slate-500">
                     Import Search Console query data to populate intent demand.
@@ -210,9 +235,12 @@ export default async function KeywordResearchPage({
             </section>
 
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="text-lg font-semibold">Workflow queue</h3>
+              <h3 className="text-lg font-semibold">Writing queue</h3>
               <div className="mt-5 grid gap-3">
-                <QueueRow label="Briefs to create" value={data.contentGaps.length} />
+                <QueueRow
+                  label="Briefs to create"
+                  value={data.contentGaps.length}
+                />
                 <QueueRow
                   label="Competitor gaps"
                   value={data.competitorContentGaps.length}
@@ -233,7 +261,9 @@ export default async function KeywordResearchPage({
             <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Adjust keyword filters</h3>
+                  <h3 className="text-lg font-semibold">
+                    Adjust keyword filters
+                  </h3>
                   <p className="mt-1 text-sm text-slate-500">
                     Open this only when you want a specific project, query,
                     country, device, or reporting range.
@@ -244,95 +274,120 @@ export default async function KeywordResearchPage({
                 </span>
               </div>
             </summary>
-              <form className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-[minmax(0,230px)_repeat(5,minmax(0,1fr))_auto]">
-                <FilterLabel label="Project">
-                  <select
-                    name="domainId"
-                    defaultValue={selectedDomainId ?? ""}
-                    className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">All projects</option>
-                    {data.domains.map((domain) => (
-                      <option key={domain.id} value={domain.id}>
-                        {domain.domain}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <FilterLabel label="Query">
-                  <input
-                    name="query"
-                    defaultValue={query ?? ""}
-                    placeholder="topic, product, brand"
-                    className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <FilterLabel label="From">
-                  <input
-                    name="startDate"
-                    type="date"
-                    defaultValue={formatInputDate(data.dateRange.start)}
-                    className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <FilterLabel label="To">
-                  <input
-                    name="endDate"
-                    type="date"
-                    defaultValue={formatInputDate(data.dateRange.end)}
-                    className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  />
-                </FilterLabel>
-                <FilterLabel label="Country">
-                  <select
-                    name="country"
-                    defaultValue={country ?? ""}
-                    className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">All</option>
-                    {data.countries.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <FilterLabel label="Device">
-                  <select
-                    name="device"
-                    defaultValue={device ?? ""}
-                    className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                  >
-                    <option value="">All</option>
-                    {data.devices.map((item) => (
-                      <option key={item} value={item}>
-                        {formatEnum(item)}
-                      </option>
-                    ))}
-                  </select>
-                </FilterLabel>
-                <div className="flex items-end">
-                  <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
-                    <Search className="size-4" aria-hidden="true" />
-                    Apply
-                  </button>
-                </div>
-              </form>
+            <form className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-[minmax(0,230px)_repeat(5,minmax(0,1fr))_auto]">
+              <FilterLabel label="Project">
+                <select
+                  name="domainId"
+                  defaultValue={selectedDomainId ?? ""}
+                  className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                >
+                  <option value="">All projects</option>
+                  {data.domains.map((domain) => (
+                    <option key={domain.id} value={domain.id}>
+                      {domain.domain}
+                    </option>
+                  ))}
+                </select>
+              </FilterLabel>
+              <FilterLabel label="Query">
+                <input
+                  name="query"
+                  defaultValue={query ?? ""}
+                  placeholder="topic, product, brand"
+                  className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </FilterLabel>
+              <FilterLabel label="From">
+                <input
+                  name="startDate"
+                  type="date"
+                  defaultValue={formatInputDate(data.dateRange.start)}
+                  className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </FilterLabel>
+              <FilterLabel label="To">
+                <input
+                  name="endDate"
+                  type="date"
+                  defaultValue={formatInputDate(data.dateRange.end)}
+                  className="h-10 min-w-0 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                />
+              </FilterLabel>
+              <FilterLabel label="Country">
+                <select
+                  name="country"
+                  defaultValue={country ?? ""}
+                  className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                >
+                  <option value="">All</option>
+                  {data.countries.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </FilterLabel>
+              <FilterLabel label="Device">
+                <select
+                  name="device"
+                  defaultValue={device ?? ""}
+                  className="h-10 min-w-0 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                >
+                  <option value="">All</option>
+                  {data.devices.map((item) => (
+                    <option key={item} value={item}>
+                      {formatEnum(item)}
+                    </option>
+                  ))}
+                </select>
+              </FilterLabel>
+              <div className="flex items-end">
+                <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
+                  <Search className="size-4" aria-hidden="true" />
+                  Apply
+                </button>
+              </div>
+            </form>
           </details>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-            <OpportunityList items={data.opportunities} />
-            <IntentPanel items={data.intentGroups} />
+            <OpportunityList
+              hiddenCount={hiddenOpportunityCount}
+              items={visibleOpportunities}
+            />
+            <ContentGapList
+              hiddenCount={hiddenContentGapCount}
+              items={visibleContentGaps}
+            />
           </section>
 
-          <section className="mt-6 grid gap-6 xl:grid-cols-2">
-            <CompetitorGapList items={data.competitorContentGaps} />
-            <ContentGapList items={data.contentGaps} />
-          </section>
-
-          <section className="mt-6 grid gap-6 xl:grid-cols-2">
-            <QueryTable items={data.topQueries} />
-          </section>
+          <details className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+            <summary className="cursor-pointer list-none border-b border-slate-100 p-5 marker:hidden">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold">More search detail</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Optional competitor gaps, intent groups, and raw query
+                    inventory for deeper review.
+                  </p>
+                </div>
+                <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                  Open details
+                </span>
+              </div>
+            </summary>
+            <div className="grid gap-6 p-5 xl:grid-cols-2">
+              <CompetitorGapList
+                hiddenCount={hiddenCompetitorGapCount}
+                items={visibleCompetitorGaps}
+              />
+              <IntentPanel items={data.intentGroups.slice(0, 6)} />
+              <QueryTable
+                hiddenCount={hiddenQueryCount}
+                items={visibleQueries}
+              />
+            </div>
+          </details>
         </section>
       </div>
     </main>
@@ -363,12 +418,23 @@ function Metric({
   );
 }
 
-function OpportunityList({ items }: { items: KeywordOpportunity[] }) {
+function OpportunityList({
+  hiddenCount,
+  items,
+}: {
+  hiddenCount: number;
+  items: KeywordOpportunity[];
+}) {
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center gap-3 border-b border-slate-200 p-5">
         <Lightbulb className="size-5 text-amber-600" aria-hidden="true" />
-        <h3 className="text-lg font-semibold">Keyword opportunities</h3>
+        <div>
+          <h3 className="text-lg font-semibold">Best search ideas</h3>
+          <p className="mt-1 text-sm text-slate-500">
+            Start with one idea that has enough search demand to matter.
+          </p>
+        </div>
       </div>
       <div className="divide-y divide-slate-100">
         {items.length ? (
@@ -387,7 +453,9 @@ function OpportunityList({ items }: { items: KeywordOpportunity[] }) {
               <Meta label="Score" value={item.opportunityScore.toString()} />
               <Meta
                 label="Position"
-                value={item.avgPosition ? item.avgPosition.toString() : "Pending"}
+                value={
+                  item.avgPosition ? item.avgPosition.toString() : "Pending"
+                }
               />
             </article>
           ))
@@ -397,6 +465,11 @@ function OpportunityList({ items }: { items: KeywordOpportunity[] }) {
           </p>
         )}
       </div>
+      {hiddenCount > 0 ? (
+        <PreviewLimitNote
+          body={`${hiddenCount} more ideas are kept out of the first view so you can choose without scrolling forever.`}
+        />
+      ) : null}
     </section>
   );
 }
@@ -449,13 +522,19 @@ function IntentPanel({
   );
 }
 
-function ContentGapList({ items }: { items: KeywordContentGap[] }) {
+function ContentGapList({
+  hiddenCount,
+  items,
+}: {
+  hiddenCount: number;
+  items: KeywordContentGap[];
+}) {
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 p-5">
-        <h3 className="text-lg font-semibold">Content gap</h3>
+        <h3 className="text-lg font-semibold">Pages to improve</h3>
         <p className="mt-1 text-sm text-slate-500">
-          Queries with demand that need better pages, titles, snippets, or links.
+          Searches that may need a clearer page, title, snippet, or link.
         </p>
       </div>
       <div className="divide-y divide-slate-100">
@@ -485,14 +564,25 @@ function ContentGapList({ items }: { items: KeywordContentGap[] }) {
           </p>
         )}
       </div>
+      {hiddenCount > 0 ? (
+        <PreviewLimitNote
+          body={`${hiddenCount} more page ideas are available when you want a longer writing queue.`}
+          href="/recommendations"
+          label="Open ideas"
+        />
+      ) : null}
     </section>
   );
 }
 
 function CompetitorGapList({
+  hiddenCount,
   items,
 }: {
-  items: Awaited<ReturnType<typeof getKeywordResearchData>>["competitorContentGaps"];
+  hiddenCount: number;
+  items: Awaited<
+    ReturnType<typeof getKeywordResearchData>
+  >["competitorContentGaps"];
 }) {
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -529,15 +619,29 @@ function CompetitorGapList({
           </p>
         )}
       </div>
+      {hiddenCount > 0 ? (
+        <PreviewLimitNote
+          body={`${hiddenCount} more competitor gaps are hidden until you need the deeper comparison.`}
+        />
+      ) : null}
     </section>
   );
 }
 
-function QueryTable({ items }: { items: SearchPerformanceGroup[] }) {
+function QueryTable({
+  hiddenCount,
+  items,
+}: {
+  hiddenCount: number;
+  items: SearchPerformanceGroup[];
+}) {
   return (
     <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="border-b border-slate-200 p-5">
-        <h3 className="text-lg font-semibold">Top query inventory</h3>
+        <h3 className="text-lg font-semibold">Query inventory</h3>
+        <p className="mt-1 text-sm text-slate-500">
+          Raw Search Console rows for deeper review.
+        </p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[620px] text-left text-sm">
@@ -555,9 +659,7 @@ function QueryTable({ items }: { items: SearchPerformanceGroup[] }) {
               items.map((item) => (
                 <tr key={item.key}>
                   <td className="max-w-sm px-5 py-4">
-                    <span className="line-clamp-2 font-medium">
-                      {item.key}
-                    </span>
+                    <span className="line-clamp-2 font-medium">{item.key}</span>
                   </td>
                   <td className="px-5 py-4 font-medium">
                     {item.clicks.toLocaleString()}
@@ -566,14 +668,15 @@ function QueryTable({ items }: { items: SearchPerformanceGroup[] }) {
                     {item.impressions.toLocaleString()}
                   </td>
                   <td className="px-5 py-4">{formatCtr(item.ctr)}</td>
-                  <td className="px-5 py-4">
-                    {item.avgPosition || "Pending"}
-                  </td>
+                  <td className="px-5 py-4">{item.avgPosition || "Pending"}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-5 py-8 text-center text-slate-500" colSpan={5}>
+                <td
+                  className="px-5 py-8 text-center text-slate-500"
+                  colSpan={5}
+                >
                   No Search Console queries match this view.
                 </td>
               </tr>
@@ -581,6 +684,11 @@ function QueryTable({ items }: { items: SearchPerformanceGroup[] }) {
           </tbody>
         </table>
       </div>
+      {hiddenCount > 0 ? (
+        <PreviewLimitNote
+          body={`${hiddenCount} more queries are available through filters or exported reporting.`}
+        />
+      ) : null}
     </section>
   );
 }
@@ -594,9 +702,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-slate-600">
-        {label}
-      </span>
+      <span className="text-sm font-medium text-slate-600">{label}</span>
       {children}
     </label>
   );
@@ -605,10 +711,32 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function PreviewLimitNote({
+  body,
+  href,
+  label = "Keep going",
+}: {
+  body: string;
+  href?: string;
+  label?: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+      <p>{body}</p>
+      {href ? (
+        <Link
+          href={href}
+          className="inline-flex w-fit items-center justify-center rounded-md border border-orange-200 bg-orange-50 px-3 py-2 font-semibold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100"
+        >
+          {label}
+        </Link>
+      ) : null}
     </div>
   );
 }

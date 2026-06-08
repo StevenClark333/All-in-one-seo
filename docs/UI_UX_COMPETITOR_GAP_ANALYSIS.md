@@ -87,35 +87,36 @@ Gap for us:
 
 ## Current Product Gaps
 
-| Area                   | Current State                                                                                 | Better Version                                                                                           |
-| ---------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| First screen           | Metrics, cockpit, tables, issue queue                                                         | Friendly action plan first, analytics second                                                             |
-| Tone                   | Operational and technical                                                                     | Calm, plain, encouraging, "do this next"                                                                 |
-| Navigation             | Many SEO modules visible at once                                                              | Guided primary paths with advanced tools still available                                                 |
-| Issue solving          | Improved, but still spread across Issues, Fix Center, Recommendations                         | One recommended solution path per issue                                                                  |
-| Visual feel            | Softer after latest theme pass, but still dense                                               | More white space, softer panels, orange highlights, fewer competing sections                             |
-| Nontechnical usability | Requires understanding SEO terms                                                              | Explain impact in human language and show the exact next button                                          |
-| Integrations           | Long provider setup page that starts with an admin-style form                                 | Plain-language connection plan first, then provider setup only when needed                               |
-| Rank tracking          | Metrics, filters, and manual data forms appear before guidance                                | Show rank movement guidance first, then charts, then advanced data management                            |
-| Billing                | Plan, usage, and upgrade choices appear as admin data                                         | Start with reassurance: current plan, usage risk, and the safest next billing action                     |
-| Pages                  | Crawl inventory starts with metrics, templates, filters, and a table                          | Start with a page-care plan: risky pages, repeated template fixes, and easy title checks                 |
-| Internal Links         | Link graph starts as technical metrics, issues, opportunities, and a detailed table           | Lead with suggested links, hard-to-find pages, and coverage before showing graph detail                  |
-| Projects               | Wide audit table and bulk import appear as the main experience                                | Start with setup/health/next-project guidance, then keep the table as detail                             |
-| Settings               | Team roles, permissions, invites, and removals feel like admin controls                       | Start with seat comfort, admin safety, and pending invites before detailed role rules                    |
-| Clients                | Agency client management opens with counts, issue load, settings, and imports                 | Start with client care: setup gaps, urgent attention, and reports worth sharing                          |
-| Content Ideas          | AI recommendation center starts with generation lists and quota wording                       | Start with page copy, fix briefs, and repeated-page help in plain language                               |
-| Fixes                  | Fix Center starts with many statuses, filters, audit details, and delivery mechanics          | Start with one calm path: review a fix, send it, then check it                                           |
-| Project Setup          | Add-domain and project detail pages start with domain/crawl/settings language                 | Start with website setup, verification, first crawl, and the clearest next problem                       |
-| Account Start          | Signup, login, reset, and workspace creation feel like bare account forms                     | Start with reassurance, explain the setup path, and use softer action language                           |
-| Verification           | Ownership, email, and password confirmation pages still feel like technical blockers          | Explain why the check matters, show one safe path, and make the next action obvious                      |
-| Reports                | Report detail and shared reports still start like analytics summaries                         | Start with the client story: main takeaway, what changed, and next fix before metrics                    |
-| Crawl Runs             | Individual crawl pages start with raw artifacts, detected changes, and snapshots              | Start with a crawl recap: result, changed pages, failed pages, and what to open next                     |
-| Project Workspace      | Domain workspace still reads like a command center with dense labels and many paths           | Start with a short website focus plan, softer actions, and calmer section labels before deeper analytics |
-| Workspace Depth        | Lower workspace sections still create a long scroll and repeated help text in headings        | Keep the summary visible, collapse deeper work queues, and make help text quieter                        |
-| Content Ideas Depth    | Content Ideas still opens long page, issue, template, and saved-output lists                  | Keep the writing plan first, then show short previews with full lists one click away                     |
-| Tool Labels            | Project tool tabs still use mixed labels like Crawled Pages, Google Results, and Rank Tracker | Use short, friendly labels consistently: Pages, Search, Rank, Links, and Ideas                           |
-| Internal Links Depth   | Internal Links still shows too many issues and page-count rows at once                        | Keep suggested links first, limit issue previews, and collapse detailed link counts                      |
-| Dashboard Depth        | Dashboard still exposes portfolio tables and production build details before problem review   | Keep the plan and top problems visible, then make workspace/build detail optional                        |
+| Area                   | Current State                                                                                   | Better Version                                                                                           |
+| ---------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| First screen           | Metrics, cockpit, tables, issue queue                                                           | Friendly action plan first, analytics second                                                             |
+| Tone                   | Operational and technical                                                                       | Calm, plain, encouraging, "do this next"                                                                 |
+| Navigation             | Many SEO modules visible at once                                                                | Guided primary paths with advanced tools still available                                                 |
+| Issue solving          | Improved, but still spread across Issues, Fix Center, Recommendations                           | One recommended solution path per issue                                                                  |
+| Visual feel            | Softer after latest theme pass, but still dense                                                 | More white space, softer panels, orange highlights, fewer competing sections                             |
+| Nontechnical usability | Requires understanding SEO terms                                                                | Explain impact in human language and show the exact next button                                          |
+| Integrations           | Long provider setup page that starts with an admin-style form                                   | Plain-language connection plan first, then provider setup only when needed                               |
+| Rank tracking          | Metrics, filters, and manual data forms appear before guidance                                  | Show rank movement guidance first, then charts, then advanced data management                            |
+| Billing                | Plan, usage, and upgrade choices appear as admin data                                           | Start with reassurance: current plan, usage risk, and the safest next billing action                     |
+| Pages                  | Crawl inventory starts with metrics, templates, filters, and a table                            | Start with a page-care plan: risky pages, repeated template fixes, and easy title checks                 |
+| Internal Links         | Link graph starts as technical metrics, issues, opportunities, and a detailed table             | Lead with suggested links, hard-to-find pages, and coverage before showing graph detail                  |
+| Projects               | Wide audit table and bulk import appear as the main experience                                  | Start with setup/health/next-project guidance, then keep the table as detail                             |
+| Settings               | Team roles, permissions, invites, and removals feel like admin controls                         | Start with seat comfort, admin safety, and pending invites before detailed role rules                    |
+| Clients                | Agency client management opens with counts, issue load, settings, and imports                   | Start with client care: setup gaps, urgent attention, and reports worth sharing                          |
+| Content Ideas          | AI recommendation center starts with generation lists and quota wording                         | Start with page copy, fix briefs, and repeated-page help in plain language                               |
+| Fixes                  | Fix Center starts with many statuses, filters, audit details, and delivery mechanics            | Start with one calm path: review a fix, send it, then check it                                           |
+| Project Setup          | Add-domain and project detail pages start with domain/crawl/settings language                   | Start with website setup, verification, first crawl, and the clearest next problem                       |
+| Account Start          | Signup, login, reset, and workspace creation feel like bare account forms                       | Start with reassurance, explain the setup path, and use softer action language                           |
+| Verification           | Ownership, email, and password confirmation pages still feel like technical blockers            | Explain why the check matters, show one safe path, and make the next action obvious                      |
+| Reports                | Report detail and shared reports still start like analytics summaries                           | Start with the client story: main takeaway, what changed, and next fix before metrics                    |
+| Crawl Runs             | Individual crawl pages start with raw artifacts, detected changes, and snapshots                | Start with a crawl recap: result, changed pages, failed pages, and what to open next                     |
+| Project Workspace      | Domain workspace still reads like a command center with dense labels and many paths             | Start with a short website focus plan, softer actions, and calmer section labels before deeper analytics |
+| Workspace Depth        | Lower workspace sections still create a long scroll and repeated help text in headings          | Keep the summary visible, collapse deeper work queues, and make help text quieter                        |
+| Content Ideas Depth    | Content Ideas still opens long page, issue, template, and saved-output lists                    | Keep the writing plan first, then show short previews with full lists one click away                     |
+| Tool Labels            | Project tool tabs still use mixed labels like Crawled Pages, Google Results, and Rank Tracker   | Use short, friendly labels consistently: Pages, Search, Rank, Links, and Ideas                           |
+| Internal Links Depth   | Internal Links still shows too many issues and page-count rows at once                          | Keep suggested links first, limit issue previews, and collapse detailed link counts                      |
+| Dashboard Depth        | Dashboard still exposes portfolio tables and production build details before problem review     | Keep the plan and top problems visible, then make workspace/build detail optional                        |
+| Search Ideas Depth     | Keyword Research still opens with cockpit language, several full lists, and raw query inventory | Rename to Search Ideas, show short action previews, and make deeper keyword data optional                |
 
 ## Product Direction
 
@@ -608,3 +609,22 @@ Implementation:
 - [x] Add a plain-language preview note that sends users to Projects for the full list.
 - [x] Rename "Production build map" to "Product setup checklist".
 - [x] Explain that setup checklist content is internal and skippable for most users.
+
+### Batch AD: Search Ideas Depth Calmness
+
+Competitive evidence:
+
+- Semrush Keyword Overview and Position Tracking make keyword work feel like choosing the next opportunity, not reading every query row at once.
+- Ahrefs and Ubersuggest expose deep keyword data, but beginner-friendly flows keep the next content action visible first.
+- A nontechnical user should see one useful search idea, one page to improve, and optional deeper query detail.
+
+Implementation:
+
+- [x] Rename the Keyword Research page header to "Search ideas".
+- [x] Replace "Demand cockpit" with softer "Search demand" language.
+- [x] Rename "Workflow queue" to "Writing queue".
+- [x] Limit best search idea previews to the first 8 items.
+- [x] Limit page-improvement previews to the first 6 items.
+- [x] Move competitor gaps, intent groups, and raw query inventory into a closed "More search detail" panel.
+- [x] Limit deeper competitor and query previews inside that panel.
+- [x] Add plain-language preview notes when more ideas or queries exist.
