@@ -1390,3 +1390,19 @@ Implementation:
 - [x] Add friendlier page problem progress labels for set-aside and needs-another-look states.
 - [x] Browser-check Page Detail suggestion labels desktop and mobile locally.
 - [ ] Browser-check Page Detail suggestion labels after deployment.
+
+### Batch BV: Client Update Status Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs reporting flows keep report creation, sharing, schedules, and branded links visible, but nontechnical users need to know whether an update is ready to share.
+- A softer report page should say draft, ready to share, shared, waiting for DNS, and every week/month before generated, published, pending, verified, or enum-style cadence wording.
+- Client reporting should feel like preparing a helpful update, not managing technical report records.
+
+Implementation:
+
+- [x] Translate report library statuses into draft, ready-to-share, shared, and needs-review wording.
+- [x] Translate branded report link statuses into waiting-for-DNS, active, and needs-DNS-help wording.
+- [x] Translate scheduled update frequency into every-week/every-month wording.
+- [x] Browser-check Client updates status labels desktop and mobile locally.
+- [ ] Browser-check Client updates status labels after deployment.

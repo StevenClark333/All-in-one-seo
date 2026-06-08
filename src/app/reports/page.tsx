@@ -235,7 +235,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                           "Workspace report"}
                       </p>
                     </div>
-                    <Meta label="Status" value={formatEnum(report.status)} />
+                    <Meta
+                      label="Status"
+                      value={formatReportStatus(report.status)}
+                    />
                     <Meta
                       label="Format"
                       value={report.template?.name ?? "Standard"}
@@ -311,7 +314,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 <input
                   name="title"
                   required
-                  placeholder="Weekly client SEO report"
+                  placeholder="Regular client SEO update"
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -348,8 +351,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 label="Frequency"
                 name="frequency"
               >
-                <option value="WEEKLY">Weekly</option>
-                <option value="MONTHLY">Monthly</option>
+                <option value="WEEKLY">Every week</option>
+                <option value="MONTHLY">Every month</option>
               </Select>
               <div className="flex items-end">
                 <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
@@ -604,7 +607,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                     <Meta
                       help="DNS verification status for this white-label hostname."
                       label="Status"
-                      value={formatEnum(domain.status)}
+                      value={formatBrandingStatus(domain.status)}
                     />
                     <Meta
                       label="Verified"
@@ -688,7 +691,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                     </div>
                     <Meta
                       label="Frequency"
-                      value={formatEnum(schedule.frequency)}
+                      value={formatScheduleFrequency(schedule.frequency)}
                     />
                     <Meta
                       label="Next run"
@@ -867,6 +870,36 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatReportStatus(value: string) {
+  const labels: Record<string, string> = {
+    DRAFT: "Draft",
+    FAILED: "Needs review",
+    GENERATED: "Ready to share",
+    PUBLISHED: "Shared",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatBrandingStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs DNS help",
+    PENDING: "Waiting for DNS",
+    VERIFIED: "Active",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatScheduleFrequency(value: string) {
+  const labels: Record<string, string> = {
+    MONTHLY: "Every month",
+    WEEKLY: "Every week",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function getSingle(value: string | string[] | undefined) {
