@@ -1183,4 +1183,4 @@ Implementation:
 - [x] Rename competitor metrics and deeper table labels to pages checked, problems, websites, and search terms.
 - [x] Rewrite empty-state and plan-card copy away from project/crawl/domain wording.
 - [x] Rename focused workspace breadcrumb and navigation aria label from project tools to website tools.
-- [ ] Browser-check Competitor Insights desktop and mobile after deployment.
+- [x] Browser-check Competitor Insights desktop and mobile after deployment.
