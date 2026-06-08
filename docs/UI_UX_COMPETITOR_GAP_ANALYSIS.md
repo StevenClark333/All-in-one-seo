@@ -112,6 +112,7 @@ Gap for us:
 | Crawl Runs | Individual crawl pages start with raw artifacts, detected changes, and snapshots | Start with a crawl recap: result, changed pages, failed pages, and what to open next |
 | Project Workspace | Domain workspace still reads like a command center with dense labels and many paths | Start with a short website focus plan, softer actions, and calmer section labels before deeper analytics |
 | Workspace Depth | Lower workspace sections still create a long scroll and repeated help text in headings | Keep the summary visible, collapse deeper work queues, and make help text quieter |
+| Content Ideas Depth | Content Ideas still opens long page, issue, template, and saved-output lists | Keep the writing plan first, then show short previews with full lists one click away |
 
 ## Product Direction
 
@@ -535,3 +536,20 @@ Implementation:
 - [x] Keep work queue, search performance, priority issues, page preview, readiness, crawl history, changes, and reports available inside that panel.
 - [x] Make help icons use a short accessible label instead of repeating full tooltip copy in headings.
 - [x] Add a short explanation that the deeper analytics are optional and can be opened when needed.
+
+### Batch Z: Content Ideas Depth Calmness
+
+Competitive evidence:
+
+- Semrush and Ubersuggest keep recommendation flows focused on a small number of next actions before deeper lists.
+- Ahrefs-style depth is useful for advanced users, but a nontechnical writing workflow should not open with every URL and every issue.
+- A softer content workflow should make "pick page copy, fix brief, or repeated-page brief" the main decision, with inventory available only when requested.
+
+Implementation:
+
+- [x] Keep the Content Ideas plan as the first decision point.
+- [x] Close page-copy, fix-brief, and repeated-page sections by default.
+- [x] Limit page-copy and fix-brief previews to the first 8 items.
+- [x] Limit repeated-page brief previews to the first 6 groups.
+- [x] Limit saved ideas and briefs to the first 8 outputs.
+- [x] Add friendly preview notes that send users to the full Pages or Problems view when more items exist.

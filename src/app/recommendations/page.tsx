@@ -31,6 +31,20 @@ export default async function RecommendationsPage({
     usage,
   } = await getAiRecommendationCenterData({ domainId: selectedDomainId });
   const quotaRemaining = Math.max(0, usage.quota - usage.used);
+  const visiblePages = pages.slice(0, 8);
+  const hiddenPageCount = Math.max(0, pages.length - visiblePages.length);
+  const visibleIssues = issues.slice(0, 8);
+  const hiddenIssueCount = Math.max(0, issues.length - visibleIssues.length);
+  const visibleTemplateGroups = templateIssueGroups.slice(0, 6);
+  const hiddenTemplateCount = Math.max(
+    0,
+    templateIssueGroups.length - visibleTemplateGroups.length,
+  );
+  const visibleRecommendations = recommendations.slice(0, 8);
+  const hiddenRecommendationCount = Math.max(
+    0,
+    recommendations.length - visibleRecommendations.length,
+  );
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -77,18 +91,18 @@ export default async function RecommendationsPage({
             <details
               id="page-ideas"
               className="rounded-lg border border-slate-200 bg-white shadow-sm"
-              open={pages.length > 0}
             >
               <summary className="p-5">
                 <h3 className="text-lg font-semibold">Page copy ideas</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Improve titles, meta descriptions, and H1s from crawled page
-                  data.
+                  Open a short preview of pages that can use better titles,
+                  meta descriptions, or H1s.
                 </p>
               </summary>
               <div className="grid divide-y divide-slate-100 border-t border-slate-200">
                 {pages.length ? (
-                  pages.map((page) => (
+                  <>
+                  {visiblePages.map((page) => (
                     <article
                       key={page.id}
                       className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_180px]"
@@ -116,7 +130,16 @@ export default async function RecommendationsPage({
                         </button>
                       </form>
                     </article>
-                  ))
+                  ))}
+                  {hiddenPageCount > 0 ? (
+                    <PreviewLimitNote
+                      action="View all pages"
+                      count={hiddenPageCount}
+                      href={`/pages${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
+                      label="more pages can use copy ideas. Open the Pages view when you want the full inventory."
+                    />
+                  ) : null}
+                  </>
                 ) : (
                   <FriendlyEmpty
                     title="No crawled pages yet"
@@ -129,18 +152,18 @@ export default async function RecommendationsPage({
             <details
               id="fix-briefs"
               className="rounded-lg border border-slate-200 bg-white shadow-sm"
-              open={issues.length > 0}
             >
               <summary className="p-5">
                 <h3 className="text-lg font-semibold">Fix briefs</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Turn active problems into plain-language briefs for a CMS,
-                  developer, or client.
+                  Open a short preview of problems that can become plain CMS,
+                  developer, or client handoffs.
                 </p>
               </summary>
               <div className="grid divide-y divide-slate-100 border-t border-slate-200">
                 {issues.length ? (
-                  issues.map((issue) => (
+                  <>
+                  {visibleIssues.map((issue) => (
                     <article
                       key={issue.id}
                       className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_180px]"
@@ -167,7 +190,16 @@ export default async function RecommendationsPage({
                         </button>
                       </form>
                     </article>
-                  ))
+                  ))}
+                  {hiddenIssueCount > 0 ? (
+                    <PreviewLimitNote
+                      action="View all problems"
+                      count={hiddenIssueCount}
+                      href={`/issues${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
+                      label="more problems are waiting. Open Problems when you want the complete list."
+                    />
+                  ) : null}
+                  </>
                 ) : (
                   <FriendlyEmpty
                     title="No active problems need briefs"
@@ -181,18 +213,18 @@ export default async function RecommendationsPage({
           <details
             id="template-briefs"
             className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm"
-            open={templateIssueGroups.length > 0}
           >
             <summary className="p-5">
               <h3 className="text-lg font-semibold">Repeated-page briefs</h3>
               <p className="mt-1 text-sm text-slate-500">
-                Create one shared note for template problems that affect many
-                similar pages.
+                Open a short preview of template fixes where one note can help
+                many similar pages.
               </p>
             </summary>
             <div className="grid divide-y divide-slate-100 border-t border-slate-200">
               {templateIssueGroups.length ? (
-                templateIssueGroups.map((group) => (
+                <>
+                {visibleTemplateGroups.map((group) => (
                   <article
                     key={`${group.domainId}:${group.templateKey}`}
                     className="grid gap-4 p-5 md:grid-cols-[minmax(0,1fr)_170px]"
@@ -235,7 +267,16 @@ export default async function RecommendationsPage({
                       </button>
                     </form>
                   </article>
-                ))
+                ))}
+                {hiddenTemplateCount > 0 ? (
+                  <PreviewLimitNote
+                    action="View all problems"
+                    count={hiddenTemplateCount}
+                    href={`/issues${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
+                    label="more repeated-page groups are hidden to keep this view calm."
+                  />
+                ) : null}
+                </>
               ) : (
                 <FriendlyEmpty
                   title="No repeated-page briefs needed"
@@ -254,7 +295,8 @@ export default async function RecommendationsPage({
             </div>
             <div className="grid divide-y divide-slate-100">
               {recommendations.length ? (
-                recommendations.map((recommendation) => (
+                <>
+                {visibleRecommendations.map((recommendation) => (
                   <article key={recommendation.id} className="p-5">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
@@ -271,7 +313,16 @@ export default async function RecommendationsPage({
                       {readPayload(recommendation.recommendationJson).summary}
                     </p>
                   </article>
-                ))
+                ))}
+                {hiddenRecommendationCount > 0 ? (
+                  <PreviewLimitNote
+                    action="Refresh view"
+                    count={hiddenRecommendationCount}
+                    href="/recommendations"
+                    label="older saved ideas are hidden to keep this page focused."
+                  />
+                ) : null}
+                </>
               ) : (
                 <div className="p-5">
                   <EmptyState
@@ -381,6 +432,32 @@ function PlanTile({
       </p>
       <p className="mt-2 text-sm leading-5 text-slate-500">{detail}</p>
     </a>
+  );
+}
+
+function PreviewLimitNote({
+  action,
+  count,
+  href,
+  label,
+}: {
+  action: string;
+  count: number;
+  href: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col gap-3 p-5 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        <span className="font-semibold text-slate-800">{count}</span> {label}
+      </p>
+      <Link
+        href={href}
+        className="inline-flex h-9 w-fit items-center justify-center rounded-md bg-orange-600 px-3 font-semibold text-white transition hover:bg-orange-700"
+      >
+        {action}
+      </Link>
+    </div>
   );
 }
 
