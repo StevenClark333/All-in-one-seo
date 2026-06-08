@@ -70,6 +70,13 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
     ({ isVerified, metrics }) =>
       isVerified && metrics.health !== null && metrics.errors === 0,
   ).length;
+  const priorityProjectSnapshots = [...visibleProjectSnapshots]
+    .sort(compareProjectRisk)
+    .slice(0, 6);
+  const hiddenProjectCount = Math.max(
+    0,
+    visibleProjectSnapshots.length - priorityProjectSnapshots.length,
+  );
   const topProject = [...projectSnapshots].sort(compareProjectRisk).at(0);
 
   return (
@@ -123,325 +130,360 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
             visibleCount={visibleDomains.length}
           />
 
-          {visibleProjectSnapshots.length ? (
-            <section className="mt-6 grid gap-4 md:grid-cols-3">
-              {visibleProjectSnapshots
-                .slice(0, 3)
-                .map(({ domain, isVerified, metrics }) => (
-                  <ProjectSummaryCard
-                    key={domain.id}
-                    domain={domain.domain}
-                    errors={metrics.errors}
-                    health={metrics.health}
-                    href={`/domains/${domain.id}/workspace`}
-                    isVerified={isVerified}
-                    lastUpdatedAt={metrics.lastUpdatedAt}
-                  />
-                ))}
+          {priorityProjectSnapshots.length ? (
+            <section className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-orange-700">
+                    Project shortlist
+                  </p>
+                  <h3 className="mt-1 text-xl font-semibold tracking-normal">
+                    Open these websites first
+                  </h3>
+                  <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
+                    Sorted by setup needs, critical problems, and lower health
+                    so you do not have to scan the full table.
+                  </p>
+                </div>
+                {hiddenProjectCount > 0 ? (
+                  <a
+                    href="#project-details"
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-orange-200 bg-orange-50 px-4 text-sm font-semibold text-orange-700 transition hover:bg-orange-100"
+                  >
+                    Show {hiddenProjectCount} more
+                  </a>
+                ) : null}
+              </div>
+
+              <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {priorityProjectSnapshots.map(
+                  ({ domain, isVerified, metrics }) => (
+                    <ProjectSummaryCard
+                      key={domain.id}
+                      domain={domain.domain}
+                      errors={metrics.errors}
+                      health={metrics.health}
+                      href={`/domains/${domain.id}/workspace`}
+                      isVerified={isVerified}
+                      lastUpdatedAt={metrics.lastUpdatedAt}
+                    />
+                  ),
+                )}
+              </div>
             </section>
           ) : null}
 
-          <section
+          <details
             id="project-details"
             className="mt-6 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm"
           >
-            <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
+            <summary className="flex items-center justify-between gap-4 p-5">
               <div>
-                <h3 className="text-lg font-semibold">
-                  <HelpLabel help="All active SEO projects grouped by client, including crawl health, technical issue load, fixes, and report status.">
-                    Project details
-                  </HelpLabel>
-                </h3>
+                <h3 className="text-lg font-semibold">More project detail</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Search by client, project, or domain when you need the full
-                  audit table.
+                  Optional full table for searching, comparing, and reporting
+                  across all projects.
                 </p>
               </div>
+              <span className="shrink-0 rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
+                Open table
+              </span>
+            </summary>
 
-              <form action="/domains" className="relative w-full xl:max-w-sm">
-                <Search
-                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
-                  aria-hidden="true"
-                />
-                <input
-                  type="search"
-                  name="q"
-                  defaultValue={query}
-                  placeholder="Search project, client, or domain"
-                  className="h-10 w-full rounded-md border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
-                />
-              </form>
-            </div>
+            <div className="border-t border-slate-200">
+              <div className="flex flex-col gap-4 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
+                <p className="max-w-2xl text-sm leading-6 text-slate-500">
+                  Search by client, project, or domain only when you want the
+                  complete project inventory.
+                </p>
 
-            {visibleDomains.length ? (
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[1740px] table-fixed border-collapse text-left text-sm">
-                  <colgroup>
-                    <col className="w-[320px]" />
-                    <col className="w-[150px]" />
-                    <col className="w-[150px]" />
-                    <col className="w-[130px]" />
-                    <col className="w-[100px]" />
-                    <col className="w-[120px]" />
-                    <col className="w-[160px]" />
-                    <col className="w-[100px]" />
-                    <col className="w-[150px]" />
-                    <col className="w-[110px]" />
-                    <col className="w-[90px]" />
-                    <col className="w-[130px]" />
-                    <col className="w-[180px]" />
-                  </colgroup>
-                  <thead className="bg-slate-50 text-sm font-medium text-slate-500">
-                    <tr>
-                      <TableHead>Project</TableHead>
-                      <TableHead>
-                        <HelpLabel help="Most recent crawl completion date, or the latest crawl start if it is still running.">
-                          Last update
-                        </HelpLabel>
-                      </TableHead>
-                      <TableHead>
-                        <HelpLabel help="Pages crawled in the latest run, falling back to pages currently stored.">
-                          Pages crawled
-                        </HelpLabel>
-                      </TableHead>
-                      <TableHead>
-                        <HelpLabel help="Current site health score from the latest scoring run.">
-                          Site health
-                        </HelpLabel>
-                      </TableHead>
-                      <TableHead>Errors</TableHead>
-                      <TableHead>Warnings</TableHead>
-                      <TableHead>
-                        <HelpLabel help="Share of crawled pages that returned a usable status and were not marked noindex.">
-                          Crawlability
-                        </HelpLabel>
-                      </TableHead>
-                      <TableHead>HTTPS</TableHead>
-                      <TableHead>
-                        <HelpLabel help="Estimated internal SEO health based on internal link and sitemap-related issues.">
-                          Internal SEO
-                        </HelpLabel>
-                      </TableHead>
-                      <TableHead>
-                        <HelpLabel help="Share of crawled pages where schema or structured data was detected.">
-                          Markup
-                        </HelpLabel>
-                      </TableHead>
-                      <TableHead>Fixes</TableHead>
-                      <TableHead>Reports</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {groupedDomains.map((group) => (
-                      <React.Fragment key={group.clientName}>
-                        <tr className="bg-slate-50/70">
-                          <td
-                            colSpan={13}
-                            className="px-5 py-3 text-sm font-medium text-slate-500"
-                          >
-                            {group.clientName}
-                            <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-[11px] text-slate-400">
-                              {group.domains.length}{" "}
-                              {group.domains.length === 1
-                                ? "project"
-                                : "projects"}
-                            </span>
-                          </td>
-                        </tr>
-                        {group.domains.map((domain) => {
-                          const metrics = getProjectMetrics(domain);
-                          const isVerified = isDomainVerified(domain);
+                <form action="/domains" className="relative w-full xl:max-w-sm">
+                  <Search
+                    className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="search"
+                    name="q"
+                    defaultValue={query}
+                    placeholder="Search project, client, or domain"
+                    className="h-10 w-full rounded-md border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
+                  />
+                </form>
+              </div>
 
-                          return (
-                            <tr
-                              key={domain.id}
-                              className="align-middle transition hover:bg-slate-50/80"
+              {visibleDomains.length ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[1740px] table-fixed border-collapse text-left text-sm">
+                    <colgroup>
+                      <col className="w-[320px]" />
+                      <col className="w-[150px]" />
+                      <col className="w-[150px]" />
+                      <col className="w-[130px]" />
+                      <col className="w-[100px]" />
+                      <col className="w-[120px]" />
+                      <col className="w-[160px]" />
+                      <col className="w-[100px]" />
+                      <col className="w-[150px]" />
+                      <col className="w-[110px]" />
+                      <col className="w-[90px]" />
+                      <col className="w-[130px]" />
+                      <col className="w-[180px]" />
+                    </colgroup>
+                    <thead className="bg-slate-50 text-sm font-medium text-slate-500">
+                      <tr>
+                        <TableHead>Project</TableHead>
+                        <TableHead>
+                          <HelpLabel help="Most recent crawl completion date, or the latest crawl start if it is still running.">
+                            Last update
+                          </HelpLabel>
+                        </TableHead>
+                        <TableHead>
+                          <HelpLabel help="Pages crawled in the latest run, falling back to pages currently stored.">
+                            Pages crawled
+                          </HelpLabel>
+                        </TableHead>
+                        <TableHead>
+                          <HelpLabel help="Current site health score from the latest scoring run.">
+                            Site health
+                          </HelpLabel>
+                        </TableHead>
+                        <TableHead>Errors</TableHead>
+                        <TableHead>Warnings</TableHead>
+                        <TableHead>
+                          <HelpLabel help="Share of crawled pages that returned a usable status and were not marked noindex.">
+                            Crawlability
+                          </HelpLabel>
+                        </TableHead>
+                        <TableHead>HTTPS</TableHead>
+                        <TableHead>
+                          <HelpLabel help="Estimated internal SEO health based on internal link and sitemap-related issues.">
+                            Internal SEO
+                          </HelpLabel>
+                        </TableHead>
+                        <TableHead>
+                          <HelpLabel help="Share of crawled pages where schema or structured data was detected.">
+                            Markup
+                          </HelpLabel>
+                        </TableHead>
+                        <TableHead>Fixes</TableHead>
+                        <TableHead>Reports</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {groupedDomains.map((group) => (
+                        <React.Fragment key={group.clientName}>
+                          <tr className="bg-slate-50/70">
+                            <td
+                              colSpan={13}
+                              className="px-5 py-3 text-sm font-medium text-slate-500"
                             >
-                              <td className="px-5 py-4">
-                                <div className="flex min-w-0 items-start gap-3">
-                                  <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-600">
-                                    <Globe2
-                                      className="size-4"
-                                      aria-hidden="true"
-                                    />
-                                  </div>
-                                  <div className="min-w-0 flex-1">
-                                    <Link
-                                      href={`/domains/${domain.id}/workspace`}
-                                      className="block truncate font-semibold text-blue-700 underline-offset-4 hover:underline"
-                                      title={domain.domain}
-                                    >
-                                      {domain.domain}
-                                    </Link>
-                                    <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                                      <span>{formatEnum(domain.platform)}</span>
-                                      <span aria-hidden="true">/</span>
-                                      <StatusPill
-                                        tone={
-                                          isVerified ? "success" : "warning"
-                                        }
-                                      >
-                                        {isVerified
-                                          ? "Verified"
-                                          : formatEnum(
-                                              domain.verificationStatus,
-                                            )}
-                                      </StatusPill>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4 text-slate-600">
-                                {metrics.lastUpdatedAt
-                                  ? formatDate(metrics.lastUpdatedAt)
-                                  : "Not started"}
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <span className="font-medium text-slate-900">
-                                  {metrics.pagesCrawled.toLocaleString()}
-                                </span>
-                                <span className="text-slate-400">
-                                  {" "}
-                                  / {domain.pages.length.toLocaleString()}
-                                </span>
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <ScoreValue value={metrics.health} />
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4 font-medium text-red-600">
-                                {metrics.errors}
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4 font-medium text-amber-600">
-                                {metrics.warnings}
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <PercentValue value={metrics.crawlability} />
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <PercentValue value={metrics.https} />
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <PercentValue value={metrics.internalSeo} />
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <PercentValue value={metrics.markup} />
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <Link
-                                  href={`/fix-center?domainId=${domain.id}`}
-                                  className="font-medium text-blue-700 underline-offset-4 hover:underline"
-                                >
-                                  {metrics.fixesPending}
-                                </Link>
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <Link
-                                  href={`/reports?domainId=${domain.id}`}
-                                  className="font-medium text-blue-700 underline-offset-4 hover:underline"
-                                >
-                                  {metrics.latestReportStatus
-                                    ? formatEnum(metrics.latestReportStatus)
-                                    : "Create"}
-                                </Link>
-                              </td>
-                              <td className="whitespace-nowrap px-4 py-4">
-                                <div className="flex items-center gap-2">
-                                  <Link
-                                    href={`/domains/${domain.id}/workspace`}
-                                    className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700"
-                                  >
-                                    Open
-                                  </Link>
-                                  <form
-                                    action="/api/domains/start-crawl"
-                                    method="post"
-                                  >
-                                    <input
-                                      type="hidden"
-                                      name="domainId"
-                                      value={domain.id}
-                                    />
-                                    <input
-                                      type="hidden"
-                                      name="returnTo"
-                                      value="/domains"
-                                    />
-                                    <IconButton
-                                      disabled={!isVerified}
-                                      label="Run crawl"
-                                      type="submit"
-                                    >
-                                      <Play
+                              {group.clientName}
+                              <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-[11px] text-slate-400">
+                                {group.domains.length}{" "}
+                                {group.domains.length === 1
+                                  ? "project"
+                                  : "projects"}
+                              </span>
+                            </td>
+                          </tr>
+                          {group.domains.map((domain) => {
+                            const metrics = getProjectMetrics(domain);
+                            const isVerified = isDomainVerified(domain);
+
+                            return (
+                              <tr
+                                key={domain.id}
+                                className="align-middle transition hover:bg-slate-50/80"
+                              >
+                                <td className="px-5 py-4">
+                                  <div className="flex min-w-0 items-start gap-3">
+                                    <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-600">
+                                      <Globe2
                                         className="size-4"
                                         aria-hidden="true"
                                       />
-                                    </IconButton>
-                                  </form>
-                                  <IconLink
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <Link
+                                        href={`/domains/${domain.id}/workspace`}
+                                        className="block truncate font-semibold text-blue-700 underline-offset-4 hover:underline"
+                                        title={domain.domain}
+                                      >
+                                        {domain.domain}
+                                      </Link>
+                                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                                        <span>
+                                          {formatEnum(domain.platform)}
+                                        </span>
+                                        <span aria-hidden="true">/</span>
+                                        <StatusPill
+                                          tone={
+                                            isVerified ? "success" : "warning"
+                                          }
+                                        >
+                                          {isVerified
+                                            ? "Verified"
+                                            : formatEnum(
+                                                domain.verificationStatus,
+                                              )}
+                                        </StatusPill>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4 text-slate-600">
+                                  {metrics.lastUpdatedAt
+                                    ? formatDate(metrics.lastUpdatedAt)
+                                    : "Not started"}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <span className="font-medium text-slate-900">
+                                    {metrics.pagesCrawled.toLocaleString()}
+                                  </span>
+                                  <span className="text-slate-400">
+                                    {" "}
+                                    / {domain.pages.length.toLocaleString()}
+                                  </span>
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <ScoreValue value={metrics.health} />
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4 font-medium text-red-600">
+                                  {metrics.errors}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4 font-medium text-amber-600">
+                                  {metrics.warnings}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <PercentValue value={metrics.crawlability} />
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <PercentValue value={metrics.https} />
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <PercentValue value={metrics.internalSeo} />
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <PercentValue value={metrics.markup} />
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <Link
+                                    href={`/fix-center?domainId=${domain.id}`}
+                                    className="font-medium text-blue-700 underline-offset-4 hover:underline"
+                                  >
+                                    {metrics.fixesPending}
+                                  </Link>
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <Link
                                     href={`/reports?domainId=${domain.id}`}
-                                    label="Create report"
+                                    className="font-medium text-blue-700 underline-offset-4 hover:underline"
                                   >
-                                    <FileText
-                                      className="size-4"
-                                      aria-hidden="true"
-                                    />
-                                  </IconLink>
-                                  <IconLink
-                                    href={`/domains/${domain.id}`}
-                                    label="Settings"
-                                  >
-                                    <Settings
-                                      className="size-4"
-                                      aria-hidden="true"
-                                    />
-                                  </IconLink>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="p-5">
-                <EmptyState
-                  action={
-                    domains.length ? (
-                      <Link
-                        href="/domains"
-                        className="inline-flex h-10 items-center rounded-md border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50"
-                      >
-                        Clear search
-                      </Link>
-                    ) : (
-                      <Link
-                        href="/domains/new"
-                        className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
-                      >
-                        <Plus className="size-4" aria-hidden="true" />
-                        Add your first website
-                      </Link>
-                    )
-                  }
-                  description={
-                    domains.length
-                      ? "Try a simpler website, client, or platform name. Your projects are still here."
-                      : "Add the website you want to improve. We will guide you through verification, scanning, and the first report."
-                  }
-                  icon={Globe2}
-                  title={
-                    domains.length
-                      ? "No projects match this search"
-                      : "Start with one website"
-                  }
-                />
-              </div>
-            )}
-          </section>
+                                    {metrics.latestReportStatus
+                                      ? formatEnum(metrics.latestReportStatus)
+                                      : "Create"}
+                                  </Link>
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-4">
+                                  <div className="flex items-center gap-2">
+                                    <Link
+                                      href={`/domains/${domain.id}/workspace`}
+                                      className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-orange-600 px-3 text-sm font-medium text-white transition hover:bg-orange-700"
+                                    >
+                                      Open
+                                    </Link>
+                                    <form
+                                      action="/api/domains/start-crawl"
+                                      method="post"
+                                    >
+                                      <input
+                                        type="hidden"
+                                        name="domainId"
+                                        value={domain.id}
+                                      />
+                                      <input
+                                        type="hidden"
+                                        name="returnTo"
+                                        value="/domains"
+                                      />
+                                      <IconButton
+                                        disabled={!isVerified}
+                                        label="Run crawl"
+                                        type="submit"
+                                      >
+                                        <Play
+                                          className="size-4"
+                                          aria-hidden="true"
+                                        />
+                                      </IconButton>
+                                    </form>
+                                    <IconLink
+                                      href={`/reports?domainId=${domain.id}`}
+                                      label="Create report"
+                                    >
+                                      <FileText
+                                        className="size-4"
+                                        aria-hidden="true"
+                                      />
+                                    </IconLink>
+                                    <IconLink
+                                      href={`/domains/${domain.id}`}
+                                      label="Settings"
+                                    >
+                                      <Settings
+                                        className="size-4"
+                                        aria-hidden="true"
+                                      />
+                                    </IconLink>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="p-5">
+                  <EmptyState
+                    action={
+                      domains.length ? (
+                        <Link
+                          href="/domains"
+                          className="inline-flex h-10 items-center rounded-md border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-200 hover:bg-orange-50"
+                        >
+                          Clear search
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/domains/new"
+                          className="inline-flex h-10 items-center gap-2 rounded-md bg-orange-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-700"
+                        >
+                          <Plus className="size-4" aria-hidden="true" />
+                          Add your first website
+                        </Link>
+                      )
+                    }
+                    description={
+                      domains.length
+                        ? "Try a simpler website, client, or platform name. Your projects are still here."
+                        : "Add the website you want to improve. We will guide you through verification, scanning, and the first report."
+                    }
+                    icon={Globe2}
+                    title={
+                      domains.length
+                        ? "No projects match this search"
+                        : "Start with one website"
+                    }
+                  />
+                </div>
+              )}
+            </div>
+          </details>
 
           <section
             id="bulk-import"
@@ -548,7 +590,9 @@ function ProjectCarePlan({
             value={topProjectDomain ?? "No projects yet"}
             detail={
               topProjectDomain
-                ? `Health ${topProjectHealth ?? "pending"}%. Open it first if you are unsure.`
+                ? topProjectHealth === null || topProjectHealth === undefined
+                  ? "Health pending. Open it first if you are unsure."
+                  : `Health ${topProjectHealth}%. Open it first if you are unsure.`
                 : "Add one project to start monitoring."
             }
             href="#project-details"

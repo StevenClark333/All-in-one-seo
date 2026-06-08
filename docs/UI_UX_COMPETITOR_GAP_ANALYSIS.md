@@ -120,6 +120,7 @@ Gap for us:
 | Competitor Depth       | Competitive Analysis still leads into setup forms and a full domain comparison table            | Rename to Competitor Insights, keep watchlist previews visible, and make setup/table detail optional     |
 | Rank Depth             | Rank Tracking still exposes a full tracked-keyword inventory table in the main view             | Lead with movement/gaps, then make keyword inventory optional and capped                                 |
 | Product Softness       | Shared cards, tables, loading states, and navigation still feel slightly admin-like             | Use calmer canvas, lighter surfaces, softer rows, warmer action states, and quieter loading transitions  |
+| Projects Concision     | Projects page still lets a wide audit table and import tools compete with the first decision    | Lead with a risk-based shortlist, then collapse full inventory and bulk import into optional detail      |
 
 ## Product Direction
 
@@ -686,3 +687,21 @@ Implementation:
 - [x] Make primary orange actions feel warmer and less heavy.
 - [x] Soften sidebar rail, main path surface, and secondary navigation hover states.
 - [x] Soften route loading skeletons so page transitions feel smoother.
+
+### Batch AH: Projects Concision
+
+Competitive evidence:
+
+- Semrush project and audit views make the next project action visible before deep crawl inventory.
+- Ahrefs and Screaming Frog expose deep tables, but those tables are better as optional detail for nontechnical users.
+- A softer Projects page should answer "which website should I open first?" before showing every audit column.
+
+Implementation:
+
+- [x] Add a risk-based project shortlist above the full project inventory.
+- [x] Sort the shortlist by setup needs, critical problems, lower health, and pending fixes.
+- [x] Limit the first view to six project cards.
+- [x] Move the wide project audit table into a closed "More project detail" section.
+- [x] Keep search and the full table available inside the optional detail section.
+- [x] Keep bulk project import collapsed as an agency-only advanced action.
+- [x] Rename the global loading copy from command-center language to "Loading your workspace."
