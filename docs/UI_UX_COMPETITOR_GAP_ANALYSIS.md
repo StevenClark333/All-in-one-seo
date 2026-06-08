@@ -1151,4 +1151,4 @@ Implementation:
 - [x] Rename remaining project/domain/table labels in the link-health detail route to website and page-list language.
 - [x] Replace numeric importance scores with plain priority labels.
 - [x] Translate common page-link problem descriptions into plain guidance.
-- [ ] Browser-check Website Link Health Detail desktop and mobile after deployment.
+- [x] Browser-check Website Link Health Detail desktop and mobile after deployment.
