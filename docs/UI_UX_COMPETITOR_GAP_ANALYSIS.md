@@ -724,3 +724,22 @@ Implementation:
 - [x] Replace workflow/filter wording with softer problem/status language.
 - [x] Move bulk status updates into a closed "Change several at once" section.
 - [x] Keep top problems and solution cards visible before advanced controls.
+
+### Batch AJ: Fix Center Calmness
+
+Competitive evidence:
+
+- Semrush-style workflows make the next fix action visible before exposing delivery history, exports, or technical status.
+- Nontechnical users need "review, send, check" language before they see platform handoff details.
+- Fix detail should stay available, but the first view should feel like a short task queue, not an automation audit.
+
+Implementation:
+
+- [x] Soften the Fix Center header copy toward reviewing one fix, sending instructions, and checking improvement.
+- [x] Rename detailed status to "More fix progress" and keep it optional.
+- [x] Replace visible workflow and delivery audit wording with send options, progress notes, and website language.
+- [x] Rename user-facing fix statuses from draft/exported/applied to ready to review/sent/fixed.
+- [x] Rename verification failure and pending states to softer action labels.
+- [x] Use the send icon and plain send wording on the fix send action.
+- [x] Soften the shared Fixes navigation description away from export and technical-detail language.
+- [x] Keep platform instructions, snippets, and timestamps available inside optional detail panels.

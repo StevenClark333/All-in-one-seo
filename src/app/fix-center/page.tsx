@@ -78,9 +78,9 @@ export default async function FixCenterPage({
                   Fixes
                 </h2>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Work through suggested fixes without hunting through audit
-                  data. Start with a ready fix, send it to the right workflow,
-                  then check that the website is better.
+                  Work through suggested fixes without digging through crawl
+                  data. Review one ready fix, send the instructions, then check
+                  that the website improved.
                 </p>
               </div>
               <form action={generateLinkFixesAction} className="flex gap-2">
@@ -112,10 +112,11 @@ export default async function FixCenterPage({
             <details className="mt-4 rounded-lg border border-slate-200 bg-slate-50">
               <summary className="p-4">
                 <h3 className="text-sm font-semibold text-slate-800">
-                  Detailed fix status
+                  More fix progress
                 </h3>
                 <p className="mt-1 text-sm text-slate-600">
-                  Optional counts for teams that want the full delivery audit.
+                  Optional counts for teams that want the full behind-the-scenes
+                  progress.
                 </p>
               </summary>
               <div className="grid gap-3 border-t border-slate-200 p-4 sm:grid-cols-5">
@@ -129,7 +130,7 @@ export default async function FixCenterPage({
               </div>
               <div className="grid gap-3 border-t border-slate-200 p-4 sm:grid-cols-4">
                 <Metric
-                  label="Verification pending"
+                  label="Ready to check"
                   value={verificationCounts.PENDING}
                 />
                 <Metric
@@ -137,7 +138,7 @@ export default async function FixCenterPage({
                   value={verificationCounts.VERIFIED_FIXED}
                 />
                 <Metric
-                  label="Still failing"
+                  label="Needs another look"
                   value={verificationCounts.STILL_FAILING}
                 />
                 <Metric
@@ -151,7 +152,7 @@ export default async function FixCenterPage({
           <ProjectWorkspaceBar
             active="fixes"
             domainId={selectedDomainId}
-            note="Fix generation, delivery workflows, and audit trails are filtered to this domain."
+            note="Fix ideas, send options, and progress notes are filtered to this website."
             returnPath="/fix-center"
           />
 
@@ -366,7 +367,7 @@ export default async function FixCenterPage({
                         </summary>
                         <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
                           Manual fix instruction
-                          <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client workflow." />
+                          <InfoTooltip label="Copy this into WordPress, Webflow, Shopify, a developer ticket, or your client handoff." />
                         </p>
                         <p className="mt-2 text-sm leading-6 text-slate-700">
                           {suggestion.manualInstructions}
@@ -431,11 +432,11 @@ export default async function FixCenterPage({
 
                       <details className="mt-4 rounded-md border border-slate-200 bg-white p-3">
                         <summary className="cursor-pointer text-sm font-semibold text-slate-700">
-                          Delivery audit and timestamps
+                          Progress notes and timestamps
                         </summary>
                         <p className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600">
-                          Fix delivery audit
-                          <InfoTooltip label="Shows where this fix is after approval, delivery to WordPress or another workflow, website application, and crawl verification." />
+                          Fix progress notes
+                          <InfoTooltip label="Shows where this fix is after approval, sending, website application, and crawl verification." />
                         </p>
                         <div className="mt-3 grid gap-2 lg:grid-cols-4">
                           {lifecycleSteps.map((step) => (
@@ -504,7 +505,7 @@ export default async function FixCenterPage({
                             value={suggestion.id}
                           />
                           <label className="grid gap-1 text-sm font-medium text-slate-600">
-                            Send to workflow
+                            Send to
                             <select
                               name="integrationId"
                               className="h-10 min-w-0 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-700"
@@ -520,10 +521,10 @@ export default async function FixCenterPage({
                             </select>
                           </label>
                           <button className="inline-flex h-10 items-center justify-center gap-2 self-end rounded-md bg-orange-600 px-4 text-sm font-semibold text-white transition hover:bg-orange-700">
-                            <Download className="size-4" aria-hidden="true" />
+                            <Send className="size-4" aria-hidden="true" />
                             Send fix
                             <InfoTooltip
-                              label="Posts this fix as JSON to the selected WordPress, Zapier, or Make receiver and marks it exported."
+                              label="Sends this fix to the selected WordPress, Zapier, or Make connection and marks it sent."
                               passive
                             />
                           </button>
@@ -557,9 +558,9 @@ export default async function FixCenterPage({
                         <div className="mt-3 rounded-md border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-600">
                           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                             <p>
-                              No delivery workflow is ready for this domain.
+                              No send option is connected for this website yet.
                               Connect WordPress, Zapier, or Make to send fixes
-                              directly from Fix Center.
+                              directly from here.
                             </p>
                             <Link
                               href={`/integrations${
@@ -620,8 +621,8 @@ function FixComfortPlan({
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
             Keep this page simple: review the ready fixes first, use connected
-            workflows when possible, and only open detailed status when you need
-            a delivery audit.
+            send options when possible, and only open progress detail when you
+            need the full history.
           </p>
         </div>
 
@@ -640,8 +641,8 @@ function FixComfortPlan({
             label="Send"
             value={
               deliveryWorkflowCount
-                ? `${deliveryWorkflowCount} workflows ready`
-                : "Connect a workflow"
+                ? `${deliveryWorkflowCount} send options`
+                : "Connect a send option"
             }
             detail={`${sentOrApplied} fixes have been sent or applied.`}
             href="/integrations"
@@ -732,11 +733,11 @@ function getStatusButtonClass(status: string, subtle: boolean) {
 
 function Metric({ label, value }: { label: string; value: number }) {
   const isHealthy =
-    label === "Applied" ||
+    label === "Fixed" ||
     label === "Verified fixed" ||
     label === "Approved" ||
-    label === "Exported";
-  const isProblem = label === "Still failing";
+    label === "Sent";
+  const isProblem = label === "Needs another look";
   const styles = isHealthy
     ? "border-emerald-200 bg-emerald-50 text-emerald-900"
     : isProblem
@@ -745,9 +746,7 @@ function Metric({ label, value }: { label: string; value: number }) {
 
   return (
     <div className={`rounded-md border p-3 ${styles}`}>
-      <p className="text-sm font-medium opacity-75">
-        {label}
-      </p>
+      <p className="text-sm font-medium opacity-75">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );
@@ -764,9 +763,7 @@ function DetailBlock({
 }) {
   return (
     <div className="min-w-0 rounded-md border border-slate-200 p-3">
-      <p className="text-sm font-semibold text-slate-600">
-        {label}
-      </p>
+      <p className="text-sm font-semibold text-slate-600">{label}</p>
       <p
         className={`mt-2 break-words text-sm font-medium ${
           danger ? "text-red-600" : "text-slate-700"
@@ -787,6 +784,26 @@ function isLinkFixStatus(value: string | undefined): value is LinkFixStatus {
 }
 
 function formatStatus(value: string) {
+  if (value === "DRAFT") {
+    return "Ready to review";
+  }
+
+  if (value === "APPROVED") {
+    return "Approved";
+  }
+
+  if (value === "EXPORTED") {
+    return "Sent";
+  }
+
+  if (value === "APPLIED") {
+    return "Fixed";
+  }
+
+  if (value === "DISMISSED") {
+    return "Dismissed";
+  }
+
   return value
     .toLowerCase()
     .replace(/_/g, " ")
@@ -799,11 +816,11 @@ function formatVerificationStatus(value: string) {
   }
 
   if (value === "STILL_FAILING") {
-    return "Still failing";
+    return "Needs another look";
   }
 
   if (value === "PENDING") {
-    return "Verification pending";
+    return "Ready to check";
   }
 
   return "Not checked";

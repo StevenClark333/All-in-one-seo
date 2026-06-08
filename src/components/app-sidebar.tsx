@@ -46,7 +46,7 @@ const navHelp: Record<string, string> = {
   Issues:
     "See the problems that need attention and the easiest way to solve them.",
   "Fix Center":
-    "Approve, export, and track fixes without digging through technical details.",
+    "Approve, send, and track fixes without digging through extra detail.",
   AI: "Generate content ideas, SEO recommendations, and fix briefs.",
   Technical:
     "Review internal links, crawlability, schema, and rendering signals.",
