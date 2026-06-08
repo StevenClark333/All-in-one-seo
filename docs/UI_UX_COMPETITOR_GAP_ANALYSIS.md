@@ -1261,4 +1261,4 @@ Implementation:
 - [x] Rename report movement labels from problem/issue language to item and fix language.
 - [x] Translate change severity labels into urgent/planned wording.
 - [x] Browser-check Report Detail desktop and mobile locally.
-- [ ] Browser-check Report Detail desktop and mobile after deployment.
+- [x] Browser-check Report Detail desktop and mobile after deployment.
