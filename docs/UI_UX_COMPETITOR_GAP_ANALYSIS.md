@@ -1358,3 +1358,19 @@ Implementation:
 - [x] Translate message delivery status from pending/failed wording to waiting/needs-review wording.
 - [x] Browser-check Alerts label desktop and mobile locally.
 - [x] Browser-check Alerts label desktop and mobile after deployment.
+
+### Batch BT: Client Status Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep account/client depth available, but a nontechnical client workflow should describe website setup, ownership, checks, and report readiness in everyday language.
+- Agency users should see whether a client website is ready, being checked, or needs attention before reading raw platform, verification, crawl, or report status labels.
+- A softer client area should preserve exact status detail while translating it into what the user can do next.
+
+Implementation:
+
+- [x] Translate client website platform labels into WordPress site, Shopify store, and similar website wording.
+- [x] Translate ownership and latest-check statuses into ownership-confirmed and finished/waiting/checking wording.
+- [x] Translate client report status into ready-to-share/shared/needs-review wording.
+- [x] Browser-check Client list and Client detail desktop and mobile locally.
+- [ ] Browser-check Client list and Client detail desktop and mobile after deployment.

@@ -141,8 +141,10 @@ export default async function ClientDetailPage({
                               {domain.domain}
                             </Link>
                             <p className="mt-1 text-sm text-slate-500">
-                              {formatEnum(domain.platform)} -{" "}
-                              {formatEnum(domain.verificationStatus)}
+                              {formatPlatform(domain.platform)} -{" "}
+                              {formatOwnershipStatus(
+                                domain.verificationStatus,
+                              )}
                             </p>
                           </div>
                         </div>
@@ -159,7 +161,7 @@ export default async function ClientDetailPage({
                           label="Last check"
                           value={
                             latestCrawl
-                              ? formatEnum(latestCrawl.status)
+                              ? formatCheckStatus(latestCrawl.status)
                               : "Not started"
                           }
                         />
@@ -318,7 +320,7 @@ export default async function ClientDetailPage({
                       >
                         <p className="text-sm font-semibold">{report.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(report.status)} -{" "}
+                          {formatReportStatus(report.status)} -{" "}
                           {report.createdAt.toLocaleDateString()}
                         </p>
                       </div>
@@ -502,4 +504,52 @@ function formatImportance(value: string) {
   }
 
   return formatEnum(value);
+}
+
+function formatPlatform(value: string) {
+  const labels: Record<string, string> = {
+    CUSTOM: "Custom website",
+    SHOPIFY: "Shopify store",
+    SQUARESPACE: "Squarespace site",
+    UNKNOWN: "Website",
+    WEBFLOW: "Webflow site",
+    WIX: "Wix site",
+    WORDPRESS: "WordPress site",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatOwnershipStatus(value: string) {
+  const labels: Record<string, string> = {
+    EXPIRED: "Needs a fresh ownership check",
+    FAILED: "Ownership needs help",
+    PENDING: "Ownership not confirmed",
+    VERIFIED: "Ownership confirmed",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatCheckStatus(value: string) {
+  const labels: Record<string, string> = {
+    CANCELLED: "Stopped",
+    COMPLETED: "Finished",
+    FAILED: "Needs another look",
+    QUEUED: "Waiting",
+    RUNNING: "Checking now",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatReportStatus(value: string) {
+  const labels: Record<string, string> = {
+    DRAFT: "Draft",
+    FAILED: "Needs review",
+    GENERATED: "Ready to share",
+    PUBLISHED: "Shared",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }

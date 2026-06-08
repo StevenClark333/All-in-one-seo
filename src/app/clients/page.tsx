@@ -85,6 +85,7 @@ export default async function ClientsPage() {
                   const avgScore = averageScore(
                     client.domains.map((domain) => domain.healthScore),
                   );
+                  const latestReport = client.reports.at(0);
 
                   return (
                     <article
@@ -135,8 +136,9 @@ export default async function ClientsPage() {
                           Latest report
                         </p>
                         <p className="mt-2 text-sm font-medium">
-                          {client.reports.at(0)?.status.toLowerCase() ??
-                            "Not generated"}
+                          {latestReport
+                            ? formatReportStatus(latestReport.status)
+                            : "Not prepared yet"}
                         </p>
                       </div>
                     </article>
@@ -312,4 +314,15 @@ function averageScore(scores: Array<number | null>) {
   return Math.round(
     validScores.reduce((total, score) => total + score, 0) / validScores.length,
   );
+}
+
+function formatReportStatus(value: string) {
+  const labels: Record<string, string> = {
+    DRAFT: "Draft",
+    FAILED: "Needs review",
+    GENERATED: "Ready to share",
+    PUBLISHED: "Shared",
+  };
+
+  return labels[value] ?? value.toLowerCase();
 }
