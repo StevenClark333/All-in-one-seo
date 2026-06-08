@@ -113,21 +113,21 @@ export default async function AlertsPage() {
               <Select label="Change to watch" name="eventType">
                 {eventTypes.map((eventType) => (
                   <option key={eventType} value={eventType}>
-                    {formatEnum(eventType)}
+                    {formatWatchedChange(eventType)}
                   </option>
                 ))}
               </Select>
               <Select label="Importance" name="severityThreshold">
                 {severities.map((severity) => (
                   <option key={severity} value={severity}>
-                    {formatEnum(severity)}
+                    {formatImportance(severity)}
                   </option>
                 ))}
               </Select>
               <Select label="Send by" name="channel">
                 {channels.map((channel) => (
                   <option key={channel} value={channel}>
-                    {formatEnum(channel)}
+                    {formatSendChannel(channel)}
                   </option>
                 ))}
               </Select>
@@ -158,7 +158,7 @@ export default async function AlertsPage() {
                     <option value="">None</option>
                     {channels.map((channel) => (
                       <option key={channel} value={channel}>
-                        {formatEnum(channel)}
+                        {formatSendChannel(channel)}
                       </option>
                     ))}
                   </Select>
@@ -214,14 +214,17 @@ export default async function AlertsPage() {
                           {rule.client?.name ??
                             rule.domain?.domain ??
                             "Workspace-wide"}{" "}
-                          - {formatEnum(rule.eventType)}
+                          - {formatWatchedChange(rule.eventType)}
                         </p>
                       </div>
                       <Meta
                         label="Importance"
-                        value={formatEnum(rule.severityThreshold)}
+                        value={formatImportance(rule.severityThreshold)}
                       />
-                      <Meta label="Sends by" value={formatEnum(rule.channel)} />
+                      <Meta
+                        label="Sends by"
+                        value={formatSendChannel(rule.channel)}
+                      />
                       <Meta
                         label="Send place"
                         value={
@@ -234,7 +237,7 @@ export default async function AlertsPage() {
                         label="Backup"
                         value={
                           rule.escalationChannel
-                            ? formatEnum(rule.escalationChannel)
+                            ? formatSendChannel(rule.escalationChannel)
                             : "None"
                         }
                       />
@@ -273,7 +276,10 @@ export default async function AlertsPage() {
                         {alert.page ? ` - ${alert.page.url}` : ""}
                       </p>
                       <div className="mt-3 grid grid-cols-2 gap-3">
-                        <Meta label="Status" value={formatEnum(alert.status)} />
+                        <Meta
+                          label="Status"
+                          value={formatDeliveryStatus(alert.status)}
+                        />
                         <Meta
                           label="Backup sent"
                           value={
@@ -439,6 +445,50 @@ function EmptyState({ body, title }: { body: string; title: string }) {
       </p>
     </div>
   );
+}
+
+function formatWatchedChange(value: string) {
+  const labels: Record<string, string> = {
+    ANY_CRITICAL_CHANGE: "Any urgent change",
+    CANONICAL_CHANGED: "Preferred page changed",
+    META_DESCRIPTION_CHANGED: "Description changed",
+    ROBOTS_CHANGED: "Search access changed",
+    STATUS_CODE_CHANGED: "Page availability changed",
+    TITLE_CHANGED: "Title changed",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatImportance(value: string) {
+  const labels: Record<string, string> = {
+    CRITICAL: "Urgent",
+    SUGGESTION: "Idea",
+    WARNING: "Planned",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatSendChannel(value: string) {
+  const labels: Record<string, string> = {
+    EMAIL: "Email",
+    SLACK: "Slack",
+    TEAMS: "Teams",
+    WEBHOOK: "Webhook",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatDeliveryStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs review",
+    PENDING: "Waiting",
+    SENT: "Sent",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function formatEnum(value: string) {
