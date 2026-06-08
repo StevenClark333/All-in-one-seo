@@ -1406,3 +1406,19 @@ Implementation:
 - [x] Translate scheduled update frequency into every-week/every-month wording.
 - [x] Browser-check Client updates status labels desktop and mobile locally.
 - [ ] Browser-check Client updates status labels after deployment.
+
+### Batch BW: Report Detail Status Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs client reports keep the reporting story easy to scan, with status and check progress acting as support rather than technical labels.
+- Nontechnical readers should see shared, ready-to-share, finished, checking-now, and needs-review wording before published, generated, completed, running, or failed status names.
+- Shared reports need the softest language because the reader may never use the internal SEO workspace.
+
+Implementation:
+
+- [x] Translate private report detail status labels into draft, ready-to-share, shared, and needs-review wording.
+- [x] Translate private and shared website-check statuses into finished, checking-now, waiting-to-start, stopped, and needs-review wording.
+- [x] Rename the public report header from published report to shared SEO update.
+- [x] Browser-check private and shared report detail status labels desktop and mobile locally.
+- [ ] Browser-check private and shared report detail status labels after deployment.

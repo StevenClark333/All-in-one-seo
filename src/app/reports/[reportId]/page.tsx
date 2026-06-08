@@ -65,7 +65,7 @@ export default async function ReportDetailPage({
             <div>
               <p className="text-sm font-medium text-slate-500">
                 {summary.brand.agencyName} for {summary.brand.clientName} -{" "}
-                {formatEnum(report.status)}
+                {formatReportStatus(report.status)}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 {report.title}
@@ -140,7 +140,7 @@ export default async function ReportDetailPage({
                 </h3>
               </div>
               <span className="inline-flex w-fit rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
-                {formatEnum(report.status)}
+                {formatReportStatus(report.status)}
               </span>
             </div>
             <div className="mt-4 grid gap-3 lg:grid-cols-3">
@@ -284,7 +284,7 @@ export default async function ReportDetailPage({
                           className="rounded-md border border-slate-200 bg-slate-50 p-3"
                         >
                           <p className="text-sm font-semibold">
-                            {formatEnum(crawl.status)}
+                            {formatWebsiteCheckStatus(crawl.status)}
                           </p>
                           <p className="mt-1 text-xs text-slate-500">
                             {crawl.pagesCrawled} pages checked /{" "}
@@ -418,6 +418,29 @@ function formatImportance(value: string) {
   }
 
   return formatEnum(value);
+}
+
+function formatReportStatus(value: string) {
+  const labels: Record<string, string> = {
+    DRAFT: "Draft",
+    FAILED: "Needs review",
+    GENERATED: "Ready to share",
+    PUBLISHED: "Shared",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatWebsiteCheckStatus(value: string) {
+  const labels: Record<string, string> = {
+    CANCELLED: "Stopped",
+    COMPLETED: "Finished",
+    FAILED: "Needs review",
+    QUEUED: "Waiting to start",
+    RUNNING: "Checking now",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function pluralize(count: number, singular: string, plural = `${singular}s`) {
