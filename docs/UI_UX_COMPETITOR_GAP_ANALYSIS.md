@@ -929,4 +929,4 @@ Implementation:
 - [x] Rename "More link detail" to "More page link counts".
 - [x] Translate stored technical issue titles into plain page-link wording on the Links page.
 - [x] Soften sidebar Links helper copy away from crawlability/schema/rendering language.
-- [ ] Browser-check Website Links desktop and mobile after deployment.
+- [x] Browser-check Website Links desktop and mobile after deployment.
