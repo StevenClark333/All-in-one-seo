@@ -950,4 +950,4 @@ Implementation:
 - [x] Add accessible labels to the client settings fields.
 - [x] Replace raw audit detail wording with client update and extra technical detail wording.
 - [x] Normalize odd separator characters in client detail metadata.
-- [ ] Browser-check Client Care desktop and mobile after deployment.
+- [x] Browser-check Client Care desktop and mobile after deployment.
