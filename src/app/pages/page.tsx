@@ -13,6 +13,7 @@ type PagesPageProps = {
 
 type PageInventoryData = Awaited<ReturnType<typeof getPageInventoryData>>;
 type TemplateGroup = PageInventoryData["templateGroups"][number];
+type InventoryPage = PageInventoryData["pages"][number];
 
 export default async function PagesPage({ searchParams }: PagesPageProps) {
   const params = searchParams ? await searchParams : {};
@@ -36,6 +37,8 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
   const bestTemplateGroup = templateGroups.at(0);
   const visibleTemplateGroups = templateGroups.slice(0, 8);
   const hiddenTemplateGroups = templateGroups.slice(8);
+  const visiblePages = pages.slice(0, 15);
+  const hiddenPages = pages.slice(15);
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -200,81 +203,27 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
                     <span>Last check</span>
                   </div>
 
-                  {pages.map((page) => {
-                    const snapshot = page.snapshots.at(0);
-                    const critical = page.issues.filter(
-                      (issue) => issue.severity === "CRITICAL",
-                    ).length;
-                    const warnings = page.issues.filter(
-                      (issue) => issue.severity === "WARNING",
-                    ).length;
+                  {visiblePages.map((page) => (
+                    <PageRow key={page.id} page={page} />
+                  ))}
 
-                    return (
-                      <article
-                        key={page.id}
-                        className="grid gap-4 px-5 py-4 text-sm xl:grid-cols-[minmax(0,1fr)_150px_90px_90px_120px_120px] xl:items-center"
-                      >
-                        <div className="min-w-0">
-                          <Link
-                            href={`/pages/${page.id}`}
-                            className="font-medium underline-offset-4 hover:underline"
-                          >
-                            {page.url}
-                          </Link>
-                          <p className="mt-1 text-xs leading-5 text-slate-500">
-                            {snapshot?.title ?? "Missing title"}
-                          </p>
-                          <p className="mt-1 text-xs leading-5 text-slate-500">
-                            {page.domain.client?.name ?? "Unassigned"} -{" "}
-                            <Link
-                              href={`/domains/${page.domain.id}`}
-                              className="font-medium text-slate-700 underline-offset-4 hover:underline"
-                            >
-                              {page.domain.domain}
-                            </Link>
-                          </p>
-                        </div>
-
-                        <MetaBlock label="Pattern">
-                          {getTemplateLabel(inferPageTemplate(page))}
-                        </MetaBlock>
-
-                        <MetaBlock label="Response">
-                          <span className="whitespace-nowrap">
-                            {snapshot?.statusCode ?? "Pending"}
-                          </span>
-                        </MetaBlock>
-
-                        <MetaBlock label="Problems">
-                          <span className="whitespace-nowrap">
-                            <span className="font-medium text-red-600">
-                              {critical}
-                            </span>
-                            <span className="text-slate-400"> / </span>
-                            <span className="font-medium text-amber-600">
-                              {warnings}
-                            </span>
-                          </span>
-                        </MetaBlock>
-
-                        <MetaBlock label="Links">
-                          <span className="inline-flex items-center gap-1 whitespace-nowrap">
-                            <Link2 className="size-4" aria-hidden="true" />
-                            {page.incomingLinks.length} in /{" "}
-                            {page.outgoingLinks.length} out
-                          </span>
-                        </MetaBlock>
-
-                        <MetaBlock label="Last check">
-                          <span className="whitespace-nowrap">
-                            {page.lastCrawledAt
-                              ? page.lastCrawledAt.toLocaleDateString()
-                              : "Pending"}
-                          </span>
-                        </MetaBlock>
-                      </article>
-                    );
-                  })}
+                  {hiddenPages.length ? (
+                    <details className="border-t border-slate-100 px-5 py-4">
+                      <summary className="cursor-pointer text-sm font-semibold text-slate-700 marker:text-slate-400">
+                        More pages ({hiddenPages.length})
+                      </summary>
+                      <p className="mt-2 text-sm leading-6 text-slate-500">
+                        These pages are still available, but the first view
+                        stays focused on the pages most likely to need
+                        attention.
+                      </p>
+                      <div className="mt-3 divide-y divide-slate-100 rounded-lg border border-slate-100">
+                        {hiddenPages.map((page) => (
+                          <PageRow key={page.id} page={page} />
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
                 </>
               ) : (
                 <EmptyState
@@ -437,6 +386,74 @@ function TemplateGroupCard({
         {group.issueCount} open problems, {group.criticalCount} urgent
       </p>
     </Link>
+  );
+}
+
+function PageRow({ page }: { page: InventoryPage }) {
+  const snapshot = page.snapshots.at(0);
+  const critical = page.issues.filter(
+    (issue) => issue.severity === "CRITICAL",
+  ).length;
+  const warnings = page.issues.filter(
+    (issue) => issue.severity === "WARNING",
+  ).length;
+
+  return (
+    <article className="grid gap-4 px-5 py-4 text-sm xl:grid-cols-[minmax(0,1fr)_150px_90px_90px_120px_120px] xl:items-center">
+      <div className="min-w-0">
+        <Link
+          href={`/pages/${page.id}`}
+          className="font-medium underline-offset-4 hover:underline"
+        >
+          {page.url}
+        </Link>
+        <p className="mt-1 text-xs leading-5 text-slate-500">
+          {snapshot?.title ?? "Missing title"}
+        </p>
+        <p className="mt-1 text-xs leading-5 text-slate-500">
+          {page.domain.client?.name ?? "Unassigned"} -{" "}
+          <Link
+            href={`/domains/${page.domain.id}`}
+            className="font-medium text-slate-700 underline-offset-4 hover:underline"
+          >
+            {page.domain.domain}
+          </Link>
+        </p>
+      </div>
+
+      <MetaBlock label="Pattern">
+        {getTemplateLabel(inferPageTemplate(page))}
+      </MetaBlock>
+
+      <MetaBlock label="Response">
+        <span className="whitespace-nowrap">
+          {snapshot?.statusCode ?? "Pending"}
+        </span>
+      </MetaBlock>
+
+      <MetaBlock label="Problems">
+        <span className="whitespace-nowrap">
+          <span className="font-medium text-red-600">{critical}</span>
+          <span className="text-slate-400"> / </span>
+          <span className="font-medium text-amber-600">{warnings}</span>
+        </span>
+      </MetaBlock>
+
+      <MetaBlock label="Links">
+        <span className="inline-flex items-center gap-1 whitespace-nowrap">
+          <Link2 className="size-4" aria-hidden="true" />
+          {page.incomingLinks.length} in / {page.outgoingLinks.length} out
+        </span>
+      </MetaBlock>
+
+      <MetaBlock label="Last check">
+        <span className="whitespace-nowrap">
+          {page.lastCrawledAt
+            ? page.lastCrawledAt.toLocaleDateString()
+            : "Pending"}
+        </span>
+      </MetaBlock>
+    </article>
   );
 }
 

@@ -840,5 +840,7 @@ Implementation:
 - [x] Rename page inventory labels toward pages checked, page patterns, urgent pages, titles ready, page list, response, problems, and last check.
 - [x] Limit visible repeated page fixes to the first eight groups.
 - [x] Move the remaining page pattern groups into a closed "More page patterns" panel.
+- [x] Limit visible page rows to the first fifteen pages.
+- [x] Move the remaining page rows into a closed "More pages" panel.
 - [x] Replace raw crawl/template wording with website-check and repeated-fix language.
 - [ ] Browser-check Page List desktop and mobile after deployment.
