@@ -99,10 +99,10 @@ export default async function ClientDetailPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-4">
             <Metric label="Average health" value={averageHealth ?? "Pending"} />
-            <Metric label="Domains" value={client.domains.length} />
-            <Metric label="Pages" value={totalPages} />
+            <Metric label="Websites" value={client.domains.length} />
+            <Metric label="Pages checked" value={totalPages} />
             <Metric
-              label="Critical / warnings"
+              label="Urgent / planned"
               value={`${criticalIssues} / ${warningIssues}`}
             />
           </section>
@@ -115,7 +115,7 @@ export default async function ClientDetailPage({
               <div className="border-b border-slate-200 p-5">
                 <h3 className="text-lg font-semibold">Client websites</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Open a website to review its health, crawl status, and fixes.
+                  Open a website to review health, recent checks, and fixes.
                 </p>
               </div>
 
@@ -140,8 +140,8 @@ export default async function ClientDetailPage({
                             >
                               {domain.domain}
                             </Link>
-                        <p className="mt-1 text-sm text-slate-500">
-                              {formatEnum(domain.platform)} ·{" "}
+                            <p className="mt-1 text-sm text-slate-500">
+                              {formatEnum(domain.platform)} -{" "}
                               {formatEnum(domain.verificationStatus)}
                             </p>
                           </div>
@@ -151,9 +151,12 @@ export default async function ClientDetailPage({
                           label="Health"
                           value={domain.healthScore ?? "Pending"}
                         />
-                        <Meta label="Pages" value={domain.pages.length} />
                         <Meta
-                          label="Last crawl"
+                          label="Pages checked"
+                          value={domain.pages.length}
+                        />
+                        <Meta
+                          label="Last check"
                           value={
                             latestCrawl
                               ? formatEnum(latestCrawl.status)
@@ -181,70 +184,85 @@ export default async function ClientDetailPage({
                   <summary className="p-5">
                     <h3 className="font-semibold">Client settings</h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Optional details for contact, logo, tags, and crawl
+                      Optional details for contact, logo, tags, and check
                       rhythm.
                     </p>
                   </summary>
                   <div className="border-t border-slate-200 p-5">
-                <form action={updateClientAction} className="grid gap-3">
-                  <input type="hidden" name="clientId" value={client.id} />
-                  <input
-                    name="name"
-                    defaultValue={client.name}
-                    className="h-10 rounded-md border border-slate-200 px-3 text-sm"
-                  />
-                  <input
-                    name="contactEmail"
-                    defaultValue={client.contactEmail ?? ""}
-                    placeholder="Contact email"
-                    className="h-10 rounded-md border border-slate-200 px-3 text-sm"
-                  />
-                  <input
-                    name="logoUrl"
-                    defaultValue={client.logoUrl ?? ""}
-                    placeholder="Logo URL"
-                    className="h-10 rounded-md border border-slate-200 px-3 text-sm"
-                  />
-                  <input
-                    name="tags"
-                    defaultValue={client.tags ?? ""}
-                    placeholder="Tags"
-                    className="h-10 rounded-md border border-slate-200 px-3 text-sm"
-                  />
-                  <select
-                    name="crawlFrequency"
-                    defaultValue={client.crawlFrequency}
-                    className="h-10 rounded-md border border-slate-200 bg-white px-3 text-sm"
-                  >
-                    <option value="MANUAL">Manual</option>
-                    <option value="WEEKLY">Weekly</option>
-                    <option value="DAILY">Daily</option>
-                    <option value="CUSTOM">Custom</option>
-                  </select>
-                  <textarea
-                    name="notes"
-                    defaultValue={client.notes ?? ""}
-                    rows={3}
-                    className="rounded-md border border-slate-200 px-3 py-2 text-sm"
-                  />
-                  <button className="h-10 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                    Save client
-                  </button>
-                </form>
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  <form action={archiveClientAction}>
-                    <input type="hidden" name="clientId" value={client.id} />
-                    <button className="h-10 w-full rounded-md border border-slate-200 text-sm font-medium text-slate-700">
-                      Archive
-                    </button>
-                  </form>
-                  <form action={deleteClientAction}>
-                    <input type="hidden" name="clientId" value={client.id} />
-                    <button className="h-10 w-full rounded-md border border-red-200 text-sm font-medium text-red-700">
-                      Delete
-                    </button>
-                  </form>
-                </div>
+                    <form action={updateClientAction} className="grid gap-3">
+                      <input type="hidden" name="clientId" value={client.id} />
+                      <input
+                        aria-label="Client name"
+                        name="name"
+                        defaultValue={client.name}
+                        className="h-10 rounded-md border border-slate-200 px-3 text-sm"
+                      />
+                      <input
+                        aria-label="Contact email"
+                        name="contactEmail"
+                        defaultValue={client.contactEmail ?? ""}
+                        placeholder="Contact email"
+                        className="h-10 rounded-md border border-slate-200 px-3 text-sm"
+                      />
+                      <input
+                        aria-label="Logo URL"
+                        name="logoUrl"
+                        defaultValue={client.logoUrl ?? ""}
+                        placeholder="Logo URL"
+                        className="h-10 rounded-md border border-slate-200 px-3 text-sm"
+                      />
+                      <input
+                        aria-label="Tags"
+                        name="tags"
+                        defaultValue={client.tags ?? ""}
+                        placeholder="Tags"
+                        className="h-10 rounded-md border border-slate-200 px-3 text-sm"
+                      />
+                      <select
+                        aria-label="Check rhythm"
+                        name="crawlFrequency"
+                        defaultValue={client.crawlFrequency}
+                        className="h-10 rounded-md border border-slate-200 bg-white px-3 text-sm"
+                      >
+                        <option value="MANUAL">Only when I start it</option>
+                        <option value="WEEKLY">Weekly</option>
+                        <option value="DAILY">Daily</option>
+                        <option value="CUSTOM">Custom rhythm</option>
+                      </select>
+                      <textarea
+                        aria-label="Client notes"
+                        name="notes"
+                        defaultValue={client.notes ?? ""}
+                        rows={3}
+                        placeholder="What this client cares about, reporting preferences, or account notes."
+                        className="rounded-md border border-slate-200 px-3 py-2 text-sm"
+                      />
+                      <button className="h-10 rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
+                        Save client
+                      </button>
+                    </form>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <form action={archiveClientAction}>
+                        <input
+                          type="hidden"
+                          name="clientId"
+                          value={client.id}
+                        />
+                        <button className="h-10 w-full rounded-md border border-slate-200 text-sm font-medium text-slate-700">
+                          Archive
+                        </button>
+                      </form>
+                      <form action={deleteClientAction}>
+                        <input
+                          type="hidden"
+                          name="clientId"
+                          value={client.id}
+                        />
+                        <button className="h-10 w-full rounded-md border border-red-200 text-sm font-medium text-red-700">
+                          Delete
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </details>
               </section>
@@ -267,7 +285,7 @@ export default async function ClientDetailPage({
                       >
                         <p className="text-sm font-semibold">{issue.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(issue.severity)} · {issue.domain.domain}
+                          {formatEnum(issue.severity)} - {issue.domain.domain}
                         </p>
                       </Link>
                     ))
@@ -286,7 +304,8 @@ export default async function ClientDetailPage({
               >
                 <h3 className="font-semibold">Recent reports</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Use reports to show progress without sending raw audit detail.
+                  Use client updates to show progress without sending extra
+                  technical detail.
                 </p>
                 <div className="mt-4 grid gap-3">
                   {client.reports.length ? (
@@ -297,7 +316,7 @@ export default async function ClientDetailPage({
                       >
                         <p className="text-sm font-semibold">{report.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(report.status)} ·{" "}
+                          {formatEnum(report.status)} -{" "}
                           {report.createdAt.toLocaleDateString()}
                         </p>
                       </div>
@@ -354,7 +373,7 @@ function ClientDetailPlan({
             }
             label="Websites"
             value={domainCount ? `${domainCount} connected` : "Connect one"}
-            detail="A client needs at least one website before audits can help."
+            detail="A client needs at least one website before checks can help."
             href="#client-projects"
           />
           <PlanTile
@@ -366,7 +385,9 @@ function ClientDetailPlan({
               )
             }
             label="Issues"
-            value={criticalIssues ? `${criticalIssues} urgent` : "No urgent issues"}
+            value={
+              criticalIssues ? `${criticalIssues} urgent` : "No urgent issues"
+            }
             detail="Open the highest-impact issue before reviewing details."
             href="#client-issues"
           />
@@ -386,9 +407,7 @@ function ClientDetailPlan({
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-2 text-2xl font-semibold">{value}</p>
     </div>
   );
@@ -397,9 +416,7 @@ function Metric({ label, value }: { label: string; value: React.ReactNode }) {
 function Meta({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-2 text-sm font-medium text-slate-700">{value}</p>
     </div>
   );

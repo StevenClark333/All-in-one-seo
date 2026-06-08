@@ -930,3 +930,24 @@ Implementation:
 - [x] Translate stored technical issue titles into plain page-link wording on the Links page.
 - [x] Soften sidebar Links helper copy away from crawlability/schema/rendering language.
 - [x] Browser-check Website Links desktop and mobile after deployment.
+
+### Batch AT: Client Care Calmness
+
+Competitive evidence:
+
+- Semrush project and client workflows keep each website/account organized around health, progress, and reportable next steps.
+- Ahrefs project dashboards preserve site audit detail, but the useful first view is whether a project is connected, has issues, and is ready to report.
+- A softer client area should say websites, checks, updates, and client notes before crawl cadence, raw audit detail, or technical status wording.
+
+Implementation:
+
+- [x] Rename client metrics from domains/pages/critical warnings to websites, pages checked, and urgent/planned work.
+- [x] Rename client website helper text away from crawl status toward recent checks and fixes.
+- [x] Rename per-website page and last-crawl labels to pages checked and last check.
+- [x] Rename client settings helper text from crawl rhythm to check rhythm.
+- [x] Rename new-client setup and default crawl cadence to check rhythm.
+- [x] Soften check rhythm dropdown options to "Only when I start it", weekly, daily, and custom rhythm.
+- [x] Add accessible labels to the client settings fields.
+- [x] Replace raw audit detail wording with client update and extra technical detail wording.
+- [x] Normalize odd separator characters in client detail metadata.
+- [ ] Browser-check Client Care desktop and mobile after deployment.

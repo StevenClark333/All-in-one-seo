@@ -55,7 +55,7 @@ export default async function NewClientPage() {
               />
               <SetupTile
                 icon={<CalendarCheck className="size-4" aria-hidden="true" />}
-                title="Crawl rhythm"
+                title="Check rhythm"
                 body="Weekly is a safe starting point for most clients."
               />
             </div>
@@ -101,17 +101,17 @@ export default async function NewClientPage() {
 
               <label className="grid gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  Default crawl cadence
+                  Default check rhythm
                 </span>
                 <select
                   name="crawlFrequency"
                   defaultValue="WEEKLY"
                   className="h-11 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="MANUAL">Manual</option>
+                  <option value="MANUAL">Only when I start it</option>
                   <option value="WEEKLY">Weekly</option>
                   <option value="DAILY">Daily</option>
-                  <option value="CUSTOM">Custom</option>
+                  <option value="CUSTOM">Custom rhythm</option>
                 </select>
                 <span className="text-xs leading-5 text-slate-500">
                   Weekly keeps the client updated without feeling noisy.
