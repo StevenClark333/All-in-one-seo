@@ -1294,3 +1294,19 @@ Implementation:
 - [x] Use natural singular/plural labels for saved ideas and notes.
 - [x] Browser-check Ideas and fixes desktop and mobile locally.
 - [x] Browser-check Ideas and fixes desktop and mobile after deployment.
+
+### Batch BP: Add Website Setup Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both keep setup details available, but their onboarding value is clearer when users know which website is being added and what will happen next.
+- Nontechnical setup should say website, ownership, and check rhythm before project, domain, crawl setup, or crawler permission language.
+- A softer Add website flow should make the first saved step feel calm: add the website, choose the platform, choose how often the site should be checked, then confirm ownership.
+
+Implementation:
+
+- [x] Rename Add website first-viewport copy away from project and crawl setup wording.
+- [x] Rename setup tiles and form labels from crawl rhythm to check rhythm.
+- [x] Replace domain/crawl permission wording with website and check wording.
+- [x] Browser-check Add website desktop and mobile locally.
+- [ ] Browser-check Add website desktop and mobile after deployment.

@@ -35,7 +35,7 @@ export default async function NewDomainPage() {
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Projects
+          Websites
         </Link>
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -48,13 +48,13 @@ export default async function NewDomainPage() {
                 {workspace?.name ?? "Workspace"}
               </p>
               <h1 className="text-2xl font-semibold tracking-normal">
-                Add project website
+                Add website
               </h1>
             </div>
           </div>
           <p className="mt-4 text-sm leading-6 text-slate-500">
             Add the website first. After it is saved, the portal will guide you
-            through verification, crawl setup, and the first SEO check.
+            through ownership, check rhythm, and the first SEO check.
           </p>
 
           <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">
@@ -74,7 +74,7 @@ export default async function NewDomainPage() {
               />
               <SetupTile
                 icon={<CalendarCheck className="size-4" aria-hidden="true" />}
-                title="Crawl rhythm"
+                title="Check rhythm"
                 body="Weekly is a safe first setting for most websites."
               />
             </div>
@@ -82,7 +82,7 @@ export default async function NewDomainPage() {
 
           {!workspace ? (
             <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-              Create a workspace before adding domains.
+              Create a workspace before adding websites.
             </div>
           ) : (
             <form action={createDomain} className="mt-6 grid gap-5">
@@ -136,7 +136,7 @@ export default async function NewDomainPage() {
 
                 <label className="grid gap-2">
                   <span className="text-sm font-medium text-slate-700">
-                    Crawl rhythm
+                    Check rhythm
                   </span>
                   <select
                     name="crawlFrequency"
@@ -161,7 +161,7 @@ export default async function NewDomainPage() {
                   <ShieldCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                   <p>
                     New websites start with a verification step so the portal
-                    knows you are allowed to crawl and monitor them.
+                    knows you are allowed to check and watch them.
                   </p>
                 </div>
               </div>
