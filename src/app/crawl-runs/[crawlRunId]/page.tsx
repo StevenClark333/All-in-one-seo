@@ -45,19 +45,19 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
   const crawlResult =
     crawlRun.status === "COMPLETED"
       ? crawlRun.pagesFailed > 0
-        ? "Crawl finished with a few pages to review"
-        : "Crawl finished successfully"
+        ? "Website check finished with a few pages to review"
+        : "Website check finished successfully"
       : crawlRun.status === "FAILED"
-        ? "Crawl could not finish"
-        : "Crawl is still running";
+        ? "Website check could not finish"
+        : "Website check is still running";
   const nextStep =
     crawlRun.status === "FAILED"
-      ? "Review the message below, then try another crawl from the project workspace."
+      ? "Review the message below, then try another website check from the workspace."
       : crawlRun.changeEvents.length
-        ? "Start with detected changes before reading every page snapshot."
+        ? "Start with the page changes before opening every detail."
         : crawlRun.pagesFailed > 0
-          ? "Check failed pages first, then rerun the crawl."
-          : "No urgent crawl follow-up is needed right now.";
+          ? "Review the pages that need another look, then run a fresh check."
+          : "No urgent follow-up is needed right now.";
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-6 text-slate-950 sm:px-8 lg:px-10">
@@ -67,7 +67,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
           className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Project workspace
+          Website workspace
         </Link>
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -81,11 +81,11 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                   {crawlRun.domain.client?.name ?? "Unassigned"}
                 </p>
                 <h1 className="text-2xl font-semibold tracking-normal">
-                  Crawl recap
+                  Website check recap
                 </h1>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  {crawlRun.domain.domain} was checked for pages, crawl
-                  problems, and important SEO changes.
+                  {crawlRun.domain.domain} was checked for pages, problems, and
+                  important changes.
                 </p>
               </div>
             </div>
@@ -99,7 +99,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                     : "border-blue-200 bg-blue-50 text-blue-700"
               }`}
             >
-              {formatEnum(crawlRun.status)}
+              {formatCheckStatus(crawlRun.status)}
             </span>
           </div>
 
@@ -115,16 +115,16 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
             <form action={cancelCrawl} className="mt-5">
               <input type="hidden" name="crawlRunId" value={crawlRun.id} />
               <button className="inline-flex h-10 items-center rounded-md border border-red-200 bg-red-50 px-4 text-sm font-medium text-red-700 transition hover:bg-red-100">
-                Stop crawl
+                Stop check
               </button>
             </form>
           ) : null}
 
           <div className="mt-6 grid gap-4 md:grid-cols-4">
-            <Metric label="Discovered" value={crawlRun.pagesDiscovered} />
-            <Metric label="Crawled" value={crawlRun.pagesCrawled} />
-            <Metric label="Failed" value={crawlRun.pagesFailed} />
-            <Metric label="Trigger" value={formatEnum(crawlRun.trigger)} />
+            <Metric label="Pages found" value={crawlRun.pagesDiscovered} />
+            <Metric label="Pages checked" value={crawlRun.pagesCrawled} />
+            <Metric label="Need another look" value={crawlRun.pagesFailed} />
+            <Metric label="Started by" value={formatEnum(crawlRun.trigger)} />
           </div>
 
           {crawlRun.errorMessage ? (
@@ -139,10 +139,10 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5">
               <div>
                 <h2 className="text-lg font-semibold">
-                  Robots and sitemap discovery
+                  Website setup files
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Optional technical files checked before page fetching.
+                  Optional setup files checked before page review.
                 </p>
               </div>
               <span className="text-sm font-medium text-orange-600">
@@ -157,18 +157,21 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                     key={artifact.id}
                     className="grid gap-4 p-5 lg:grid-cols-[180px_1fr_120px]"
                   >
-                    <Meta label="Type" value={formatEnum(artifact.type)} />
-                    <Meta label="URL" value={artifact.url} />
                     <Meta
-                      label="Status"
-                      value={artifact.statusCode?.toString() ?? "Unavailable"}
+                      label="Setup file"
+                      value={formatSetupFileType(artifact.type)}
+                    />
+                    <Meta label="Link" value={artifact.url} />
+                    <Meta
+                      label="Response"
+                      value={formatPageResponse(artifact.statusCode)}
                     />
                   </article>
                 ))
               ) : (
                 <EmptyNote
-                  title="No discovery files saved"
-                  message="This crawl did not store robots.txt or sitemap details."
+                  title="No setup files saved"
+                  message="This website check did not save page-list or access-helper file details."
                 />
               )}
             </div>
@@ -177,10 +180,9 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
 
         <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-200 p-5">
-            <h2 className="text-lg font-semibold">Detected changes</h2>
+            <h2 className="text-lg font-semibold">Page changes</h2>
             <p className="mt-1 text-sm text-slate-500">
-              SEO-relevant differences between this crawl and the previous
-              snapshot.
+              Important differences found since the previous website check.
             </p>
           </div>
 
@@ -199,13 +201,13 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                           : "border-amber-200 bg-amber-50 text-amber-700"
                       }`}
                     >
-                      {formatEnum(event.severity)}
+                      {formatChangeImportance(event.severity)}
                     </span>
                     <h3 className="mt-3 font-semibold">
-                      {formatEnum(event.changeType)}
+                      {formatChangeType(event.changeType)}
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      {event.page?.url ?? "Site-level change"}
+                      {event.page?.url ?? "Whole website change"}
                     </p>
                   </div>
                   <Meta
@@ -217,7 +219,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
               ))
             ) : (
               <div className="p-8 text-center text-sm text-slate-500">
-                No changes were detected for this crawl run.
+                No important changes were found for this website check.
               </div>
             )}
           </div>
@@ -227,9 +229,9 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
           <details>
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5">
               <div>
-                <h2 className="text-lg font-semibold">Page snapshots</h2>
+                <h2 className="text-lg font-semibold">More page detail</h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  Optional page-by-page metadata for deeper review.
+                  Optional page-by-page details for deeper review.
                 </p>
               </div>
               <span className="text-sm font-medium text-orange-600">
@@ -244,25 +246,25 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                     <div>
                       <h3 className="font-semibold">{snapshot.page.url}</h3>
                       <p className="mt-1 text-sm text-slate-500">
-                        HTTP {snapshot.statusCode} - {snapshot.wordCount ?? 0}{" "}
-                        words
+                        Response {formatPageResponse(snapshot.statusCode)} -{" "}
+                        {snapshot.wordCount ?? 0} words
                       </p>
                     </div>
                     <dl className="grid gap-3 text-sm md:grid-cols-2">
                       <Meta label="Title" value={snapshot.title} />
                       <Meta
-                        label="Meta description"
+                        label="Page description"
                         value={snapshot.metaDescription}
                       />
-                      <Meta label="H1" value={snapshot.h1} />
-                      <Meta label="Canonical" value={snapshot.canonical} />
+                      <Meta label="Main heading" value={snapshot.h1} />
+                      <Meta label="Preferred page" value={snapshot.canonical} />
                     </dl>
                   </article>
                 ))
               ) : (
                 <EmptyNote
-                  title="No page snapshots saved"
-                  message="Run another crawl when you want fresh page metadata."
+                  title="No page details saved"
+                  message="Run another website check when you want fresh page details."
                 />
               )}
             </div>
@@ -290,7 +292,9 @@ function CrawlRecapPlan({
     <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/70 p-5">
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div>
-          <p className="text-sm font-semibold text-orange-700">Crawl recap</p>
+          <p className="text-sm font-semibold text-orange-700">
+            Website check recap
+          </p>
           <h2 className="mt-1 text-2xl font-semibold tracking-normal">
             {crawlResult}
           </h2>
@@ -300,18 +304,18 @@ function CrawlRecapPlan({
           <RecapTile
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Pages checked"
-            value={`${pagesCrawled} crawled`}
+            value={`${pagesCrawled} checked`}
             detail={
               pagesFailed
                 ? `${pagesFailed} pages need another look.`
-                : "No failed pages in this run."
+                : "No pages need another look."
             }
           />
           <RecapTile
             icon={<FileSearch className="size-4" aria-hidden="true" />}
             label="Changed pages"
             value={`${changedPageCount} pages`}
-            detail="Changes are listed below when they affect SEO fields."
+            detail="Changes are listed below when they affect page health."
           />
           <RecapTile
             icon={<Radar className="size-4" aria-hidden="true" />}
@@ -387,4 +391,86 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatCheckStatus(value: string) {
+  const statusLabels: Record<string, string> = {
+    COMPLETED: "Complete",
+    FAILED: "Needs attention",
+    QUEUED: "Waiting",
+    RUNNING: "Checking",
+  };
+
+  return statusLabels[value] ?? formatEnum(value);
+}
+
+function formatSetupFileType(value: string) {
+  const setupFileLabels: Record<string, string> = {
+    ROBOTS_TXT: "Access-helper file",
+    SITEMAP: "Page-list file",
+    SITEMAP_XML: "Page-list file",
+  };
+
+  return setupFileLabels[value] ?? formatEnum(value);
+}
+
+function formatPageResponse(statusCode: number | null | undefined) {
+  if (!statusCode) {
+    return "Pending";
+  }
+
+  if (statusCode >= 200 && statusCode < 300) {
+    return "Good";
+  }
+
+  if (statusCode >= 300 && statusCode < 400) {
+    return "Redirects";
+  }
+
+  if (statusCode >= 400) {
+    return "Needs review";
+  }
+
+  return statusCode.toString();
+}
+
+function formatChangeImportance(severity: string) {
+  const importanceLabels: Record<string, string> = {
+    CRITICAL: "Urgent",
+    WARNING: "Planned",
+    INFO: "Idea",
+  };
+
+  return importanceLabels[severity] ?? "Idea";
+}
+
+function formatChangeType(value: string) {
+  const changeTypeLabels: Record<string, string> = {
+    MISSING_TITLE: "Page title missing",
+    DUPLICATE_TITLE: "Page title repeats",
+    TITLE_CHANGED: "Page title changed",
+    MISSING_META_DESCRIPTION: "Page description missing",
+    DUPLICATE_META_DESCRIPTION: "Page description repeats",
+    META_DESCRIPTION_CHANGED: "Page description changed",
+    MISSING_H1: "Main heading missing",
+    H1_CHANGED: "Main heading changed",
+    MISSING_CANONICAL: "Preferred page missing",
+    CANONICAL_CHANGED: "Preferred page changed",
+    CANONICAL_NON_200: "Preferred page is not loading",
+    PAGE_NOINDEX: "Page hidden from Google",
+    ROBOTS_TXT_CHANGED: "Access-helper file changed",
+    SITEMAP_CHANGED: "Page-list file changed",
+  };
+
+  if (changeTypeLabels[value]) {
+    return changeTypeLabels[value];
+  }
+
+  return formatEnum(value)
+    .replace(/\bMeta Description\b/g, "Page description")
+    .replace(/\bH1\b/g, "Main heading")
+    .replace(/\bCanonical\b/g, "Preferred page")
+    .replace(/\bRobots Txt\b/g, "Access-helper file")
+    .replace(/\bSitemap\b/g, "Page-list file")
+    .replace(/\bNoindex\b/g, "Hidden from Google");
 }

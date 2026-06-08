@@ -1105,3 +1105,19 @@ Implementation:
 - [x] Rename deeper table labels from crawlability, internal SEO, and markup to Google access, page links, and Google details.
 - [x] Rename bulk import copy from domains/projects/crawl cadence to websites and check rhythm.
 - [ ] Browser-check Projects desktop and mobile after deployment.
+
+### Batch BD: Website Check Recap Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit keeps crawl history and audit depth available, but each run summary first shows health, progress, important changes, and what to do next.
+- Ahrefs Site Audit preserves page and crawl evidence for deeper review, while the first recap can still use plain change, page, and response labels.
+- A softer recap page should say website check, page changes, setup files, and pages needing another look before crawl runs, robots/sitemap files, HTTP codes, snapshots, or raw metadata language.
+
+Implementation:
+
+- [x] Rename crawl-run headline, status, action, metrics, and recap cards to website-check language.
+- [x] Rename setup-file panels away from robots/sitemap discovery and translate setup file types into access-helper and page-list labels.
+- [x] Rename detected changes and page snapshots into page changes and more page detail.
+- [x] Translate change severities, change types, and response codes into plain-language labels.
+- [ ] Browser-check Website Check Recap desktop and mobile after deployment.
