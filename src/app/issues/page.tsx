@@ -761,6 +761,7 @@ function softenProblemTitle(value: string) {
     "Missing Meta Description": "Page description missing",
     "Missing Title": "Page title missing",
     "Add a unique meta description": "Write a clear page description",
+    "Add a unique title tag": "Write a clear page title",
     "Poor Heading Hierarchy": "Heading order needs attention",
     "Homepage Blocked By Robots": "Homepage blocked from Google",
     "Homepage blocked by robots.txt": "Homepage blocked from Google",
@@ -795,6 +796,7 @@ function softenProblemTitle(value: string) {
     .replace(/\bMissing Meta Description\b/gi, exactMatches["Missing Meta Description"])
     .replace(/\bMissing Title\b/gi, exactMatches["Missing Title"])
     .replace(/\bAdd a unique meta description\b/gi, exactMatches["Add a unique meta description"])
+    .replace(/\bAdd a unique title tag\b/gi, exactMatches["Add a unique title tag"])
     .replace(/\bPoor Heading Hierarchy\b/gi, exactMatches["Poor Heading Hierarchy"])
     .replace(/\bHomepage Blocked By Robots\b/gi, exactMatches["Homepage Blocked By Robots"])
     .replace(/\bHomepage blocked by robots\.txt\b/gi, exactMatches["Homepage blocked by robots.txt"])
@@ -831,6 +833,8 @@ function softenProblemText(value: string) {
     .replace(/\bcrawler\b/gi, "search engine")
     .replace(/\bmeta description\b/gi, "page description")
     .replace(/\bmeta descriptions\b/gi, "page descriptions")
+    .replace(/\btitle tag\b/gi, "page title")
+    .replace(/\btitle tags\b/gi, "page titles")
     .replace(/\bissue\b/gi, "problem");
 }
 
