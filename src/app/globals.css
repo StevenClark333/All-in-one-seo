@@ -1,24 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
+  --background: #f7f8fb;
   --foreground: #1f2937;
-  --app-canvas: #f8fafc;
+  --app-canvas: #f7f8fb;
   --app-surface: #ffffff;
-  --app-surface-soft: #fbfcfe;
-  --app-border: #e8edf4;
-  --app-border-strong: #d9e2ec;
+  --app-surface-soft: #fbfcfd;
+  --app-surface-warm: #fff8f4;
+  --app-border: #edf1f6;
+  --app-border-strong: #e0e7ef;
   --app-text: #1f2937;
-  --app-muted: #667085;
+  --app-muted: #647183;
   --app-navy: #1d3348;
   --app-navy-soft: #2b485f;
   --app-orange: #ff642f;
   --app-orange-dark: #e65320;
-  --app-orange-soft: #fff2ec;
-  --app-blue-soft: #edf6ff;
-  --app-shadow: 0 18px 38px rgb(31 41 55 / 0.07);
-  --app-shadow-sm: 0 7px 20px rgb(31 41 55 / 0.045);
-  --app-shadow-hover: 0 14px 28px rgb(31 41 55 / 0.075);
+  --app-orange-soft: #fff3ed;
+  --app-blue-soft: #f0f7ff;
+  --app-green-soft: #eefbf4;
+  --app-amber-soft: #fff8e8;
+  --app-red-soft: #fff1f1;
+  --app-shadow: 0 16px 34px rgb(31 41 55 / 0.055);
+  --app-shadow-sm: 0 6px 18px rgb(31 41 55 / 0.035);
+  --app-shadow-hover: 0 12px 26px rgb(31 41 55 / 0.06);
 }
 
 @theme inline {
@@ -29,9 +33,7 @@
 }
 
 body {
-  background:
-    radial-gradient(circle at 20% 0%, rgb(255 100 47 / 0.055), transparent 26rem),
-    linear-gradient(180deg, #fbfcfe 0%, var(--background) 28rem);
+  background: linear-gradient(180deg, #fcfdff 0%, var(--background) 22rem);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   letter-spacing: 0;
@@ -100,6 +102,25 @@ body {
     background-color: var(--app-surface) !important;
   }
 
+  .bg-orange-50 {
+    background-color: var(--app-orange-soft) !important;
+  }
+
+  .bg-green-50,
+  .bg-emerald-50 {
+    background-color: var(--app-green-soft) !important;
+  }
+
+  .bg-amber-50,
+  .bg-yellow-50 {
+    background-color: var(--app-amber-soft) !important;
+  }
+
+  .bg-red-50,
+  .bg-rose-50 {
+    background-color: var(--app-red-soft) !important;
+  }
+
   .bg-blue-50 {
     background-color: var(--app-blue-soft) !important;
   }
@@ -136,7 +157,7 @@ body {
   }
 
   .rounded-lg {
-    border-radius: 10px !important;
+    border-radius: 8px !important;
   }
 
   .rounded-md {
@@ -146,6 +167,12 @@ body {
   .border.bg-white,
   .bg-white.border {
     box-shadow: var(--app-shadow-sm);
+  }
+
+  .border.bg-white:hover,
+  .bg-white.border:hover {
+    border-color: var(--app-border-strong) !important;
+    box-shadow: var(--app-shadow-hover);
   }
 
   .rounded-full {
@@ -178,6 +205,17 @@ body {
   select,
   textarea {
     transition-duration: 160ms;
+    transition-property:
+      color, background-color, border-color, text-decoration-color, fill,
+      stroke, opacity, box-shadow, transform;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+  }
+
+  button:active {
+    transform: translateY(0);
   }
 
   summary {
@@ -198,14 +236,18 @@ body {
   }
 
   button.bg-slate-950,
-  a.bg-slate-950 {
+  a.bg-slate-950,
+  button.bg-orange-600,
+  a.bg-orange-600 {
     background-color: var(--app-orange) !important;
     color: #ffffff !important;
-    box-shadow: 0 10px 22px rgb(255 100 47 / 0.2);
+    box-shadow: 0 10px 22px rgb(255 100 47 / 0.16);
   }
 
   button.bg-slate-950:hover,
-  a.bg-slate-950:hover {
+  a.bg-slate-950:hover,
+  button.bg-orange-600:hover,
+  a.bg-orange-600:hover {
     background-color: var(--app-orange-dark) !important;
   }
 
@@ -236,6 +278,67 @@ body {
 
   .overflow-x-auto > table {
     min-width: 100% !important;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  thead {
+    background-color: var(--app-surface-soft);
+  }
+
+  th {
+    color: var(--app-muted) !important;
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  tbody tr {
+    transition-duration: 160ms;
+    transition-property: background-color;
+  }
+
+  tbody tr:hover {
+    background-color: #fffaf7;
+  }
+
+  details.rounded-lg,
+  details.rounded-md,
+  details.border {
+    background-color: #ffffff;
+    box-shadow: var(--app-shadow-sm);
+  }
+
+  details > summary {
+    border-radius: inherit;
+  }
+
+  details > summary:hover {
+    background-color: var(--app-surface-warm);
+  }
+
+  ::selection {
+    background-color: rgb(255 100 47 / 0.18);
+    color: var(--app-text);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d9e2ec;
+    border: 3px solid var(--app-canvas);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   @media (max-width: 767px) {

@@ -42,8 +42,7 @@ const navHelp: Record<string, string> = {
     "Compare your website against competitors and spot content opportunities.",
   "Keyword Research":
     "Find useful keywords, content gaps, and easy opportunities to improve.",
-  "Rank Tracking":
-    "Track keyword positions for your website and competitors.",
+  "Rank Tracking": "Track keyword positions for your website and competitors.",
   Issues:
     "See the problems that need attention and the easiest way to solve them.",
   "Fix Center":
@@ -51,12 +50,9 @@ const navHelp: Record<string, string> = {
   AI: "Generate content ideas, SEO recommendations, and fix briefs.",
   Technical:
     "Review internal links, crawlability, schema, and rendering signals.",
-  Reports:
-    "Create simple reports for clients, teammates, or your own records.",
-  Alerts:
-    "Get notified when something important changes.",
-  Integrations:
-    "Connect Google, CMS, hosting, alerts, and automation tools.",
+  Reports: "Create simple reports for clients, teammates, or your own records.",
+  Alerts: "Get notified when something important changes.",
+  Integrations: "Connect Google, CMS, hosting, alerts, and automation tools.",
   Billing:
     "Manage plan limits, usage, subscriptions, trials, and billing portal access.",
   Settings:
@@ -109,12 +105,12 @@ export async function AppSidebar({
   const { activeWorkspaceId, memberships } = await getWorkspaceSwitcherData();
 
   return (
-    <aside className="border-b border-slate-200 bg-white/95 lg:border-b-0 lg:border-r">
+    <aside className="border-b border-slate-200 bg-white/98 lg:border-b-0 lg:border-r">
       <GlobalSearchShortcut />
       <div className="flex min-h-full">
         <nav
           aria-label="Primary product areas"
-          className="hidden w-14 shrink-0 border-r border-slate-200 bg-white px-2 py-4 lg:grid lg:auto-rows-min lg:gap-2"
+          className="hidden w-14 shrink-0 border-r border-slate-200 bg-slate-50 px-2 py-4 lg:grid lg:auto-rows-min lg:gap-2"
         >
           {primaryRailItems.map((label) => {
             const item = navItems.find((navItem) => navItem.label === label);
@@ -133,8 +129,8 @@ export async function AppSidebar({
                 title={getDisplayLabel(label)}
                 className={`inline-flex size-10 items-center justify-center rounded-md transition ${
                   label === active
-                    ? "bg-orange-50 text-orange-600 shadow-sm"
-                    : "text-slate-400 hover:bg-orange-50 hover:text-slate-700"
+                    ? "bg-white text-orange-600 shadow-sm"
+                    : "text-slate-400 hover:bg-white hover:text-slate-700 hover:shadow-sm"
                 }`}
               >
                 <Icon className="size-4" aria-hidden="true" />
@@ -149,9 +145,7 @@ export async function AppSidebar({
               <Search className="size-5" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-400">
-                All In One
-              </p>
+              <p className="text-sm font-semibold text-slate-500">All In One</p>
               <h1 className="text-xl font-semibold tracking-normal text-slate-900">
                 SEO Ops
               </h1>
@@ -160,7 +154,9 @@ export async function AppSidebar({
 
           <form action="/search" className="mt-5">
             <label className="relative block">
-              <span className="sr-only">Search domains, clients, pages, issues, reports, and actions</span>
+              <span className="sr-only">
+                Search domains, clients, pages, issues, reports, and actions
+              </span>
               <Search
                 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
                 aria-hidden="true"
@@ -191,7 +187,7 @@ export async function AppSidebar({
                   key={group.label}
                   className={
                     isMainPath
-                      ? "rounded-lg border border-orange-100 bg-orange-50/50 p-2"
+                      ? "rounded-lg border border-orange-100 bg-white p-2 shadow-sm"
                       : "hidden border-t border-slate-100 pt-3 lg:block"
                   }
                 >
@@ -202,9 +198,7 @@ export async function AppSidebar({
                   >
                     {group.label}
                   </p>
-                  <div
-                    className={isMainPath ? "grid gap-1.5" : "grid gap-0.5"}
-                  >
+                  <div className={isMainPath ? "grid gap-1.5" : "grid gap-0.5"}>
                     {group.items.map((label) => {
                       const item = navItems.find(
                         (navItem) => navItem.label === label,
@@ -226,7 +220,7 @@ export async function AppSidebar({
                             isActive
                               ? "bg-orange-50 text-orange-700 shadow-[inset_3px_0_0_#ff642f]"
                               : mutedItem
-                                ? "h-8 text-xs text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                                ? "h-8 text-xs text-slate-500 hover:bg-white hover:text-slate-800 hover:shadow-sm"
                                 : "h-10 text-sm text-slate-600 hover:bg-orange-50 hover:text-slate-950"
                           }`}
                         >
@@ -239,8 +233,7 @@ export async function AppSidebar({
                           </span>
                           <InfoTooltip
                             label={
-                              navHelp[item.label] ??
-                              "Open this portal section."
+                              navHelp[item.label] ?? "Open this portal section."
                             }
                             passive
                             side="left"

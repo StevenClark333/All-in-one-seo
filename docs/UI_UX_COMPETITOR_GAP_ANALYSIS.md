@@ -119,6 +119,7 @@ Gap for us:
 | Search Ideas Depth     | Keyword Research still opens with cockpit language, several full lists, and raw query inventory | Rename to Search Ideas, show short action previews, and make deeper keyword data optional                |
 | Competitor Depth       | Competitive Analysis still leads into setup forms and a full domain comparison table            | Rename to Competitor Insights, keep watchlist previews visible, and make setup/table detail optional     |
 | Rank Depth             | Rank Tracking still exposes a full tracked-keyword inventory table in the main view             | Lead with movement/gaps, then make keyword inventory optional and capped                                 |
+| Product Softness       | Shared cards, tables, loading states, and navigation still feel slightly admin-like             | Use calmer canvas, lighter surfaces, softer rows, warmer action states, and quieter loading transitions  |
 
 ## Product Direction
 
@@ -668,3 +669,20 @@ Implementation:
 - [x] Limit the expanded keyword inventory preview to the first 8 keywords.
 - [x] Remove uppercase tracking from the keyword inventory table header.
 - [x] Add plain-language preview notes when more rank gaps or keywords exist.
+
+### Batch AG: Product Softness Pass
+
+Competitive evidence:
+
+- Semrush keeps dense analytics readable by using a calm canvas, soft panels, restrained borders, and orange as the main action color.
+- A nontechnical user benefits when shared UI chrome feels consistent before they enter deeper SEO data.
+- Softer loading and table states make the app feel smoother even when pages are data-heavy.
+
+Implementation:
+
+- [x] Remove the decorative global glow and use a calmer canvas.
+- [x] Lighten shared borders, shadows, cards, and hover states.
+- [x] Make tables easier to scan with softer headers and calmer row hover.
+- [x] Make primary orange actions feel warmer and less heavy.
+- [x] Soften sidebar rail, main path surface, and secondary navigation hover states.
+- [x] Soften route loading skeletons so page transitions feel smoother.
