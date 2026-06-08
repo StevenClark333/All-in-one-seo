@@ -91,7 +91,7 @@ export default async function TechnicalAuditPage({
           <ProjectWorkspaceBar
             active="technical"
             domainId={selectedDomainId}
-            note="Helpful link ideas and page-path checks are filtered to this project."
+            note="Helpful link ideas and page-path checks are filtered to this website."
             returnPath="/technical-audit"
           />
 
@@ -100,7 +100,7 @@ export default async function TechnicalAuditPage({
             <Metric label="Links pointing in" value={totalIncoming} />
             <Metric label="Links going out" value={totalOutgoing} />
             <Metric label="Hard-to-find pages" value={deepPageCount} />
-            <Metric label="Page list gaps" value={sitemapMismatchCount} />
+            <Metric label="Page-list gaps" value={sitemapMismatchCount} />
           </div>
 
           <section
@@ -152,8 +152,8 @@ export default async function TechnicalAuditPage({
                       value={opportunity.anchorText}
                     />
                     <Meta
-                      label="Importance"
-                      value={`${opportunity.priorityScore}`}
+                      label="Priority"
+                      value={formatPriority(opportunity.priorityScore)}
                     />
                   </article>
                 ))
@@ -202,7 +202,10 @@ export default async function TechnicalAuditPage({
                         {formatFriendlyIssueTitle(issue.title, issue.issueType)}
                       </Link>
                       <p className="mt-1 text-sm leading-6 text-slate-500">
-                        {issue.description}
+                        {formatFriendlyIssueDescription(
+                          issue.description,
+                          issue.issueType,
+                        )}
                       </p>
                       <p className="mt-2 text-sm text-slate-500">
                         {issue.domain.client?.name ?? "Unassigned"} -{" "}
@@ -214,7 +217,10 @@ export default async function TechnicalAuditPage({
                       label="Needs"
                       value={formatGraphIssue(issue.issueType)}
                     />
-                    <Meta label="Importance" value={`${issue.priorityScore}`} />
+                    <Meta
+                      label="Priority"
+                      value={formatPriority(issue.priorityScore)}
+                    />
                   </article>
                 ))
               ) : (
@@ -259,7 +265,7 @@ export default async function TechnicalAuditPage({
                   <tr>
                     <th className="px-5 py-3 font-semibold">Page</th>
                     <th className="px-5 py-3 font-semibold">Client</th>
-                    <th className="px-5 py-3 font-semibold">Domain</th>
+                    <th className="px-5 py-3 font-semibold">Website</th>
                     <th className="px-5 py-3 font-semibold">Links in</th>
                     <th className="px-5 py-3 font-semibold">Links out</th>
                     <th className="px-5 py-3 font-semibold">Signal</th>
@@ -274,7 +280,7 @@ export default async function TechnicalAuditPage({
                             {page.url}
                           </p>
                           <p className="text-xs text-slate-500">
-                            {page.pageType ?? "Discovered page"}
+                            {page.pageType ?? "Known page"}
                           </p>
                         </td>
                         <td className="px-5 py-4 text-slate-600">
@@ -532,6 +538,44 @@ function formatFriendlyIssueTitle(title: string, issueType: string) {
   }
 
   return title;
+}
+
+function formatFriendlyIssueDescription(description: string, issueType: string) {
+  const type = issueType.split(":")[0] ?? issueType;
+
+  if (type.includes("sitemap_url_not_internally_linked")) {
+    return "This page is in the page list, but visitors may not have an easy link to reach it.";
+  }
+
+  if (type.includes("internally_linked_url_missing_from_sitemap")) {
+    return "This page has a link on the website, but it is missing from the saved page list.";
+  }
+
+  if (type.includes("deep_page")) {
+    return "This page takes too many clicks to reach. Add a clearer link from a stronger page.";
+  }
+
+  if (type.includes("orphan")) {
+    return "This page needs links from other pages so visitors and Google can find it.";
+  }
+
+  return description
+    .replace(/\bsitemap\b/gi, "page list")
+    .replace(/\binternal links?\b/gi, "page links")
+    .replace(/\bcrawl\b/gi, "website check")
+    .replace(/\bSEO\b/g, "search");
+}
+
+function formatPriority(score: number) {
+  if (score >= 80) {
+    return "High";
+  }
+
+  if (score >= 50) {
+    return "Medium";
+  }
+
+  return "Low";
 }
 
 function getSingle(value: string | string[] | undefined) {

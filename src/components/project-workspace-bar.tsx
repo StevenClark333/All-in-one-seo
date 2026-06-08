@@ -94,7 +94,7 @@ const projectTools: Array<{
 export async function ProjectWorkspaceBar({
   active,
   domainId,
-  note = "All tools below stay scoped to the selected website project.",
+  note = "All tools below stay focused on the selected website.",
   returnPath,
 }: ProjectWorkspaceBarProps) {
   const { domains, selectedDomain } = await getProjectNavigationData(domainId);
@@ -108,9 +108,9 @@ export async function ProjectWorkspaceBar({
         >
           <label className="grid flex-1 gap-2">
             <span className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
-              Active project
+              Active website
               <InfoTooltip
-                label="Choose a website to focus this page on one project."
+                label="Choose a website to focus this page."
                 passive
               />
             </span>
@@ -163,7 +163,7 @@ export async function ProjectWorkspaceBar({
               </div>
               <div className="min-w-0">
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-orange-600">
-                  Active project
+                  Active website
                   <InfoTooltip
                     label="Navigation, filters, and actions in this workspace use this website."
                     passive
@@ -185,7 +185,7 @@ export async function ProjectWorkspaceBar({
           >
             <label className="grid gap-2">
               <span className="text-sm font-medium text-slate-600">
-                Switch project
+                Switch website
               </span>
               <select
                 name="domainId"

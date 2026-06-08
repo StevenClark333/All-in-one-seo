@@ -1137,3 +1137,18 @@ Implementation:
 - [x] Rename thematic health cards from robots/sitemap/crawlability/internal linking/markup/canonicals/JS rendering to access file, page list, Google access, page links, Google details, preferred pages, and browser check.
 - [x] Rename deeper workspace queue, page, recent-check, and error copy away from issues, crawl runs, crawler, and domain settings language.
 - [x] Browser-check Website Workspace desktop and mobile after deployment.
+
+### Batch BF: Website Link Health Detail Calmness
+
+Competitive evidence:
+
+- Semrush internal linking and site-audit drilldowns keep link evidence available, but the action path is still which page needs help and which link to add.
+- Ahrefs and Screaming Frog expose deeper link tables, but beginner-friendly review works better when priority and page-list problems are translated before scores and raw issue text.
+- A softer link-health detail page should say website, page links, page-list gaps, priority, and plain descriptions before domain, sitemap, raw issue descriptions, or numeric importance scores.
+
+Implementation:
+
+- [x] Rename remaining project/domain/table labels in the link-health detail route to website and page-list language.
+- [x] Replace numeric importance scores with plain priority labels.
+- [x] Translate common page-link problem descriptions into plain guidance.
+- [ ] Browser-check Website Link Health Detail desktop and mobile after deployment.
