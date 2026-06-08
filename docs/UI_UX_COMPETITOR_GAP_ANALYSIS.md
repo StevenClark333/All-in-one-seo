@@ -1004,4 +1004,4 @@ Implementation:
 - [x] Rename crawl summary to website check summary with pages checked and pages needing another look.
 - [x] Rename issue movement labels to problem movement, new/fixed problems, urgent/planned open, and important changes.
 - [x] Rename report format section options from crawl/recommendation/issue wording to website checks, next steps, and problem movement.
-- [ ] Browser-check Client Update Detail desktop and mobile after deployment.
+- [x] Browser-check Client Update Detail desktop and mobile after deployment.
