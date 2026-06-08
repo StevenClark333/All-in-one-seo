@@ -118,6 +118,7 @@ Gap for us:
 | Dashboard Depth        | Dashboard still exposes portfolio tables and production build details before problem review     | Keep the plan and top problems visible, then make workspace/build detail optional                        |
 | Search Ideas Depth     | Keyword Research still opens with cockpit language, several full lists, and raw query inventory | Rename to Search Ideas, show short action previews, and make deeper keyword data optional                |
 | Competitor Depth       | Competitive Analysis still leads into setup forms and a full domain comparison table            | Rename to Competitor Insights, keep watchlist previews visible, and make setup/table detail optional     |
+| Rank Depth             | Rank Tracking still exposes a full tracked-keyword inventory table in the main view             | Lead with movement/gaps, then make keyword inventory optional and capped                                 |
 
 ## Product Direction
 
@@ -648,3 +649,22 @@ Implementation:
 - [x] Move the domain comparison table into a closed "More comparison detail" panel.
 - [x] Limit the expanded domain comparison preview to the first 6 projects.
 - [x] Add plain-language preview notes when more competitors or projects exist.
+
+### Batch AF: Rank Depth Calmness
+
+Competitive evidence:
+
+- Semrush Position Tracking focuses on movement, visibility, top positions, and competitor changes before raw keyword lists.
+- Ahrefs and Ubersuggest expose rank tables, but nontechnical users benefit from seeing drops and opportunities first.
+- A softer rank page should answer "what moved?" before showing every tracked keyword row.
+
+Implementation:
+
+- [x] Rename the Rank Tracking page header to "Rank movement".
+- [x] Soften the header copy toward moved, dropped, and improvable keywords.
+- [x] Keep competitor rank gaps visible before raw keyword inventory.
+- [x] Limit visible competitor rank gaps to the first 6 items.
+- [x] Move tracked keyword inventory into a closed "More keyword detail" panel.
+- [x] Limit the expanded keyword inventory preview to the first 8 keywords.
+- [x] Remove uppercase tracking from the keyword inventory table header.
+- [x] Add plain-language preview notes when more rank gaps or keywords exist.

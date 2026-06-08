@@ -35,7 +35,20 @@ export default async function RankTrackingPage({
     query,
   });
   const maxRankBucket = Math.max(1, data.summary.keywords);
-  const outsideTopTen = Math.max(0, data.summary.keywords - data.summary.topTen);
+  const outsideTopTen = Math.max(
+    0,
+    data.summary.keywords - data.summary.topTen,
+  );
+  const visibleKeywords = data.keywords.slice(0, 8);
+  const hiddenKeywordCount = Math.max(
+    data.keywords.length - visibleKeywords.length,
+    0,
+  );
+  const visibleCompetitorGaps = data.competitorContentGaps.slice(0, 6);
+  const hiddenCompetitorGapCount = Math.max(
+    data.competitorContentGaps.length - visibleCompetitorGaps.length,
+    0,
+  );
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-slate-950">
@@ -49,11 +62,11 @@ export default async function RankTrackingPage({
                 {data.workspace?.name ?? "Workspace"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Rank tracking
+                Rank movement
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                Track target keywords, owned rankings, competitor rankings, and
-                keyword volume from provider imports.
+                See which keywords moved, what dropped, and where one page can
+                be improved next.
               </p>
             </div>
 
@@ -78,7 +91,7 @@ export default async function RankTrackingPage({
           <ProjectWorkspaceBar
             active="rank"
             domainId={selectedDomainId}
-            note="Rank tracking keeps owned and competitor positions scoped to this project."
+            note="Rank movement keeps owned and competitor positions scoped to this project."
             returnPath="/rank-tracking"
           />
 
@@ -215,7 +228,10 @@ export default async function RankTrackingPage({
                 <div className="border-b border-slate-200 p-5">
                   <h3 className="text-lg font-semibold">Track keyword</h3>
                 </div>
-                <form action={addTrackedKeywordAction} className="grid gap-4 p-5">
+                <form
+                  action={addTrackedKeywordAction}
+                  className="grid gap-4 p-5"
+                >
                   <FilterLabel label="Project">
                     <select
                       name="domainId"
@@ -269,7 +285,10 @@ export default async function RankTrackingPage({
                 <div className="border-b border-slate-200 p-5">
                   <h3 className="text-lg font-semibold">Record rank</h3>
                 </div>
-                <form action={recordRankObservationAction} className="grid gap-4 p-5">
+                <form
+                  action={recordRankObservationAction}
+                  className="grid gap-4 p-5"
+                >
                   <FilterLabel label="Keyword">
                     <select
                       name="trackedKeywordId"
@@ -320,7 +339,10 @@ export default async function RankTrackingPage({
                 <div className="border-b border-slate-200 p-5">
                   <h3 className="text-lg font-semibold">Import metric</h3>
                 </div>
-                <form action={importKeywordMetricAction} className="grid gap-4 p-5">
+                <form
+                  action={importKeywordMetricAction}
+                  className="grid gap-4 p-5"
+                >
                   <FilterLabel label="Keyword">
                     <input
                       name="keyword"
@@ -364,8 +386,35 @@ export default async function RankTrackingPage({
           </details>
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-            <KeywordTable keywords={data.keywords} />
-            <CompetitorGapList gaps={data.competitorContentGaps} />
+            <CompetitorGapList
+              gaps={visibleCompetitorGaps}
+              hiddenCount={hiddenCompetitorGapCount}
+            />
+            <details
+              id="tracked-keywords"
+              className="rounded-lg border border-slate-200 bg-white shadow-sm"
+            >
+              <summary className="cursor-pointer list-none border-b border-slate-100 p-5 marker:hidden">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      More keyword detail
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Optional keyword inventory for rank, volume, difficulty,
+                      and status.
+                    </p>
+                  </div>
+                  <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
+                    Open details
+                  </span>
+                </div>
+              </summary>
+              <KeywordTable
+                hiddenCount={hiddenKeywordCount}
+                keywords={visibleKeywords}
+              />
+            </details>
           </section>
         </section>
       </div>
@@ -373,18 +422,18 @@ export default async function RankTrackingPage({
   );
 }
 
-function KeywordTable({ keywords }: { keywords: RankKeyword[] }) {
+function KeywordTable({
+  hiddenCount,
+  keywords,
+}: {
+  hiddenCount: number;
+  keywords: RankKeyword[];
+}) {
   return (
-    <section
-      id="tracked-keywords"
-      className="rounded-lg border border-slate-200 bg-white shadow-sm"
-    >
-      <div className="border-b border-slate-200 p-5">
-        <h3 className="text-lg font-semibold">Tracked keyword inventory</h3>
-      </div>
+    <section>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th className="px-5 py-3 font-semibold">Keyword</th>
               <th className="px-5 py-3 font-semibold">Project</th>
@@ -431,7 +480,10 @@ function KeywordTable({ keywords }: { keywords: RankKeyword[] }) {
               })
             ) : (
               <tr>
-                <td className="px-5 py-8 text-center text-slate-500" colSpan={6}>
+                <td
+                  className="px-5 py-8 text-center text-slate-500"
+                  colSpan={6}
+                >
                   No tracked keywords yet. Add one above to begin rank tracking.
                 </td>
               </tr>
@@ -439,14 +491,23 @@ function KeywordTable({ keywords }: { keywords: RankKeyword[] }) {
           </tbody>
         </table>
       </div>
+      {hiddenCount > 0 ? (
+        <PreviewLimitNote
+          body={`${hiddenCount} more keywords are hidden so the first view stays focused on movement.`}
+        />
+      ) : null}
     </section>
   );
 }
 
 function CompetitorGapList({
   gaps,
+  hiddenCount,
 }: {
-  gaps: Awaited<ReturnType<typeof getRankTrackingData>>["competitorContentGaps"];
+  gaps: Awaited<
+    ReturnType<typeof getRankTrackingData>
+  >["competitorContentGaps"];
+  hiddenCount: number;
 }) {
   return (
     <section
@@ -455,12 +516,20 @@ function CompetitorGapList({
     >
       <div className="flex items-center gap-3 border-b border-slate-200 p-5">
         <Crosshair className="size-5 text-blue-700" aria-hidden="true" />
-        <h3 className="text-lg font-semibold">Competitor gaps</h3>
+        <div>
+          <h3 className="text-lg font-semibold">Competitor rank gaps</h3>
+          <p className="mt-1 text-sm text-slate-500">
+            Keywords where someone else is ahead and your page may need work.
+          </p>
+        </div>
       </div>
       <div className="divide-y divide-slate-100">
         {gaps.length ? (
           gaps.map((gap) => (
-            <article key={`${gap.keyword}:${gap.competitorDomain}`} className="p-5">
+            <article
+              key={`${gap.keyword}:${gap.competitorDomain}`}
+              className="p-5"
+            >
               <p className="font-semibold">{gap.keyword}</p>
               <p className="mt-1 text-sm text-slate-500">{gap.reason}</p>
               <div className="mt-3 grid gap-3 sm:grid-cols-3">
@@ -481,6 +550,11 @@ function CompetitorGapList({
           </p>
         )}
       </div>
+      {hiddenCount > 0 ? (
+        <PreviewLimitNote
+          body={`${hiddenCount} more competitor gaps are available when you want deeper rank review.`}
+        />
+      ) : null}
     </section>
   );
 }
@@ -520,8 +594,12 @@ function RankMovementPlan({
         ? "Add a rank observation so averages and top position groups become useful."
         : "Rank data is ready, so focus on the best keywords near page one.",
       href: needsRankDataCount ? "#manage-rank-data" : "#tracked-keywords",
-      label: needsRankDataCount ? "Fill missing rank data" : "Push page-one wins",
-      value: needsRankDataCount ? `${needsRankDataCount} pending` : `${topTenCount} top 10`,
+      label: needsRankDataCount
+        ? "Fill missing rank data"
+        : "Push page-one wins",
+      value: needsRankDataCount
+        ? `${needsRankDataCount} pending`
+        : `${topTenCount} top 10`,
     },
   ];
 
@@ -537,7 +615,9 @@ function RankMovementPlan({
           </h3>
         </div>
         <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
-          {averagePosition ? `${averagePosition} average position` : "Ranks pending"}
+          {averagePosition
+            ? `${averagePosition} average position`
+            : "Ranks pending"}
         </div>
       </div>
       <div className="mt-4 grid gap-3 lg:grid-cols-3">
@@ -591,9 +671,7 @@ function FilterLabel({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-slate-500">
-        {label}
-      </span>
+      <span className="text-sm font-medium text-slate-500">{label}</span>
       {children}
     </label>
   );
@@ -602,10 +680,16 @@ function FilterLabel({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-sm font-medium text-slate-500">
-        {label}
-      </p>
+      <p className="text-sm font-medium text-slate-500">{label}</p>
       <p className="mt-1 text-sm font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function PreviewLimitNote({ body }: { body: string }) {
+  return (
+    <div className="border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-sm text-slate-600">
+      {body}
     </div>
   );
 }
