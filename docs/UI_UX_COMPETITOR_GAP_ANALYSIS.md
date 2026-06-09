@@ -1558,3 +1558,17 @@ Implementation:
 - [x] Translate Connections provider, setup status, Google permission, WordPress script/test/step, and launch-check labels into plain-language wording.
 - [x] Browser-check Connections labels desktop and mobile locally.
 - [ ] Browser-check Connections labels after deployment.
+
+### Batch CG: Fix Confirmation Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep audit issue progress and recheck/fixed states visible, but beginner users need a plain confirmation path after a fix is sent.
+- Nontechnical users should see waiting to check, fix worked, still needs help, not checked yet, and waiting for turn before pending, verified fixed, still failing, not checked, or generic waiting states.
+- The Fix Center should feel like a calm fix-confirmation checklist, not a technical verification ledger.
+
+Implementation:
+
+- [x] Translate Fix Center verification labels and lifecycle waiting wording into plain-language confirmation states.
+- [x] Browser-check Fix Center confirmation labels desktop and mobile locally.
+- [ ] Browser-check Fix Center confirmation labels after deployment.

@@ -130,19 +130,19 @@ export default async function FixCenterPage({
               </div>
               <div className="grid gap-3 border-t border-slate-200 p-4 sm:grid-cols-4">
                 <Metric
-                  label="Ready to check"
+                  label="Waiting to check"
                   value={verificationCounts.PENDING}
                 />
                 <Metric
-                  label="Verified fixed"
+                  label="Fix worked"
                   value={verificationCounts.VERIFIED_FIXED}
                 />
                 <Metric
-                  label="Needs another look"
+                  label="Still needs help"
                   value={verificationCounts.STILL_FAILING}
                 />
                 <Metric
-                  label="Not checked"
+                  label="Not checked yet"
                   value={verificationCounts.NOT_CHECKED}
                 />
               </div>
@@ -737,10 +737,10 @@ function getStatusButtonClass(status: string, subtle: boolean) {
 function Metric({ label, value }: { label: string; value: number }) {
   const isHealthy =
     label === "Fixed" ||
-    label === "Verified fixed" ||
+    label === "Fix worked" ||
     label === "Approved" ||
     label === "Sent";
-  const isProblem = label === "Needs another look";
+  const isProblem = label === "Still needs help";
   const styles = isHealthy
     ? "border-emerald-200 bg-emerald-50 text-emerald-900"
     : isProblem
@@ -815,18 +815,18 @@ function formatStatus(value: string) {
 
 function formatVerificationStatus(value: string) {
   if (value === "VERIFIED_FIXED") {
-    return "Verified fixed";
+    return "Fix worked";
   }
 
   if (value === "STILL_FAILING") {
-    return "Needs another look";
+    return "Still needs help";
   }
 
   if (value === "PENDING") {
-    return "Ready to check";
+    return "Waiting to check";
   }
 
-  return "Not checked";
+  return "Not checked yet";
 }
 
 function formatConnectionOption(label: string, provider: string) {
@@ -918,7 +918,7 @@ function formatLifecycleStatus(status: LinkFixLifecycleStepStatus) {
     return "Next";
   }
 
-  return "Waiting";
+  return "Waiting for turn";
 }
 
 function formatDateTime(value: Date) {
