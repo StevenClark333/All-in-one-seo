@@ -1468,3 +1468,20 @@ Implementation:
 - [x] Translate Add Website check rhythm options and helper copy into every-week/every-day/manual-start wording.
 - [x] Browser-check Add Website setup labels desktop and mobile locally.
 - [ ] Browser-check Add Website setup labels after deployment.
+
+### Batch CA: Ownership Verification Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs verification flows expose technical setup options, but a softer product should describe ownership steps by what the user can recognize and do.
+- Nontechnical users should see DNS record, website file, homepage tag, Google Search Console, ownership confirmed, waiting for setup, and needs another try before raw verification method or status wording.
+- The ownership page should feel like a guided confirmation path, not a DNS/status troubleshooting console.
+
+Implementation:
+
+- [x] Translate ownership method labels into calmer website-access wording.
+- [x] Translate ownership status badges and check history into plain-language status labels.
+- [x] Soften setup field labels for file, homepage tag, and Search Console instructions.
+- [x] Prevent hidden help tooltips from widening mobile pages before hover or focus.
+- [x] Browser-check Ownership Verification labels desktop and mobile locally.
+- [ ] Browser-check Ownership Verification labels after deployment.

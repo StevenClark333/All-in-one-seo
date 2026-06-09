@@ -23,28 +23,28 @@ const verificationMethods = [
       "Best choice for most websites. Add one DNS value and it keeps working across platforms.",
     help: "Add the generated TXT value to DNS. This is the most durable ownership method.",
     method: "DNS_TXT",
-    name: "DNS TXT",
+    name: "DNS record",
   },
   {
     description:
       "Use this when you can upload a small file to the website but cannot edit DNS.",
     help: "Create a text file at the specified path on your website and paste in the generated file contents.",
     method: "HTML_FILE",
-    name: "HTML file",
+    name: "Website file",
   },
   {
     description:
       "Use this when your platform lets you add a small tag to the homepage head.",
     help: "Place the generated meta tag in the homepage head to confirm ownership.",
     method: "META_TAG",
-    name: "Meta tag",
+    name: "Homepage tag",
   },
   {
     description:
       "Use this when this website is already connected in Google Search Console.",
     help: "Confirm through a connected Google Search Console property mapped to this website.",
     method: "GSC_OAUTH",
-    name: "Search Console",
+    name: "Google Search Console",
   },
 ] as const;
 
@@ -142,8 +142,8 @@ export default async function DomainVerificationPage({
               }`}
             >
               {isDomainVerified
-                ? "Verified"
-                : formatEnum(domain.verificationStatus)}
+                ? "Ownership confirmed"
+                : formatVerificationStatus(domain.verificationStatus)}
             </span>
           </div>
 
@@ -269,7 +269,7 @@ export default async function DomainVerificationPage({
                   </div>
                   <span className="inline-flex h-7 items-center rounded-full border border-slate-200 bg-white px-2.5 text-xs font-semibold text-slate-600">
                     {selectedVerification
-                      ? formatEnum(selectedVerification.status)
+                      ? formatVerificationStatus(selectedVerification.status)
                       : "Not ready yet"}
                   </span>
                 </div>
@@ -358,14 +358,14 @@ export default async function DomainVerificationPage({
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="font-semibold">
-                          {formatEnum(check.method)}
+                          {getMethodName(check.method)}
                         </span>
                         <span className="text-xs font-medium text-slate-500">
                           {check.createdAt.toLocaleString()}
                         </span>
                       </div>
                       <p className="mt-1 text-slate-600">
-                        {formatEnum(check.status)} -{" "}
+                        {formatVerificationStatus(check.status)} -{" "}
                         {check.message ?? "No message recorded"}
                       </p>
                     </div>
@@ -467,7 +467,7 @@ function VerificationInstructions({
   if (method === "HTML_FILE") {
     return (
       <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
-        <DnsField label="Path" value={HTML_VERIFICATION_PATH} />
+        <DnsField label="File path" value={HTML_VERIFICATION_PATH} />
         <DnsField label="File contents" value={value} />
       </div>
     );
@@ -476,9 +476,9 @@ function VerificationInstructions({
   if (method === "META_TAG") {
     return (
       <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
-        <DnsField label="Tag" value="meta" />
+        <DnsField label="Tag type" value="meta" />
         <DnsField
-          label="HTML"
+          label="Code to paste"
           value={`<meta name="${META_VERIFICATION_NAME}" content="${token}">`}
         />
       </div>
@@ -488,8 +488,8 @@ function VerificationInstructions({
   if (method === "GSC_OAUTH") {
     return (
       <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
-        <DnsField label="Property" value={domain} />
-        <DnsField label="Requirement" value="Mapped Search Console property" />
+        <DnsField label="Website" value={domain} />
+        <DnsField label="Needed" value="Connected Search Console property" />
       </div>
     );
   }
@@ -509,7 +509,7 @@ function DnsField({ label, value }: { label: string; value: string }) {
       <div className="text-sm font-medium text-slate-500">
         {label}
       </div>
-      <code className="overflow-x-auto rounded-md border border-slate-200 bg-white px-3 py-2 font-mono text-sm text-slate-800">
+      <code className="block min-w-0 max-w-full overflow-x-auto rounded-md border border-slate-200 bg-white px-3 py-2 font-mono text-sm text-slate-800">
         {value}
       </code>
     </>
@@ -538,6 +538,17 @@ function getMethodName(method: string) {
     verificationMethods.find((item) => item.method === method)?.name ??
     formatEnum(method)
   );
+}
+
+function formatVerificationStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs another try",
+    PENDING: "Waiting for setup",
+    UNVERIFIED: "Waiting for setup",
+    VERIFIED: "Ownership confirmed",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function getSingle(value: string | string[] | undefined) {
