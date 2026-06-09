@@ -16,6 +16,7 @@ import {
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getClientDetailData } from "@/lib/management-queries";
+import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -98,7 +99,10 @@ export default async function ClientDetailPage({
           />
 
           <section className="mt-6 grid gap-4 md:grid-cols-4">
-            <Metric label="Average health" value={averageHealth ?? "Pending"} />
+            <Metric
+              label="Average health"
+              value={formatWebsiteHealth(averageHealth)}
+            />
             <Metric label="Websites" value={client.domains.length} />
             <Metric label="Pages checked" value={totalPages} />
             <Metric
@@ -151,7 +155,7 @@ export default async function ClientDetailPage({
 
                         <Meta
                           label="Health"
-                          value={domain.healthScore ?? "Pending"}
+                          value={formatWebsiteHealth(domain.healthScore)}
                         />
                         <Meta
                           label="Pages checked"

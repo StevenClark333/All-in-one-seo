@@ -10,6 +10,7 @@ import {
 import { bulkImportClientsAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getClientManagementData } from "@/lib/management-queries";
+import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -116,7 +117,7 @@ export default async function ClientsPage() {
                           Health
                         </p>
                         <p className="mt-2 text-sm font-semibold">
-                          {avgScore ?? "Pending"}
+                          {formatWebsiteHealth(avgScore)}
                         </p>
                       </div>
 

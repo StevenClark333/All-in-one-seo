@@ -1707,3 +1707,18 @@ Implementation:
 - [x] Cover the exact crawl recap response and change-value fallback labels with unit tests.
 - [x] Browser-check website-check recap labels desktop and mobile locally.
 - [ ] Browser-check website-check recap labels after deployment.
+
+### Batch CQ: Client Health Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make project and client-level health summaries scannable, but a beginner-friendly client workspace should avoid status words that sound like something is stuck.
+- Nontechnical users should see no score yet before pending in client health summaries when a website has not produced a score.
+- The Clients list and client detail page should feel like a calm account-care view, not an unresolved status board.
+
+Implementation:
+
+- [x] Translate Clients list, client detail summary, and client website health fallbacks into no-score-yet wording.
+- [x] Cover the exact health fallback label through the shared website health label unit tests.
+- [x] Browser-check client health labels desktop and mobile locally.
+- [ ] Browser-check client health labels after deployment.
