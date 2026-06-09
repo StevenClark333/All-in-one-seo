@@ -178,6 +178,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Reports can explain what improved without opening extra technical detail.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.clientSetupDetail,
+    "Connect a website before website checks can begin.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.passwordResetReturn,
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   );
@@ -187,6 +191,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks/,
   );
 });

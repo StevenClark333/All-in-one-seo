@@ -2127,3 +2127,19 @@ Implementation:
 - [x] Cover the exact title softening with unit tests.
 - [x] Browser-check stored report title calmness locally.
 - [ ] Browser-check stored report title calmness after deployment.
+
+### Batch DR: Client Setup Check Calmness
+
+Competitive evidence:
+
+- Semrush project and client-facing workflows keep setup, site health, and reporting visible, but they assume the user understands SEO check language.
+- Ahrefs and Moz preserve crawl and audit depth for trained marketers, while a beginner client list should say website checks before SEO checks.
+- The softer product direction is to make the client setup tile read as a simple next step: connect a website, then website checks can begin.
+
+Implementation:
+
+- [x] Centralize the client setup tile wording in the product copy helper.
+- [x] Replace the visible client-list SEO checks phrase with website checks.
+- [x] Cover the exact client setup wording with unit tests.
+- [x] Browser-check client setup check calmness locally.
+- [ ] Browser-check client setup check calmness after deployment.

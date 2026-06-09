@@ -10,6 +10,7 @@ import {
 import { bulkImportClientsAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getClientManagementData } from "@/lib/management-queries";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -229,7 +230,7 @@ function ClientCarePlan({
                 ? `${clientsWithoutDomains} need a website`
                 : `${totalClients} clients set up`
             }
-            detail="Connect a website before SEO checks can begin."
+            detail={PRODUCT_BEGINNER_COPY.clientSetupDetail}
             href="/clients/new"
           />
           <PlanTile

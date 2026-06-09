@@ -117,6 +117,8 @@ export const PRODUCT_BEGINNER_COPY = {
     "Trusted teammate who can manage access and everyday website care work.",
   agencyProgressBody:
     "Reports can explain what improved without opening extra technical detail.",
+  clientSetupDetail:
+    "Connect a website before website checks can begin.",
   memberTitle: "Website Care Teammate",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
