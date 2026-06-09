@@ -20,6 +20,7 @@ test("builds custom PHP developer handoff with redirect snippets", () => {
   });
 
   assert.equal(brief.deliveryMode, "Custom PHP/developer handoff");
+  assert.equal(brief.exportFilename, "example-com-link-repair-note.md");
   assert.ok(brief.steps.some((step) => step.includes("PHP template")));
   assert.ok(brief.snippets.some((snippet) => snippet.code.includes("Redirect 301")));
   assert.ok(brief.snippets.some((snippet) => snippet.code.includes("rewrite")));
@@ -44,6 +45,7 @@ test("builds Webflow editor handoff", () => {
   });
 
   assert.equal(brief.deliveryMode, "Webflow Designer/CMS handoff");
+  assert.equal(brief.exportFilename, "example-com-internal-link-note.md");
   assert.ok(brief.steps.some((step) => step.includes("Webflow")));
 });
 

@@ -1,3 +1,6 @@
+export const PROBLEM_EXPORT_FILENAME = "website-problems-to-review.csv";
+export const PAGE_CARE_EXPORT_FILENAME = "website-page-care-list.csv";
+
 export function formatExportClient(value: string | null | undefined) {
   return value?.trim() ? value : "No client yet";
 }

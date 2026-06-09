@@ -1935,3 +1935,19 @@ Implementation:
 - [x] Cover the exact generated report PDF text with unit tests.
 - [x] Verify generated report text through local report rendering checks.
 - [ ] Browser-check report PDF story labels after deployment.
+
+### Batch DF: Download Filename Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make downloads feel like reusable handoff files, but a beginner-friendly product should avoid exposing raw issue/export naming even in file names.
+- Nontechnical users should receive website-problems-to-review, website-page-care-list, link-repair-note, and internal-link-note before issues-export, pages-export, broken-link-fix, or internal-link-fix.
+- Downloaded artifacts should feel like calm website care notes a client or helper can open without decoding product internals.
+
+Implementation:
+
+- [x] Rename problem and page CSV attachment filenames to plain website-care wording.
+- [x] Rename link-fix markdown handoff filenames to note-based language.
+- [x] Cover exported filename constants and link-fix note filenames with unit tests.
+- [x] Verify CSV attachment filenames through local authenticated HTTP checks.
+- [ ] Browser-check download filenames after deployment.

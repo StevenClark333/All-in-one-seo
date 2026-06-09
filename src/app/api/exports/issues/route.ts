@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
 import {
+  PROBLEM_EXPORT_FILENAME,
   formatExportClient,
   formatExportImportance,
   formatExportOwner,
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
 
   return new NextResponse(csv, {
     headers: {
-      "Content-Disposition": "attachment; filename=issues-export.csv",
+      "Content-Disposition": `attachment; filename=${PROBLEM_EXPORT_FILENAME}`,
       "Content-Type": "text/csv; charset=utf-8",
     },
   });

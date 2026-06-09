@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  PAGE_CARE_EXPORT_FILENAME,
+  PROBLEM_EXPORT_FILENAME,
   formatExportClient,
   formatExportImportance,
   formatExportOwner,
@@ -12,6 +14,13 @@ import {
   formatPageCheckDate,
   formatPageResponse,
 } from "@/lib/page-display-labels";
+
+test("names exported CSV files as calm website handoffs", () => {
+  assert.equal(PROBLEM_EXPORT_FILENAME, "website-problems-to-review.csv");
+  assert.equal(PAGE_CARE_EXPORT_FILENAME, "website-page-care-list.csv");
+  assert.ok(!PROBLEM_EXPORT_FILENAME.includes("issues"));
+  assert.ok(!PAGE_CARE_EXPORT_FILENAME.includes("export"));
+});
 
 test("formats exported ownership gaps as calm setup labels", () => {
   assert.equal(formatExportClient(null), "No client yet");

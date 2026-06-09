@@ -1,6 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
-import { formatExportClient } from "@/lib/export-display-labels";
+import {
+  PAGE_CARE_EXPORT_FILENAME,
+  formatExportClient,
+} from "@/lib/export-display-labels";
 import { getPageInventoryData } from "@/lib/management-queries";
 import {
   formatPageCheckDate,
@@ -30,7 +33,7 @@ export async function GET(request: NextRequest) {
 
   return new NextResponse(csv, {
     headers: {
-      "Content-Disposition": "attachment; filename=pages-export.csv",
+      "Content-Disposition": `attachment; filename=${PAGE_CARE_EXPORT_FILENAME}`,
       "Content-Type": "text/csv; charset=utf-8",
     },
   });

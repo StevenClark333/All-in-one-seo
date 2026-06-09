@@ -37,7 +37,7 @@ export function buildPlatformFixBrief(
     "Run a crawl from Fix Center to verify the issue status.",
   ];
   const exportFilename = `${slugify(input.domain)}-${slugify(
-    input.brokenUrl ? "broken-link-fix" : "internal-link-fix",
+    input.brokenUrl ? "link-repair-note" : "internal-link-note",
   )}.md`;
 
   if (input.platform === "WORDPRESS") {
