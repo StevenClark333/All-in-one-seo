@@ -1501,3 +1501,17 @@ Implementation:
 - [x] Translate report labels into update/share wording.
 - [x] Browser-check Websites list labels desktop and mobile locally.
 - [ ] Browser-check Websites list labels after deployment.
+
+### Batch CC: Rank Keyword Status Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs rank tracking tables show keyword state and movement, but a softer workflow should frame status as what the user is doing with the keyword.
+- Nontechnical users should see watching, paused for now, and set aside before active, paused, archived, or database-style tracking states.
+- The Rank movement page should feel like a gentle watchlist for keyword progress, not a raw tracking inventory.
+
+Implementation:
+
+- [x] Translate keyword tracking statuses into watching, paused-for-now, and set-aside wording.
+- [x] Browser-check Rank keyword status labels desktop and mobile locally.
+- [ ] Browser-check Rank keyword status labels after deployment.

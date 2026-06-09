@@ -474,7 +474,9 @@ function KeywordTable({
                     <td className="px-5 py-4">
                       {metric?.difficulty ?? "Unknown"}
                     </td>
-                    <td className="px-5 py-4">{formatEnum(keyword.status)}</td>
+                    <td className="px-5 py-4">
+                      {formatKeywordStatus(keyword.status)}
+                    </td>
                   </tr>
                 );
               })
@@ -709,6 +711,16 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatKeywordStatus(value: string) {
+  const labels: Record<string, string> = {
+    ACTIVE: "Watching",
+    ARCHIVED: "Set aside",
+    PAUSED: "Paused for now",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function getOwnedRank(keyword: RankKeyword) {
