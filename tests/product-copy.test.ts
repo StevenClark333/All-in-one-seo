@@ -186,6 +186,39 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Connect a website before website checks can begin.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardCompareIntro,
+    "Use this when you want to compare websites, review search visibility, or prepare a report after the top plan is handled.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardCheckWebsiteHelp,
+    "Go to Websites to start a fresh website check.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardDetailIntro,
+    "Optional website tables and setup notes for deeper review.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardDetailSummary,
+    "Ownership, check status, and problem volume when you need to compare websites.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardFirstWebsiteBody,
+    "Websites keep each check, problem, and update in one place.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardLatestCheckHelp,
+    "Most recent website check for this website.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.dashboardOpenWebsites, "Open websites");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardProjectListDetail,
+    "Start with your website list to see which websites need attention today.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.firstWebsiteAfterWorkspace,
+    "The first website starts after the workspace is ready.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.passwordResetReturn,
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   );
@@ -195,6 +228,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|compare projects|project list|Go to Projects|Loading projects/,
   );
 });

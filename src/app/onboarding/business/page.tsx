@@ -2,6 +2,7 @@ import Link from "next/link";
 import type React from "react";
 import { ArrowLeft, Building2, Globe2, ShieldCheck } from "lucide-react";
 import { createWorkspace } from "@/app/actions";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 
 export default function BusinessOnboardingPage() {
   return (
@@ -44,7 +45,7 @@ export default function BusinessOnboardingPage() {
               {
                 icon: <Globe2 className="size-4" aria-hidden="true" />,
                 title: "Add a website next",
-                body: "The first project starts after the workspace is ready.",
+                body: PRODUCT_BEGINNER_COPY.firstWebsiteAfterWorkspace,
               },
               {
                 icon: <ShieldCheck className="size-4" aria-hidden="true" />,

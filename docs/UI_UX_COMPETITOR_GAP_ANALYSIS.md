@@ -1,6 +1,6 @@
 # UI/UX Competitor Gap Analysis
 
-Last updated: 2026-06-08
+Last updated: 2026-06-10
 
 ## Goal
 
@@ -2159,3 +2159,20 @@ Implementation:
 - [x] Cover the exact Add Website intro wording with unit tests.
 - [x] Browser-check Add Website first-check calmness locally.
 - [ ] Browser-check Add Website first-check calmness after deployment.
+
+### Batch DT: Dashboard Website Wording Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both keep project-level depth available, but beginner-facing dashboards should make the first decision feel like caring for websites, not managing projects.
+- Ubersuggest's audit flow keeps the setup path closer to a website check, which is easier for a nontechnical user to understand.
+- The softer product direction is to say websites, website list, and website details before project tables, project analytics, or project list on broad first-screen surfaces.
+
+Implementation:
+
+- [x] Centralize dashboard website wording in the product copy helper.
+- [x] Replace visible dashboard project wording with website wording in links, details, help text, and next steps.
+- [x] Replace project wording in website loading and business onboarding setup copy.
+- [x] Cover the exact dashboard website wording with unit tests.
+- [x] Browser-check dashboard website wording locally.
+- [ ] Browser-check dashboard website wording after deployment.

@@ -119,8 +119,24 @@ export const PRODUCT_BEGINNER_COPY = {
     "Trusted teammate who can manage access and everyday website care work.",
   agencyProgressBody:
     "Reports can explain what improved without opening extra technical detail.",
+  dashboardCompareIntro:
+    "Use this when you want to compare websites, review search visibility, or prepare a report after the top plan is handled.",
+  dashboardCheckWebsiteHelp:
+    "Go to Websites to start a fresh website check.",
+  dashboardDetailIntro:
+    "Optional website tables and setup notes for deeper review.",
+  dashboardDetailSummary:
+    "Ownership, check status, and problem volume when you need to compare websites.",
+  dashboardFirstWebsiteBody:
+    "Websites keep each check, problem, and update in one place.",
+  dashboardLatestCheckHelp: "Most recent website check for this website.",
+  dashboardOpenWebsites: "Open websites",
+  dashboardProjectListDetail:
+    "Start with your website list to see which websites need attention today.",
   clientSetupDetail:
     "Connect a website before website checks can begin.",
+  firstWebsiteAfterWorkspace:
+    "The first website starts after the workspace is ready.",
   memberTitle: "Website Care Teammate",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",

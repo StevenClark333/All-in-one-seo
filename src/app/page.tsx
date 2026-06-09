@@ -21,6 +21,7 @@ import {
   type Site,
 } from "@/lib/dashboard-data";
 import { getDashboardData } from "@/lib/dashboard-queries";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 
 const severityStyles: Record<Severity, string> = {
   critical: "border-red-200 bg-red-50 text-red-700",
@@ -86,7 +87,7 @@ export default async function Home() {
                 <Play className="size-4" aria-hidden="true" />
                 Check website
                 <InfoTooltip
-                  label="Go to Projects to start a fresh website check."
+                  label={PRODUCT_BEGINNER_COPY.dashboardCheckWebsiteHelp}
                   passive
                   side="left"
                 />
@@ -227,12 +228,11 @@ export default async function Home() {
                   Website health details
                 </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Use this when you want to compare projects, review search
-                  visibility, or prepare a report after the top plan is handled.
+                  {PRODUCT_BEGINNER_COPY.dashboardCompareIntro}
                 </p>
               </div>
               <div className="grid gap-2 sm:grid-cols-4">
-                <QuickLink href="/domains" label="Projects" />
+                <QuickLink href="/domains" label="Websites" />
                 <QuickLink href="/issues" label="Problems" />
                 <QuickLink href="/search-performance" label="Search" />
                 <QuickLink href="/reports" label="Reports" />
@@ -337,7 +337,7 @@ export default async function Home() {
               <div>
                 <h3 className="text-lg font-semibold">More workspace detail</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Optional project tables and setup notes for deeper review.
+                  {PRODUCT_BEGINNER_COPY.dashboardDetailIntro}
                 </p>
               </div>
               <span className="rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
@@ -355,8 +355,7 @@ export default async function Home() {
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Ownership, check status, and problem volume when you need
-                      to compare projects.
+                      {PRODUCT_BEGINNER_COPY.dashboardDetailSummary}
                     </p>
                   </div>
                   <button className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
@@ -392,7 +391,9 @@ export default async function Home() {
                           </HelpLabel>
                         </th>
                         <th className="px-5 py-3 font-semibold">
-                          <HelpLabel help="Most recent website check for this project.">
+                          <HelpLabel
+                            help={PRODUCT_BEGINNER_COPY.dashboardLatestCheckHelp}
+                          >
                             Last check
                           </HelpLabel>
                         </th>
@@ -461,7 +462,7 @@ export default async function Home() {
                   <DashboardPreviewNote
                     body={`${hiddenSiteCount} more websites are kept out of this preview so the dashboard stays calm.`}
                     href="/domains"
-                    label="Open projects"
+                    label={PRODUCT_BEGINNER_COPY.dashboardOpenWebsites}
                   />
                 ) : null}
               </section>
@@ -781,7 +782,7 @@ function buildDashboardNextSteps({
         title: "Connect the product data",
       },
       {
-        action: "Add project",
+        action: "Add website",
         badge: "Next",
         detail:
           "Once data is connected, add the first website you want to monitor.",
@@ -804,7 +805,7 @@ function buildDashboardNextSteps({
   if (!sites.length) {
     return [
       {
-        action: "Add project",
+        action: "Add website",
         badge: "First step",
         detail:
           "Add the website you care about. We will guide you through ownership and the first check after that.",
@@ -813,13 +814,12 @@ function buildDashboardNextSteps({
         title: "Add your first website",
       },
       {
-        action: "View projects",
+        action: "View websites",
         badge: "Easy",
-        detail:
-          "Projects keep each website, check, problem, and update in one place.",
+        detail: PRODUCT_BEGINNER_COPY.dashboardFirstWebsiteBody,
         href: "/domains",
         icon: CheckCircle2,
-        title: "Keep work organized by project",
+        title: "Keep work organized by website",
       },
       {
         action: "Open reports",
@@ -850,10 +850,9 @@ function buildDashboardNextSteps({
           title: "Finish website setup",
         }
       : {
-          action: "Open projects",
+          action: PRODUCT_BEGINNER_COPY.dashboardOpenWebsites,
           badge: "Healthy habit",
-          detail:
-            "Start with your project list to see which websites need attention today.",
+          detail: PRODUCT_BEGINNER_COPY.dashboardProjectListDetail,
           href: "/domains",
           icon: CheckCircle2,
           title: "Check website health",
