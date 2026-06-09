@@ -1,5 +1,8 @@
 import type { DomainPlatform, IssueSeverity } from "@prisma/client";
-import { formatExportClient } from "@/lib/export-display-labels";
+import {
+  formatExportClient,
+  formatExportImportance,
+} from "@/lib/export-display-labels";
 import type { IssueSolution } from "@/lib/issue-solutions";
 
 export type IssueHandoffInput = {
@@ -50,7 +53,7 @@ function renderIssueHandoffMarkdown(
     `Website: ${input.domain}`,
     `Client: ${formatExportClient(input.clientName)}`,
     `Platform: ${input.platformLabel}`,
-    `Severity: ${formatLabel(input.severity)}`,
+    `Importance: ${formatExportImportance(input.severity)}`,
     `Problem area: ${formatIssueType(input.issueType)}`,
     `Owner: ${input.owner}`,
     `Target: ${input.target}`,

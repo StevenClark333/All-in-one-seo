@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
 import {
   formatExportClient,
+  formatExportImportance,
   formatExportOwner,
 } from "@/lib/export-display-labels";
 import { getIssueListData } from "@/lib/issue-queries";
@@ -25,10 +26,10 @@ export async function GET(request: NextRequest) {
       client: formatExportClient(issue.client?.name),
       description: issue.description,
       domain: issue.domain.domain,
+      importance: formatExportImportance(issue.severity),
       issueType: issue.issueType,
       page: issue.page?.url ?? "",
       priorityScore: issue.priorityScore,
-      severity: issue.severity,
       status: issue.status,
       title: issue.title,
     })),

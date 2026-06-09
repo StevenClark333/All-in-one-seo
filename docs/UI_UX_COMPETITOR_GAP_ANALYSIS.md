@@ -1872,3 +1872,18 @@ Implementation:
 - [x] Cover the exact exported ownership labels with unit tests.
 - [x] Verify export ownership labels through local API/download checks.
 - [ ] Browser-check export ownership labels after deployment.
+
+### Batch DB: Export Importance Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep severity available in reports and exports, but a beginner-friendly product should preserve the same action language when work leaves the app.
+- Nontechnical users should see urgent, planned, and idea before raw critical, warning, suggestion, or severity labels in CSVs and fix notes.
+- Downloaded problem files should feel like a helpful priority list, not an analyzer dump.
+
+Implementation:
+
+- [x] Translate problem CSV and fix-note severity wording into plain importance labels.
+- [x] Cover the exact exported importance labels with unit tests.
+- [x] Verify export importance labels through local API/download checks.
+- [ ] Browser-check export importance labels after deployment.
