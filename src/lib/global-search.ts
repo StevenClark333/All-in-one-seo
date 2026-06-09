@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
 export type GlobalSearchResult = {
@@ -180,14 +181,14 @@ export async function getGlobalSearchResults(
       })),
       ...domains.map((domain) => ({
         category: "Website" as const,
-        description: domain.client?.name ?? "Unassigned client",
+        description: formatWebsiteClient(domain.client?.name),
         href: `/domains/${domain.id}/workspace`,
         icon: Globe2,
         title: domain.domain,
       })),
       ...pages.map((page) => ({
         category: "Page" as const,
-        description: `${page.domain.client?.name ?? "Unassigned"} - ${
+        description: `${formatWebsiteClient(page.domain.client?.name)} - ${
           page.domain.domain
         }`,
         href: `/pages/${page.id}`,

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { createDomain } from "@/app/actions";
 import { getDomainManagementData } from "@/lib/management-queries";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,7 @@ export default async function NewDomainPage() {
                   defaultValue={clients.at(0)?.id ?? ""}
                   className="h-11 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="">Unassigned</option>
+                  <option value="">{formatWebsiteClient(null)}</option>
                   {clients.map((client) => (
                     <option key={client.id} value={client.id}>
                       {client.name}

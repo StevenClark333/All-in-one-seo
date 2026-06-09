@@ -1767,3 +1767,18 @@ Implementation:
 - [x] Cover the exact alert delivery labels with unit tests.
 - [x] Browser-check alert delivery labels desktop and mobile locally.
 - [ ] Browser-check alert delivery labels after deployment.
+
+### Batch CU: Website Ownership Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project and client context close to website/search results, but a beginner-friendly workflow should treat missing ownership as a normal setup state.
+- Nontechnical users should see no client yet before unassigned in the Add Website form and global search result descriptions.
+- Adding or finding a website should feel like a gentle setup path, not a database assignment task.
+
+Implementation:
+
+- [x] Translate Add Website and global search ownership fallbacks away from unassigned wording.
+- [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
+- [x] Browser-check website ownership labels desktop and mobile locally.
+- [ ] Browser-check website ownership labels after deployment.
