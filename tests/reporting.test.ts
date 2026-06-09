@@ -45,7 +45,7 @@ test("summarizes report issues, scores, crawls, and recommendations", () => {
               id: "change_1",
               severity: "CRITICAL",
               changeType: "title_changed",
-              previousValue: "Old title",
+              previousValue: null,
               newValue: "New title",
               createdAt: new Date("2026-05-12T00:00:00Z"),
               page: { url: "https://example.com/" },
@@ -106,9 +106,23 @@ test("summarizes report issues, scores, crawls, and recommendations", () => {
 
   const pdfLines = buildReportPdfText(report);
   assert.equal(pdfLines[0], "May SEO report");
-  assert.ok(pdfLines.some((line) => line.includes("Open issues: 1")));
-  assert.ok(pdfLines.some((line) => line.includes("Changes detected: 1")));
+  assert.ok(
+    pdfLines.some((line) => line.includes("Problems ready to review: 1")),
+  );
+  assert.ok(pdfLines.some((line) => line.includes("Urgent problems: 1")));
+  assert.ok(pdfLines.some((line) => line.includes("Website changes found: 1")));
   assert.ok(pdfLines.some((line) => line.includes("Prepared for: Client Co")));
+  assert.ok(
+    pdfLines.some((line) => line.includes("Website or client: Client Co")),
+  );
+  assert.ok(
+    pdfLines.some((line) =>
+      line.includes("Title Changed on example.com: Not found yet -> New title"),
+    ),
+  );
+  assert.ok(!pdfLines.some((line) => line.includes("Client/domain")));
+  assert.ok(!pdfLines.some((line) => line.includes("Open issues")));
+  assert.ok(!pdfLines.some((line) => line.includes("empty")));
 });
 
 test("builds and parses custom report template sections", () => {
@@ -181,6 +195,7 @@ test("omits disabled custom report template sections from PDF text", () => {
     !pdfLines.some((line) => line.includes("Priority recommendations")),
   );
   assert.ok(!pdfLines.some((line) => line.includes("Pages monitored")));
+  assert.ok(!pdfLines.some((line) => line.includes("Pages checked")));
 });
 
 test("formats missing report PDF health scores as no score yet", () => {

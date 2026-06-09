@@ -6,6 +6,7 @@ import {
   type ReportScheduleFrequency,
 } from "@prisma/client";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
+import { formatCrawlRunChangeValue } from "@/lib/crawl-run-display-labels";
 import {
   buildPublicReportAccessWhere,
   buildWorkspaceIsolationWhere,
@@ -522,7 +523,7 @@ export function buildReportPdfText(report: ReportDetail) {
     report.title,
     `Prepared by: ${summary.brand.agencyName}`,
     `Prepared for: ${summary.brand.clientName}`,
-    `Client/domain: ${owner}`,
+    `Website or client: ${owner}`,
     `Period: ${report.periodStart.toDateString()} - ${report.periodEnd.toDateString()}`,
   ];
 
@@ -531,29 +532,29 @@ export function buildReportPdfText(report: ReportDetail) {
   }
 
   if (summary.sections.crawlSummary) {
-    lines.push(`Pages monitored: ${summary.pageCount}`);
+    lines.push(`Pages checked: ${summary.pageCount}`);
   }
 
   if (summary.sections.issueMovement) {
     lines.push(
-      `Open issues: ${summary.openIssues.length}`,
-      `Critical issues: ${summary.criticalIssues.length}`,
-      `New issues: ${summary.newIssues.length}`,
-      `Fixed issues: ${summary.fixedIssues.length}`,
+      `Problems ready to review: ${summary.openIssues.length}`,
+      `Urgent problems: ${summary.criticalIssues.length}`,
+      `New problems: ${summary.newIssues.length}`,
+      `Fixed problems: ${summary.fixedIssues.length}`,
     );
   }
 
   if (summary.sections.changeSummary) {
     lines.push(
-      `Changes detected: ${summary.changeEvents.length}`,
-      `Critical changes: ${summary.criticalChanges.length}`,
+      `Website changes found: ${summary.changeEvents.length}`,
+      `Urgent changes: ${summary.criticalChanges.length}`,
       "",
-      "Change summary",
+      "Website change summary",
       ...summary.changeEvents
         .slice(0, 8)
         .map(
           (change) =>
-            `- ${formatChangeType(change.changeType)} on ${change.domainName}: ${change.previousValue ?? "empty"} -> ${change.newValue ?? "empty"}`,
+            `- ${formatChangeType(change.changeType)} on ${change.domainName}: ${formatCrawlRunChangeValue(change.previousValue)} -> ${formatCrawlRunChangeValue(change.newValue)}`,
         ),
     );
   }
@@ -561,7 +562,7 @@ export function buildReportPdfText(report: ReportDetail) {
   if (summary.sections.priorityRecommendations) {
     lines.push(
       "",
-      "Priority recommendations",
+      "Best next steps",
       ...summary.recommendations.map(
         (item) => `- ${item.title}: ${item.recommendation}`,
       ),

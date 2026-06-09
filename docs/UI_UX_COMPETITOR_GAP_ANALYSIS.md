@@ -1919,3 +1919,19 @@ Implementation:
 - [x] Cover the exact exported page-check labels with unit tests.
 - [x] Verify export page-check labels through local API/download checks.
 - [ ] Browser-check export page-check labels after deployment.
+
+### Batch DE: Report PDF Story Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs reports keep issue movement, crawl summaries, and change history available, but a beginner-friendly client update should label them as website progress and next steps.
+- Nontechnical readers should see website or client, pages checked, problems ready to review, website changes found, and best next steps before client/domain, pages monitored, open issues, change summary, priority recommendations, or empty placeholders.
+- Downloaded and shared report text should feel like a polished update, not a raw audit export.
+
+Implementation:
+
+- [x] Translate generated report text away from issue/crawl/domain labels toward website-progress wording.
+- [x] Reuse the same gentle not-found change placeholder used in crawl recap views.
+- [x] Cover the exact generated report PDF text with unit tests.
+- [x] Verify generated report text through local report rendering checks.
+- [ ] Browser-check report PDF story labels after deployment.
