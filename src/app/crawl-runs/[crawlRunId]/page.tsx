@@ -124,7 +124,10 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
             <Metric label="Pages found" value={crawlRun.pagesDiscovered} />
             <Metric label="Pages checked" value={crawlRun.pagesCrawled} />
             <Metric label="Need another look" value={crawlRun.pagesFailed} />
-            <Metric label="Started by" value={formatEnum(crawlRun.trigger)} />
+            <Metric
+              label="Started from"
+              value={formatCheckTrigger(crawlRun.trigger)}
+            />
           </div>
 
           {crawlRun.errorMessage ? (
@@ -395,13 +398,24 @@ function formatEnum(value: string) {
 
 function formatCheckStatus(value: string) {
   const statusLabels: Record<string, string> = {
-    COMPLETED: "Complete",
-    FAILED: "Needs attention",
-    QUEUED: "Waiting",
-    RUNNING: "Checking",
+    CANCELLED: "Stopped",
+    COMPLETED: "Finished",
+    FAILED: "Needs another try",
+    QUEUED: "Waiting to start",
+    RUNNING: "Checking now",
   };
 
   return statusLabels[value] ?? formatEnum(value);
+}
+
+function formatCheckTrigger(value: string) {
+  const triggerLabels: Record<string, string> = {
+    MANUAL: "I started it",
+    SCHEDULED: "Scheduled check",
+    SYSTEM: "Automatic check",
+  };
+
+  return triggerLabels[value] ?? formatEnum(value);
 }
 
 function formatSetupFileType(value: string) {

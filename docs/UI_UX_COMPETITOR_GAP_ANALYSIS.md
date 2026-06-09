@@ -1515,3 +1515,18 @@ Implementation:
 - [x] Translate keyword tracking statuses into watching, paused-for-now, and set-aside wording.
 - [x] Browser-check Rank keyword status labels desktop and mobile locally.
 - [ ] Browser-check Rank keyword status labels after deployment.
+
+### Batch CD: Website Check Recap Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs crawl/run details expose status, trigger, and crawl artifacts, but a nontechnical recap should say what happened and how the check started.
+- Nontechnical users should see finished, checking now, waiting to start, stopped, needs another try, scheduled check, I started it, and automatic check before completed, running, queued, cancelled, failed, scheduled, manual, or system.
+- The Website check recap should feel like a plain-language after-action note, not a crawl-run record.
+
+Implementation:
+
+- [x] Translate Website check recap status labels into finished/checking/waiting/stopped/needs-another-try wording.
+- [x] Translate check trigger labels into scheduled, manual, and automatic check wording.
+- [x] Browser-check Website check recap labels desktop and mobile locally.
+- [ ] Browser-check Website check recap labels after deployment.
