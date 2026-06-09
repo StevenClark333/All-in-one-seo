@@ -1983,3 +1983,18 @@ Implementation:
 - [x] Update metadata and product source-of-truth docs to the softer name.
 - [x] Cover the product copy contract with unit tests.
 - [ ] Browser-check product name calmness after deployment.
+
+### Batch DI: Plan Copy Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs pricing language assumes buyers already understand SEO monitoring, but a beginner-first product should explain plans as website care and safe checks.
+- Nontechnical users should see gentle weekly care check, checked every day, client website care, and white-label handoffs before SEO monitoring, daily monitoring, or operations wording.
+- Pricing and verification copy should reduce anxiety before a user commits to setup or a plan.
+
+Implementation:
+
+- [x] Rewrite plan catalog descriptions from monitoring language to website-care language.
+- [x] Soften email confirmation copy away from SEO issue wording.
+- [x] Cover the exact plan descriptions and old monitoring phrases with unit tests.
+- [ ] Browser-check plan copy calmness after deployment.

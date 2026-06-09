@@ -25,6 +25,19 @@ test("defines production plan records and limits", () => {
   assert.equal(planCatalog[0].renderedCrawling, false);
   assert.equal(planCatalog[1].renderedCrawling, true);
   assert.equal(planCatalog[2].whiteLabelReports, true);
+  assert.equal(
+    planCatalog[0].description,
+    "For one business website getting a gentle weekly care check.",
+  );
+  assert.equal(
+    planCatalog[3].description,
+    "For larger agencies needing high-volume website care and white-label handoffs.",
+  );
+  assert.ok(
+    planCatalog.every(
+      (plan) => !/SEO monitoring|daily monitoring/.test(plan.description),
+    ),
+  );
 });
 
 test("formats monthly plan prices", () => {

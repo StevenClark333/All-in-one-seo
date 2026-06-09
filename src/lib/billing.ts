@@ -15,7 +15,7 @@ export const planCatalog = [
     aiRecommendationLimit: 100,
     crawlFrequency: "WEEKLY",
     description:
-      "For one business site getting continuous weekly SEO monitoring.",
+      "For one business website getting a gentle weekly care check.",
     domainLimit: 1,
     key: "starter",
     monthlyPriceCents: 2900,
@@ -31,7 +31,7 @@ export const planCatalog = [
     aiRecommendationLimit: 750,
     crawlFrequency: "DAILY",
     description:
-      "For growing teams managing multiple sites with daily monitoring.",
+      "For growing teams keeping several websites checked every day.",
     domainLimit: 5,
     key: "growth",
     monthlyPriceCents: 9900,
@@ -47,7 +47,7 @@ export const planCatalog = [
     aiRecommendationLimit: 3000,
     crawlFrequency: "DAILY",
     description:
-      "For agencies managing client portfolios, reports, and integrations.",
+      "For agencies caring for client websites, reports, and connected tools.",
     domainLimit: 25,
     key: "agency",
     monthlyPriceCents: 24900,
@@ -63,7 +63,7 @@ export const planCatalog = [
     aiRecommendationLimit: 10000,
     crawlFrequency: "DAILY",
     description:
-      "For larger agencies needing high-volume monitoring and white-label workflows.",
+      "For larger agencies needing high-volume website care and white-label handoffs.",
     domainLimit: 100,
     key: "agency_pro",
     monthlyPriceCents: 59900,

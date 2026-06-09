@@ -24,8 +24,8 @@ export default async function VerifyEmailPage({
           right place.
         </p>
         <div className="mt-5 rounded-md border border-orange-100 bg-orange-50 p-4 text-sm leading-6 text-orange-900">
-          After confirmation, you can continue setting up projects and checking
-          SEO issues safely.
+          After confirmation, you can continue setting up websites and reviewing
+          the next helpful fixes safely.
         </div>
 
         <form action={verifyEmailAction} className="mt-6">
