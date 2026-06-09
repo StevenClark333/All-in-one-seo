@@ -1485,3 +1485,19 @@ Implementation:
 - [x] Prevent hidden help tooltips from widening mobile pages before hover or focus.
 - [x] Browser-check Ownership Verification labels desktop and mobile locally.
 - [ ] Browser-check Ownership Verification labels after deployment.
+
+### Batch CB: Website List Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs project lists keep platform, setup, and report state visible, but a beginner-friendly list should explain the website state before product or database wording.
+- Nontechnical users should see WordPress site, Shopify store, ownership confirmed, needs setup, ready to share, shared, and create update before raw platform, verification, or report statuses.
+- The Websites list should feel like a calm care list, not a project inventory table.
+
+Implementation:
+
+- [x] Translate Websites table platform labels into website-type wording.
+- [x] Translate ownership labels into ownership-confirmed and needs-setup wording.
+- [x] Translate report labels into update/share wording.
+- [x] Browser-check Websites list labels desktop and mobile locally.
+- [ ] Browser-check Websites list labels after deployment.

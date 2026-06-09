@@ -315,7 +315,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                       </Link>
                                       <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
                                         <span>
-                                          {formatEnum(domain.platform)}
+                                          {formatWebsitePlatform(
+                                            domain.platform,
+                                          )}
                                         </span>
                                         <span aria-hidden="true">/</span>
                                         <StatusPill
@@ -324,8 +326,8 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                           }
                                         >
                                           {isVerified
-                                            ? "Verified"
-                                            : formatEnum(
+                                            ? "Ownership confirmed"
+                                            : formatOwnershipStatus(
                                                 domain.verificationStatus,
                                               )}
                                         </StatusPill>
@@ -382,8 +384,10 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                                     className="font-medium text-blue-700 underline-offset-4 hover:underline"
                                   >
                                     {metrics.latestReportStatus
-                                      ? formatEnum(metrics.latestReportStatus)
-                                      : "Create"}
+                                      ? formatReportStatus(
+                                          metrics.latestReportStatus,
+                                        )
+                                      : "Create update"}
                                   </Link>
                                 </td>
                                 <td className="whitespace-nowrap px-4 py-4">
@@ -601,7 +605,7 @@ function ProjectCarePlan({
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Ready"
             value={`${readyProjects} of ${visibleCount} websites`}
-            detail="Verified websites without urgent problems are the calm group."
+            detail="Websites with ownership confirmed and no urgent problems are the calm group."
             href="#project-details"
           />
         </div>
@@ -672,7 +676,7 @@ function ProjectSummaryCard({
           </p>
         </div>
         <StatusPill tone={isVerified ? "success" : "warning"}>
-          {isVerified ? "Verified" : "Needs setup"}
+          {isVerified ? "Ownership confirmed" : "Needs setup"}
         </StatusPill>
       </div>
       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
@@ -865,6 +869,43 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatWebsitePlatform(value: string) {
+  const labels: Record<string, string> = {
+    CUSTOM: "Custom website",
+    SHOPIFY: "Shopify store",
+    SQUARESPACE: "Squarespace site",
+    UNKNOWN: "I am not sure yet",
+    WEBFLOW: "Webflow site",
+    WIX: "Wix site",
+    WORDPRESS: "WordPress site",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatOwnershipStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs setup help",
+    PENDING: "Needs setup",
+    UNVERIFIED: "Needs setup",
+    VERIFIED: "Ownership confirmed",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatReportStatus(value: string) {
+  const labels: Record<string, string> = {
+    DRAFT: "Draft update",
+    FAILED: "Needs review",
+    GENERATED: "Ready to share",
+    PUBLISHED: "Shared",
+    QUEUED: "Preparing",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function formatDate(value: Date) {
