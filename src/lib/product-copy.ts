@@ -102,3 +102,13 @@ export const PRODUCT_CONNECTION_COPY = {
   wordpressSettingsHint:
     "Paste this website setup code in the Website Care settings screen after the plugin is active.",
 };
+
+export const PRODUCT_BEGINNER_COPY = {
+  adminDescription:
+    "Trusted teammate who can manage access and everyday website care work.",
+  memberTitle: "Website Care Teammate",
+  passwordResetReturn:
+    "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
+  recommendationsIntro:
+    "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
+};

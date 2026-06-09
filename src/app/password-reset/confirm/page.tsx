@@ -1,5 +1,6 @@
 import { KeyRound } from "lucide-react";
 import { resetPasswordAction } from "@/app/actions";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 
 type PasswordResetConfirmPageProps = {
   searchParams: Promise<{ token?: string }>;
@@ -20,8 +21,7 @@ export default async function PasswordResetConfirmPage({
           Choose a new password
         </h1>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          Use at least 8 characters. Once saved, you can sign in again and keep
-          working from your SEO dashboard.
+          {PRODUCT_BEGINNER_COPY.passwordResetReturn}
         </p>
 
         <form action={resetPasswordAction} className="mt-6 grid gap-4">

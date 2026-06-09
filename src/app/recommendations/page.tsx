@@ -10,6 +10,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getAiRecommendationCenterData } from "@/lib/ai";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -62,8 +63,7 @@ export default async function RecommendationsPage({
                 Ideas and fixes
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Create simple page copy ideas and clear fix notes without
-                needing SEO jargon or prompt writing.
+                {PRODUCT_BEGINNER_COPY.recommendationsIntro}
               </p>
             </div>
 

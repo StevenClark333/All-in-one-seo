@@ -6,6 +6,7 @@ import {
   getProductWorkspaceToolLabel,
   getProductReportTitle,
   PRODUCT_AREA_NAME,
+  PRODUCT_BEGINNER_COPY,
   PRODUCT_BRAND_NAME,
   PRODUCT_CONNECTION_COPY,
   PRODUCT_DISPLAY_NAME,
@@ -148,5 +149,25 @@ test("uses soft connection wording for automation handoffs", () => {
   assert.doesNotMatch(
     Object.values(PRODUCT_CONNECTION_COPY).join(" "),
     /SEO step|SEO pages|SEO messages|store SEO|All In One SEO/,
+  );
+});
+
+test("uses beginner-safe wording for broad account and ideas surfaces", () => {
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.adminDescription,
+    "Trusted teammate who can manage access and everyday website care work.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.memberTitle, "Website Care Teammate");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.passwordResetReturn,
+    "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.recommendationsIntro,
+    "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
+  );
+  assert.doesNotMatch(
+    Object.values(PRODUCT_BEGINNER_COPY).join(" "),
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate/,
   );
 });

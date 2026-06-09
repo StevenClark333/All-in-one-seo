@@ -20,6 +20,7 @@ import {
   formatInviteCount,
   formatInviteSeatDetail,
 } from "@/lib/team-display-labels";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { getTeamSettingsData } from "@/lib/team";
 
 export const dynamic = "force-dynamic";
@@ -46,8 +47,7 @@ const roleProfiles: Record<
   },
   ADMIN: {
     title: "Agency Admin",
-    description:
-      "Trusted teammate who can manage access and everyday SEO work.",
+    description: PRODUCT_BEGINNER_COPY.adminDescription,
     permissions: [
       "Can invite teammates and change non-owner roles",
       "Can manage clients, websites, checks, problems, updates, alerts, and connections",
@@ -55,7 +55,7 @@ const roleProfiles: Record<
     ],
   },
   MEMBER: {
-    title: "SEO Teammate",
+    title: PRODUCT_BEGINNER_COPY.memberTitle,
     description:
       "Teammate who works on fixes, website checks, problems, and ideas.",
     permissions: [

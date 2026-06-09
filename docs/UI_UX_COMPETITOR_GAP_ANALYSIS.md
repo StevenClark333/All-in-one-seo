@@ -2078,3 +2078,19 @@ Implementation:
 - [x] Cover the exact connection-page wording with unit tests.
 - [x] Browser-check connection page SEO phrase calmness locally.
 - [ ] Browser-check connection page SEO phrase calmness after deployment.
+
+### Batch DO: Everyday Beginner Phrase Calmness
+
+Competitive evidence:
+
+- Semrush keeps powerful AI and workflow surfaces available, but its copy often assumes marketing comfort with SEO-specific vocabulary.
+- Ahrefs keeps advanced reporting and dashboard language direct for marketers, while a beginner-first product should make common account and idea screens feel less technical before the user reaches deeper tools.
+- The gentler product direction is to say website care workspace, website care work, and technical wording before SEO dashboard, everyday SEO work, SEO jargon, or SEO teammate on broad surfaces.
+
+Implementation:
+
+- [x] Centralize broad beginner-safe product phrases for account, settings, and ideas surfaces.
+- [x] Replace visible beginner-surface SEO phrases in Ideas, Settings, and password reset copy.
+- [x] Cover the exact broad beginner wording with unit tests.
+- [x] Browser-check broad beginner phrase calmness locally.
+- [ ] Browser-check broad beginner phrase calmness after deployment.
