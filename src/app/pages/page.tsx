@@ -3,6 +3,12 @@ import { CheckCircle2, FileSearch, Layers3, Link2, Wand2 } from "lucide-react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getPageInventoryData } from "@/lib/management-queries";
+import {
+  formatPageCheckDate,
+  formatPageClient,
+  formatPageMetaText,
+  formatPageResponse,
+} from "@/lib/page-display-labels";
 import { getTemplateLabel, inferPageTemplate } from "@/lib/template-detection";
 
 export const dynamic = "force-dynamic";
@@ -408,10 +414,10 @@ function PageRow({ page }: { page: InventoryPage }) {
           {page.url}
         </Link>
         <p className="mt-1 text-xs leading-5 text-slate-500">
-          {snapshot?.title ?? "Missing title"}
+          {formatPageMetaText(snapshot?.title)}
         </p>
         <p className="mt-1 text-xs leading-5 text-slate-500">
-          {page.domain.client?.name ?? "Unassigned"} -{" "}
+          {formatPageClient(page.domain.client?.name)} -{" "}
           <Link
             href={`/domains/${page.domain.id}`}
             className="font-medium text-slate-700 underline-offset-4 hover:underline"
@@ -427,7 +433,7 @@ function PageRow({ page }: { page: InventoryPage }) {
 
       <MetaBlock label="Response">
         <span className="whitespace-nowrap">
-          {snapshot?.statusCode ?? "Pending"}
+          {formatPageResponse(snapshot?.statusCode)}
         </span>
       </MetaBlock>
 
@@ -448,9 +454,7 @@ function PageRow({ page }: { page: InventoryPage }) {
 
       <MetaBlock label="Last check">
         <span className="whitespace-nowrap">
-          {page.lastCrawledAt
-            ? page.lastCrawledAt.toLocaleDateString()
-            : "Pending"}
+          {formatPageCheckDate(page.lastCrawledAt)}
         </span>
       </MetaBlock>
     </article>

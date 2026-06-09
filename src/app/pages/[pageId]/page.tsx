@@ -12,6 +12,12 @@ import {
 import { generatePageRecommendations } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getPageDetailData } from "@/lib/management-queries";
+import {
+  formatPageClient,
+  formatPageMetaText,
+  formatPageResponse,
+  formatPageWordCount,
+} from "@/lib/page-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +67,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
           <header className="mt-6 border-b border-slate-200 pb-6">
             <p className="text-sm font-medium text-slate-500">
               {workspace?.name ?? "Workspace"} -{" "}
-              {page.domain.client?.name ?? "Unassigned client"} -{" "}
+              {formatPageClient(page.domain.client?.name)} -{" "}
               <Link
                 href={`/domains/${page.domain.id}`}
                 className="underline-offset-4 hover:underline"
@@ -90,7 +96,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
           <section className="mt-6 grid gap-4 md:grid-cols-4">
             <Metric
               label="Page response"
-              value={latestSnapshot?.statusCode ?? "Pending"}
+              value={formatPageResponse(latestSnapshot?.statusCode)}
             />
             <Metric label="Open problems" value={openIssues.length} />
             <Metric label="Urgent problems" value={criticalIssues} />
@@ -115,19 +121,21 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                   <dl className="mt-5 grid gap-4 md:grid-cols-2">
                     <Meta
                       label="Page title"
-                      value={latestSnapshot.title ?? "Missing"}
+                      value={formatPageMetaText(latestSnapshot.title)}
                     />
                     <Meta
                       label="Search description"
-                      value={latestSnapshot.metaDescription ?? "Missing"}
+                      value={formatPageMetaText(
+                        latestSnapshot.metaDescription,
+                      )}
                     />
                     <Meta
                       label="Main heading"
-                      value={latestSnapshot.h1 ?? "Missing"}
+                      value={formatPageMetaText(latestSnapshot.h1)}
                     />
                     <Meta
                       label="Preferred page"
-                      value={latestSnapshot.canonical ?? "Missing"}
+                      value={formatPageMetaText(latestSnapshot.canonical)}
                     />
                     <Meta
                       label="Search visibility"
@@ -137,7 +145,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                     />
                     <Meta
                       label="Page copy"
-                      value={latestSnapshot.wordCount ?? "Unknown"}
+                      value={formatPageWordCount(latestSnapshot.wordCount)}
                     />
                   </dl>
                 ) : (

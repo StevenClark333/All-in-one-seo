@@ -1632,3 +1632,18 @@ Implementation:
 - [x] Cover the exact rank-tracking fallback labels with unit tests.
 - [x] Browser-check Rank Tracking metric labels desktop and mobile locally.
 - [ ] Browser-check Rank Tracking metric labels after deployment.
+
+### Batch CL: Page Snapshot Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both keep crawl response, page copy, and metadata checks available, but a beginner-friendly page inventory should describe unchecked data as a normal next step.
+- Nontechnical users should see not checked yet, no client yet, not found yet, and not counted yet before pending, unknown, unassigned, or missing field wording.
+- The Pages list and page detail view should feel like a calm page-care guide, not a raw crawl export.
+
+Implementation:
+
+- [x] Translate Pages list and page-detail response, owner, metadata, copy-count, and last-check labels into plain-language wording.
+- [x] Cover the exact page snapshot fallback labels with unit tests.
+- [x] Browser-check page snapshot labels desktop and mobile locally.
+- [ ] Browser-check page snapshot labels after deployment.
