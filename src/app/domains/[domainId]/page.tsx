@@ -17,6 +17,15 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainDetailData } from "@/lib/management-queries";
+import {
+  formatPageCheckDate,
+  formatPageMetaText,
+} from "@/lib/page-display-labels";
+import {
+  formatWebsiteClient,
+  formatWebsiteHealth,
+  formatWebsiteResponse,
+} from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -120,7 +129,7 @@ export default async function DomainDetailPage({
             <div>
               <p className="text-sm font-medium text-slate-500">
                 {workspace?.name ?? "Workspace"} -{" "}
-                {domain.client?.name ?? "Unassigned client"}
+                {formatWebsiteClient(domain.client?.name)}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 {domain.domain}
@@ -171,7 +180,7 @@ export default async function DomainDetailPage({
             <Metric
               help="Current website health based on open problems and recent check signals."
               label="Health"
-              value={domain.healthScore ?? "Pending"}
+              value={formatWebsiteHealth(domain.healthScore)}
             />
             <Metric
               help="Pages currently known from recent website checks."
@@ -274,18 +283,16 @@ export default async function DomainDetailPage({
                               </Link>
                             </td>
                             <td className="px-5 py-4 text-slate-600">
-                              {formatPageResponse(snapshot?.statusCode)}
+                              {formatWebsiteResponse(snapshot?.statusCode)}
                             </td>
                             <td className="max-w-[280px] truncate px-5 py-4 text-slate-600">
-                              {snapshot?.title ?? "Missing"}
+                              {formatPageMetaText(snapshot?.title)}
                             </td>
                             <td className="px-5 py-4 text-slate-600">
                               {page.issues.length}
                             </td>
                             <td className="px-5 py-4 text-slate-600">
-                              {page.lastCrawledAt
-                                ? page.lastCrawledAt.toLocaleDateString()
-                                : "Pending"}
+                              {formatPageCheckDate(page.lastCrawledAt)}
                             </td>
                           </tr>
                         );
@@ -354,7 +361,7 @@ export default async function DomainDetailPage({
                           defaultValue={domain.clientId ?? ""}
                           className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                         >
-                          <option value="">Unassigned</option>
+                          <option value="">No client yet</option>
                           {clients.map((client) => (
                             <option key={client.id} value={client.id}>
                               {client.name}
@@ -826,26 +833,6 @@ function formatSetupFileType(value: string) {
   };
 
   return labels[value] ?? formatEnum(value);
-}
-
-function formatPageResponse(statusCode: number | null | undefined) {
-  if (!statusCode) {
-    return "Pending";
-  }
-
-  if (statusCode >= 200 && statusCode < 300) {
-    return "Good";
-  }
-
-  if (statusCode >= 300 && statusCode < 400) {
-    return "Redirects";
-  }
-
-  if (statusCode >= 400) {
-    return "Needs review";
-  }
-
-  return statusCode.toString();
 }
 
 function formatProblemImportance(severity: string) {

@@ -17,6 +17,11 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainManagementData } from "@/lib/management-queries";
+import {
+  formatWebsiteClient,
+  formatWebsiteHealth,
+  formatWebsitePercent,
+} from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -595,7 +600,7 @@ function ProjectCarePlan({
             detail={
               topProjectDomain
                 ? topProjectHealth === null || topProjectHealth === undefined
-                  ? "Health pending. Open it first if you are unsure."
+                  ? "No health score yet. Open it first if you are unsure."
                   : `Health ${topProjectHealth}%. Open it first if you are unsure.`
                 : "Add one website to start watching."
             }
@@ -683,7 +688,7 @@ function ProjectSummaryCard({
         <div>
           <p className="font-medium text-slate-500">Health</p>
           <p className="mt-1 text-xl font-semibold text-slate-950">
-            {health === null ? "Pending" : `${health}%`}
+            {formatWebsiteHealth(health)}
           </p>
         </div>
         <div>
@@ -726,7 +731,7 @@ function groupDomainsByClient(domains: DomainProject[]) {
   const groups = new Map<string, DomainProject[]>();
 
   for (const domain of domains) {
-    const clientName = domain.client?.name ?? "Unassigned";
+    const clientName = formatWebsiteClient(domain.client?.name);
     groups.set(clientName, [...(groups.get(clientName) ?? []), domain]);
   }
 
@@ -945,7 +950,7 @@ function TableHead({ children }: { children: React.ReactNode }) {
 
 function ScoreValue({ value }: { value: number | null }) {
   if (value === null) {
-    return <span className="text-slate-400">Pending</span>;
+    return <span className="text-slate-400">No score yet</span>;
   }
 
   const tone =
@@ -960,7 +965,7 @@ function ScoreValue({ value }: { value: number | null }) {
 
 function PercentValue({ value }: { value: number | null }) {
   if (value === null) {
-    return <span className="text-slate-400">Pending</span>;
+    return <span className="text-slate-400">Not checked yet</span>;
   }
 
   const tone =
@@ -970,7 +975,9 @@ function PercentValue({ value }: { value: number | null }) {
         ? "text-amber-700"
         : "text-red-700";
 
-  return <span className={`font-medium ${tone}`}>{value}%</span>;
+  return (
+    <span className={`font-medium ${tone}`}>{formatWebsitePercent(value)}</span>
+  );
 }
 
 function StatusPill({

@@ -1647,3 +1647,18 @@ Implementation:
 - [x] Cover the exact page snapshot fallback labels with unit tests.
 - [x] Browser-check page snapshot labels desktop and mobile locally.
 - [ ] Browser-check page snapshot labels after deployment.
+
+### Batch CM: Website Health Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep website health, crawl response, setup files, and owner context visible, but a beginner-friendly website workspace should frame missing health data as a normal next check.
+- Nontechnical users should see no score yet, no client yet, not checked yet, and response labels with plain status before pending, unassigned, or raw crawl wording.
+- The Websites list, website detail, and website workspace should feel like a guided website-health view, not a technical site-audit export.
+
+Implementation:
+
+- [x] Translate website health, owner, setup-file response, page response, and percentage fallbacks into plain-language wording.
+- [x] Cover the exact website health fallback labels with unit tests.
+- [x] Browser-check website health labels desktop and mobile locally.
+- [ ] Browser-check website health labels after deployment.

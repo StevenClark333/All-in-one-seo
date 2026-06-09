@@ -28,6 +28,12 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
+import {
+  formatWebsiteClient,
+  formatWebsiteHealth,
+  formatWebsitePercent,
+  formatWebsiteResponse,
+} from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -187,7 +193,7 @@ export default async function DomainWorkspacePage({
               <div className="min-w-0">
                 <p className="text-sm font-medium text-slate-500">
                   {workspace?.name ?? "Workspace"} /{" "}
-                  {domain.client?.name ?? "Unassigned client"}
+                  {formatWebsiteClient(domain.client?.name)}
                 </p>
                 <h2 className="mt-2 break-words text-3xl font-semibold tracking-normal">
                   {domain.domain}
@@ -274,7 +280,7 @@ export default async function DomainWorkspacePage({
               <ContextItem label="Website" value={domain.domain} />
               <ContextItem
                 label="Client"
-                value={domain.client?.name ?? "Unassigned"}
+                value={formatWebsiteClient(domain.client?.name)}
               />
               <ContextItem
                 label="Last updated"
@@ -448,7 +454,9 @@ export default async function DomainWorkspacePage({
             <Metric
               help="Latest site health score for this website."
               label="Health score"
-              value={domain.healthScore ?? latestScore?.score ?? "Pending"}
+              value={formatWebsiteHealth(
+                domain.healthScore ?? latestScore?.score,
+              )}
             />
             <Metric
               help="Pages known for this website."
@@ -1084,8 +1092,8 @@ function buildThematicReports(domain: DomainWorkspace): ThematicReport[] {
       label: "Access file",
       status: artifactStatus(robotsArtifact),
       value: robotsArtifact?.statusCode
-        ? formatResponseLabel(robotsArtifact.statusCode)
-        : "Pending",
+        ? formatWebsiteResponse(robotsArtifact.statusCode)
+        : "Not checked yet",
     },
     {
       detail: sitemapArtifact
@@ -1095,8 +1103,8 @@ function buildThematicReports(domain: DomainWorkspace): ThematicReport[] {
       label: "Page list",
       status: artifactStatus(sitemapArtifact),
       value: sitemapArtifact?.statusCode
-        ? formatResponseLabel(sitemapArtifact.statusCode)
-        : "Pending",
+        ? formatWebsiteResponse(sitemapArtifact.statusCode)
+        : "Not checked yet",
     },
     {
       detail: `${healthyPages} pages ready for Google`,
@@ -1766,7 +1774,7 @@ function countIssuesByType(domain: DomainWorkspace, patterns: string[]) {
 }
 
 function formatPercent(value: number | null) {
-  return value === null ? "Pending" : `${value}%`;
+  return formatWebsitePercent(value);
 }
 
 function hasStructuredData(metadataJson: unknown) {
@@ -1900,18 +1908,6 @@ function formatProblemSeverity(value: string) {
   };
 
   return labels[value] ?? formatEnum(value);
-}
-
-function formatResponseLabel(statusCode: number) {
-  if (statusCode >= 200 && statusCode < 300) {
-    return "Good";
-  }
-
-  if (statusCode >= 300 && statusCode < 400) {
-    return "Redirects";
-  }
-
-  return "Needs review";
 }
 
 function formatIssueType(value: string) {
