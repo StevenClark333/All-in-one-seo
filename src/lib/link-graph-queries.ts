@@ -1,5 +1,6 @@
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { generateInternalLinkOpportunities } from "@/lib/link-graph-analyzer";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
 export async function getInternalLinkGraphData({
@@ -79,7 +80,7 @@ export async function getInternalLinkGraphData({
     domain.pages.map((page) => ({
       id: page.id,
       domain: domain.domain,
-      client: domain.client?.name ?? "Unassigned",
+      client: formatWebsiteClient(domain.client?.name),
       url: page.url,
       pageType: page.pageType,
       importance: page.importance,
@@ -110,7 +111,7 @@ export async function getInternalLinkGraphData({
     }).map((opportunity) => ({
       ...opportunity,
       domain: domain.domain,
-      client: domain.client?.name ?? "Unassigned",
+      client: formatWebsiteClient(domain.client?.name),
     })),
   );
 

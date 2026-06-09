@@ -9,6 +9,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getInternalLinkGraphData } from "@/lib/link-graph-queries";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -208,7 +209,7 @@ export default async function TechnicalAuditPage({
                         )}
                       </p>
                       <p className="mt-2 text-sm text-slate-500">
-                        {issue.domain.client?.name ?? "Unassigned"} -{" "}
+                        {formatWebsiteClient(issue.domain.client?.name)} -{" "}
                         {issue.domain.domain}
                         {issue.page ? ` - ${issue.page.url}` : ""}
                       </p>

@@ -1812,3 +1812,18 @@ Implementation:
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check recommendation ownership labels desktop and mobile locally.
 - [ ] Browser-check recommendation ownership labels after deployment.
+
+### Batch CX: Technical Audit Ownership Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project context attached to technical problem lists and internal-link ideas, but a beginner-friendly audit should treat missing client context as a normal setup detail.
+- Nontechnical users should see no client yet before unassigned when reviewing pages that need link help or page-by-page link counts.
+- The technical audit should feel like a gentle website-links checklist, not an assignment-management report.
+
+Implementation:
+
+- [x] Translate technical-audit issue, page, and link-opportunity ownership fallbacks away from unassigned wording.
+- [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
+- [x] Browser-check technical-audit ownership labels desktop and mobile locally.
+- [ ] Browser-check technical-audit ownership labels after deployment.
