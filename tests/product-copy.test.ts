@@ -276,7 +276,78 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.rankAdjustViewDetail,
-    "Save this view or narrow the page by website and keyword.",
+    "Save this view or narrow the page by website and search term.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankAverageHelp,
+    "Average latest owned spot across watched search terms with rank data.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankAddTermAction, "Add search term");
+  assert.equal(PRODUCT_BEGINNER_COPY.rankChooseTermOption, "Choose search term");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankDetailEmpty,
+    "No search terms are being watched yet. Add one above to begin rank movement tracking.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankDetailIntro,
+    "Optional watched search-term list for rank, volume, difficulty, and status.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankDetailTitle, "More search-term detail");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankFirstStepAddDetail,
+    "Add one important search term so the tracker can start showing progress.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankFirstStepAddLabel,
+    "Add your first search term",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankFirstStepWatchDetail,
+    "Watch the search terms that already have movement before adding more data.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankHeaderBadgeSuffix,
+    "search terms watched",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankHeaderIntro,
+    "See which search terms moved, what dropped, and where one page can be improved next.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankHiddenTermsNote,
+    "more search terms are hidden so the first view stays focused on movement.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankManageDataIntro,
+    "Add search terms, record a rank, or import search volume when you need to update the tracker manually.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankMetricHelp,
+    "Active and paused search terms currently watched for movement.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankMetricLabel, "Watched search terms");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankPlanHeading,
+    "Know which search term needs attention next.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankRecoverDetail,
+    "Review the search terms that dropped and decide whether a page needs a content refresh.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankStableDetail,
+    "No watched search-term drops are showing right now.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankTermExample, "best website help");
+  assert.equal(PRODUCT_BEGINNER_COPY.rankTermFieldLabel, "Search term");
+  assert.equal(PRODUCT_BEGINNER_COPY.rankTrackTermTitle, "Watch search term");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankTopThreeHelp,
+    "Latest owned spots in the top three organic results.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankTopTenHelp,
+    "Latest owned spots in the top ten organic results.",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.rankChooseWebsiteOption, "Choose website");
   assert.equal(PRODUCT_BEGINNER_COPY.rankKeywordWebsiteHeader, "Website");
@@ -327,6 +398,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data/,
   );
 });

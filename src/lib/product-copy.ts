@@ -158,7 +158,43 @@ export const PRODUCT_BEGINNER_COPY = {
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   rankAdjustViewDetail:
-    "Save this view or narrow the page by website and keyword.",
+    "Save this view or narrow the page by website and search term.",
+  rankAverageHelp:
+    "Average latest owned spot across watched search terms with rank data.",
+  rankAddTermAction: "Add search term",
+  rankChooseTermOption: "Choose search term",
+  rankDetailEmpty:
+    "No search terms are being watched yet. Add one above to begin rank movement tracking.",
+  rankDetailIntro:
+    "Optional watched search-term list for rank, volume, difficulty, and status.",
+  rankDetailTitle: "More search-term detail",
+  rankFirstStepAddDetail:
+    "Add one important search term so the tracker can start showing progress.",
+  rankFirstStepAddLabel: "Add your first search term",
+  rankFirstStepWatchDetail:
+    "Watch the search terms that already have movement before adding more data.",
+  rankHeaderBadgeSuffix: "search terms watched",
+  rankHeaderIntro:
+    "See which search terms moved, what dropped, and where one page can be improved next.",
+  rankHiddenTermsNote:
+    "more search terms are hidden so the first view stays focused on movement.",
+  rankManageDataIntro:
+    "Add search terms, record a rank, or import search volume when you need to update the tracker manually.",
+  rankMetricHelp:
+    "Active and paused search terms currently watched for movement.",
+  rankMetricLabel: "Watched search terms",
+  rankPlanHeading: "Know which search term needs attention next.",
+  rankRecoverDetail:
+    "Review the search terms that dropped and decide whether a page needs a content refresh.",
+  rankStableDetail:
+    "No watched search-term drops are showing right now.",
+  rankTermExample: "best website help",
+  rankTermFieldLabel: "Search term",
+  rankTrackTermTitle: "Watch search term",
+  rankTopThreeHelp:
+    "Latest owned spots in the top three organic results.",
+  rankTopTenHelp:
+    "Latest owned spots in the top ten organic results.",
   rankChooseWebsiteOption: "Choose website",
   rankKeywordWebsiteHeader: "Website",
   rankWebsiteFilterLabel: "Website",

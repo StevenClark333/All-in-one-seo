@@ -72,14 +72,14 @@ export default async function RankTrackingPage({
                 Rank movement
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                See which keywords moved, what dropped, and where one page can
-                be improved next.
+                {PRODUCT_BEGINNER_COPY.rankHeaderIntro}
               </p>
             </div>
 
             <div className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm">
               <LineChart className="size-4" aria-hidden="true" />
-              {data.summary.keywords} tracked keywords
+              {data.summary.keywords}{" "}
+              {PRODUCT_BEGINNER_COPY.rankHeaderBadgeSuffix}
             </div>
           </header>
 
@@ -138,22 +138,22 @@ export default async function RankTrackingPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
-              help="Active and paused keywords currently configured for tracking."
-              label="Tracked keywords"
+              help={PRODUCT_BEGINNER_COPY.rankMetricHelp}
+              label={PRODUCT_BEGINNER_COPY.rankMetricLabel}
               value={data.summary.keywords}
             />
             <Metric
-              help="Latest owned ranking positions in the top three organic results."
+              help={PRODUCT_BEGINNER_COPY.rankTopThreeHelp}
               label="Top 3"
               value={data.summary.topThree}
             />
             <Metric
-              help="Latest owned ranking positions in the top ten organic results."
+              help={PRODUCT_BEGINNER_COPY.rankTopTenHelp}
               label="Top 10"
               value={data.summary.topTen}
             />
             <Metric
-              help="Average latest owned position across tracked keywords with rank data."
+              help={PRODUCT_BEGINNER_COPY.rankAverageHelp}
               label="Avg. spot"
               value={formatRankPosition(data.summary.averagePosition)}
             />
@@ -219,8 +219,7 @@ export default async function RankTrackingPage({
               <div>
                 <h3 className="text-lg font-semibold">Manage tracking data</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Add keywords, record a rank, or import search volume when you
-                  need to update the tracker manually.
+                  {PRODUCT_BEGINNER_COPY.rankManageDataIntro}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
@@ -233,7 +232,9 @@ export default async function RankTrackingPage({
             <div className="grid gap-6 border-t border-slate-100 p-5 xl:grid-cols-3">
               <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
                 <div className="border-b border-slate-200 p-5">
-                  <h3 className="text-lg font-semibold">Track keyword</h3>
+                  <h3 className="text-lg font-semibold">
+                    {PRODUCT_BEGINNER_COPY.rankTrackTermTitle}
+                  </h3>
                 </div>
                 <form
                   action={addTrackedKeywordAction}
@@ -256,10 +257,10 @@ export default async function RankTrackingPage({
                       ))}
                     </select>
                   </FilterLabel>
-                  <FilterLabel label="Keyword">
+                  <FilterLabel label={PRODUCT_BEGINNER_COPY.rankTermFieldLabel}>
                     <input
                       name="keyword"
-                      placeholder="seo audit software"
+                      placeholder={PRODUCT_BEGINNER_COPY.rankTermExample}
                       required
                       className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     />
@@ -285,7 +286,7 @@ export default async function RankTrackingPage({
                   </div>
                   <button className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
                     <Plus className="size-4" aria-hidden="true" />
-                    Add keyword
+                    {PRODUCT_BEGINNER_COPY.rankAddTermAction}
                   </button>
                 </form>
               </section>
@@ -298,13 +299,15 @@ export default async function RankTrackingPage({
                   action={recordRankObservationAction}
                   className="grid gap-4 p-5"
                 >
-                  <FilterLabel label="Keyword">
+                  <FilterLabel label={PRODUCT_BEGINNER_COPY.rankTermFieldLabel}>
                     <select
                       name="trackedKeywordId"
                       required
                       className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     >
-                      <option value="">Choose keyword</option>
+                      <option value="">
+                        {PRODUCT_BEGINNER_COPY.rankChooseTermOption}
+                      </option>
                       {data.keywords.map((keyword) => (
                         <option key={keyword.id} value={keyword.id}>
                           {keyword.keyword}
@@ -352,10 +355,10 @@ export default async function RankTrackingPage({
                   action={importKeywordMetricAction}
                   className="grid gap-4 p-5"
                 >
-                  <FilterLabel label="Keyword">
+                  <FilterLabel label={PRODUCT_BEGINNER_COPY.rankTermFieldLabel}>
                     <input
                       name="keyword"
-                      placeholder="seo audit software"
+                      placeholder={PRODUCT_BEGINNER_COPY.rankTermExample}
                       required
                       className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     />
@@ -407,11 +410,10 @@ export default async function RankTrackingPage({
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      More keyword detail
+                      {PRODUCT_BEGINNER_COPY.rankDetailTitle}
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Optional keyword inventory for rank, volume, difficulty,
-                      and status.
+                      {PRODUCT_BEGINNER_COPY.rankDetailIntro}
                     </p>
                   </div>
                   <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
@@ -497,7 +499,7 @@ function KeywordTable({
                   className="px-5 py-8 text-center text-slate-500"
                   colSpan={6}
                 >
-                  No tracked keywords yet. Add one above to begin rank tracking.
+                  {PRODUCT_BEGINNER_COPY.rankDetailEmpty}
                 </td>
               </tr>
             )}
@@ -506,7 +508,7 @@ function KeywordTable({
       </div>
       {hiddenCount > 0 ? (
         <PreviewLimitNote
-          body={`${hiddenCount} more keywords are hidden so the first view stays focused on movement.`}
+          body={`${hiddenCount} ${PRODUCT_BEGINNER_COPY.rankHiddenTermsNote}`}
         />
       ) : null}
     </section>
@@ -588,16 +590,18 @@ function RankMovementPlan({
   const plan = [
     {
       detail: keywordCount
-        ? "Watch the keywords that already have movement before adding more data."
-        : "Add one important keyword so the tracker can start showing progress.",
+        ? PRODUCT_BEGINNER_COPY.rankFirstStepWatchDetail
+        : PRODUCT_BEGINNER_COPY.rankFirstStepAddDetail,
       href: keywordCount ? "#rank-distribution" : "#manage-rank-data",
-      label: keywordCount ? "See what moved" : "Add your first keyword",
+      label: keywordCount
+        ? "See what moved"
+        : PRODUCT_BEGINNER_COPY.rankFirstStepAddLabel,
       value: keywordCount ? `${keywordCount} tracked` : "Start here",
     },
     {
       detail: worsenedCount
-        ? "Review the keywords that dropped and decide whether a page needs a content refresh."
-        : "No tracked keyword drops are showing right now.",
+        ? PRODUCT_BEGINNER_COPY.rankRecoverDetail
+        : PRODUCT_BEGINNER_COPY.rankStableDetail,
       href: "#competitor-gaps",
       label: worsenedCount ? "Recover lost positions" : "No drops to fix",
       value: worsenedCount ? `${worsenedCount} dropped` : "Stable",
@@ -624,7 +628,7 @@ function RankMovementPlan({
             Rank movement plan
           </p>
           <h3 className="mt-1 text-2xl font-semibold tracking-normal">
-            Know which keyword needs attention next.
+            {PRODUCT_BEGINNER_COPY.rankPlanHeading}
           </h3>
         </div>
         <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">

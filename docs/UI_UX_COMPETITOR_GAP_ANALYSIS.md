@@ -2330,3 +2330,20 @@ Implementation:
 - [x] Cover the exact Search Ideas wording with unit tests.
 - [x] Browser-check Search Ideas search-term calmness locally.
 - [ ] Browser-check Search Ideas search-term calmness after deployment.
+
+### Batch ED: Rank Movement Search-Term Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make keyword/rank tracking prominent, but that wording can feel like expert SEO inventory work for a nontechnical user.
+- A beginner-first Rank Movement screen should keep rank evidence available while framing the watched items as search terms that moved.
+- The softer product direction is to make the first scan answer one question: which search term needs attention next?
+
+Implementation:
+
+- [x] Centralize Rank Movement search-term wording in the product copy helper.
+- [x] Replace tracked-keyword hero, metric, and plan wording with watched search-term wording.
+- [x] Replace the manage-tracking panel labels and placeholders with search-term wording.
+- [x] Cover the exact Rank Movement wording with unit tests.
+- [x] Browser-check Rank Movement search-term calmness locally.
+- [ ] Browser-check Rank Movement search-term calmness after deployment.
