@@ -137,7 +137,9 @@ export default async function DomainWorkspacePage({
       ? formatCheckStatus(latestCrawl.status)
       : "Not checked",
     latestReportHref: shareHref,
-    latestReportStatus: latestReport ? formatEnum(latestReport.status) : "No report yet",
+    latestReportStatus: latestReport
+      ? formatReportStatus(latestReport.status)
+      : "No report yet",
     warningIssues,
   });
   const scorePoints = domain.scoreHistory
@@ -284,15 +286,15 @@ export default async function DomainWorkspacePage({
               />
               <ContextItem
                 label="Platform"
-                value={formatEnum(domain.platform)}
+                value={formatWebsitePlatform(domain.platform)}
               />
               <ContextItem label="Browser check" value={jsRenderingStatus} />
               <ContextItem
                 label="Verification"
                 value={
                   isVerified
-                    ? "Verified"
-                    : formatEnum(domain.verificationStatus)
+                    ? "Ownership confirmed"
+                    : formatOwnershipStatus(domain.verificationStatus)
                 }
               />
             </dl>
@@ -901,7 +903,7 @@ export default async function DomainWorkspacePage({
                   <ReadinessItem
                     complete={domain.scriptStatus === "DETECTED"}
                     label="Monitoring script"
-                    value={formatEnum(domain.scriptStatus)}
+                    value={formatWebsiteTagStatus(domain.scriptStatus)}
                   />
                   <ReadinessItem
                     complete={wordpressReady}
@@ -956,7 +958,7 @@ export default async function DomainWorkspacePage({
                         className="rounded-md border border-slate-200 bg-slate-50 p-3"
                       >
                         <p className="text-sm font-semibold">
-                          {formatEnum(event.changeType)}
+                          {formatChangeType(event.changeType)}
                         </p>
                         <p className="mt-1 text-xs text-slate-500">
                           {event.createdAt.toLocaleDateString()}
@@ -987,7 +989,7 @@ export default async function DomainWorkspacePage({
                       >
                         <p className="text-sm font-semibold">{report.title}</p>
                         <p className="mt-1 text-xs text-slate-500">
-                          {formatEnum(report.status)}
+                          {formatReportStatus(report.status)}
                         </p>
                       </Link>
                     ))
@@ -1296,7 +1298,7 @@ function buildProjectFocusItems({
       detail: "Use the report when you need a client-friendly summary.",
       href: latestReportHref,
       label: "Share update",
-      tone: latestReportStatus === "Published" ? "good" : "neutral",
+      tone: latestReportStatus === "Ready to share" ? "good" : "neutral",
       value: latestReportStatus,
     },
   ];
@@ -1818,10 +1820,73 @@ function formatEnum(value: string) {
 
 function formatCheckStatus(value: string) {
   const labels: Record<string, string> = {
-    COMPLETED: "Complete",
-    FAILED: "Needs attention",
-    QUEUED: "Waiting",
-    RUNNING: "Checking",
+    CANCELLED: "Stopped",
+    COMPLETED: "Finished",
+    FAILED: "Needs another try",
+    QUEUED: "Waiting to start",
+    RUNNING: "Checking now",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatWebsitePlatform(value: string) {
+  const labels: Record<string, string> = {
+    CUSTOM: "Custom website",
+    OTHER: "Other website",
+    SHOPIFY: "Shopify store",
+    UNKNOWN: "Not sure yet",
+    WEBFLOW: "Webflow site",
+    WORDPRESS: "WordPress site",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatOwnershipStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs another try",
+    PENDING: "Waiting for setup",
+    UNVERIFIED: "Needs setup",
+    VERIFIED: "Ownership confirmed",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatWebsiteTagStatus(value: string) {
+  const labels: Record<string, string> = {
+    DETECTED: "Monitoring connected",
+    ERROR: "Needs another try",
+    MISSING: "Not installed yet",
+    NOT_INSTALLED: "Not installed yet",
+    PENDING: "Waiting to detect",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatReportStatus(value: string) {
+  const labels: Record<string, string> = {
+    DRAFT: "Draft update",
+    FAILED: "Needs another try",
+    GENERATING: "Being prepared",
+    PUBLISHED: "Ready to share",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatChangeType(value: string) {
+  const labels: Record<string, string> = {
+    CANONICAL_CHANGED: "Preferred page changed",
+    H1_CHANGED: "Main heading changed",
+    META_DESCRIPTION_CHANGED: "Page description changed",
+    NOINDEX_CHANGED: "Google visibility changed",
+    ROBOTS_CHANGED: "Access file changed",
+    SITEMAP_CHANGED: "Page list changed",
+    STATUS_CHANGED: "Page response changed",
+    TITLE_CHANGED: "Page title changed",
   };
 
   return labels[value] ?? formatEnum(value);

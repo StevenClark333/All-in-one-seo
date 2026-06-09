@@ -1530,3 +1530,17 @@ Implementation:
 - [x] Translate check trigger labels into scheduled, manual, and automatic check wording.
 - [x] Browser-check Website check recap labels desktop and mobile locally.
 - [ ] Browser-check Website check recap labels after deployment.
+
+### Batch CE: Website Workspace Status Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs website/project dashboards keep platform, crawl, report, and change state close together, but a beginner-friendly workspace should say what each state means for the site owner.
+- Nontechnical users should see WordPress site, Shopify store, ownership confirmed, monitoring connected, ready to share, page title changed, and checking now before raw platform, verification, script, report, event, or crawl-run statuses.
+- The Website workspace should feel like a guided project room, not a compact system dashboard.
+
+Implementation:
+
+- [x] Translate Website workspace platform, ownership, monitoring, check, report, and change-event labels into plain-language wording.
+- [x] Browser-check Website workspace status labels desktop and mobile locally.
+- [ ] Browser-check Website workspace status labels after deployment.
