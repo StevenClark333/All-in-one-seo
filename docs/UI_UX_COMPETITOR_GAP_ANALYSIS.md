@@ -1782,3 +1782,18 @@ Implementation:
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check website ownership labels desktop and mobile locally.
 - [ ] Browser-check website ownership labels after deployment.
+
+### Batch CV: Verification Ownership Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project ownership context visible during setup and verification, but a beginner-friendly confirmation step should treat missing client context as normal setup.
+- Nontechnical users should see no client yet before unassigned on ownership confirmation pages.
+- Verifying a website should feel like a guided safety step, not a database assignment task.
+
+Implementation:
+
+- [x] Translate ownership confirmation client fallback away from unassigned wording.
+- [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
+- [x] Browser-check verification ownership label desktop and mobile locally.
+- [ ] Browser-check verification ownership label after deployment.

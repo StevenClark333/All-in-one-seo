@@ -9,6 +9,7 @@ import {
   formatVerificationValue,
 } from "@/lib/domain-verification";
 import { getPrisma } from "@/lib/prisma";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -120,7 +121,7 @@ export default async function DomainVerificationPage({
               </div>
               <div>
                 <p className="text-sm font-medium text-slate-500">
-                  {domain.client?.name ?? "Unassigned"}
+                  {formatWebsiteClient(domain.client?.name)}
                 </p>
                 <h1 className="text-2xl font-semibold tracking-normal">
                   Confirm ownership
