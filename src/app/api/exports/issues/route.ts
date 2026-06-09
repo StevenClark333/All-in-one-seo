@@ -2,13 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
 import {
   PROBLEM_EXPORT_FILENAME,
-  formatExportClient,
-  formatExportImportance,
-  formatExportOwner,
-  formatExportPriority,
-  formatExportProblemArea,
-  formatExportProgress,
 } from "@/lib/export-display-labels";
+import { buildProblemExportRow } from "@/lib/export-rows";
 import { getIssueListData } from "@/lib/issue-queries";
 
 export async function GET(request: NextRequest) {
@@ -22,22 +17,7 @@ export async function GET(request: NextRequest) {
     status: params.get("status") ?? undefined,
     templateKey: params.get("templateKey") ?? undefined,
   });
-  const csv = toCsv(
-    issues.map((issue) => ({
-      assignedTo: formatExportOwner(
-        issue.assignedTo?.name ?? issue.assignedTo?.email,
-      ),
-      client: formatExportClient(issue.client?.name),
-      description: issue.description,
-      domain: issue.domain.domain,
-      importance: formatExportImportance(issue.severity),
-      page: issue.page?.url ?? "",
-      priority: formatExportPriority(issue.priorityScore),
-      problemArea: formatExportProblemArea(issue.issueType),
-      progress: formatExportProgress(issue.status),
-      title: issue.title,
-    })),
-  );
+  const csv = toCsv(issues.map((issue) => buildProblemExportRow(issue)));
 
   return new NextResponse(csv, {
     headers: {

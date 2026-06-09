@@ -1951,3 +1951,19 @@ Implementation:
 - [x] Cover exported filename constants and link-fix note filenames with unit tests.
 - [x] Verify CSV attachment filenames through local authenticated HTTP checks.
 - [ ] Browser-check download filenames after deployment.
+
+### Batch DG: Export Column Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs exports preserve detailed audit data, but a beginner-friendly handoff should keep spreadsheet headers in the same plain language as the app.
+- Nontechnical users should see website and problems before raw domain or issues columns when opening downloaded CSV files.
+- Spreadsheet exports should feel like website care checklists, not database-shaped audit dumps.
+
+Implementation:
+
+- [x] Move problem and page CSV row mapping into tested export-row helpers.
+- [x] Rename downloaded problem CSV website column away from domain.
+- [x] Rename downloaded page CSV website and problems columns away from domain and issues.
+- [x] Verify exact CSV headers through unit tests and local authenticated HTTP checks.
+- [ ] Browser-check export column labels after deployment.
