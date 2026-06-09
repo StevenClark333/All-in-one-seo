@@ -1722,3 +1722,18 @@ Implementation:
 - [x] Cover the exact health fallback label through the shared website health label unit tests.
 - [x] Browser-check client health labels desktop and mobile locally.
 - [ ] Browser-check client health labels after deployment.
+
+### Batch CR: Report Health Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make reporting exportable and client-readable, but a beginner-friendly report should never make missing health data sound like a broken job.
+- Nontechnical users and clients should see no score yet and a fresh-score takeaway before pending in report metrics and shared report summaries.
+- The report detail and public share page should feel like a polished client update, not a technical audit dump.
+
+Implementation:
+
+- [x] Translate report detail and shared report health score fallbacks into no-score-yet and fresh-score wording.
+- [x] Cover the exact health fallback label through the shared website health label unit tests.
+- [x] Browser-check report health labels desktop and mobile locally.
+- [ ] Browser-check report health labels after deployment.

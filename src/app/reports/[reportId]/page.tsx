@@ -7,6 +7,7 @@ import {
   formatChangeType,
   getReportDetailData,
 } from "@/lib/reporting";
+import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +34,7 @@ export default async function ReportDetailPage({
   const topRecommendation = summary.recommendations.at(0);
   const healthLabel =
     summary.score === null || summary.score === undefined
-      ? "Website health pending"
+      ? "Website health needs a fresh score"
       : summary.score >= 85
         ? "Website health looks strong"
         : summary.score >= 70
@@ -179,7 +180,10 @@ export default async function ReportDetailPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-5">
             {summary.sections.healthScore ? (
-              <Metric label="Website health" value={summary.score ?? "Pending"} />
+              <Metric
+                label="Website health"
+                value={formatWebsiteHealth(summary.score)}
+              />
             ) : null}
             <Metric label="Pages" value={summary.pageCount} />
             <Metric label="Needs attention" value={summary.openIssues.length} />
