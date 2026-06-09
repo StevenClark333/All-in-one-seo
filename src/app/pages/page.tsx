@@ -9,6 +9,7 @@ import {
   formatPageMetaText,
   formatPageResponse,
 } from "@/lib/page-display-labels";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { getTemplateLabel, inferPageTemplate } from "@/lib/template-detection";
 
 export const dynamic = "force-dynamic";
@@ -317,7 +318,7 @@ function PageCarePlan({
                 ? `${pagesMissingTitles} missing titles`
                 : "Titles look covered"
             }
-            detail="Page titles are the easiest scan before deeper SEO fields."
+            detail={PRODUCT_BEGINNER_COPY.pagesContentCheckDetail}
             href="#page-inventory"
           />
         </div>

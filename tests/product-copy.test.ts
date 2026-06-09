@@ -224,6 +224,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(PRODUCT_BEGINNER_COPY.openConnections, "Open Connections");
   assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesContentCheckDetail,
+    "Page titles are the easiest place to check before reviewing the rest of the page details.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardProjectListDetail,
     "Start with your website list to see which websites need attention today.",
   );
@@ -283,6 +287,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields/,
   );
 });

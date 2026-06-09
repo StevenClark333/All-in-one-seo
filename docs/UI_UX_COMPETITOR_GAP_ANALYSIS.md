@@ -2281,3 +2281,19 @@ Implementation:
 - [x] Cover the exact Links page wording with unit tests.
 - [x] Browser-check Links page plan calmness locally.
 - [ ] Browser-check Links page plan calmness after deployment.
+
+### Batch EA: Pages Content Check Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep page-level SEO fields available for expert review, but a beginner-first page inventory should make the first content check feel simple.
+- A nontechnical user is more likely to understand page titles and page details than deeper SEO fields.
+- The softer product direction is to keep page diagnostics available while making the plan tile sound like a gentle review step.
+
+Implementation:
+
+- [x] Centralize the Pages content-check detail wording in the product copy helper.
+- [x] Replace deeper SEO fields wording with rest-of-page-details wording.
+- [x] Cover the exact Pages content-check wording with unit tests.
+- [x] Browser-check Pages content check calmness locally.
+- [ ] Browser-check Pages content check calmness after deployment.

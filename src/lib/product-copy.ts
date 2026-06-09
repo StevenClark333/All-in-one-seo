@@ -152,6 +152,8 @@ export const PRODUCT_BEGINNER_COPY = {
   linksPlanLabel: "Links care plan",
   memberTitle: "Website Care Teammate",
   openConnections: "Open Connections",
+  pagesContentCheckDetail:
+    "Page titles are the easiest place to check before reviewing the rest of the page details.",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   rankAdjustViewDetail:
