@@ -1544,3 +1544,17 @@ Implementation:
 - [x] Translate Website workspace platform, ownership, monitoring, check, report, and change-event labels into plain-language wording.
 - [x] Browser-check Website workspace status labels desktop and mobile locally.
 - [ ] Browser-check Website workspace status labels after deployment.
+
+### Batch CF: Connections Label Calmness
+
+Competitive evidence:
+
+- Semrush documents connecting Google Analytics and Google Search Console so site data can be analyzed from one central interface, and Ahrefs documents Google Search Console performance inside its dashboard/rank-tracking flows.
+- Semrush and Ahrefs make integrations a data-readiness step, but a beginner-friendly setup page should explain whether each connection is connected, needs sign-in, not connected yet, or needs another try before exposing provider/status enums.
+- Nontechnical users should see Google Analytics, Search Console site, WordPress fix connection, monitoring connected, connection works, and ready/done wording before raw provider, status, permission, script, test, or setup-step values.
+
+Implementation:
+
+- [x] Translate Connections provider, setup status, Google permission, WordPress script/test/step, and launch-check labels into plain-language wording.
+- [x] Browser-check Connections labels desktop and mobile locally.
+- [ ] Browser-check Connections labels after deployment.

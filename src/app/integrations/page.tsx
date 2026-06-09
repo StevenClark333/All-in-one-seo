@@ -210,7 +210,7 @@ export default async function IntegrationsPage({
               >
                 {providers.map((provider) => (
                   <option key={provider} value={provider}>
-                    {formatEnum(provider)}
+                    {formatProvider(provider)}
                   </option>
                 ))}
               </Select>
@@ -221,7 +221,7 @@ export default async function IntegrationsPage({
               >
                 {statuses.map((status) => (
                   <option key={status} value={status}>
-                    {formatEnum(status)}
+                    {formatConnectionStatus(status)}
                   </option>
                 ))}
               </Select>
@@ -307,7 +307,9 @@ export default async function IntegrationsPage({
                 <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                   <Meta
                     label="Status"
-                    value={formatEnum(searchConsoleIntegration.status)}
+                    value={formatConnectionStatus(
+                      searchConsoleIntegration.status,
+                    )}
                   />
                   <Meta
                     label="Imported sites"
@@ -341,7 +343,9 @@ export default async function IntegrationsPage({
                         <div>
                           <p className="font-semibold">{site.siteUrl}</p>
                           <p className="mt-1 text-sm text-slate-500">
-                            {formatEnum(site.permissionLevel || "unknown")}
+                            {formatGooglePermission(
+                              site.permissionLevel || "unknown",
+                            )}
                           </p>
                         </div>
                         <Meta
@@ -404,7 +408,7 @@ export default async function IntegrationsPage({
                         </div>
                         <Meta
                           label="Status"
-                          value={formatEnum(integration.status)}
+                          value={formatConnectionStatus(integration.status)}
                         />
                         {integration.domainId ? (
                           <form action={importGoogleSearchConsoleMetricsAction}>
@@ -455,7 +459,7 @@ export default async function IntegrationsPage({
                 <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                   <Meta
                     label="Status"
-                    value={formatEnum(analyticsIntegration.status)}
+                    value={formatConnectionStatus(analyticsIntegration.status)}
                   />
                   <Meta
                     label="Imported accounts"
@@ -540,7 +544,7 @@ export default async function IntegrationsPage({
                         </div>
                         <Meta
                           label="Status"
-                          value={formatEnum(integration.status)}
+                          value={formatConnectionStatus(integration.status)}
                         />
                         {integration.domainId ? (
                           <form action={importGoogleAnalyticsMetricsAction}>
@@ -664,13 +668,15 @@ export default async function IntegrationsPage({
                           <Meta label="Website setup code" value={domain.id} />
                           <Meta
                             label="Script"
-                            value={formatEnum(domain.scriptStatus)}
+                            value={formatWebsiteTagStatus(domain.scriptStatus)}
                           />
                           <Meta
                             label="Fix connection"
                             value={
                               receiverIntegration
-                                ? formatEnum(receiverIntegration.status)
+                                ? formatConnectionStatus(
+                                    receiverIntegration.status,
+                                  )
                                 : "Not connected"
                             }
                           />
@@ -757,7 +763,9 @@ export default async function IntegrationsPage({
                                     receiverConfig.lastTestStatus,
                                   )}`}
                                 >
-                                  {formatEnum(receiverConfig.lastTestStatus)}
+                                  {formatReceiverTestStatus(
+                                    receiverConfig.lastTestStatus,
+                                  )}
                                   {receiverConfig.lastTestStatusCode
                                     ? ` - HTTP ${receiverConfig.lastTestStatusCode}`
                                     : ""}
@@ -801,7 +809,7 @@ export default async function IntegrationsPage({
                                       step.status,
                                     )}`}
                                   >
-                                    {formatEnum(step.status)}
+                                    {formatSetupStepStatus(step.status)}
                                   </span>
                                 </div>
                                 <p className="mt-2 text-xs leading-5 text-slate-500">
@@ -954,7 +962,7 @@ export default async function IntegrationsPage({
                       </div>
                       <Meta
                         label="Status"
-                        value={formatEnum(integration.status)}
+                        value={formatConnectionStatus(integration.status)}
                       />
                       <Meta
                         label="Connected"
@@ -1000,7 +1008,7 @@ export default async function IntegrationsPage({
                 <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                   <Meta
                     label="Status"
-                    value={formatEnum(webflowIntegration.status)}
+                    value={formatConnectionStatus(webflowIntegration.status)}
                   />
                   <Meta label="Imported sites" value={webflowSites.length} />
                   <Meta
@@ -1091,7 +1099,7 @@ export default async function IntegrationsPage({
                         </div>
                         <Meta
                           label="Status"
-                          value={formatEnum(integration.status)}
+                          value={formatConnectionStatus(integration.status)}
                         />
                       </article>
                     ))}
@@ -1154,7 +1162,7 @@ export default async function IntegrationsPage({
                   label="Status"
                   value={
                     slackIntegration
-                      ? formatEnum(slackIntegration.status)
+                      ? formatConnectionStatus(slackIntegration.status)
                       : "Not connected"
                   }
                 />
@@ -1297,7 +1305,9 @@ export default async function IntegrationsPage({
                             />
                             <Meta
                               label="Status"
-                              value={formatEnum(integration.status)}
+                              value={formatConnectionStatus(
+                                integration.status,
+                              )}
                             />
                           </article>
                         );
@@ -1328,7 +1338,10 @@ export default async function IntegrationsPage({
                                   {check.deploymentUrl ?? "No deployment URL"}
                                 </p>
                               </div>
-                              <Meta label="Status" value={check.status} />
+                              <Meta
+                                label="Status"
+                                value={formatLaunchCheckStatus(check.status)}
+                              />
                               <Meta
                                 label="Website"
                                 value={check.domain?.domain ?? "Not matched"}
@@ -1446,7 +1459,9 @@ export default async function IntegrationsPage({
                             <Meta label="Setup code" value={config.siteId} />
                             <Meta
                               label="Status"
-                              value={formatEnum(integration.status)}
+                              value={formatConnectionStatus(
+                                integration.status,
+                              )}
                             />
                           </article>
                         );
@@ -1477,7 +1492,10 @@ export default async function IntegrationsPage({
                                   {check.deploymentUrl ?? "No deployment URL"}
                                 </p>
                               </div>
-                              <Meta label="Status" value={check.status} />
+                              <Meta
+                                label="Status"
+                                value={formatLaunchCheckStatus(check.status)}
+                              />
                               <Meta
                                 label="Website"
                                 value={check.domain?.domain ?? "Not matched"}
@@ -1556,7 +1574,7 @@ export default async function IntegrationsPage({
                             <div>
                               <p className="font-semibold">
                                 {config.label ||
-                                  formatEnum(integration.provider)}
+                                  formatProvider(integration.provider)}
                               </p>
                               <p className="mt-1 truncate text-sm text-slate-500">
                                 {config.webhookUrl}
@@ -1564,11 +1582,13 @@ export default async function IntegrationsPage({
                             </div>
                             <Meta
                               label="Tool"
-                              value={formatEnum(integration.provider)}
+                              value={formatProvider(integration.provider)}
                             />
                             <Meta
                               label="Status"
-                              value={formatEnum(integration.status)}
+                              value={formatConnectionStatus(
+                                integration.status,
+                              )}
                             />
                           </article>
                         );
@@ -1604,7 +1624,7 @@ export default async function IntegrationsPage({
                       >
                         <div>
                           <p className="font-semibold">
-                            {formatEnum(integration.provider)}
+                            {formatProvider(integration.provider)}
                           </p>
                           <p className="mt-1 text-sm text-slate-500">
                             {integration.client?.name ??
@@ -1614,7 +1634,7 @@ export default async function IntegrationsPage({
                         </div>
                         <Meta
                           label="Status"
-                          value={formatEnum(integration.status)}
+                          value={formatConnectionStatus(integration.status)}
                         />
                         <Meta
                           label="Website"
@@ -1786,6 +1806,99 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatProvider(value: string) {
+  const labels: Record<string, string> = {
+    GOOGLE_ANALYTICS: "Google Analytics",
+    GOOGLE_ANALYTICS_PROPERTY: "Google Analytics property",
+    GOOGLE_SEARCH_CONSOLE: "Google Search Console",
+    GOOGLE_SEARCH_CONSOLE_PROPERTY: "Search Console site",
+    MAKE: "Make automation",
+    NETLIFY: "Netlify launch check",
+    SHOPIFY: "Shopify store",
+    SLACK: "Slack messages",
+    VERCEL: "Vercel launch check",
+    WEBFLOW: "Webflow",
+    WEBFLOW_SITE: "Webflow site",
+    WORDPRESS: "WordPress site",
+    WORDPRESS_RECEIVER: "WordPress fix connection",
+    ZAPIER: "Zapier automation",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatConnectionStatus(value: string) {
+  const labels: Record<string, string> = {
+    CONNECTED: "Connected",
+    ERROR: "Needs another try",
+    NEEDS_AUTH: "Needs sign-in",
+    PLANNED: "Not connected yet",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatWebsiteTagStatus(value: string) {
+  const labels: Record<string, string> = {
+    DETECTED: "Monitoring connected",
+    ERROR: "Needs another try",
+    MISSING: "Not installed yet",
+    NOT_INSTALLED: "Not installed yet",
+    PENDING: "Waiting to detect",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatGooglePermission(value: string) {
+  const labels: Record<string, string> = {
+    owner: "Owner access",
+    siteFullUser: "Full website access",
+    siteOwner: "Owner access",
+    siteRestrictedUser: "Limited website access",
+    unknown: "Access level unknown",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatReceiverTestStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs another try",
+    PASSED: "Connection works",
+    PENDING: "Waiting to test",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatSetupStepStatus(value: string) {
+  const labels: Record<string, string> = {
+    COMPLETE: "Done",
+    READY: "Ready",
+    TODO: "To do",
+    WARNING: "Needs a look",
+  };
+
+  return labels[value] ?? formatEnum(value);
+}
+
+function formatLaunchCheckStatus(value: string) {
+  const labels: Record<string, string> = {
+    CANCELLED: "Stopped",
+    ERROR: "Needs another try",
+    FAILED: "Needs another try",
+    PENDING: "Waiting to start",
+    QUEUED: "Waiting to start",
+    READY: "Ready",
+    RUNNING: "Checking now",
+    SUCCESS: "Finished",
+    SUCCEEDED: "Finished",
+  };
+
+  return labels[value] ?? formatEnum(value);
 }
 
 function getSingle(value: string | string[] | undefined) {
