@@ -19,6 +19,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import {
   buildLinkFixLifecycleSteps,
   getLinkFixCenterData,
@@ -552,7 +553,7 @@ export default async function FixCenterPage({
                               }`}
                               className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-amber-300 bg-white px-3 text-sm font-semibold text-amber-900 transition hover:bg-amber-100"
                             >
-                              Open Integrations
+                              {PRODUCT_BEGINNER_COPY.openConnections}
                             </Link>
                           </div>
                         </div>
@@ -573,7 +574,7 @@ export default async function FixCenterPage({
                               }`}
                               className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
                             >
-                              Open Integrations
+                              {PRODUCT_BEGINNER_COPY.openConnections}
                             </Link>
                           </div>
                         </div>

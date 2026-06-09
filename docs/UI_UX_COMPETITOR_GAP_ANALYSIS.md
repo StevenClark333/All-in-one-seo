@@ -2230,3 +2230,20 @@ Implementation:
 - [x] Cover the exact rank website wording with unit tests.
 - [x] Browser-check rank movement website labels locally.
 - [ ] Browser-check rank movement website labels after deployment.
+
+### Batch DX: Connections Action Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs use integration-style language for advanced users, but a beginner-first product should keep one simple label for the place where tools are connected.
+- The sidebar and website workspace already say Connections, so action buttons should not send a nontechnical user to a differently named Integrations area.
+- The softer product direction is to make setup and fix-delivery actions read as one clear path: open Connections, connect the missing tool, then return to the fix or website.
+
+Implementation:
+
+- [x] Centralize Connections action labels in the product copy helper.
+- [x] Replace visible Fix Center Open Integrations buttons with Open Connections.
+- [x] Replace the website workspace Fix receiver prompt with Connect in Connections.
+- [x] Cover the exact Connections action wording with unit tests.
+- [x] Browser-check Connections action label calmness locally.
+- [ ] Browser-check Connections action label calmness after deployment.

@@ -211,6 +211,11 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(PRODUCT_BEGINNER_COPY.dashboardOpenWebsites, "Open websites");
   assert.equal(
+    PRODUCT_BEGINNER_COPY.connectInConnections,
+    "Connect in Connections",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.openConnections, "Open Connections");
+  assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardProjectListDetail,
     "Start with your website list to see which websites need attention today.",
   );

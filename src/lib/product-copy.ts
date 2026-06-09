@@ -131,6 +131,7 @@ export const PRODUCT_BEGINNER_COPY = {
     "Websites keep each check, problem, and update in one place.",
   dashboardLatestCheckHelp: "Most recent website check for this website.",
   dashboardOpenWebsites: "Open websites",
+  connectInConnections: "Connect in Connections",
   dashboardProjectListDetail:
     "Start with your website list to see which websites need attention today.",
   dashboardStartPlanBody:
@@ -143,6 +144,7 @@ export const PRODUCT_BEGINNER_COPY = {
   firstWebsiteCarePlan:
     "Set up one workspace for your business. After this, you can add the first website and let the portal build a simple website care plan.",
   memberTitle: "Website Care Teammate",
+  openConnections: "Open Connections",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   rankAdjustViewDetail:

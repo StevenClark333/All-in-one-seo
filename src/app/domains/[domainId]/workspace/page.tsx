@@ -923,7 +923,9 @@ export default async function DomainWorkspacePage({
                     complete={wordpressReady}
                     label="Fix receiver"
                     value={
-                      wordpressReady ? "Connected" : "Connect in Integrations"
+                      wordpressReady
+                        ? "Connected"
+                        : PRODUCT_BEGINNER_COPY.connectInConnections
                     }
                   />
                 </div>
