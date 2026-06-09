@@ -1,6 +1,7 @@
 import { Bell, CheckCircle2, Clock, Play, ShieldCheck } from "lucide-react";
 import { createAlertRuleAction, evaluateAlertsAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { formatAlertDeliveryStatus } from "@/lib/alert-display-labels";
 import { getAlertCenterData } from "@/lib/alerts";
 
 export const dynamic = "force-dynamic";
@@ -278,7 +279,7 @@ export default async function AlertsPage() {
                       <div className="mt-3 grid grid-cols-2 gap-3">
                         <Meta
                           label="Status"
-                          value={formatDeliveryStatus(alert.status)}
+                          value={formatAlertDeliveryStatus(alert.status)}
                         />
                         <Meta
                           label="Backup sent"
@@ -293,7 +294,7 @@ export default async function AlertsPage() {
                           value={
                             alert.sentAt
                               ? alert.sentAt.toLocaleString()
-                              : "Pending"
+                              : "Waiting to send"
                           }
                         />
                       </div>
@@ -355,7 +356,7 @@ function AlertComfortPlan({
             value={
               needsAttention ? `${needsAttention} needs review` : "Looks quiet"
             }
-            detail="Failed or pending messages are the only ones to chase."
+            detail="Only messages waiting to send or needing a check need your attention."
             href="#message-history"
           />
           <SummaryTile
@@ -476,16 +477,6 @@ function formatSendChannel(value: string) {
     SLACK: "Slack",
     TEAMS: "Teams",
     WEBHOOK: "Webhook",
-  };
-
-  return labels[value] ?? formatEnum(value);
-}
-
-function formatDeliveryStatus(value: string) {
-  const labels: Record<string, string> = {
-    FAILED: "Needs review",
-    PENDING: "Waiting",
-    SENT: "Sent",
   };
 
   return labels[value] ?? formatEnum(value);

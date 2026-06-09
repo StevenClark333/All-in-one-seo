@@ -1752,3 +1752,18 @@ Implementation:
 - [x] Cover the exact PDF health fallback label with report unit tests.
 - [x] Browser-check report export labels desktop and mobile locally.
 - [ ] Browser-check report export labels after deployment.
+
+### Batch CT: Alert Delivery Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make alerts and notifications useful by showing whether important changes reached the team, but a beginner-friendly alert center should explain what to do next before exposing delivery states.
+- Nontechnical users should see waiting to send, needs a check, and sent before pending, failed, or raw delivery wording.
+- The Alerts page should feel like a calm watch list for important changes, not a message-queue operations screen.
+
+Implementation:
+
+- [x] Translate alert delivery status and sent-at fallbacks into plain-language wording.
+- [x] Cover the exact alert delivery labels with unit tests.
+- [x] Browser-check alert delivery labels desktop and mobile locally.
+- [ ] Browser-check alert delivery labels after deployment.
