@@ -1677,3 +1677,18 @@ Implementation:
 - [x] Cover the exact overview owner fallback label with unit tests.
 - [x] Browser-check overview context labels desktop and mobile locally.
 - [ ] Browser-check overview context labels after deployment.
+
+### Batch CO: Problem Detail Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep issue ownership, affected page metadata, and note history available, but beginner users need those details to feel like helpful context rather than missing database fields.
+- Nontechnical users should see no client yet, no owner yet, not found yet, and no author yet before unassigned, missing, or unknown labels in the Problems flow.
+- The Problems list and problem detail page should feel like a guided fix workspace, not an audit row with raw assignment and crawl placeholders.
+
+Implementation:
+
+- [x] Translate Problems list/detail client, owner, note-author, and latest-page metadata fallbacks into plain-language wording.
+- [x] Cover the exact problem note-author fallback label with unit tests.
+- [x] Browser-check problem detail labels desktop and mobile locally.
+- [ ] Browser-check problem detail labels after deployment.

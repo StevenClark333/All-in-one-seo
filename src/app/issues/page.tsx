@@ -7,6 +7,7 @@ import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getIssueListData, getIssueTypeGroupKey } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -608,7 +609,7 @@ function IssueRow({
           {softenProblemText(issue.description)}
         </p>
         <p className="mt-2 text-sm text-slate-500">
-          {issue.client?.name ?? "Unassigned"} -{" "}
+          {formatWebsiteClient(issue.client?.name)} -{" "}
           <Link
             href={`/domains/${issue.domain.id}`}
             className="font-medium text-slate-700 underline-offset-4 hover:underline"

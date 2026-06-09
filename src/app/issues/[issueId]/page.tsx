@@ -8,8 +8,12 @@ import {
   generateIssueRecommendations,
   updateIssueStatus,
 } from "@/app/actions";
+import { formatIssueNoteAuthor } from "@/lib/issue-display-labels";
 import { getIssueDetailData } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
+import { formatOverviewOwner } from "@/lib/overview-display-labels";
+import { formatPageMetaText } from "@/lib/page-display-labels";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -204,7 +208,10 @@ export default async function IssueDetailPage({
 
             <dl className="mt-6 grid gap-4 border-t border-slate-100 pt-6 md:grid-cols-2">
               <Meta label="Workspace" value={workspace?.name ?? "Workspace"} />
-              <Meta label="Client" value={issue.client?.name ?? "Unassigned"} />
+              <Meta
+                label="Client"
+                value={formatWebsiteClient(issue.client?.name)}
+              />
               <Meta label="Website" value={issue.domain.domain} />
               <Meta
                 label="Problem area"
@@ -217,9 +224,9 @@ export default async function IssueDetailPage({
               <Meta
                 label="Owner"
                 value={
-                  issue.assignedTo?.name ??
-                  issue.assignedTo?.email ??
-                  "Unassigned"
+                  formatOverviewOwner(
+                    issue.assignedTo?.name ?? issue.assignedTo?.email,
+                  )
                 }
               />
             </dl>
@@ -243,16 +250,19 @@ export default async function IssueDetailPage({
                   />
                   <Meta
                     label="Title"
-                    value={latestSnapshot.title ?? "Missing"}
+                    value={formatPageMetaText(latestSnapshot.title)}
                   />
                   <Meta
                     label="Meta description"
-                    value={latestSnapshot.metaDescription ?? "Missing"}
+                    value={formatPageMetaText(latestSnapshot.metaDescription)}
                   />
-                  <Meta label="H1" value={latestSnapshot.h1 ?? "Missing"} />
+                  <Meta
+                    label="H1"
+                    value={formatPageMetaText(latestSnapshot.h1)}
+                  />
                   <Meta
                     label="Canonical"
-                    value={latestSnapshot.canonical ?? "Missing"}
+                    value={formatPageMetaText(latestSnapshot.canonical)}
                   />
                   <Meta
                     label="Robots"
@@ -346,7 +356,7 @@ export default async function IssueDetailPage({
                     defaultValue={issue.assignedToId ?? ""}
                     className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   >
-                    <option value="">Unassigned</option>
+                    <option value="">No owner yet</option>
                     {members.map((member) => (
                       <option key={member.userId} value={member.userId}>
                         {member.user.name ?? member.user.email}
@@ -376,7 +386,7 @@ export default async function IssueDetailPage({
                   defaultValue={members.at(0)?.userId ?? ""}
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 >
-                  <option value="">No author</option>
+                  <option value="">No author yet</option>
                   {members.map((member) => (
                     <option key={member.userId} value={member.userId}>
                       {member.user.name ?? member.user.email}
@@ -421,7 +431,9 @@ export default async function IssueDetailPage({
                           {formatNoteVisibility(note.visibility)}
                         </Badge>
                         <span className="text-xs text-slate-500">
-                          {note.author?.name ?? note.author?.email ?? "Unknown"}
+                          {formatIssueNoteAuthor(
+                            note.author?.name ?? note.author?.email,
+                          )}
                         </span>
                       </div>
                       <p className="mt-2 text-sm leading-6 text-slate-700">
