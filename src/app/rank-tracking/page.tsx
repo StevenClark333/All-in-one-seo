@@ -13,6 +13,12 @@ import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { SavedViewsBar } from "@/components/saved-views-bar";
 import { SeoFilterBar } from "@/components/seo-filter-bar";
 import { getRankTrackingData } from "@/lib/product-seo-groups";
+import {
+  formatRankClient,
+  formatRankDifficulty,
+  formatRankPosition,
+  formatRankVolume,
+} from "@/lib/rank-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -147,8 +153,8 @@ export default async function RankTrackingPage({
             />
             <Metric
               help="Average latest owned position across tracked keywords with rank data."
-              label="Avg. position"
-              value={data.summary.averagePosition ?? "Pending"}
+              label="Avg. spot"
+              value={formatRankPosition(data.summary.averagePosition)}
             />
           </section>
 
@@ -165,7 +171,7 @@ export default async function RankTrackingPage({
                   </p>
                 </div>
                 <span className="text-sm font-semibold text-slate-600">
-                  {data.summary.averagePosition ?? "Pending"} avg.
+                  {formatRankPosition(data.summary.averagePosition)} avg.
                 </span>
               </div>
               <div className="mt-5 grid gap-4">
@@ -180,7 +186,7 @@ export default async function RankTrackingPage({
                   value={data.summary.topTen}
                 />
                 <HorizontalBar
-                  label="Outside top 10 or pending"
+                  label="Outside top 10 or not ranking yet"
                   max={maxRankBucket}
                   value={outsideTopTen}
                 />
@@ -462,17 +468,17 @@ function KeywordTable({
                         {keyword.domain.domain}
                       </Link>
                       <p className="mt-1 text-xs text-slate-500">
-                        {keyword.domain.client?.name ?? "Unassigned"}
+                        {formatRankClient(keyword.domain.client?.name)}
                       </p>
                     </td>
                     <td className="px-5 py-4">
-                      {ownedRank?.position ?? "Pending"}
+                      {formatRankPosition(ownedRank?.position)}
                     </td>
                     <td className="px-5 py-4">
-                      {metric?.searchVolume?.toLocaleString() ?? "Unknown"}
+                      {formatRankVolume(metric?.searchVolume)}
                     </td>
                     <td className="px-5 py-4">
-                      {metric?.difficulty ?? "Unknown"}
+                      {formatRankDifficulty(metric?.difficulty)}
                     </td>
                     <td className="px-5 py-4">
                       {formatKeywordStatus(keyword.status)}
@@ -600,7 +606,7 @@ function RankMovementPlan({
         ? "Fill missing rank data"
         : "Push page-one wins",
       value: needsRankDataCount
-        ? `${needsRankDataCount} pending`
+        ? `${needsRankDataCount} need ranks`
         : `${topTenCount} top 10`,
     },
   ];
@@ -618,8 +624,8 @@ function RankMovementPlan({
         </div>
         <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
           {averagePosition
-            ? `${averagePosition} average position`
-            : "Ranks pending"}
+            ? `${averagePosition} average spot`
+            : "Waiting for ranks"}
         </div>
       </div>
       <div className="mt-4 grid gap-3 lg:grid-cols-3">

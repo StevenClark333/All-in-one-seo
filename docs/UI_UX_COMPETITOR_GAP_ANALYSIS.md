@@ -1617,3 +1617,18 @@ Implementation:
 - [x] Cover the exact competitor comparison labels with unit tests.
 - [x] Browser-check Competitor insights metric labels desktop and mobile locally.
 - [ ] Browser-check Competitor insights metric labels after deployment.
+
+### Batch CK: Rank Metric Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs rank tracking views keep position, volume, difficulty, and top-10 distribution visible, but a beginner-friendly tracker should explain missing rank inputs without making the user feel behind.
+- Nontechnical users should see not ranking yet, no volume yet, no difficulty yet, no client yet, average spot, and waiting for ranks before pending, unknown, unassigned, or average-position wording.
+- The Rank movement page should feel like a calm keyword watchlist, not a raw keyword database.
+
+Implementation:
+
+- [x] Translate Rank Tracking rank, volume, difficulty, client, average, and distribution labels into plain-language wording.
+- [x] Cover the exact rank-tracking fallback labels with unit tests.
+- [x] Browser-check Rank Tracking metric labels desktop and mobile locally.
+- [ ] Browser-check Rank Tracking metric labels after deployment.
