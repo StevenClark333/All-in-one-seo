@@ -16,6 +16,10 @@ import {
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel } from "@/components/info-tooltip";
+import {
+  formatInviteCount,
+  formatInviteSeatDetail,
+} from "@/lib/team-display-labels";
 import { getTeamSettingsData } from "@/lib/team";
 
 export const dynamic = "force-dynamic";
@@ -96,8 +100,8 @@ export default async function SettingsPage() {
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
                 Keep access simple: invite the right people, choose the safest
-                role, and review pending invites without digging through account
-                settings.
+                role, and review invites waiting to join without digging
+                through account settings.
               </p>
             </div>
 
@@ -106,8 +110,9 @@ export default async function SettingsPage() {
                 {seatUsage.totalUsed} / {seatUsage.limit} seats used
               </p>
               <p className="mt-1 text-slate-500">
-                {seatUsage.used} active, {seatUsage.pendingInvitations} pending
-                on {plan?.name ?? "current plan"}
+                {seatUsage.used} active,{" "}
+                {formatInviteSeatDetail(seatUsage.pendingInvitations)} on{" "}
+                {plan?.name ?? "current plan"}
               </p>
             </div>
           </header>
@@ -270,7 +275,7 @@ export default async function SettingsPage() {
                 className="rounded-lg border border-slate-200 bg-white shadow-sm"
               >
                 <div className="border-b border-slate-200 p-5">
-                  <h3 className="text-lg font-semibold">Pending invitations</h3>
+                  <h3 className="text-lg font-semibold">Invites waiting</h3>
                 </div>
 
                 <div className="grid divide-y divide-slate-100">
@@ -292,14 +297,14 @@ export default async function SettingsPage() {
                           />
                           <button className="inline-flex h-10 items-center gap-2 rounded-md border border-slate-200 px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
                             <XCircle className="size-4" aria-hidden="true" />
-                            Revoke
+                            Cancel invite
                           </button>
                         </form>
                       </article>
                     ))
                   ) : (
                     <EmptyState
-                      title="No pending invitations"
+                      title="No invites waiting"
                       body="Everyone invited has either joined or there are no open invites right now."
                     />
                   )}
@@ -410,11 +415,9 @@ function SettingsComfortPlan({
             }
             label="Invites"
             value={
-              pendingInvitations
-                ? `${pendingInvitations} pending`
-                : "No pending invites"
+              formatInviteCount(pendingInvitations)
             }
-            detail="Revoke old invitations if someone no longer needs access."
+            detail="Cancel old invitations if someone no longer needs access."
             href="#pending-invites"
           />
         </div>

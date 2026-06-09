@@ -1842,3 +1842,18 @@ Implementation:
 - [x] Reuse the shared rank-volume label unit coverage for the exact no-volume-yet text.
 - [x] Browser-check keyword gap volume labels desktop and mobile locally.
 - [ ] Browser-check keyword gap volume labels after deployment.
+
+### Batch CZ: Settings Invite Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep team access and account controls close to workspace settings, but a beginner-friendly settings page should describe invitations as people waiting to join, not pending records.
+- Nontechnical users should see invites waiting and waiting to join before pending invitations or pending counts.
+- Settings should feel like a calm access checklist, not an admin status table.
+
+Implementation:
+
+- [x] Translate settings invitation headings, seat summary, plan tile, and cancel action away from pending/revoke wording.
+- [x] Cover the exact invite-waiting labels with unit tests.
+- [x] Browser-check settings invite labels desktop and mobile locally.
+- [ ] Browser-check settings invite labels after deployment.
