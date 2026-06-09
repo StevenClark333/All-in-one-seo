@@ -29,6 +29,7 @@ export type Site = {
   domain: string;
   platform: string;
   score: number;
+  scoreLabel: string;
   pages: number;
   critical: number;
   warnings: number;

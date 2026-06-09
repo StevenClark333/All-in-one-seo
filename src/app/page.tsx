@@ -418,10 +418,12 @@ export default async function Home() {
                             <td className="px-5 py-4">
                               {site.verification === "verified" ? (
                                 <span className="font-semibold">
-                                  {site.score}
+                                  {site.scoreLabel}
                                 </span>
                               ) : (
-                                <span className="text-slate-400">Pending</span>
+                                <span className="text-slate-400">
+                                  {site.scoreLabel}
+                                </span>
                               )}
                             </td>
                             <td className="px-5 py-4 text-slate-600">

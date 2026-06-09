@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronRight, Globe2 } from "lucide-react";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { getProjectNavigationData } from "@/lib/management-queries";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 type ProjectWorkspaceBarProps = {
   active: ProjectToolKey;
@@ -173,7 +174,7 @@ export async function ProjectWorkspaceBar({
                   {selectedDomain.domain}
                 </h3>
                 <p className="mt-1 text-sm leading-6 text-slate-600">
-                  {selectedDomain.client?.name ?? "Unassigned client"} - {note}
+                  {formatWebsiteClient(selectedDomain.client?.name)} - {note}
                 </p>
               </div>
             </div>

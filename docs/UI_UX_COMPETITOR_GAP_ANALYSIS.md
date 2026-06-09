@@ -1662,3 +1662,18 @@ Implementation:
 - [x] Cover the exact website health fallback labels with unit tests.
 - [x] Browser-check website health labels desktop and mobile locally.
 - [ ] Browser-check website health labels after deployment.
+
+### Batch CN: Overview Context Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project context, owners, and site health visible across dashboards, but a beginner-friendly overview should avoid unassigned or pending labels in the main path.
+- Nontechnical users should see no client yet, no owner yet, and no score yet before unassigned or pending labels in shared website context and overview tables.
+- The Overview and shared website workspace bar should feel like a calm project guide, not a staffing or database status report.
+
+Implementation:
+
+- [x] Translate shared active-website context, overview client, overview owner, and overview score labels into plain-language fallback wording.
+- [x] Cover the exact overview owner fallback label with unit tests.
+- [x] Browser-check overview context labels desktop and mobile locally.
+- [ ] Browser-check overview context labels after deployment.

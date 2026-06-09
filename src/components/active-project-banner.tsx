@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Globe2 } from "lucide-react";
 import { InfoTooltip } from "@/components/info-tooltip";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 type ActiveProjectBannerProps = {
   clientName?: string | null;
@@ -35,7 +36,7 @@ export function ActiveProjectBanner({
               {domain}
             </h3>
             <p className="mt-1 text-sm leading-6 text-blue-800">
-              {clientName ?? "Unassigned client"} - {note}
+              {formatWebsiteClient(clientName)} - {note}
             </p>
           </div>
         </div>

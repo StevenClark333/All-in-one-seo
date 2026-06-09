@@ -2,6 +2,11 @@ import { AlertTriangle, BarChart3, FileText, UsersRound } from "lucide-react";
 import type { IssueStatus, Workspace } from "@prisma/client";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import type { Issue, Severity, Site } from "@/lib/dashboard-data";
+import { formatOverviewOwner } from "@/lib/overview-display-labels";
+import {
+  formatWebsiteClient,
+  formatWebsiteHealth,
+} from "@/lib/website-display-labels";
 
 type AgencyStat = {
   label: string;
@@ -197,10 +202,14 @@ function mapDomainToSite(
   const latestCrawl = domain.crawlRuns.at(0);
 
   return {
-    client: domain.client?.name ?? "Unassigned",
+    client: formatWebsiteClient(domain.client?.name),
     domain: domain.domain,
     platform: formatEnum(domain.platform),
     score: domain.healthScore ?? 0,
+    scoreLabel:
+      domain.verificationStatus === "VERIFIED"
+        ? formatWebsiteHealth(domain.healthScore)
+        : "No score yet",
     pages: domain.pages.length,
     critical,
     warnings,
@@ -229,7 +238,9 @@ function mapIssue(
     domain: issue.domain.domain,
     severity: issue.severity.toLowerCase() as Severity,
     pages: 1,
-    owner: issue.assignedTo?.name ?? issue.assignedTo?.email ?? "Unassigned",
+    owner: formatOverviewOwner(
+      issue.assignedTo?.name ?? issue.assignedTo?.email,
+    ),
     status: formatIssueStatus(issue.status),
   };
 }
