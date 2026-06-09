@@ -24,6 +24,7 @@ import {
   type KeywordContentGap,
   type KeywordOpportunity,
 } from "@/lib/product-seo-groups";
+import { formatRankVolume } from "@/lib/rank-display-labels";
 import type { SearchPerformanceGroup } from "@/lib/search-performance";
 
 export const dynamic = "force-dynamic";
@@ -613,7 +614,7 @@ function CompetitorGapList({
                 <span>{item.competitorDomain}</span>
                 <span>Competitor #{item.competitorPosition}</span>
                 <span>Owned {item.ownedPosition ?? "not ranking"}</span>
-                <span>{item.volume?.toLocaleString() ?? "Unknown"} volume</span>
+                <span>{formatKeywordGapVolume(item.volume)}</span>
               </div>
             </article>
           ))
@@ -631,6 +632,14 @@ function CompetitorGapList({
       ) : null}
     </section>
   );
+}
+
+function formatKeywordGapVolume(value: number | null) {
+  if (typeof value !== "number") {
+    return formatRankVolume(value);
+  }
+
+  return `${formatRankVolume(value)} volume`;
 }
 
 function QueryTable({

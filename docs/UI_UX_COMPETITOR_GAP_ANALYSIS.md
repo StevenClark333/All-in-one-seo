@@ -1827,3 +1827,18 @@ Implementation:
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check technical-audit ownership labels desktop and mobile locally.
 - [ ] Browser-check technical-audit ownership labels after deployment.
+
+### Batch CY: Keyword Gap Volume Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep search-volume context beside competitor gaps, but a beginner-friendly keyword page should explain missing volume as a data state rather than an unknown value.
+- Nontechnical users should see no volume yet before unknown volume when a competitor content gap has not imported search-volume data.
+- The keyword research page should feel like a writing-opportunity guide, not a data-quality mystery.
+
+Implementation:
+
+- [x] Translate competitor content-gap missing volume away from unknown wording.
+- [x] Reuse the shared rank-volume label unit coverage for the exact no-volume-yet text.
+- [x] Browser-check keyword gap volume labels desktop and mobile locally.
+- [ ] Browser-check keyword gap volume labels after deployment.
