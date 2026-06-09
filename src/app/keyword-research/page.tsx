@@ -15,6 +15,11 @@ import { HelpLabel } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { SavedViewsBar } from "@/components/saved-views-bar";
 import {
+  formatKeywordIntent,
+  formatKeywordPosition,
+  formatKeywordPositionInline,
+} from "@/lib/keyword-display-labels";
+import {
   getKeywordResearchData,
   type KeywordContentGap,
   type KeywordOpportunity,
@@ -221,7 +226,7 @@ export default async function KeywordResearchPage({
                     .map((item) => (
                       <HorizontalBar
                         key={item.intent}
-                        label={`${formatIntent(item.intent)} intent`}
+                        label={formatKeywordIntent(item.intent)}
                         max={maxIntentImpressions}
                         value={item.impressions}
                       />
@@ -447,15 +452,13 @@ function OpportunityList({
                 <p className="line-clamp-2 font-semibold">{item.key}</p>
                 <p className="mt-1 text-sm text-slate-500">{item.reason}</p>
                 <p className="mt-2 text-sm font-medium text-slate-500">
-                  {formatIntent(item.intent)}
+                  {formatKeywordIntent(item.intent)}
                 </p>
               </div>
               <Meta label="Score" value={item.opportunityScore.toString()} />
               <Meta
                 label="Position"
-                value={
-                  item.avgPosition ? item.avgPosition.toString() : "Pending"
-                }
+                value={formatKeywordPosition(item.avgPosition)}
               />
             </article>
           ))
@@ -500,7 +503,9 @@ function IntentPanel({
               className="grid gap-3 p-5 sm:grid-cols-[minmax(0,1fr)_90px_120px]"
             >
               <div>
-                <p className="font-semibold">{formatIntent(item.intent)}</p>
+                <p className="font-semibold">
+                  {formatKeywordIntent(item.intent)}
+                </p>
                 <p className="mt-1 text-sm text-slate-500">
                   {item.queries} search-term groups
                 </p>
@@ -548,7 +553,7 @@ function ContentGapList({
               <div className="flex flex-wrap gap-3 text-sm">
                 <span>{item.impressions.toLocaleString()} impressions</span>
                 <span>{formatCtr(item.ctr)} CTR</span>
-                <span>Position {item.avgPosition || "Pending"}</span>
+                <span>{formatKeywordPositionInline(item.avgPosition)}</span>
                 <Link
                   href={item.actionHref}
                   className="font-semibold underline-offset-4 hover:underline"
@@ -668,7 +673,9 @@ function QueryTable({
                     {item.impressions.toLocaleString()}
                   </td>
                   <td className="px-5 py-4">{formatCtr(item.ctr)}</td>
-                  <td className="px-5 py-4">{item.avgPosition || "Pending"}</td>
+                  <td className="px-5 py-4">
+                    {formatKeywordPosition(item.avgPosition)}
+                  </td>
                 </tr>
               ))
             ) : (
@@ -764,10 +771,6 @@ function formatEnum(value: string) {
 
 function formatInputDate(value: Date) {
   return value.toISOString().slice(0, 10);
-}
-
-function formatIntent(value: string) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function getSingle(value: string | string[] | undefined) {

@@ -1572,3 +1572,18 @@ Implementation:
 - [x] Translate Fix Center verification labels and lifecycle waiting wording into plain-language confirmation states.
 - [x] Browser-check Fix Center confirmation labels desktop and mobile locally.
 - [ ] Browser-check Fix Center confirmation labels after deployment.
+
+### Batch CH: Keyword Intent Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both expose keyword intent and rank/position metrics, but a beginner-friendly keyword workspace should translate intent into the reason someone is searching.
+- Nontechnical users should see learning search, buying research, ready to buy, brand/site lookup, and not ranking yet before informational, commercial, transactional, navigational, or pending metric labels.
+- The Search ideas page should feel like choosing the next useful topic, not decoding keyword-research terminology.
+
+Implementation:
+
+- [x] Translate Search ideas intent groups and opportunity intent labels into plain-language search reasons.
+- [x] Replace missing keyword position labels with not-ranking-yet wording.
+- [x] Browser-check Search ideas page desktop and mobile locally; local database has no Search Console rows, so exact label rules are covered by unit tests.
+- [ ] Browser-check Search ideas intent and position labels after deployment.
