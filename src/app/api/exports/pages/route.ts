@@ -2,6 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
 import { formatExportClient } from "@/lib/export-display-labels";
 import { getPageInventoryData } from "@/lib/management-queries";
+import {
+  formatPageCheckDate,
+  formatPageResponse,
+} from "@/lib/page-display-labels";
 
 export async function GET(request: NextRequest) {
   const domainId = request.nextUrl.searchParams.get("domainId") ?? undefined;
@@ -13,13 +17,13 @@ export async function GET(request: NextRequest) {
       return {
         client: formatExportClient(page.domain.client?.name),
         domain: page.domain.domain,
-        httpStatus: snapshot?.statusCode ?? "",
         incomingLinks: page.incomingLinks.length,
         issues: page.issues.length,
-        lastCrawledAt: page.lastCrawledAt?.toISOString() ?? "",
+        lastChecked: formatPageCheckDate(page.lastCrawledAt),
         outgoingLinks: page.outgoingLinks.length,
         title: snapshot?.title ?? "",
         url: page.url,
+        websiteResponse: formatPageResponse(snapshot?.statusCode),
       };
     }),
   );

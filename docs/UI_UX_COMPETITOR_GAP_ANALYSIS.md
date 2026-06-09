@@ -1903,3 +1903,19 @@ Implementation:
 - [x] Cover the exact exported work-list labels with unit tests.
 - [x] Verify export work-list labels through local API/download checks.
 - [ ] Browser-check export work-list labels after deployment.
+
+### Batch DD: Export Page Check Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep crawled-page exports useful with response and last-check detail, but a beginner-friendly product should describe those fields as website response and last checked.
+- Nontechnical users should see good, redirects, needs review, and not checked yet before httpStatus, statusCode, blank cells, or ISO crawl timestamps.
+- Downloaded page files should feel like a page-care list, not a raw crawl inventory.
+
+Implementation:
+
+- [x] Translate pages CSV response and last-check fields into plain page-care labels.
+- [x] Reuse the same page response and check-date labels used in the app.
+- [x] Cover the exact exported page-check labels with unit tests.
+- [x] Verify export page-check labels through local API/download checks.
+- [ ] Browser-check export page-check labels after deployment.

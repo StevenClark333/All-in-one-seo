@@ -8,6 +8,10 @@ import {
   formatExportProblemArea,
   formatExportProgress,
 } from "@/lib/export-display-labels";
+import {
+  formatPageCheckDate,
+  formatPageResponse,
+} from "@/lib/page-display-labels";
 
 test("formats exported ownership gaps as calm setup labels", () => {
   assert.equal(formatExportClient(null), "No client yet");
@@ -26,7 +30,10 @@ test("formats exported problem importance as plain action labels", () => {
 });
 
 test("formats exported problem details as a readable work list", () => {
-  assert.equal(formatExportProblemArea("missing_meta_description"), "Missing Meta Description");
+  assert.equal(
+    formatExportProblemArea("missing_meta_description"),
+    "Missing Meta Description",
+  );
   assert.equal(formatExportProblemArea(null), "Website check");
   assert.equal(formatExportPriority(92), "Start here");
   assert.equal(formatExportPriority(62), "Do next");
@@ -36,4 +43,12 @@ test("formats exported problem details as a readable work list", () => {
   assert.equal(formatExportProgress("REAPPEARED"), "Needs another look");
   assert.equal(formatExportProgress("IGNORED"), "Set aside");
   assert.equal(formatExportProgress("FIXED"), "Fixed");
+});
+
+test("formats exported page check details as plain page-care labels", () => {
+  assert.equal(formatPageResponse(null), "Not checked yet");
+  assert.equal(formatPageResponse(200), "Good (200)");
+  assert.equal(formatPageResponse(302), "Redirects (302)");
+  assert.equal(formatPageResponse(500), "Needs review (500)");
+  assert.equal(formatPageCheckDate(null), "Not checked yet");
 });
