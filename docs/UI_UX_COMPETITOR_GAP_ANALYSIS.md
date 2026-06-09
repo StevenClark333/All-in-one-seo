@@ -1692,3 +1692,18 @@ Implementation:
 - [x] Cover the exact problem note-author fallback label with unit tests.
 - [x] Browser-check problem detail labels desktop and mobile locally.
 - [ ] Browser-check problem detail labels after deployment.
+
+### Batch CP: Website Check Recap Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep crawl history, changed fields, response status, and page-level metadata visible, but beginner users need recap wording that explains what happened without raw crawl placeholders.
+- Nontechnical users should see no client yet, not checked yet, not found yet, and not counted yet before unassigned, pending, missing, or zero-word fallback labels in the website-check recap.
+- The crawl recap should feel like a calm after-check summary with optional detail, not a technical crawler log.
+
+Implementation:
+
+- [x] Translate website-check recap client, response, change-value, metadata, and word-count fallbacks into plain-language wording.
+- [x] Cover the exact crawl recap response and change-value fallback labels with unit tests.
+- [x] Browser-check website-check recap labels desktop and mobile locally.
+- [ ] Browser-check website-check recap labels after deployment.

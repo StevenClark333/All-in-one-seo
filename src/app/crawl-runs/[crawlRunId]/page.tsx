@@ -2,7 +2,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CheckCircle2, FileSearch, Radar } from "lucide-react";
 import { cancelCrawl } from "@/app/actions";
+import {
+  formatCrawlRunChangeValue,
+  formatCrawlRunResponse,
+} from "@/lib/crawl-run-display-labels";
+import {
+  formatPageMetaText,
+  formatPageWordCount,
+} from "@/lib/page-display-labels";
 import { getPrisma } from "@/lib/prisma";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -78,7 +87,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
               </div>
               <div>
                 <p className="text-sm font-medium text-slate-500">
-                  {crawlRun.domain.client?.name ?? "Unassigned"}
+                  {formatWebsiteClient(crawlRun.domain.client?.name)}
                 </p>
                 <h1 className="text-2xl font-semibold tracking-normal">
                   Website check recap
@@ -167,7 +176,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                     <Meta label="Link" value={artifact.url} />
                     <Meta
                       label="Response"
-                      value={formatPageResponse(artifact.statusCode)}
+                      value={formatCrawlRunResponse(artifact.statusCode)}
                     />
                   </article>
                 ))
@@ -215,9 +224,12 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                   </div>
                   <Meta
                     label="Previous"
-                    value={event.previousValue ?? "Missing"}
+                    value={formatCrawlRunChangeValue(event.previousValue)}
                   />
-                  <Meta label="Current" value={event.newValue ?? "Missing"} />
+                  <Meta
+                    label="Current"
+                    value={formatCrawlRunChangeValue(event.newValue)}
+                  />
                 </article>
               ))
             ) : (
@@ -249,18 +261,27 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
                     <div>
                       <h3 className="font-semibold">{snapshot.page.url}</h3>
                       <p className="mt-1 text-sm text-slate-500">
-                        Response {formatPageResponse(snapshot.statusCode)} -{" "}
-                        {snapshot.wordCount ?? 0} words
+                        Response {formatCrawlRunResponse(snapshot.statusCode)} -{" "}
+                        {formatPageWordCount(snapshot.wordCount)}
                       </p>
                     </div>
                     <dl className="grid gap-3 text-sm md:grid-cols-2">
-                      <Meta label="Title" value={snapshot.title} />
+                      <Meta
+                        label="Title"
+                        value={formatPageMetaText(snapshot.title)}
+                      />
                       <Meta
                         label="Page description"
-                        value={snapshot.metaDescription}
+                        value={formatPageMetaText(snapshot.metaDescription)}
                       />
-                      <Meta label="Main heading" value={snapshot.h1} />
-                      <Meta label="Preferred page" value={snapshot.canonical} />
+                      <Meta
+                        label="Main heading"
+                        value={formatPageMetaText(snapshot.h1)}
+                      />
+                      <Meta
+                        label="Preferred page"
+                        value={formatPageMetaText(snapshot.canonical)}
+                      />
                     </dl>
                   </article>
                 ))
@@ -366,13 +387,13 @@ function Metric({ label, value }: { label: string; value: string | number }) {
   );
 }
 
-function Meta({ label, value }: { label: string; value: string | null }) {
+function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <dt className="text-sm font-medium text-slate-500">
         {label}
       </dt>
-      <dd className="mt-1 text-slate-700">{value ?? "Missing"}</dd>
+      <dd className="mt-1 text-slate-700">{value}</dd>
     </div>
   );
 }
@@ -426,26 +447,6 @@ function formatSetupFileType(value: string) {
   };
 
   return setupFileLabels[value] ?? formatEnum(value);
-}
-
-function formatPageResponse(statusCode: number | null | undefined) {
-  if (!statusCode) {
-    return "Pending";
-  }
-
-  if (statusCode >= 200 && statusCode < 300) {
-    return "Good";
-  }
-
-  if (statusCode >= 300 && statusCode < 400) {
-    return "Redirects";
-  }
-
-  if (statusCode >= 400) {
-    return "Needs review";
-  }
-
-  return statusCode.toString();
 }
 
 function formatChangeImportance(severity: string) {
