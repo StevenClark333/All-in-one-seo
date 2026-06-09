@@ -2014,3 +2014,19 @@ Implementation:
 - [x] Cover the exact beginner-facing navigation labels with unit tests.
 - [x] Browser-check navigation label calmness locally.
 - [ ] Browser-check navigation label calmness after deployment.
+
+### Batch DK: Website Tool Label Consistency
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep multiple tool areas available inside each project, but a beginner-friendly product should not rename the same destinations differently between the sidebar and the active website toolbar.
+- Nontechnical users should see Search Growth, Competitor Insights, Search Ideas, Rank Movement, Links, Ideas, and Connections consistently before Search, Competitors, Keywords, Rank, Technical, AI, or Integrations.
+- The active website toolbar should feel like a small care map for the current website, not a second product vocabulary.
+
+Implementation:
+
+- [x] Reuse the product navigation copy helper for website tool labels.
+- [x] Rename the active website toolbar labels to match the softer sidebar language.
+- [x] Cover the exact website tool labels with unit tests.
+- [x] Browser-check website tool label consistency locally.
+- [ ] Browser-check website tool label consistency after deployment.

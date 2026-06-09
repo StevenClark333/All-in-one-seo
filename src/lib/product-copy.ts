@@ -16,6 +16,7 @@ export const PRODUCT_NAV_DISPLAY_LABELS: Record<string, string> = {
   Sites: "Websites",
   Technical: "Links",
   Billing: "Plan",
+  Integrations: "Connections",
 };
 
 export const PRODUCT_NAV_HELP: Record<string, string> = {
@@ -49,4 +50,23 @@ export function getProductNavLabel(label: string) {
 
 export function getProductNavHelp(label: string) {
   return PRODUCT_NAV_HELP[label] ?? "Open this helpful product area.";
+}
+
+export const PRODUCT_WORKSPACE_TOOL_LABELS: Record<string, string> = {
+  overview: "Overview",
+  issues: getProductNavLabel("Issues"),
+  pages: "Pages",
+  search: getProductNavLabel("Search Performance"),
+  competitive: getProductNavLabel("Competitive Analysis"),
+  keywords: getProductNavLabel("Keyword Research"),
+  rank: getProductNavLabel("Rank Tracking"),
+  technical: getProductNavLabel("Technical"),
+  fixes: getProductNavLabel("Fix Center"),
+  ai: getProductNavLabel("AI"),
+  reports: "Reports",
+  integrations: getProductNavLabel("Integrations"),
+};
+
+export function getProductWorkspaceToolLabel(key: string) {
+  return PRODUCT_WORKSPACE_TOOL_LABELS[key] ?? key;
 }

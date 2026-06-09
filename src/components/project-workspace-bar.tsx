@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronRight, Globe2 } from "lucide-react";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { getProjectNavigationData } from "@/lib/management-queries";
+import { getProductWorkspaceToolLabel } from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 type ProjectWorkspaceBarProps = {
@@ -27,67 +28,54 @@ type ProjectToolKey =
 
 const projectTools: Array<{
   key: ProjectToolKey;
-  label: string;
   buildHref: (domainId: string) => string;
 }> = [
   {
     key: "overview",
-    label: "Overview",
     buildHref: (domainId) => `/domains/${domainId}/workspace`,
   },
   {
     key: "issues",
-    label: "Problems",
     buildHref: (domainId) => `/issues?domainId=${domainId}`,
   },
   {
     key: "pages",
-    label: "Pages",
     buildHref: (domainId) => `/pages?domainId=${domainId}`,
   },
   {
     key: "search",
-    label: "Search",
     buildHref: (domainId) => `/search-performance?domainId=${domainId}`,
   },
   {
     key: "competitive",
-    label: "Competitors",
     buildHref: (domainId) => `/competitive-analysis?domainId=${domainId}`,
   },
   {
     key: "keywords",
-    label: "Keywords",
     buildHref: (domainId) => `/keyword-research?domainId=${domainId}`,
   },
   {
     key: "rank",
-    label: "Rank",
     buildHref: (domainId) => `/rank-tracking?domainId=${domainId}`,
   },
   {
     key: "technical",
-    label: "Links",
     buildHref: (domainId) => `/technical-audit?domainId=${domainId}`,
   },
   {
     key: "fixes",
-    label: "Fixes",
     buildHref: (domainId) => `/fix-center?domainId=${domainId}`,
   },
   {
     key: "ai",
-    label: "Ideas",
     buildHref: (domainId) => `/recommendations?domainId=${domainId}`,
   },
   {
     key: "reports",
-    label: "Reports",
     buildHref: (domainId) => `/reports?domainId=${domainId}`,
   },
   {
     key: "integrations",
-    label: "Integrations",
     buildHref: (domainId) => `/integrations?domainId=${domainId}`,
   },
 ];
@@ -222,7 +210,7 @@ export async function ProjectWorkspaceBar({
                   : "text-slate-600 hover:bg-orange-50 hover:text-slate-950"
               }`}
             >
-              {tool.label}
+              {getProductWorkspaceToolLabel(tool.key)}
             </Link>
           ))}
         </nav>
