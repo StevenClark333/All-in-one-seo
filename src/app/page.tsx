@@ -314,7 +314,10 @@ export default async function Home() {
                     href="/recommendations"
                     label="Create fix notes"
                   />
-                  <QuickAction href="/rank-tracking" label="Track keywords" />
+                  <QuickAction
+                    href="/rank-tracking"
+                    label={PRODUCT_BEGINNER_COPY.dashboardRankShortcut}
+                  />
                 </div>
               </div>
             </div>

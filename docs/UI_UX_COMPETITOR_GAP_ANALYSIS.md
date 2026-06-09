@@ -2297,3 +2297,19 @@ Implementation:
 - [x] Cover the exact Pages content-check wording with unit tests.
 - [x] Browser-check Pages content check calmness locally.
 - [ ] Browser-check Pages content check calmness after deployment.
+
+### Batch EB: Dashboard Search-Term Shortcut Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose keyword tracking quickly, but beginner users often understand search terms before keywords.
+- A softer dashboard shortcut should still lead to rank movement while using everyday language in the first-screen action list.
+- The product direction is to reserve keyword detail for deeper views and make broad dashboard actions feel like plain website care.
+
+Implementation:
+
+- [x] Centralize the dashboard search-term shortcut label in the product copy helper.
+- [x] Replace the Track keywords shortcut with Watch search terms.
+- [x] Cover the exact shortcut wording with unit tests.
+- [x] Browser-check dashboard search-term shortcut calmness locally.
+- [ ] Browser-check dashboard search-term shortcut calmness after deployment.

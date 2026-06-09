@@ -138,6 +138,7 @@ export const PRODUCT_BEGINNER_COPY = {
   connectInConnections: "Connect in Connections",
   dashboardProjectListDetail:
     "Start with your website list to see which websites need attention today.",
+  dashboardRankShortcut: "Watch search terms",
   dashboardStartPlanBody:
     "Follow these in order. Each card takes you to one focused screen, so you do not need to understand technical website wording first.",
   dashboardStartPlanTitle: "Today's website plan",
