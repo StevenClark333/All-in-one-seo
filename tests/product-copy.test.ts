@@ -209,6 +209,14 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     PRODUCT_BEGINNER_COPY.dashboardLatestCheckHelp,
     "Most recent website check for this website.",
   );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardAverageHealthHelp,
+    "Average website health across websites that have finished setup.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardMetricFallbackHelp,
+    "Key workspace metric used to understand everyday website care.",
+  );
   assert.equal(PRODUCT_BEGINNER_COPY.dashboardOpenWebsites, "Open websites");
   assert.equal(
     PRODUCT_BEGINNER_COPY.connectInConnections,
@@ -270,6 +278,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
   );
 });

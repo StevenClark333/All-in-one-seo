@@ -130,6 +130,10 @@ export const PRODUCT_BEGINNER_COPY = {
   dashboardFirstWebsiteBody:
     "Websites keep each check, problem, and update in one place.",
   dashboardLatestCheckHelp: "Most recent website check for this website.",
+  dashboardMetricFallbackHelp:
+    "Key workspace metric used to understand everyday website care.",
+  dashboardAverageHealthHelp:
+    "Average website health across websites that have finished setup.",
   dashboardOpenWebsites: "Open websites",
   connectInConnections: "Connect in Connections",
   dashboardProjectListDetail:

@@ -625,7 +625,7 @@ export default async function Home() {
 function getStatHelp(label: string) {
   const help: Record<string, string> = {
     "Avg. health":
-      "Average SEO health across websites that have finished setup.",
+      PRODUCT_BEGINNER_COPY.dashboardAverageHealthHelp,
     "Active clients":
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
     Clients:
@@ -643,7 +643,7 @@ function getStatHelp(label: string) {
   };
 
   return (
-    help[label] ?? "Key workspace metric used to understand SEO operations."
+    help[label] ?? PRODUCT_BEGINNER_COPY.dashboardMetricFallbackHelp
   );
 }
 

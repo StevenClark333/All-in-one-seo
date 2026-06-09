@@ -2247,3 +2247,20 @@ Implementation:
 - [x] Cover the exact Connections action wording with unit tests.
 - [x] Browser-check Connections action label calmness locally.
 - [ ] Browser-check Connections action label calmness after deployment.
+
+### Batch DY: Dashboard Metric Help Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs put health and visibility metrics on the first dashboard, but their helper text assumes the user is comfortable with SEO operations language.
+- A beginner-first product should keep the same metrics while explaining them as website care, especially in tooltip or help text that appears on the first screen.
+- The softer product direction is to make dashboard metrics feel like everyday website health checks rather than an expert SEO operations console.
+
+Implementation:
+
+- [x] Centralize dashboard metric help wording in the product copy helper.
+- [x] Replace Average SEO health with Average website health.
+- [x] Replace the generic SEO operations fallback with everyday website care.
+- [x] Cover the exact dashboard metric help wording with unit tests.
+- [x] Browser-check dashboard metric help calmness locally.
+- [ ] Browser-check dashboard metric help calmness after deployment.
