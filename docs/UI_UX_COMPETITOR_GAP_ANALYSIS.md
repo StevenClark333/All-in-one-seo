@@ -2143,3 +2143,19 @@ Implementation:
 - [x] Cover the exact client setup wording with unit tests.
 - [x] Browser-check client setup check calmness locally.
 - [ ] Browser-check client setup check calmness after deployment.
+
+### Batch DS: Add Website First Check Calmness
+
+Competitive evidence:
+
+- Semrush project setup and Site Audit flows preserve powerful setup and checking depth, but beginner onboarding should frame the first step as a website check rather than an SEO check.
+- Ahrefs and Moz keep audit and crawl detail available after setup, while the first Add Website screen should feel like a calm setup path for a nontechnical user.
+- The softer product direction is to say ownership, check rhythm, and first website check before first SEO check on the Add Website screen.
+
+Implementation:
+
+- [x] Centralize the Add Website intro sentence in the product copy helper.
+- [x] Replace the visible first SEO check phrase with first website check.
+- [x] Cover the exact Add Website intro wording with unit tests.
+- [x] Browser-check Add Website first-check calmness locally.
+- [ ] Browser-check Add Website first-check calmness after deployment.

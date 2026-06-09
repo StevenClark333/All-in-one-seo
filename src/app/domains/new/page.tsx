@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { createDomain } from "@/app/actions";
 import { getDomainManagementData } from "@/lib/management-queries";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -54,8 +55,7 @@ export default async function NewDomainPage() {
             </div>
           </div>
           <p className="mt-4 text-sm leading-6 text-slate-500">
-            Add the website first. After it is saved, the portal will guide you
-            through ownership, check rhythm, and the first SEO check.
+            {PRODUCT_BEGINNER_COPY.addWebsiteIntro}
           </p>
 
           <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">

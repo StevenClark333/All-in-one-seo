@@ -113,6 +113,8 @@ export const PRODUCT_CONNECTION_COPY = {
 };
 
 export const PRODUCT_BEGINNER_COPY = {
+  addWebsiteIntro:
+    "Add the website first. After it is saved, the portal will guide you through ownership, check rhythm, and the first website check.",
   adminDescription:
     "Trusted teammate who can manage access and everyday website care work.",
   agencyProgressBody:

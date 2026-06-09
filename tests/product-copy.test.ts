@@ -169,6 +169,10 @@ test("uses soft connection wording for automation handoffs", () => {
 
 test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   assert.equal(
+    PRODUCT_BEGINNER_COPY.addWebsiteIntro,
+    "Add the website first. After it is saved, the portal will guide you through ownership, check rhythm, and the first website check.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.adminDescription,
     "Trusted teammate who can manage access and everyday website care work.",
   );
@@ -191,6 +195,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check/,
   );
 });
