@@ -15,6 +15,12 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { SavedViewsBar } from "@/components/saved-views-bar";
+import {
+  formatCompetitorHealth,
+  formatCompetitorOwner,
+  formatCompetitorPosition,
+  formatCompetitorRankNote,
+} from "@/lib/competitor-display-labels";
 import { getCompetitiveAnalysisData } from "@/lib/product-seo-groups";
 import type { SearchPerformanceGroup } from "@/lib/search-performance";
 
@@ -209,12 +215,14 @@ export default async function CompetitiveAnalysisPage({
                       <div className="min-w-0">
                         <p className="font-semibold">{row.domain}</p>
                         <p className="mt-1 text-sm text-slate-500">
-                          {row.label ?? row.bestKeyword ?? "Awaiting rank data"}
+                          {formatCompetitorRankNote(
+                            row.label ?? row.bestKeyword,
+                          )}
                         </p>
                       </div>
                       <Meta
-                        label="Avg. position"
-                        value={row.avgPosition?.toString() ?? "Pending"}
+                        label="Avg. spot"
+                        value={formatCompetitorPosition(row.avgPosition)}
                       />
                       <Meta
                         label="Top 10 wins"
@@ -385,7 +393,7 @@ export default async function CompetitiveAnalysisPage({
                     <th className="px-5 py-3 font-semibold">Visibility</th>
                     <th className="px-5 py-3 font-semibold">Clicks</th>
                     <th className="px-5 py-3 font-semibold">Impressions</th>
-                    <th className="px-5 py-3 font-semibold">Avg. position</th>
+                    <th className="px-5 py-3 font-semibold">Avg. spot</th>
                     <th className="px-5 py-3 font-semibold">Health</th>
                     <th className="px-5 py-3 font-semibold">Pages checked</th>
                     <th className="px-5 py-3 font-semibold">Problems</th>
@@ -403,7 +411,7 @@ export default async function CompetitiveAnalysisPage({
                             {row.domain}
                           </Link>
                           <p className="mt-1 text-xs text-slate-500">
-                            {row.clientName ?? "Unassigned"}
+                            {formatCompetitorOwner(row.clientName)}
                           </p>
                         </td>
                         <td className="px-5 py-4 font-semibold">
@@ -416,10 +424,10 @@ export default async function CompetitiveAnalysisPage({
                           {row.impressions.toLocaleString()}
                         </td>
                         <td className="px-5 py-4">
-                          {row.avgPosition || "Pending"}
+                          {formatCompetitorPosition(row.avgPosition)}
                         </td>
                         <td className="px-5 py-4">
-                          {row.healthScore ?? "Pending"}
+                          {formatCompetitorHealth(row.healthScore)}
                         </td>
                         <td className="px-5 py-4">{row.pageCount}</td>
                         <td className="px-5 py-4">{row.issueCount}</td>

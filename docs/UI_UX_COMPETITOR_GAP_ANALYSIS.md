@@ -1602,3 +1602,18 @@ Implementation:
 - [x] Cover the exact search position and movement labels with unit tests.
 - [x] Browser-check Search Performance position labels desktop and mobile locally.
 - [ ] Browser-check Search Performance position labels after deployment.
+
+### Batch CJ: Competitor Metric Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs competitor comparison views keep rank, visibility, and health-style metrics available, but a beginner-friendly competitor page should make missing data feel like a normal setup state.
+- Nontechnical users should see not ranking yet, waiting for rankings, no score yet, no client yet, and average spot before pending, unassigned, or raw average-position wording.
+- The Competitor insights page should feel like a gentle comparison guide, not a data warehouse table.
+
+Implementation:
+
+- [x] Translate competitor rank, website health, and owner fallback labels into plain-language wording.
+- [x] Cover the exact competitor comparison labels with unit tests.
+- [x] Browser-check Competitor insights metric labels desktop and mobile locally.
+- [ ] Browser-check Competitor insights metric labels after deployment.
