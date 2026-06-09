@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
+import { formatProductReportTitle } from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
@@ -210,7 +211,7 @@ export async function getGlobalSearchResults(
           report.domain?.domain ?? report.client?.name ?? "Workspace report",
         href: `/reports/${report.id}`,
         icon: FileText,
-        title: report.title,
+        title: formatProductReportTitle(report.title),
       })),
     ],
     workspaceName: workspace.name,

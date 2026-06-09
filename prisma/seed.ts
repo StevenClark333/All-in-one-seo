@@ -187,7 +187,7 @@ async function main() {
       {
         workspaceId: workspace.id,
         clientId: northstar.id,
-        title: "Northstar Dental weekly SEO report",
+        title: "Northstar Dental weekly website update",
         status: "DRAFT",
         periodStart: daysAgo(7),
         periodEnd: new Date(),
@@ -195,7 +195,7 @@ async function main() {
       {
         workspaceId: workspace.id,
         clientId: urbanThread.id,
-        title: "Urban Thread technical SEO report",
+        title: "Urban Thread website health update",
         status: "DRAFT",
         periodStart: daysAgo(7),
         periodEnd: new Date(),

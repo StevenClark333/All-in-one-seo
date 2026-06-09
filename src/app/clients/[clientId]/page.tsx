@@ -16,6 +16,7 @@ import {
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getClientDetailData } from "@/lib/management-queries";
+import { formatProductReportTitle } from "@/lib/product-copy";
 import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -322,7 +323,9 @@ export default async function ClientDetailPage({
                         key={report.id}
                         className="rounded-md border border-slate-200 bg-slate-50 p-3"
                       >
-                        <p className="text-sm font-semibold">{report.title}</p>
+                        <p className="text-sm font-semibold">
+                          {formatProductReportTitle(report.title)}
+                        </p>
                         <p className="mt-1 text-xs text-slate-500">
                           {formatReportStatus(report.status)} -{" "}
                           {report.createdAt.toLocaleDateString()}

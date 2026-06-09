@@ -88,6 +88,13 @@ export function getProductReportTitle(domain: string) {
   return `${domain} website update`;
 }
 
+export function formatProductReportTitle(title: string) {
+  return title
+    .replace(/\btechnical SEO report\b/gi, "website health update")
+    .replace(/\bSEO report\b/gi, "website update")
+    .replace(/\bSEO reports\b/gi, "website updates");
+}
+
 export const PRODUCT_CONNECTION_COPY = {
   analyticsHelp:
     "Bring in GA4 traffic data so reports can show which website pages matter most.",

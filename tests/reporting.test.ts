@@ -105,7 +105,7 @@ test("summarizes report issues, scores, crawls, and recommendations", () => {
   assert.equal(summary.recommendations.length, 1);
 
   const pdfLines = buildReportPdfText(report);
-  assert.equal(pdfLines[0], "May SEO report");
+  assert.equal(pdfLines[0], "May website update");
   assert.ok(
     pdfLines.some((line) => line.includes("Problems ready to review: 1")),
   );
@@ -337,7 +337,7 @@ test("generates due scheduled reports and advances next run", async () => {
   assert.equal(createdReports.length, 1);
   assert.match(
     (createdReports[0] as { title: string }).title,
-    /Weekly SEO report/,
+    /Weekly website update/,
   );
   assert.equal(updates.length, 1);
 });

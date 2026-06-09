@@ -22,7 +22,10 @@ import {
   getReportListData,
   REPORT_WHITE_LABEL_RECORD_NAME,
 } from "@/lib/reporting";
-import { PRODUCT_REPORT_UPDATE_COPY } from "@/lib/product-copy";
+import {
+  formatProductReportTitle,
+  PRODUCT_REPORT_UPDATE_COPY,
+} from "@/lib/product-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -229,7 +232,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                         href={`/reports/${report.id}`}
                         className="font-semibold underline-offset-4 hover:underline"
                       >
-                        {report.title}
+                        {formatProductReportTitle(report.title)}
                       </Link>
                       <p className="mt-1 text-sm text-slate-500">
                         {report.client?.name ??

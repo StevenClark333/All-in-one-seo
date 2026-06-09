@@ -7,7 +7,10 @@ import {
   formatChangeType,
   getReportDetailData,
 } from "@/lib/reporting";
-import { PRODUCT_REPORT_UPDATE_COPY } from "@/lib/product-copy";
+import {
+  formatProductReportTitle,
+  PRODUCT_REPORT_UPDATE_COPY,
+} from "@/lib/product-copy";
 import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -70,7 +73,7 @@ export default async function ReportDetailPage({
                 {formatReportStatus(report.status)}
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                {report.title}
+                {formatProductReportTitle(report.title)}
               </h2>
               <p className="mt-2 text-sm text-slate-500">
                 {report.periodStart.toLocaleDateString()} -{" "}

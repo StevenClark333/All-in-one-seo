@@ -28,7 +28,10 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
-import { getProductReportTitle } from "@/lib/product-copy";
+import {
+  formatProductReportTitle,
+  getProductReportTitle,
+} from "@/lib/product-copy";
 import {
   formatWebsiteClient,
   formatWebsiteHealth,
@@ -996,7 +999,9 @@ export default async function DomainWorkspacePage({
                         href={`/reports/${report.id}`}
                         className="rounded-md border border-slate-200 bg-slate-50 p-3 transition hover:bg-white"
                       >
-                        <p className="text-sm font-semibold">{report.title}</p>
+                        <p className="text-sm font-semibold">
+                          {formatProductReportTitle(report.title)}
+                        </p>
                         <p className="mt-1 text-xs text-slate-500">
                           {formatReportStatus(report.status)}
                         </p>

@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { formatCrawlRunChangeValue } from "@/lib/crawl-run-display-labels";
+import { formatProductReportTitle } from "@/lib/product-copy";
 import {
   buildPublicReportAccessWhere,
   buildWorkspaceIsolationWhere,
@@ -520,7 +521,7 @@ export function buildReportPdfText(report: ReportDetail) {
   const owner =
     report.client?.name ?? report.domain?.domain ?? report.workspace.name;
   const lines = [
-    report.title,
+    formatProductReportTitle(report.title),
     `Prepared by: ${summary.brand.agencyName}`,
     `Prepared for: ${summary.brand.clientName}`,
     `Website or client: ${owner}`,
@@ -683,11 +684,14 @@ function calculateNextRunAt(
 }
 
 function buildScheduledReportTitle(title: string, periodEnd: Date) {
-  return `${title} - ${periodEnd.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })}`;
+  return `${formatProductReportTitle(title)} - ${periodEnd.toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    },
+  )}`;
 }
 
 function daysAgoFrom(date: Date, days: number) {

@@ -2110,3 +2110,20 @@ Implementation:
 - [x] Cover the exact client-report wording with unit tests.
 - [x] Browser-check client-report detail calmness locally.
 - [ ] Browser-check client-report detail calmness after deployment.
+
+### Batch DQ: Stored Report Title Calmness
+
+Competitive evidence:
+
+- Semrush My Reports presents report creation as customizable, professional reporting that can showcase work to clients without making the title itself feel like a technical audit artifact.
+- Ahrefs Report Builder keeps advanced widgets and SEO data available, while the report container can still be configured and shared as a clear client-facing deliverable.
+- The softer product direction is to display older stored SEO report titles as website updates or website health updates across report lists, detail pages, public shares, PDFs, and search results.
+
+Implementation:
+
+- [x] Add a conservative report-title formatter that softens SEO report titles without rewriting custom non-SEO titles.
+- [x] Apply softened report titles to report library, report detail, public share, PDF text and filename, client detail, website workspace, and global search results.
+- [x] Update seed demo report titles so future local data starts with website-update language.
+- [x] Cover the exact title softening with unit tests.
+- [x] Browser-check stored report title calmness locally.
+- [ ] Browser-check stored report title calmness after deployment.

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  formatProductReportTitle,
   getProductNavHelp,
   getProductNavLabel,
   getProductWorkspaceToolLabel,
@@ -107,10 +108,20 @@ test("uses soft report update wording for client handoffs", () => {
     getProductReportTitle("example.com"),
     "example.com website update",
   );
+  assert.equal(
+    formatProductReportTitle("Northstar Dental weekly SEO report"),
+    "Northstar Dental weekly website update",
+  );
+  assert.equal(
+    formatProductReportTitle("Urban Thread technical SEO report"),
+    "Urban Thread website health update",
+  );
   assert.doesNotMatch(
     [
       ...Object.values(PRODUCT_REPORT_UPDATE_COPY),
       getProductReportTitle("example.com"),
+      formatProductReportTitle("Northstar Dental weekly SEO report"),
+      formatProductReportTitle("Urban Thread technical SEO report"),
     ].join(" "),
     /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data/,
   );
