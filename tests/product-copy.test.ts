@@ -7,6 +7,7 @@ import {
   getProductReportTitle,
   PRODUCT_AREA_NAME,
   PRODUCT_BRAND_NAME,
+  PRODUCT_CONNECTION_COPY,
   PRODUCT_DISPLAY_NAME,
   PRODUCT_META_DESCRIPTION,
   PRODUCT_REPORT_UPDATE_COPY,
@@ -107,5 +108,20 @@ test("uses soft report update wording for client handoffs", () => {
       getProductReportTitle("example.com"),
     ].join(" "),
     /SEO workspace|SEO update|SEO report|SEO changes/,
+  );
+});
+
+test("uses soft connection wording for automation handoffs", () => {
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.automationHelp,
+    "Send important website care updates to Zapier or Make.",
+  );
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.automationIntro,
+    "Send website care updates to simple automations when a team wants another tool involved.",
+  );
+  assert.doesNotMatch(
+    Object.values(PRODUCT_CONNECTION_COPY).join(" "),
+    /SEO update|SEO updates/,
   );
 });

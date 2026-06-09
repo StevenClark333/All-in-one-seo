@@ -21,6 +21,7 @@ import { readDeploymentIntegrationConfig } from "@/lib/deployment-checks";
 import { readGaProperties } from "@/lib/google-analytics";
 import { findMatchingGscSite, readGscSites } from "@/lib/google-search-console";
 import { getIntegrationSettingsData } from "@/lib/management-queries";
+import { PRODUCT_CONNECTION_COPY } from "@/lib/product-copy";
 import { readSlackIntegrationConfig } from "@/lib/slack";
 import { readShopifyShop } from "@/lib/shopify";
 import { findMatchingWebflowSite, readWebflowSites } from "@/lib/webflow";
@@ -1511,13 +1512,12 @@ export default async function IntegrationsPage({
               <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
                 <div className="border-b border-slate-200 p-5">
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Send important SEO updates to Zapier or Make.">
+                    <HelpLabel help={PRODUCT_CONNECTION_COPY.automationHelp}>
                       Zapier and Make
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Send important SEO updates to simple automations when a team
-                    wants another tool involved.
+                    {PRODUCT_CONNECTION_COPY.automationIntro}
                   </p>
                 </div>
 

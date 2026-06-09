@@ -2046,3 +2046,19 @@ Implementation:
 - [x] Cover the exact report update copy contract with unit tests.
 - [x] Browser-check report update copy calmness locally.
 - [ ] Browser-check report update copy calmness after deployment.
+
+### Batch DM: Automation Connection Copy Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit connects with Zapier so teams can create tasks, re-run checks, and move updates into tools like Asana, Monday, Jira, Salesforce, HubSpot, and email.
+- Ahrefs Looker Studio connectors and report templates show that competitor products keep automation and reporting integrations available for advanced workflows.
+- A beginner-friendly product should keep Zapier and Make setup visible, but describe it as website care updates instead of SEO updates.
+
+Implementation:
+
+- [x] Centralize automation connection wording in the product copy helper.
+- [x] Rename Zapier and Make helper text away from SEO updates toward website care updates.
+- [x] Cover the exact automation connection copy contract with unit tests.
+- [x] Browser-check automation connection copy calmness locally.
+- [ ] Browser-check automation connection copy calmness after deployment.

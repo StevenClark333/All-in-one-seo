@@ -85,3 +85,9 @@ export const PRODUCT_REPORT_UPDATE_COPY = {
 export function getProductReportTitle(domain: string) {
   return `${domain} website update`;
 }
+
+export const PRODUCT_CONNECTION_COPY = {
+  automationHelp: "Send important website care updates to Zapier or Make.",
+  automationIntro:
+    "Send website care updates to simple automations when a team wants another tool involved.",
+};
