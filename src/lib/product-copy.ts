@@ -70,3 +70,18 @@ export const PRODUCT_WORKSPACE_TOOL_LABELS: Record<string, string> = {
 export function getProductWorkspaceToolLabel(key: string) {
   return PRODUCT_WORKSPACE_TOOL_LABELS[key] ?? key;
 }
+
+export const PRODUCT_REPORT_UPDATE_COPY = {
+  changeSummaryDetail:
+    "Important website changes found during this report period.",
+  listIntro:
+    "Turn the latest website progress into a short update someone can read without opening the full website workspace.",
+  manualTitlePlaceholder: "Weekly website update",
+  planHeading: "Send clearer website updates with fewer steps.",
+  scheduledTitlePlaceholder: "Regular client website update",
+  sharedHeaderLabel: "Shared website update",
+};
+
+export function getProductReportTitle(domain: string) {
+  return `${domain} website update`;
+}

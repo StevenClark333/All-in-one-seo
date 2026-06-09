@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { formatChangeType, getPublicReportData } from "@/lib/reporting";
+import { PRODUCT_REPORT_UPDATE_COPY } from "@/lib/product-copy";
 import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +35,7 @@ export default async function PublicReportPage({
         <header className="border-b border-slate-200 pb-6">
           <p className="text-sm font-medium text-slate-500">
             {summary.brand.agencyName} for {summary.brand.clientName} -
-            Shared SEO update
+            {` ${PRODUCT_REPORT_UPDATE_COPY.sharedHeaderLabel}`}
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal">
             {report.title}

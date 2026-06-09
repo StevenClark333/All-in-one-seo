@@ -4,10 +4,12 @@ import {
   getProductNavHelp,
   getProductNavLabel,
   getProductWorkspaceToolLabel,
+  getProductReportTitle,
   PRODUCT_AREA_NAME,
   PRODUCT_BRAND_NAME,
   PRODUCT_DISPLAY_NAME,
   PRODUCT_META_DESCRIPTION,
+  PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
 
 test("uses soft product framing for nontechnical website care", () => {
@@ -67,5 +69,43 @@ test("uses the same soft labels inside website tool navigation", () => {
       getProductWorkspaceToolLabel("integrations"),
     ].join(" "),
     /Search$|Competitors|Keywords|Rank$|Integrations/,
+  );
+});
+
+test("uses soft report update wording for client handoffs", () => {
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.listIntro,
+    "Turn the latest website progress into a short update someone can read without opening the full website workspace.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.manualTitlePlaceholder,
+    "Weekly website update",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.scheduledTitlePlaceholder,
+    "Regular client website update",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.planHeading,
+    "Send clearer website updates with fewer steps.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.sharedHeaderLabel,
+    "Shared website update",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.changeSummaryDetail,
+    "Important website changes found during this report period.",
+  );
+  assert.equal(
+    getProductReportTitle("example.com"),
+    "example.com website update",
+  );
+  assert.doesNotMatch(
+    [
+      ...Object.values(PRODUCT_REPORT_UPDATE_COPY),
+      getProductReportTitle("example.com"),
+    ].join(" "),
+    /SEO workspace|SEO update|SEO report|SEO changes/,
   );
 });

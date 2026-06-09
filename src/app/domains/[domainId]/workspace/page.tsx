@@ -28,6 +28,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
+import { getProductReportTitle } from "@/lib/product-copy";
 import {
   formatWebsiteClient,
   formatWebsiteHealth,
@@ -231,7 +232,7 @@ export default async function DomainWorkspacePage({
                   <input
                     type="hidden"
                     name="title"
-                    value={`${domain.domain} SEO report`}
+                    value={getProductReportTitle(domain.domain)}
                   />
                   <button className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
                     <FileText className="size-4" aria-hidden="true" />

@@ -22,6 +22,7 @@ import {
   getReportListData,
   REPORT_WHITE_LABEL_RECORD_NAME,
 } from "@/lib/reporting";
+import { PRODUCT_REPORT_UPDATE_COPY } from "@/lib/product-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -63,8 +64,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 Client updates
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Turn the latest website progress into a short update someone can
-                read without opening the full SEO workspace.
+                {PRODUCT_REPORT_UPDATE_COPY.listIntro}
               </p>
             </div>
 
@@ -119,7 +119,9 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 <input
                   name="title"
                   required
-                  placeholder="Weekly SEO update"
+                  placeholder={
+                    PRODUCT_REPORT_UPDATE_COPY.manualTitlePlaceholder
+                  }
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -314,7 +316,9 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 <input
                   name="title"
                   required
-                  placeholder="Regular client SEO update"
+                  placeholder={
+                    PRODUCT_REPORT_UPDATE_COPY.scheduledTitlePlaceholder
+                  }
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -775,7 +779,7 @@ function ReportPlan({
         <div>
           <p className="text-sm font-medium text-orange-600">Report plan</p>
           <h3 className="mt-1 text-2xl font-semibold tracking-normal">
-            Send clearer SEO updates with fewer steps.
+            {PRODUCT_REPORT_UPDATE_COPY.planHeading}
           </h3>
         </div>
         <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">

@@ -7,6 +7,7 @@ import {
   formatChangeType,
   getReportDetailData,
 } from "@/lib/reporting";
+import { PRODUCT_REPORT_UPDATE_COPY } from "@/lib/product-copy";
 import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -203,7 +204,7 @@ export default async function ReportDetailPage({
                   <div className="border-b border-slate-200 p-5">
                     <h3 className="text-lg font-semibold">Change summary</h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Important SEO changes detected during this report period.
+                      {PRODUCT_REPORT_UPDATE_COPY.changeSummaryDetail}
                     </p>
                   </div>
                   <div className="grid divide-y divide-slate-100">

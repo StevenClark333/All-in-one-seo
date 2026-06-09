@@ -825,7 +825,7 @@ function buildDashboardNextSteps({
         action: "Open reports",
         badge: "Share",
         detail:
-          "Reports are where finished SEO work becomes simple updates for clients or teammates.",
+          "Reports are where finished website care becomes simple updates for clients or teammates.",
         href: "/reports",
         icon: FileText,
         title: "Prepare to share progress",

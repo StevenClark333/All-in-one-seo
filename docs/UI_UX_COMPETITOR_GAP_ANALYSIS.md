@@ -2030,3 +2030,19 @@ Implementation:
 - [x] Cover the exact website tool labels with unit tests.
 - [x] Browser-check website tool label consistency locally.
 - [ ] Browser-check website tool label consistency after deployment.
+
+### Batch DL: Report Update Copy Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make report builders powerful for trained SEO users, but beginner-facing handoffs should read as website updates rather than SEO reports or SEO workspaces.
+- Nontechnical users should see weekly website update, regular client website update, shared website update, and important website changes before SEO update, SEO report, or SEO changes.
+- Report creation and sharing should feel like a calm progress note that can be sent to a client or teammate without extra explanation.
+
+Implementation:
+
+- [x] Centralize report-update wording in the product copy helper.
+- [x] Rename report list, schedule, share, detail, and generated website report title copy away from SEO report/update phrasing.
+- [x] Cover the exact report update copy contract with unit tests.
+- [x] Browser-check report update copy calmness locally.
+- [ ] Browser-check report update copy calmness after deployment.
