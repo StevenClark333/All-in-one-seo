@@ -31,8 +31,7 @@ export default function BusinessOnboardingPage() {
             </div>
           </div>
           <p className="mt-4 text-sm leading-6 text-slate-500">
-            Set up one workspace for your business. After this, you can add the
-            first website and let the portal build a simple SEO plan.
+            {PRODUCT_BEGINNER_COPY.firstWebsiteCarePlan}
           </p>
 
           <OnboardingPlan

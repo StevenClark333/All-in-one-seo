@@ -215,8 +215,20 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Start with your website list to see which websites need attention today.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardStartPlanBody,
+    "Follow these in order. Each card takes you to one focused screen, so you do not need to understand technical website wording first.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardStartPlanTitle,
+    "Today's website plan",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.firstWebsiteAfterWorkspace,
     "The first website starts after the workspace is ready.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.firstWebsiteCarePlan,
+    "Set up one workspace for your business. After this, you can add the first website and let the portal build a simple website care plan.",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.websitesPageHeading, "Websites");
   assert.equal(
@@ -242,6 +254,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|compare projects|project list|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
   );
 });

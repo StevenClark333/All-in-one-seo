@@ -133,10 +133,15 @@ export const PRODUCT_BEGINNER_COPY = {
   dashboardOpenWebsites: "Open websites",
   dashboardProjectListDetail:
     "Start with your website list to see which websites need attention today.",
+  dashboardStartPlanBody:
+    "Follow these in order. Each card takes you to one focused screen, so you do not need to understand technical website wording first.",
+  dashboardStartPlanTitle: "Today's website plan",
   clientSetupDetail:
     "Connect a website before website checks can begin.",
   firstWebsiteAfterWorkspace:
     "The first website starts after the workspace is ready.",
+  firstWebsiteCarePlan:
+    "Set up one workspace for your business. After this, you can add the first website and let the portal build a simple website care plan.",
   memberTitle: "Website Care Teammate",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",

@@ -114,11 +114,10 @@ export default async function Home() {
                   Start here
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
-                  Today&apos;s SEO plan
+                  {PRODUCT_BEGINNER_COPY.dashboardStartPlanTitle}
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Follow these in order. Each card takes you to one focused
-                  screen, so you do not need to understand every SEO term first.
+                  {PRODUCT_BEGINNER_COPY.dashboardStartPlanBody}
                 </p>
                 <div className="mt-5 grid gap-2 text-sm text-slate-700">
                   <span className="rounded-md bg-white/80 px-3 py-2">

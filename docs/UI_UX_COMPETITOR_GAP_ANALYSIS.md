@@ -2194,3 +2194,21 @@ Implementation:
 - [x] Cover the exact workspace health wording with unit tests.
 - [x] Browser-check website workspace label calmness locally.
 - [ ] Browser-check website workspace label calmness after deployment.
+
+### Batch DV: First-Impression Plan Copy Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs use expert SEO language because their dashboards are built for trained marketers, but the beginner-first product should explain the first path without requiring SEO vocabulary.
+- The first dashboard card and business onboarding paragraph should say website plan and website care plan before SEO plan or SEO terms.
+- A nontechnical user should understand the first screen as a short care path, not a lesson in SEO terminology.
+
+Implementation:
+
+- [x] Centralize the first-impression plan wording in the product copy helper.
+- [x] Rename the dashboard start panel from Today's SEO plan to Today's website plan.
+- [x] Replace the dashboard SEO-term reassurance with plain technical-website-wording reassurance.
+- [x] Replace business onboarding simple SEO plan copy with simple website care plan copy.
+- [x] Cover the exact first-impression wording with unit tests.
+- [x] Browser-check first-impression plan copy locally.
+- [ ] Browser-check first-impression plan copy after deployment.
