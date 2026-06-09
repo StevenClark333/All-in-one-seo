@@ -14,6 +14,10 @@ import { HelpLabel } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { SavedViewsBar } from "@/components/saved-views-bar";
 import {
+  formatSearchPosition,
+  formatSearchPositionWithMovement,
+} from "@/lib/search-display-labels";
+import {
   getSearchPerformanceData,
   type SearchPerformanceGroup,
 } from "@/lib/search-performance";
@@ -192,7 +196,7 @@ export default async function SearchPerformancePage({
               delta={positionDelta}
               help="The average Google result spot. Positive movement means the website moved closer to the top."
               label="Average spot"
-              value={data.summary.avgPosition || "Pending"}
+              value={formatSearchPosition(data.summary.avgPosition)}
             />
           </section>
 
@@ -442,9 +446,10 @@ function SearchMovementRow({ item }: { item: SearchPerformanceGroup }) {
       <Meta label="Visits" value={item.clicks.toLocaleString()} />
       <Meta
         label="Spot"
-        value={`${item.avgPosition || "Pending"} (${formatMovement(
-          item.positionChange,
-        )})`}
+        value={formatSearchPositionWithMovement({
+          movement: item.positionChange,
+          position: item.avgPosition,
+        })}
       />
     </article>
   );
@@ -496,7 +501,7 @@ function RankingTable({
                     </td>
                     <td className="px-5 py-4">{formatCtr(item.ctr)}</td>
                     <td className="px-5 py-4">
-                      {item.avgPosition || "Pending"}
+                      {formatSearchPosition(item.avgPosition)}
                     </td>
                   </tr>
                 ))}
@@ -591,14 +596,6 @@ function formatEnum(value: string) {
 
 function formatInputDate(value: Date) {
   return value.toISOString().slice(0, 10);
-}
-
-function formatMovement(value: number | null) {
-  if (value === null) {
-    return "new";
-  }
-
-  return `${value >= 0 ? "+" : ""}${value.toFixed(1)}`;
 }
 
 function getSingle(value: string | string[] | undefined) {

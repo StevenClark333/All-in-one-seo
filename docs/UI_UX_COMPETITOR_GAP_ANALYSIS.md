@@ -1587,3 +1587,18 @@ Implementation:
 - [x] Replace missing keyword position labels with not-ranking-yet wording.
 - [x] Browser-check Search ideas page desktop and mobile locally; local database has no Search Console rows, so exact label rules are covered by unit tests.
 - [ ] Browser-check Search ideas intent and position labels after deployment.
+
+### Batch CI: Search Position Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs both keep search position, visibility, and movement metrics visible for deeper analysis, but a beginner-friendly search page should explain missing or new metrics before showing tool jargon.
+- Nontechnical users should see not ranking yet and new this period before pending, zero-position, or terse new movement labels.
+- The Google search growth page should feel like a plain-language progress view, not a raw Search Console table.
+
+Implementation:
+
+- [x] Translate Search Performance average spot, movement rows, and deeper tables away from pending/new wording.
+- [x] Cover the exact search position and movement labels with unit tests.
+- [x] Browser-check Search Performance position labels desktop and mobile locally.
+- [ ] Browser-check Search Performance position labels after deployment.
