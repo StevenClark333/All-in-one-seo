@@ -1797,3 +1797,18 @@ Implementation:
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check verification ownership label desktop and mobile locally.
 - [ ] Browser-check verification ownership label after deployment.
+
+### Batch CW: Recommendation Ownership Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project context attached to content and fix recommendations, but a beginner-friendly ideas page should not describe a missing client as unassigned work.
+- Nontechnical users should see no client yet before unassigned when browsing page ideas and repeated-page notes.
+- The AI ideas area should feel like a simple writing and fix-note helper, not an ownership-management table.
+
+Implementation:
+
+- [x] Translate page-idea and repeated-page recommendation ownership fallbacks away from unassigned wording.
+- [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
+- [x] Browser-check recommendation ownership labels desktop and mobile locally.
+- [ ] Browser-check recommendation ownership labels after deployment.

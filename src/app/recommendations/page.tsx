@@ -10,6 +10,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getAiRecommendationCenterData } from "@/lib/ai";
+import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -114,8 +115,8 @@ export default async function RecommendationsPage({
                             {page.url}
                           </Link>
                           <p className="mt-1 text-sm text-slate-500">
-                            {page.domain.client?.name ?? "Unassigned"} - Website:{" "}
-                            {page.domain.domain}
+                            {formatWebsiteClient(page.domain.client?.name)} -
+                            Website: {page.domain.domain}
                           </p>
                           <p className="mt-2 text-sm text-slate-500">
                             {page.recommendations.length}{" "}
@@ -254,7 +255,7 @@ export default async function RecommendationsPage({
                           </span>
                         </div>
                         <p className="mt-1 text-sm text-slate-500">
-                          {group.clientName ?? "Unassigned"} - Website:{" "}
+                          {formatWebsiteClient(group.clientName)} - Website:{" "}
                           {group.domain}
                         </p>
                         <p className="mt-2 text-sm text-slate-500">
