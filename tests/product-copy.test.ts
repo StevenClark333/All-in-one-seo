@@ -80,6 +80,10 @@ test("uses soft report update wording for client handoffs", () => {
     "Turn the latest website progress into a short update someone can read without opening the full website workspace.",
   );
   assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.freshScoreDetail,
+    "A fresh website progress score is still being prepared for this update.",
+  );
+  assert.equal(
     PRODUCT_REPORT_UPDATE_COPY.manualTitlePlaceholder,
     "Weekly website update",
   );
@@ -108,7 +112,7 @@ test("uses soft report update wording for client handoffs", () => {
       ...Object.values(PRODUCT_REPORT_UPDATE_COPY),
       getProductReportTitle("example.com"),
     ].join(" "),
-    /SEO workspace|SEO update|SEO report|SEO changes/,
+    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data/,
   );
 });
 
@@ -159,6 +163,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(PRODUCT_BEGINNER_COPY.memberTitle, "Website Care Teammate");
   assert.equal(
+    PRODUCT_BEGINNER_COPY.agencyProgressBody,
+    "Reports can explain what improved without opening extra technical detail.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.passwordResetReturn,
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   );
@@ -168,6 +176,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail/,
   );
 });

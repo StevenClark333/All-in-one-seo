@@ -74,6 +74,8 @@ export function getProductWorkspaceToolLabel(key: string) {
 export const PRODUCT_REPORT_UPDATE_COPY = {
   changeSummaryDetail:
     "Important website changes found during this report period.",
+  freshScoreDetail:
+    "A fresh website progress score is still being prepared for this update.",
   listIntro:
     "Turn the latest website progress into a short update someone can read without opening the full website workspace.",
   manualTitlePlaceholder: "Weekly website update",
@@ -106,6 +108,8 @@ export const PRODUCT_CONNECTION_COPY = {
 export const PRODUCT_BEGINNER_COPY = {
   adminDescription:
     "Trusted teammate who can manage access and everyday website care work.",
+  agencyProgressBody:
+    "Reports can explain what improved without opening extra technical detail.",
   memberTitle: "Website Care Teammate",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",

@@ -7,6 +7,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { createWorkspace } from "@/app/actions";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 
 export default function AgencyOnboardingPage() {
   return (
@@ -56,7 +57,7 @@ export default function AgencyOnboardingPage() {
               {
                 icon: <FileText className="size-4" aria-hidden="true" />,
                 title: "Share progress",
-                body: "Reports can explain what improved without raw audit detail.",
+                body: PRODUCT_BEGINNER_COPY.agencyProgressBody,
               },
             ]}
           />

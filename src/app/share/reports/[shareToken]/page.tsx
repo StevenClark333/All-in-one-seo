@@ -62,7 +62,7 @@ export default async function PublicReportPage({
               title={healthLabel}
               detail={
                 summary.score === null || summary.score === undefined
-                  ? "Fresh audit data is still being prepared for this report."
+                  ? PRODUCT_REPORT_UPDATE_COPY.freshScoreDetail
                   : `${summary.openIssues.length} ${pluralize(summary.openIssues.length, "item")} need attention and ${summary.fixedIssues.length} ${pluralize(summary.fixedIssues.length, "fix", "fixes")} are included in this update.`
               }
             />

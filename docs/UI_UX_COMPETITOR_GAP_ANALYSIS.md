@@ -2094,3 +2094,19 @@ Implementation:
 - [x] Cover the exact broad beginner wording with unit tests.
 - [x] Browser-check broad beginner phrase calmness locally.
 - [ ] Browser-check broad beginner phrase calmness after deployment.
+
+### Batch DP: Client Report Detail Calmness
+
+Competitive evidence:
+
+- Semrush My Reports and Site Audit reporting keep export, branding, and scheduled report depth available, but the client-facing value is a clear report someone can read.
+- Ahrefs report and dashboard workflows preserve advanced site and search data for deeper review, while the first shared-report read should summarize progress and next steps.
+- The softer product direction is to say website progress score, update, and extra technical detail before fresh audit data or raw audit detail on broad onboarding and shared-report surfaces.
+
+Implementation:
+
+- [x] Centralize client-report and onboarding progress wording in the product copy helper.
+- [x] Replace visible agency onboarding and shared-report audit phrases with softer progress wording.
+- [x] Cover the exact client-report wording with unit tests.
+- [x] Browser-check client-report detail calmness locally.
+- [ ] Browser-check client-report detail calmness after deployment.
