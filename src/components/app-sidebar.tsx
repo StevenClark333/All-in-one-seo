@@ -4,7 +4,12 @@ import { switchWorkspaceAction } from "@/app/actions";
 import { GlobalSearchShortcut } from "@/components/global-search-shortcut";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { navItems } from "@/lib/dashboard-data";
-import { PRODUCT_AREA_NAME, PRODUCT_BRAND_NAME } from "@/lib/product-copy";
+import {
+  getProductNavHelp,
+  getProductNavLabel,
+  PRODUCT_AREA_NAME,
+  PRODUCT_BRAND_NAME,
+} from "@/lib/product-copy";
 import { getWorkspaceSwitcherData } from "@/lib/workspace";
 
 const hrefs: Record<string, (domainId?: string) => string> = {
@@ -27,46 +32,6 @@ const hrefs: Record<string, (domainId?: string) => string> = {
   Integrations: (domainId) => withDomain("/integrations", domainId),
   Billing: () => "/billing",
   Settings: () => "/settings",
-};
-
-const navHelp: Record<string, string> = {
-  Overview:
-    "Start here for today's plan, website health, and the next best action.",
-  Clients: "Manage clients, their websites, reports, and SEO workload.",
-  Sites:
-    "Add websites, confirm ownership, run checks, and keep each project organized.",
-  Pages: "Review checked pages, titles, descriptions, and page-level problems.",
-  "Search Performance":
-    "See Google results, clicks, impressions, top pages, and search demand.",
-  "Competitive Analysis":
-    "Compare your website against competitors and spot content opportunities.",
-  "Keyword Research":
-    "Find useful keywords, content gaps, and easy opportunities to improve.",
-  "Rank Tracking": "Track keyword positions for your website and competitors.",
-  Issues:
-    "See the problems that need attention and the easiest way to solve them.",
-  "Fix Center":
-    "Approve, send, and track fixes without digging through extra detail.",
-  AI: "Create page writing ideas, fix notes, and simple next steps.",
-  Technical: "Find pages that need better links and easier paths.",
-  Reports: "Create simple reports for clients, teammates, or your own records.",
-  Alerts: "Get notified when something important changes.",
-  Integrations: "Connect Google, CMS, hosting, alerts, and automation tools.",
-  Billing: "Check your plan, usage room, invoices, and billing details.",
-  Settings:
-    "Manage workspace members, roles, invitations, and account settings.",
-};
-
-const displayLabels: Record<string, string> = {
-  AI: "Ideas and fixes",
-  Issues: "Problems",
-  "Fix Center": "Fixes",
-  "Keyword Research": "Keywords",
-  "Rank Tracking": "Rank",
-  "Search Performance": "Search",
-  Billing: "Plan",
-  Sites: "Projects",
-  Technical: "Links",
 };
 
 const seoGroups = [
@@ -123,9 +88,9 @@ export async function AppSidebar({
             return (
               <Link
                 key={label}
-                aria-label={getDisplayLabel(label)}
+                aria-label={getProductNavLabel(label)}
                 href={hrefs[label]?.(activeDomainId) ?? "/"}
-                title={getDisplayLabel(label)}
+                title={getProductNavLabel(label)}
                 className={`inline-flex size-10 items-center justify-center rounded-md transition ${
                   label === active
                     ? "bg-white text-orange-600 shadow-sm"
@@ -230,12 +195,10 @@ export async function AppSidebar({
                             aria-hidden="true"
                           />
                           <span className="min-w-0 flex-1">
-                            {getDisplayLabel(item.label)}
+                            {getProductNavLabel(item.label)}
                           </span>
                           <InfoTooltip
-                            label={
-                              navHelp[item.label] ?? "Open this portal section."
-                            }
+                            label={getProductNavHelp(item.label)}
                             passive
                             side="left"
                           />
@@ -295,8 +258,4 @@ export async function AppSidebar({
 
 function withDomain(path: string, domainId?: string) {
   return domainId ? `${path}?domainId=${domainId}` : path;
-}
-
-function getDisplayLabel(label: string) {
-  return displayLabels[label] ?? label;
 }

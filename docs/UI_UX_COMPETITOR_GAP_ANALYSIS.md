@@ -1998,3 +1998,19 @@ Implementation:
 - [x] Soften email confirmation copy away from SEO issue wording.
 - [x] Cover the exact plan descriptions and old monitoring phrases with unit tests.
 - [ ] Browser-check plan copy calmness after deployment.
+
+### Batch DJ: Navigation Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose expert module names like site audit, keyword research, rank tracking, and competitor analysis, which work for trained SEO users but slow down beginners.
+- Nontechnical users should be able to scan the sidebar and see websites, problems, fixes, search growth, competitor insights, search ideas, rank movement, links, and ideas before expert tool names.
+- Navigation help should describe the benefit of each area in plain care language instead of SEO workload, CMS, hosting, or technical module language.
+
+Implementation:
+
+- [x] Centralize softer sidebar labels and help text in the product copy helper.
+- [x] Rename visible sidebar labels away from expert module wording while preserving existing routes.
+- [x] Cover the exact beginner-facing navigation labels with unit tests.
+- [x] Browser-check navigation label calmness locally.
+- [ ] Browser-check navigation label calmness after deployment.
