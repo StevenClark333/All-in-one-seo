@@ -2176,3 +2176,21 @@ Implementation:
 - [x] Cover the exact dashboard website wording with unit tests.
 - [x] Browser-check dashboard website wording locally.
 - [ ] Browser-check dashboard website wording after deployment.
+
+### Batch DU: Website Workspace Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project workspaces and site-health metrics visible, but a beginner-first workspace should not ask the user to translate between project, site, and integration vocabulary.
+- The active website view should reuse the same simple navigation language as the sidebar: websites, search growth, links, connections, and website health.
+- The softer product direction is to make the individual website workspace feel like one guided care page before deeper expert tools.
+
+Implementation:
+
+- [x] Replace the visible website-workspace breadcrumb from Projects to Websites.
+- [x] Replace the visible Websites list heading and table labels away from Projects, Site health, and Page links.
+- [x] Reuse softer workspace tool labels for Search Growth, Links, and Connections.
+- [x] Rename site-health wording in the workspace summary to website-health wording.
+- [x] Cover the exact workspace health wording with unit tests.
+- [x] Browser-check website workspace label calmness locally.
+- [ ] Browser-check website workspace label calmness after deployment.

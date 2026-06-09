@@ -18,6 +18,10 @@ import { EmptyState } from "@/components/empty-state";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainManagementData } from "@/lib/management-queries";
 import {
+  getProductWorkspaceToolLabel,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
+import {
   formatWebsiteClient,
   formatWebsiteHealth,
   formatWebsitePercent,
@@ -96,7 +100,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                 {workspace?.name ?? "Workspace"} / Websites
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
-                Projects
+                {PRODUCT_BEGINNER_COPY.websitesPageHeading}
               </h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
                 Keep each website moving with a simple health check, a clear
@@ -249,8 +253,10 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                           </HelpLabel>
                         </TableHead>
                         <TableHead>
-                          <HelpLabel help="Current site health score from the latest scoring run.">
-                            Site health
+                          <HelpLabel
+                            help={PRODUCT_BEGINNER_COPY.workspaceHealthDetail}
+                          >
+                            {PRODUCT_BEGINNER_COPY.workspaceHealthLabel}
                           </HelpLabel>
                         </TableHead>
                         <TableHead>Urgent</TableHead>
@@ -262,8 +268,8 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                         </TableHead>
                         <TableHead>HTTPS</TableHead>
                         <TableHead>
-                          <HelpLabel help="Estimated page-link health based on internal link and page-list problems.">
-                            Page links
+                          <HelpLabel help="Estimated link health based on internal link and page-list problems.">
+                            {getProductWorkspaceToolLabel("technical")}
                           </HelpLabel>
                         </TableHead>
                         <TableHead>

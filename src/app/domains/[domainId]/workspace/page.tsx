@@ -30,7 +30,9 @@ import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
 import {
   formatProductReportTitle,
+  getProductWorkspaceToolLabel,
   getProductReportTitle,
+  PRODUCT_BEGINNER_COPY,
 } from "@/lib/product-copy";
 import {
   formatWebsiteClient,
@@ -180,7 +182,7 @@ export default async function DomainWorkspacePage({
             </Link>
             <ChevronRight className="size-4" aria-hidden="true" />
             <Link href="/domains" className="font-medium hover:text-slate-950">
-              Projects
+              Websites
             </Link>
             <ChevronRight className="size-4" aria-hidden="true" />
             <Link href="/domains" className="font-medium hover:text-slate-950">
@@ -371,10 +373,10 @@ export default async function DomainWorkspacePage({
             <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <AnalyticsMetricCard
                 delta={auditOverview.healthDelta}
-                help="Latest site health score"
+                help={PRODUCT_BEGINNER_COPY.workspaceHealthDetail}
                 href={`/issues?domainId=${domain.id}`}
                 icon={ShieldCheck}
-                label="Site health"
+                label={PRODUCT_BEGINNER_COPY.workspaceHealthLabel}
                 points={scorePoints}
                 value={domain.healthScore ?? latestScore?.score ?? 0}
               />
@@ -456,7 +458,7 @@ export default async function DomainWorkspacePage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
-              help="Latest site health score for this website."
+              help={PRODUCT_BEGINNER_COPY.workspaceHealthDetail}
               label="Health score"
               value={formatWebsiteHealth(
                 domain.healthScore ?? latestScore?.score,
@@ -488,12 +490,12 @@ export default async function DomainWorkspacePage({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Gauge-style score from the latest site health value and website check history.">
-                      Site Health
+                    <HelpLabel help={PRODUCT_BEGINNER_COPY.workspaceHealthHelp}>
+                      Website Health
                     </HelpLabel>
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Latest website health score.
+                    {PRODUCT_BEGINNER_COPY.workspaceHealthDetail}
                   </p>
                 </div>
                 <Link
@@ -1128,10 +1130,10 @@ function buildThematicReports(domain: DomainWorkspace): ThematicReport[] {
     },
     {
       detail: internalIssues
-        ? `${internalIssues} page-link problems`
-        : "No page-link problems in current sample",
+        ? `${internalIssues} link problems`
+        : "No link problems in current sample",
       href: `/technical-audit?domainId=${domain.id}`,
-      label: "Page links",
+      label: getProductWorkspaceToolLabel("technical"),
       status: issueStatus(internalIssues),
       value: internalIssues ? String(internalIssues) : "Clear",
     },
@@ -1205,13 +1207,13 @@ function buildProjectTabs(domainId: string) {
       active: false,
       href: `/search-performance?domainId=${domainId}`,
       icon: BarChart3,
-      label: "Search",
+      label: getProductWorkspaceToolLabel("search"),
     },
     {
       active: false,
       href: `/technical-audit?domainId=${domainId}`,
       icon: Link2,
-      label: "Page Links",
+      label: getProductWorkspaceToolLabel("technical"),
     },
     {
       active: false,
@@ -1235,7 +1237,7 @@ function buildProjectTabs(domainId: string) {
       active: false,
       href: `/integrations?domainId=${domainId}`,
       icon: PlugZap,
-      label: "Integrations",
+      label: getProductWorkspaceToolLabel("integrations"),
     },
     {
       active: false,
@@ -1302,7 +1304,7 @@ function buildProjectFocusItems({
   return [
     firstAction,
     {
-      detail: `Site health is ${healthScore}/100. Open the latest check for what changed.`,
+      detail: `${PRODUCT_BEGINNER_COPY.workspaceHealthFocusPrefix} ${healthScore}/100. Open the latest check for what changed.`,
       href: latestCrawlHref,
       label: "Check health",
       tone: healthScore >= 80 ? "good" : healthScore >= 60 ? "warning" : "critical",

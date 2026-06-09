@@ -218,6 +218,20 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     PRODUCT_BEGINNER_COPY.firstWebsiteAfterWorkspace,
     "The first website starts after the workspace is ready.",
   );
+  assert.equal(PRODUCT_BEGINNER_COPY.websitesPageHeading, "Websites");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceHealthDetail,
+    "Latest website health score.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceHealthFocusPrefix,
+    "Website health is",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceHealthHelp,
+    "Gauge-style score from the latest website health value and website check history.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.workspaceHealthLabel, "Website health");
   assert.equal(
     PRODUCT_BEGINNER_COPY.passwordResetReturn,
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
@@ -228,6 +242,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|compare projects|project list|Go to Projects|Loading projects/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|compare projects|project list|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
   );
 });

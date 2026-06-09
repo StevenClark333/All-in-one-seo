@@ -142,4 +142,10 @@ export const PRODUCT_BEGINNER_COPY = {
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   recommendationsIntro:
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
+  websitesPageHeading: "Websites",
+  workspaceHealthDetail: "Latest website health score.",
+  workspaceHealthFocusPrefix: "Website health is",
+  workspaceHealthHelp:
+    "Gauge-style score from the latest website health value and website check history.",
+  workspaceHealthLabel: "Website health",
 };
