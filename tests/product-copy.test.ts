@@ -289,8 +289,44 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     PRODUCT_BEGINNER_COPY.recommendationsIntro,
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
   );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasContentGapHelp,
+    "Search terms with impressions but weak clicks or rankings.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasDetailEmpty,
+    "No Search Console search terms match this view.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasDetailIntro,
+    "Imported search terms kept for optional deeper review.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasHiddenTermsNote,
+    "more search terms are available through filters or exported reporting.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasMetricOpportunityHelp,
+    "High-demand search ideas found from current and declining search terms.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasPlanIntro,
+    "Pick one useful search idea, create a simple brief, then compare pages only when it helps. Deeper search-term detail is optional.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasSearchTermGroupsHelp,
+    "Unique search-term groups with imported Search Console metrics.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasSearchTermsLabel,
+    "Search terms",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasWorkspaceNote,
+    "Search ideas use imported Google Search Console search-term data.",
+  );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions/,
   );
 });

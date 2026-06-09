@@ -166,6 +166,23 @@ export const PRODUCT_BEGINNER_COPY = {
     "Rank movement keeps owned and competitor positions focused on this website.",
   recommendationsIntro:
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
+  searchIdeasContentGapHelp:
+    "Search terms with impressions but weak clicks or rankings.",
+  searchIdeasDetailEmpty:
+    "No Search Console search terms match this view.",
+  searchIdeasDetailIntro:
+    "Imported search terms kept for optional deeper review.",
+  searchIdeasHiddenTermsNote:
+    "more search terms are available through filters or exported reporting.",
+  searchIdeasMetricOpportunityHelp:
+    "High-demand search ideas found from current and declining search terms.",
+  searchIdeasPlanIntro:
+    "Pick one useful search idea, create a simple brief, then compare pages only when it helps. Deeper search-term detail is optional.",
+  searchIdeasSearchTermGroupsHelp:
+    "Unique search-term groups with imported Search Console metrics.",
+  searchIdeasSearchTermsLabel: "Search terms",
+  searchIdeasWorkspaceNote:
+    "Search ideas use imported Google Search Console search-term data.",
   websitesPageHeading: "Websites",
   workspaceHealthDetail: "Latest website health score.",
   workspaceHealthFocusPrefix: "Website health is",

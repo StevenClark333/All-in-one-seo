@@ -2313,3 +2313,20 @@ Implementation:
 - [x] Cover the exact shortcut wording with unit tests.
 - [x] Browser-check dashboard search-term shortcut calmness locally.
 - [ ] Browser-check dashboard search-term shortcut calmness after deployment.
+
+### Batch EC: Search Ideas Search-Term Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose query and keyword datasets quickly, but that language can feel like raw data work for a nontechnical user.
+- A beginner-first Search Ideas page should lead with search terms, simple briefs, and optional deeper detail before using analyst-style query wording.
+- The softer product direction is to keep Search Console evidence available while making the first read feel like choosing one helpful search idea.
+
+Implementation:
+
+- [x] Centralize Search Ideas search-term wording in the product copy helper.
+- [x] Replace deeper query data with optional deeper search-term detail.
+- [x] Replace Search Console query/queries wording with search-term wording in metrics, workspace notes, and detail states.
+- [x] Cover the exact Search Ideas wording with unit tests.
+- [x] Browser-check Search Ideas search-term calmness locally.
+- [ ] Browser-check Search Ideas search-term calmness after deployment.

@@ -24,6 +24,7 @@ import {
   type KeywordContentGap,
   type KeywordOpportunity,
 } from "@/lib/product-seo-groups";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { formatRankVolume } from "@/lib/rank-display-labels";
 import type { SearchPerformanceGroup } from "@/lib/search-performance";
 
@@ -109,7 +110,7 @@ export default async function KeywordResearchPage({
           <ProjectWorkspaceBar
             active="keywords"
             domainId={selectedDomainId}
-            note="Search ideas use imported Google Search Console query data."
+            note={PRODUCT_BEGINNER_COPY.searchIdeasWorkspaceNote}
             returnPath="/keyword-research"
           />
 
@@ -135,9 +136,7 @@ export default async function KeywordResearchPage({
                   Search growth plan
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-700">
-                  Pick one useful search idea, create a simple brief, then
-                  compare pages only when it helps. Deeper query data is
-                  optional.
+                  {PRODUCT_BEGINNER_COPY.searchIdeasPlanIntro}
                 </p>
               </div>
 
@@ -185,17 +184,17 @@ export default async function KeywordResearchPage({
 
           <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <Metric
-              help="Unique query groups with imported Search Console metrics."
-              label="Queries"
+              help={PRODUCT_BEGINNER_COPY.searchIdeasSearchTermGroupsHelp}
+              label={PRODUCT_BEGINNER_COPY.searchIdeasSearchTermsLabel}
               value={data.topQueries.length}
             />
             <Metric
-              help="Demand-weighted keyword opportunities detected from current and declining queries."
+              help={PRODUCT_BEGINNER_COPY.searchIdeasMetricOpportunityHelp}
               label="Opportunities"
               value={data.opportunities.length}
             />
             <Metric
-              help="Queries with impressions but weak clicks or rankings."
+              help={PRODUCT_BEGINNER_COPY.searchIdeasContentGapHelp}
               label="Content gaps"
               value={data.contentGaps.length}
             />
@@ -234,7 +233,8 @@ export default async function KeywordResearchPage({
                     ))
                 ) : (
                   <p className="rounded-md bg-slate-50 p-5 text-sm text-slate-500">
-                    Import Search Console query data to populate intent demand.
+                    Import Search Console search-term data to populate intent
+                    demand.
                   </p>
                 )}
               </div>
@@ -654,7 +654,7 @@ function QueryTable({
       <div className="border-b border-slate-200 p-5">
         <h3 className="text-lg font-semibold">Search-term detail</h3>
         <p className="mt-1 text-sm text-slate-500">
-          Search Console rows kept for deeper review.
+          {PRODUCT_BEGINNER_COPY.searchIdeasDetailIntro}
         </p>
       </div>
       <div className="overflow-x-auto">
@@ -693,7 +693,7 @@ function QueryTable({
                   className="px-5 py-8 text-center text-slate-500"
                   colSpan={5}
                 >
-                  No Search Console queries match this view.
+                  {PRODUCT_BEGINNER_COPY.searchIdeasDetailEmpty}
                 </td>
               </tr>
             )}
@@ -702,7 +702,7 @@ function QueryTable({
       </div>
       {hiddenCount > 0 ? (
         <PreviewLimitNote
-          body={`${hiddenCount} more queries are available through filters or exported reporting.`}
+          body={`${hiddenCount} ${PRODUCT_BEGINNER_COPY.searchIdeasHiddenTermsNote}`}
         />
       ) : null}
     </section>
