@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
+import {
+  formatExportClient,
+  formatExportOwner,
+} from "@/lib/export-display-labels";
 import { getIssueListData } from "@/lib/issue-queries";
 
 export async function GET(request: NextRequest) {
@@ -15,9 +19,10 @@ export async function GET(request: NextRequest) {
   });
   const csv = toCsv(
     issues.map((issue) => ({
-      assignedTo:
-        issue.assignedTo?.name ?? issue.assignedTo?.email ?? "Unassigned",
-      client: issue.client?.name ?? "Unassigned",
+      assignedTo: formatExportOwner(
+        issue.assignedTo?.name ?? issue.assignedTo?.email,
+      ),
+      client: formatExportClient(issue.client?.name),
       description: issue.description,
       domain: issue.domain.domain,
       issueType: issue.issueType,

@@ -1857,3 +1857,18 @@ Implementation:
 - [x] Cover the exact invite-waiting labels with unit tests.
 - [x] Browser-check settings invite labels desktop and mobile locally.
 - [ ] Browser-check settings invite labels after deployment.
+
+### Batch DA: Export Ownership Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep exports and handoff files useful for sharing, but a beginner-friendly product should keep the same calm setup language outside the browser.
+- Nontechnical users should see no client yet and no owner yet before unassigned in downloaded CSVs or fix notes.
+- Exports should feel like polished client-ready helpers, not database extracts.
+
+Implementation:
+
+- [x] Translate pages CSV, problems CSV, and fix-note ownership fallbacks away from unassigned wording.
+- [x] Cover the exact exported ownership labels with unit tests.
+- [x] Verify export ownership labels through local API/download checks.
+- [ ] Browser-check export ownership labels after deployment.

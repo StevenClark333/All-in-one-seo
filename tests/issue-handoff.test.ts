@@ -46,6 +46,7 @@ test("builds site helper fix note markdown for indexability problems", () => {
   });
 
   assert.equal(brief.owner, "Site helper or website admin");
+  assert.match(brief.markdown, /Client: No client yet/);
   assert.match(brief.markdown, /Site helper or website admin/);
   assert.match(brief.markdown, /Whole-website problem on example\.com/);
 });

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { toCsv } from "@/lib/csv";
+import { formatExportClient } from "@/lib/export-display-labels";
 import { getPageInventoryData } from "@/lib/management-queries";
 
 export async function GET(request: NextRequest) {
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest) {
       const snapshot = page.snapshots.at(0);
 
       return {
-        client: page.domain.client?.name ?? "Unassigned",
+        client: formatExportClient(page.domain.client?.name),
         domain: page.domain.domain,
         httpStatus: snapshot?.statusCode ?? "",
         incomingLinks: page.incomingLinks.length,
