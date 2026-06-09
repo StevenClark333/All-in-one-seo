@@ -2212,3 +2212,21 @@ Implementation:
 - [x] Cover the exact first-impression wording with unit tests.
 - [x] Browser-check first-impression plan copy locally.
 - [ ] Browser-check first-impression plan copy after deployment.
+
+### Batch DW: Rank Movement Website Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose position tracking around projects and keywords, but a beginner-friendly rank screen should keep the selected website obvious before showing keyword inventory.
+- The softer product direction is to say website in filters, table headers, and focused-work notes before project wording.
+- A nontechnical user should understand rank movement as a website-specific watchlist, not a project-management surface.
+
+Implementation:
+
+- [x] Centralize Rank Movement website wording in the product copy helper.
+- [x] Replace rank view copy from project-and-keyword wording to website-and-keyword wording.
+- [x] Replace the manual tracking form project label and Choose project option with website wording.
+- [x] Replace the tracked keyword table Project header with Website.
+- [x] Cover the exact rank website wording with unit tests.
+- [x] Browser-check rank movement website labels locally.
+- [ ] Browser-check rank movement website labels after deployment.

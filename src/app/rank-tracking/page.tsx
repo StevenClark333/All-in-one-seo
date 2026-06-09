@@ -12,6 +12,7 @@ import { HelpLabel } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { SavedViewsBar } from "@/components/saved-views-bar";
 import { SeoFilterBar } from "@/components/seo-filter-bar";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { getRankTrackingData } from "@/lib/product-seo-groups";
 import {
   formatRankClient,
@@ -97,7 +98,7 @@ export default async function RankTrackingPage({
           <ProjectWorkspaceBar
             active="rank"
             domainId={selectedDomainId}
-            note="Rank movement keeps owned and competitor positions scoped to this project."
+            note={PRODUCT_BEGINNER_COPY.rankWebsiteScopeNote}
             returnPath="/rank-tracking"
           />
 
@@ -106,7 +107,7 @@ export default async function RankTrackingPage({
               <div>
                 <h3 className="text-lg font-semibold">Adjust rank view</h3>
                 <p className="mt-1 text-sm text-slate-500">
-                  Save this view or narrow the page by project and keyword.
+                  {PRODUCT_BEGINNER_COPY.rankAdjustViewDetail}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
@@ -238,14 +239,16 @@ export default async function RankTrackingPage({
                   action={addTrackedKeywordAction}
                   className="grid gap-4 p-5"
                 >
-                  <FilterLabel label="Project">
+                  <FilterLabel label={PRODUCT_BEGINNER_COPY.rankWebsiteFilterLabel}>
                     <select
                       name="domainId"
                       defaultValue={selectedDomainId ?? ""}
                       required
                       className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     >
-                      <option value="">Choose project</option>
+                      <option value="">
+                        {PRODUCT_BEGINNER_COPY.rankChooseWebsiteOption}
+                      </option>
                       {data.domains.map((domain) => (
                         <option key={domain.id} value={domain.id}>
                           {domain.domain}
@@ -442,7 +445,9 @@ function KeywordTable({
           <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th className="px-5 py-3 font-semibold">Keyword</th>
-              <th className="px-5 py-3 font-semibold">Project</th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.rankKeywordWebsiteHeader}
+              </th>
               <th className="px-5 py-3 font-semibold">Owned rank</th>
               <th className="px-5 py-3 font-semibold">Volume</th>
               <th className="px-5 py-3 font-semibold">Difficulty</th>

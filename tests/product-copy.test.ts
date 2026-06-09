@@ -249,11 +249,22 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.rankAdjustViewDetail,
+    "Save this view or narrow the page by website and keyword.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankChooseWebsiteOption, "Choose website");
+  assert.equal(PRODUCT_BEGINNER_COPY.rankKeywordWebsiteHeader, "Website");
+  assert.equal(PRODUCT_BEGINNER_COPY.rankWebsiteFilterLabel, "Website");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankWebsiteScopeNote,
+    "Rank movement keeps owned and competitor positions focused on this website.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.recommendationsIntro,
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
+    /SEO dashboard|everyday SEO work|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
   );
 });

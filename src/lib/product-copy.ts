@@ -145,6 +145,13 @@ export const PRODUCT_BEGINNER_COPY = {
   memberTitle: "Website Care Teammate",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
+  rankAdjustViewDetail:
+    "Save this view or narrow the page by website and keyword.",
+  rankChooseWebsiteOption: "Choose website",
+  rankKeywordWebsiteHeader: "Website",
+  rankWebsiteFilterLabel: "Website",
+  rankWebsiteScopeNote:
+    "Rank movement keeps owned and competitor positions focused on this website.",
   recommendationsIntro:
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
   websitesPageHeading: "Websites",
