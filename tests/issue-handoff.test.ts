@@ -25,7 +25,9 @@ test("builds plain-language website editor fix note markdown for a problem", () 
   assert.equal(brief.owner, "Website editor or site manager");
   assert.match(brief.exportFilename, /urbanthread-store/);
   assert.match(brief.markdown, /Importance: Planned/);
+  assert.match(brief.markdown, /Problem area: Missing Meta Description/);
   assert.doesNotMatch(brief.markdown, /Severity: WARNING/);
+  assert.doesNotMatch(brief.markdown, /missing_meta_description/);
   assert.match(brief.markdown, /## What is wrong/);
   assert.match(brief.markdown, /Needs website editor/);
   assert.match(brief.markdown, /Run a fresh website check/);

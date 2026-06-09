@@ -4,6 +4,9 @@ import {
   formatExportClient,
   formatExportImportance,
   formatExportOwner,
+  formatExportPriority,
+  formatExportProblemArea,
+  formatExportProgress,
 } from "@/lib/export-display-labels";
 import { getIssueListData } from "@/lib/issue-queries";
 
@@ -27,10 +30,10 @@ export async function GET(request: NextRequest) {
       description: issue.description,
       domain: issue.domain.domain,
       importance: formatExportImportance(issue.severity),
-      issueType: issue.issueType,
       page: issue.page?.url ?? "",
-      priorityScore: issue.priorityScore,
-      status: issue.status,
+      priority: formatExportPriority(issue.priorityScore),
+      problemArea: formatExportProblemArea(issue.issueType),
+      progress: formatExportProgress(issue.status),
       title: issue.title,
     })),
   );

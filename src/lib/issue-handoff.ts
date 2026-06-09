@@ -2,6 +2,7 @@ import type { DomainPlatform, IssueSeverity } from "@prisma/client";
 import {
   formatExportClient,
   formatExportImportance,
+  formatExportProblemArea,
 } from "@/lib/export-display-labels";
 import type { IssueSolution } from "@/lib/issue-solutions";
 
@@ -54,7 +55,7 @@ function renderIssueHandoffMarkdown(
     `Client: ${formatExportClient(input.clientName)}`,
     `Platform: ${input.platformLabel}`,
     `Importance: ${formatExportImportance(input.severity)}`,
-    `Problem area: ${formatIssueType(input.issueType)}`,
+    `Problem area: ${formatExportProblemArea(input.issueType)}`,
     `Owner: ${input.owner}`,
     `Target: ${input.target}`,
     "",
@@ -84,13 +85,6 @@ function renderIssueHandoffMarkdown(
     "3. Run a fresh website check in All In One SEO.",
     "4. Mark the problem fixed only after the new check no longer reports it.",
   ].join("\n");
-}
-
-function formatIssueType(value: string) {
-  return value
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
 }
 
 function formatLabel(value: string) {

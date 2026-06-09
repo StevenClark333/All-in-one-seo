@@ -1887,3 +1887,19 @@ Implementation:
 - [x] Cover the exact exported importance labels with unit tests.
 - [x] Verify export importance labels through local API/download checks.
 - [ ] Browser-check export importance labels after deployment.
+
+### Batch DC: Export Work List Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs preserve issue type, priority, and status in exports, but a beginner-friendly product should translate those fields into the same plain work-list language used in the app.
+- Nontechnical users should see problem area, start-here/do-next priority, and ready-to-review progress before issueType, priorityScore, OPEN, IN_PROGRESS, or REAPPEARED values.
+- Downloaded problem files should feel like a gentle task list a client or website helper can read without decoding database fields.
+
+Implementation:
+
+- [x] Translate problem CSV issue type, priority score, and status columns into plain work-list labels.
+- [x] Reuse the problem-area label in fix-note handoffs.
+- [x] Cover the exact exported work-list labels with unit tests.
+- [x] Verify export work-list labels through local API/download checks.
+- [ ] Browser-check export work-list labels after deployment.
