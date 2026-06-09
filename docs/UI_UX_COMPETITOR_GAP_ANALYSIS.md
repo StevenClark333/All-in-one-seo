@@ -2062,3 +2062,19 @@ Implementation:
 - [x] Cover the exact automation connection copy contract with unit tests.
 - [x] Browser-check automation connection copy calmness locally.
 - [ ] Browser-check automation connection copy calmness after deployment.
+
+### Batch DN: Connection Page SEO Phrase Calmness
+
+Competitive evidence:
+
+- Semrush's Zapier App Center workflow keeps Site Audit automation powerful for trained teams, including tasks, re-checks, and handoffs into work tools.
+- Ahrefs' Looker Studio connector and report templates keep advanced dashboard/report integrations available for marketers and analysts.
+- A beginner-friendly Connections page should preserve those integration paths while saying website step, website pages, website messages, and Website Care plugin before SEO step, SEO pages, SEO messages, store SEO, or All In One SEO plugin.
+
+Implementation:
+
+- [x] Extend the connection copy helper to cover page plan, analytics, WordPress, Shopify, and Slack wording.
+- [x] Rename visible Connections page phrases away from SEO jargon while preserving existing providers and routes.
+- [x] Cover the exact connection-page wording with unit tests.
+- [x] Browser-check connection page SEO phrase calmness locally.
+- [ ] Browser-check connection page SEO phrase calmness after deployment.

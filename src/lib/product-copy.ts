@@ -87,7 +87,18 @@ export function getProductReportTitle(domain: string) {
 }
 
 export const PRODUCT_CONNECTION_COPY = {
+  analyticsHelp:
+    "Bring in GA4 traffic data so reports can show which website pages matter most.",
   automationHelp: "Send important website care updates to Zapier or Make.",
   automationIntro:
     "Send website care updates to simple automations when a team wants another tool involved.",
+  planHeading: "Connect only what helps the next website step.",
+  shopifyIntro:
+    "Connect a store, choose the matching website, and keep store checks tied to the right website.",
+  slackChannelPlaceholder: "#website-care",
+  slackHelp: "Send important website messages to a Slack channel.",
+  wordpressIntro:
+    "Install the Website Care plugin on WordPress sites without touching theme files.",
+  wordpressSettingsHint:
+    "Paste this website setup code in the Website Care settings screen after the plugin is active.",
 };

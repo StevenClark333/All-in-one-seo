@@ -438,7 +438,7 @@ export default async function IntegrationsPage({
             <div className="flex flex-col gap-4 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="Bring in GA4 traffic data so reports can show which SEO pages matter most.">
+                  <HelpLabel help={PRODUCT_CONNECTION_COPY.analyticsHelp}>
                     Google Analytics
                   </HelpLabel>
                 </h3>
@@ -578,8 +578,7 @@ export default async function IntegrationsPage({
                 </HelpLabel>
               </h3>
               <p className="mt-1 text-sm text-slate-500">
-                Install the All In One SEO plugin on WordPress sites without
-                touching theme files.
+                {PRODUCT_CONNECTION_COPY.wordpressIntro}
               </p>
             </div>
 
@@ -662,8 +661,7 @@ export default async function IntegrationsPage({
                           <div>
                             <p className="font-semibold">{domain.domain}</p>
                             <p className="mt-1 text-sm text-slate-500">
-                              Paste this website setup code in Settings &gt; All
-                              In One SEO after the plugin is active.
+                              {PRODUCT_CONNECTION_COPY.wordpressSettingsHint}
                             </p>
                           </div>
                           <Meta label="Website setup code" value={domain.id} />
@@ -894,8 +892,7 @@ export default async function IntegrationsPage({
                 </HelpLabel>
               </h3>
               <p className="mt-1 text-sm text-slate-500">
-                Connect a store, choose the matching website, and keep store SEO
-                checks tied to the right website.
+                {PRODUCT_CONNECTION_COPY.shopifyIntro}
               </p>
             </div>
 
@@ -1113,7 +1110,7 @@ export default async function IntegrationsPage({
           <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
             <div className="border-b border-slate-200 p-5">
               <h3 className="text-lg font-semibold">
-                <HelpLabel help="Send important SEO messages to a Slack channel.">
+                <HelpLabel help={PRODUCT_CONNECTION_COPY.slackHelp}>
                   Slack messages
                 </HelpLabel>
               </h3>
@@ -1134,7 +1131,7 @@ export default async function IntegrationsPage({
                   </span>
                   <input
                     name="channelName"
-                    placeholder="#seo-alerts"
+                    placeholder={PRODUCT_CONNECTION_COPY.slackChannelPlaceholder}
                     defaultValue={slackConfig.channelName}
                     className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   />
@@ -1763,7 +1760,7 @@ function IntegrationPlan({
             Connection setup plan
           </p>
           <h3 className="mt-1 text-2xl font-semibold tracking-normal">
-            Connect only what helps the next SEO step.
+            {PRODUCT_CONNECTION_COPY.planHeading}
           </h3>
         </div>
         <div className="flex flex-wrap gap-2">

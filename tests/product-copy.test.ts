@@ -113,6 +113,10 @@ test("uses soft report update wording for client handoffs", () => {
 
 test("uses soft connection wording for automation handoffs", () => {
   assert.equal(
+    PRODUCT_CONNECTION_COPY.analyticsHelp,
+    "Bring in GA4 traffic data so reports can show which website pages matter most.",
+  );
+  assert.equal(
     PRODUCT_CONNECTION_COPY.automationHelp,
     "Send important website care updates to Zapier or Make.",
   );
@@ -120,8 +124,29 @@ test("uses soft connection wording for automation handoffs", () => {
     PRODUCT_CONNECTION_COPY.automationIntro,
     "Send website care updates to simple automations when a team wants another tool involved.",
   );
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.planHeading,
+    "Connect only what helps the next website step.",
+  );
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.shopifyIntro,
+    "Connect a store, choose the matching website, and keep store checks tied to the right website.",
+  );
+  assert.equal(PRODUCT_CONNECTION_COPY.slackChannelPlaceholder, "#website-care");
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.slackHelp,
+    "Send important website messages to a Slack channel.",
+  );
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.wordpressIntro,
+    "Install the Website Care plugin on WordPress sites without touching theme files.",
+  );
+  assert.equal(
+    PRODUCT_CONNECTION_COPY.wordpressSettingsHint,
+    "Paste this website setup code in the Website Care settings screen after the plugin is active.",
+  );
   assert.doesNotMatch(
     Object.values(PRODUCT_CONNECTION_COPY).join(" "),
-    /SEO update|SEO updates/,
+    /SEO step|SEO pages|SEO messages|store SEO|All In One SEO/,
   );
 });
