@@ -2264,3 +2264,20 @@ Implementation:
 - [x] Cover the exact dashboard metric help wording with unit tests.
 - [x] Browser-check dashboard metric help calmness locally.
 - [ ] Browser-check dashboard metric help calmness after deployment.
+
+### Batch DZ: Links Page Plan Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose internal-link and crawl-depth detail, but their terminology can feel like an audit category instead of a simple next step.
+- A beginner-first Links page should say links, link help, and care plan before page-link problems or page-link plan language.
+- The softer product direction is to keep detailed link counts available while making the first action feel like helping important pages become easier to find.
+
+Implementation:
+
+- [x] Centralize Links page plan wording in the product copy helper.
+- [x] Replace the Page links plan label with Links care plan.
+- [x] Replace page-link problems preview copy with link-help items.
+- [x] Cover the exact Links page wording with unit tests.
+- [x] Browser-check Links page plan calmness locally.
+- [ ] Browser-check Links page plan calmness after deployment.

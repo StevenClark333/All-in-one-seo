@@ -9,6 +9,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getInternalLinkGraphData } from "@/lib/link-graph-queries";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -233,7 +234,7 @@ export default async function TechnicalAuditPage({
             </div>
             {hiddenIssueCount > 0 ? (
               <PreviewLimitNote
-                body={`${hiddenIssueCount} more page-link problems are kept out of this first view so the page stays easier to scan.`}
+                body={`${hiddenIssueCount} ${PRODUCT_BEGINNER_COPY.linksHiddenProblemsNote}`}
                 href={`/fix-center${selectedDomainId ? `?domainId=${selectedDomainId}` : ""}`}
                 label="Open fix center"
               />
@@ -372,7 +373,7 @@ function LinkCarePlan({
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div>
           <p className="text-sm font-semibold text-orange-700">
-            Page links plan
+            {PRODUCT_BEGINNER_COPY.linksPlanLabel}
           </p>
           <h3 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
             Help important pages feel easier to find.

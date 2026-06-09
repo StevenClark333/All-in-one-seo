@@ -243,6 +243,11 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     PRODUCT_BEGINNER_COPY.firstWebsiteCarePlan,
     "Set up one workspace for your business. After this, you can add the first website and let the portal build a simple website care plan.",
   );
+  assert.equal(PRODUCT_BEGINNER_COPY.linksPlanLabel, "Links care plan");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.linksHiddenProblemsNote,
+    "more link-help items are kept out of this first view so the page stays easier to scan.",
+  );
   assert.equal(PRODUCT_BEGINNER_COPY.websitesPageHeading, "Websites");
   assert.equal(
     PRODUCT_BEGINNER_COPY.workspaceHealthDetail,
@@ -278,6 +283,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan/,
   );
 });
