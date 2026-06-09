@@ -183,6 +183,36 @@ test("omits disabled custom report template sections from PDF text", () => {
   assert.ok(!pdfLines.some((line) => line.includes("Pages monitored")));
 });
 
+test("formats missing report PDF health scores as no score yet", () => {
+  const periodStart = new Date("2026-05-01T00:00:00Z");
+  const periodEnd = new Date("2026-05-31T23:59:59Z");
+  const report = {
+    title: "Setup report",
+    periodStart,
+    periodEnd,
+    workspace: { name: "Agency" },
+    domain: {
+      id: "domain_1",
+      domain: "example.com",
+      healthScore: null,
+      pages: [],
+      crawlRuns: [],
+      changeEvents: [],
+      issues: [],
+      client: null,
+    },
+    template: {
+      sectionsJson: buildReportSections(["healthScore"]),
+    },
+    client: null,
+  } as unknown as ReportDetail;
+
+  const pdfLines = buildReportPdfText(report);
+
+  assert.ok(pdfLines.some((line) => line === "Health score: No score yet"));
+  assert.ok(!pdfLines.some((line) => line.includes("Pending")));
+});
+
 test("builds white-label share URLs from verified report domains", () => {
   const report = {
     shareToken: "share_123",

@@ -10,6 +10,7 @@ import {
   buildPublicReportAccessWhere,
   buildWorkspaceIsolationWhere,
 } from "@/lib/security";
+import { formatWebsiteHealth } from "@/lib/website-display-labels";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
 const reportDetailInclude = Prisma.validator<Prisma.ReportInclude>()({
@@ -526,7 +527,7 @@ export function buildReportPdfText(report: ReportDetail) {
   ];
 
   if (summary.sections.healthScore) {
-    lines.push(`Health score: ${summary.score ?? "Pending"}`);
+    lines.push(`Health score: ${formatWebsiteHealth(summary.score)}`);
   }
 
   if (summary.sections.crawlSummary) {

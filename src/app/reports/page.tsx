@@ -615,7 +615,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                       value={
                         domain.verifiedAt
                           ? domain.verifiedAt.toLocaleDateString()
-                          : "Pending"
+                          : "Not verified yet"
                       }
                     />
                     <div className="flex items-start lg:justify-end">

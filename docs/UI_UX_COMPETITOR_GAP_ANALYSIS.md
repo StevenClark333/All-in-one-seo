@@ -1737,3 +1737,18 @@ Implementation:
 - [x] Cover the exact health fallback label through the shared website health label unit tests.
 - [x] Browser-check report health labels desktop and mobile locally.
 - [ ] Browser-check report health labels after deployment.
+
+### Batch CS: Report Export Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make PDF/export reports and branded sharing part of the reporting workflow, but a beginner-friendly report should keep the same calm setup language after export.
+- Nontechnical users and clients should see no score yet and not verified yet before pending in PDF report text and branded report-domain setup.
+- The report hub and exported report should feel like one polished client-update flow, not two different status systems.
+
+Implementation:
+
+- [x] Translate PDF health score and branded-domain verification fallbacks away from pending wording.
+- [x] Cover the exact PDF health fallback label with report unit tests.
+- [x] Browser-check report export labels desktop and mobile locally.
+- [ ] Browser-check report export labels after deployment.
