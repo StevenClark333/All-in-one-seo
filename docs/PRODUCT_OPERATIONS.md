@@ -2,21 +2,21 @@
 
 ## Product Name And Public Copy
 
-Working product name: **All In One SEO Ops**.
+Working product name: **All In One Website Care**.
 
 Verification TXT namespace: `allinone-seo-verification`.
 
 Primary public positioning:
 
-> Continuous technical SEO monitoring for businesses and agencies.
+> Calm website care for businesses and agencies that need clear search-health guidance.
 
 Short description:
 
-> Connect your site, verify ownership, install one lightweight script, and monitor SEO health, technical issues, content recommendations, reporting, and critical regressions from one dashboard.
+> Connect your website, verify ownership, install one lightweight script, and follow search health, fixable problems, content ideas, reports, and important changes from one calm dashboard.
 
 Agency offer:
 
-> Manage every client website from one white-label SEO operations dashboard with continuous audits, alerts, AI fix briefs, and client-ready reporting.
+> Manage every client website from one white-label website care dashboard with continuous checks, alerts, fix notes, and client-ready reporting.
 
 ## Final Pricing Tiers And Usage Limits
 

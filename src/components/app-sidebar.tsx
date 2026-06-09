@@ -4,6 +4,7 @@ import { switchWorkspaceAction } from "@/app/actions";
 import { GlobalSearchShortcut } from "@/components/global-search-shortcut";
 import { InfoTooltip } from "@/components/info-tooltip";
 import { navItems } from "@/lib/dashboard-data";
+import { PRODUCT_AREA_NAME, PRODUCT_BRAND_NAME } from "@/lib/product-copy";
 import { getWorkspaceSwitcherData } from "@/lib/workspace";
 
 const hrefs: Record<string, (domainId?: string) => string> = {
@@ -143,9 +144,11 @@ export async function AppSidebar({
               <Search className="size-5" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-500">All In One</p>
+              <p className="text-sm font-semibold text-slate-500">
+                {PRODUCT_BRAND_NAME}
+              </p>
               <h1 className="text-xl font-semibold tracking-normal text-slate-900">
-                SEO Ops
+                {PRODUCT_AREA_NAME}
               </h1>
             </div>
           </div>

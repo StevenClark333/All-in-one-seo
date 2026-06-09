@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import {
+  PRODUCT_DISPLAY_NAME,
+  PRODUCT_META_DESCRIPTION,
+} from "@/lib/product-copy";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "All In One SEO Ops",
-  description: "Agency-ready continuous SEO monitoring dashboard.",
+  title: PRODUCT_DISPLAY_NAME,
+  description: PRODUCT_META_DESCRIPTION,
 };
 
 export default function RootLayout({

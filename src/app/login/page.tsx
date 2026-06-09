@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogIn, Search } from "lucide-react";
+import { PRODUCT_AREA_NAME, PRODUCT_BRAND_NAME } from "@/lib/product-copy";
 
 export default async function LoginPage({
   searchParams,
@@ -17,13 +18,15 @@ export default async function LoginPage({
           </div>
           <div>
             <p className="text-sm font-semibold text-orange-700">
-              All In One
+              {PRODUCT_BRAND_NAME}
             </p>
-            <h1 className="text-xl font-semibold tracking-normal">SEO Ops</h1>
+            <h1 className="text-xl font-semibold tracking-normal">
+              {PRODUCT_AREA_NAME}
+            </h1>
           </div>
         </div>
         <p className="mt-4 text-sm leading-6 text-slate-500">
-          Welcome back. Log in to see today&apos;s SEO plan, the clearest
+          Welcome back. Log in to see today&apos;s website care plan, the clearest
           problems, and the next button to press.
         </p>
 

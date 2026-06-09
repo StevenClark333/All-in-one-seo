@@ -1967,3 +1967,19 @@ Implementation:
 - [x] Rename downloaded page CSV website and problems columns away from domain and issues.
 - [x] Verify exact CSV headers through unit tests and local authenticated HTTP checks.
 - [ ] Browser-check export column labels after deployment.
+
+### Batch DH: Product Name Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs use expert SEO positioning, but a beginner-first product should make the first screen feel like care and guidance before operations.
+- Nontechnical users should see Website Care before SEO Ops on login, signup, the app shell, and browser metadata.
+- The product frame should still preserve search-health depth while feeling softer, more welcoming, and easier to trust.
+
+Implementation:
+
+- [x] Centralize product display copy in a tested helper.
+- [x] Rename visible app framing from SEO Ops to Website Care across the sidebar and auth screens.
+- [x] Update metadata and product source-of-truth docs to the softer name.
+- [x] Cover the product copy contract with unit tests.
+- [ ] Browser-check product name calmness after deployment.

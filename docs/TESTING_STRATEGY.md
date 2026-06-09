@@ -1,6 +1,6 @@
 # Testing Strategy
 
-This document defines the production testing strategy for All In One SEO Ops.
+This document defines the production testing strategy for All In One Website Care.
 It maps directly to `PRODUCTION_TASK_LIST.md` and should be updated whenever a
 new product surface is added.
 

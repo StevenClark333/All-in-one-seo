@@ -2,6 +2,7 @@ import Link from "next/link";
 import type React from "react";
 import { Building2, Mail, Search, ShieldCheck } from "lucide-react";
 import { signUp } from "@/app/actions";
+import { PRODUCT_AREA_NAME, PRODUCT_BRAND_NAME } from "@/lib/product-copy";
 
 export default function SignupPage() {
   return (
@@ -13,14 +14,16 @@ export default function SignupPage() {
           </div>
           <div>
             <p className="text-sm font-semibold text-orange-700">
-              All In One
+              {PRODUCT_BRAND_NAME}
             </p>
-            <h1 className="text-xl font-semibold tracking-normal">SEO Ops</h1>
+            <h1 className="text-xl font-semibold tracking-normal">
+              {PRODUCT_AREA_NAME}
+            </h1>
           </div>
         </div>
         <p className="mt-4 text-sm leading-6 text-slate-500">
-          Create your calm SEO workspace. You can add websites, invite teammates,
-          and connect tools after the account is ready.
+          Create your calm website care workspace. You can add websites, invite
+          teammates, and connect tools after the account is ready.
         </p>
 
         <section className="mt-5 rounded-lg border border-orange-100 bg-orange-50/60 p-4">
