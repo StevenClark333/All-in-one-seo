@@ -2381,3 +2381,20 @@ Implementation:
 - [x] Cover the exact Rank competitor gap wording with unit tests.
 - [x] Browser-check Rank competitor gap calmness locally.
 - [ ] Browser-check Rank competitor gap calmness after deployment.
+
+### Batch EG: Rank Manual Data Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs make rank, volume, and difficulty labels familiar for SEO teams, but those words can feel like expert data entry to a beginner.
+- A softer manual Rank Movement panel should keep the same controls while saying Google position, monthly searches, and competition.
+- The product direction is to make optional data entry feel like a guided update, not a keyword metrics import workflow.
+
+Implementation:
+
+- [x] Centralize Rank Movement manual-data labels in the product copy helper.
+- [x] Replace Record rank and Save rank with Add Google position and Save position.
+- [x] Replace Import metric, Save metric, Volume, Difficulty, and Owned rank with softer search-detail wording.
+- [x] Cover the exact Rank manual-data wording with unit tests.
+- [x] Browser-check Rank manual-data calmness locally.
+- [ ] Browser-check Rank manual-data calmness after deployment.

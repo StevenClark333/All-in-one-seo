@@ -293,7 +293,9 @@ export default async function RankTrackingPage({
 
               <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
                 <div className="border-b border-slate-200 p-5">
-                  <h3 className="text-lg font-semibold">Record rank</h3>
+                  <h3 className="text-lg font-semibold">
+                    {PRODUCT_BEGINNER_COPY.rankPositionTitle}
+                  </h3>
                 </div>
                 <form
                   action={recordRankObservationAction}
@@ -337,19 +339,21 @@ export default async function RankTrackingPage({
                   <FilterLabel label="Competitor domain">
                     <input
                       name="competitorDomain"
-                      placeholder="Leave blank for owned rank"
+                      placeholder={PRODUCT_BEGINNER_COPY.rankPositionYourSiteHint}
                       className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     />
                   </FilterLabel>
                   <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
-                    Save rank
+                    {PRODUCT_BEGINNER_COPY.rankSavePositionAction}
                   </button>
                 </form>
               </section>
 
               <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
                 <div className="border-b border-slate-200 p-5">
-                  <h3 className="text-lg font-semibold">Import metric</h3>
+                  <h3 className="text-lg font-semibold">
+                    {PRODUCT_BEGINNER_COPY.rankImportDetailsTitle}
+                  </h3>
                 </div>
                 <form
                   action={importKeywordMetricAction}
@@ -364,7 +368,9 @@ export default async function RankTrackingPage({
                     />
                   </FilterLabel>
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <FilterLabel label="Volume">
+                    <FilterLabel
+                      label={PRODUCT_BEGINNER_COPY.rankMonthlySearchesLabel}
+                    >
                       <input
                         name="searchVolume"
                         min="0"
@@ -372,7 +378,9 @@ export default async function RankTrackingPage({
                         className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                       />
                     </FilterLabel>
-                    <FilterLabel label="Difficulty">
+                    <FilterLabel
+                      label={PRODUCT_BEGINNER_COPY.rankCompetitionLabel}
+                    >
                       <input
                         name="difficulty"
                         max="100"
@@ -390,7 +398,7 @@ export default async function RankTrackingPage({
                     />
                   </FilterLabel>
                   <button className="inline-flex h-10 items-center justify-center rounded-md bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800">
-                    Save metric
+                    {PRODUCT_BEGINNER_COPY.rankSaveDetailsAction}
                   </button>
                 </form>
               </section>
@@ -450,9 +458,15 @@ function KeywordTable({
               <th className="px-5 py-3 font-semibold">
                 {PRODUCT_BEGINNER_COPY.rankKeywordWebsiteHeader}
               </th>
-              <th className="px-5 py-3 font-semibold">Owned rank</th>
-              <th className="px-5 py-3 font-semibold">Volume</th>
-              <th className="px-5 py-3 font-semibold">Difficulty</th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.rankOwnedSpotHeader}
+              </th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.rankMonthlySearchesLabel}
+              </th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.rankCompetitionLabel}
+              </th>
               <th className="px-5 py-3 font-semibold">Status</th>
             </tr>
           </thead>
