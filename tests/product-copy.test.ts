@@ -305,7 +305,7 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.rankAverageHelp,
-    "Average latest owned spot across watched search terms with rank data.",
+    "Average latest owned spot across watched search terms with saved Google spots.",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.rankAddTermAction, "Add search term");
   assert.equal(PRODUCT_BEGINNER_COPY.rankChooseTermOption, "Choose search term");
@@ -330,6 +330,7 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Competitor page gaps",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.rankCompetitionLabel, "Competition");
+  assert.equal(PRODUCT_BEGINNER_COPY.rankAdjustViewTitle, "Adjust Google spots");
   assert.equal(
     PRODUCT_BEGINNER_COPY.rankDetailEmpty,
     "No search terms are being watched yet. Add one above to begin rank movement tracking.",
@@ -368,6 +369,18 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "more search terms are hidden so the first view stays focused on movement.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.rankMissingPositionsDetail,
+    "Add one Google position so averages and top groups become useful.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankMissingPositionsLabel,
+    "Add missing Google spots",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankMissingPositionsValueSuffix,
+    "need a Google spot",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.rankManageDataIntro,
     "Add search terms, save a Google position, or add search details when you need to update the tracker manually.",
   );
@@ -376,6 +389,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Active and paused search terms currently watched for movement.",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.rankMetricLabel, "Watched search terms");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankMovementMonitorTitle,
+    "Movement watch",
+  );
   assert.equal(
     PRODUCT_BEGINNER_COPY.rankMonthlySearchesLabel,
     "Monthly searches",
@@ -387,12 +404,34 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Leave blank for your website",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.rankReadyDetail,
+    "Google spots are ready, so focus on the best search terms near page one.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankReadyLabel,
+    "Improve page-one chances",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankStatusWaiting,
+    "Waiting for Google spots",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankTableTermHeader, "Search term");
+  assert.equal(
     PRODUCT_BEGINNER_COPY.rankPlanHeading,
     "Know which search term needs attention next.",
   );
+  assert.equal(PRODUCT_BEGINNER_COPY.rankPlanTitle, "Rank movement plan");
   assert.equal(
     PRODUCT_BEGINNER_COPY.rankRecoverDetail,
     "Review the search terms that dropped and decide whether a page needs a content refresh.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankDistributionIntro,
+    "Latest Google spots grouped for quick website scanning.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.rankDistributionTitle,
+    "Google spot groups",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.rankSaveDetailsAction, "Save details");
   assert.equal(PRODUCT_BEGINNER_COPY.rankSavePositionAction, "Save position");
@@ -460,6 +499,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b/,
   );
 });

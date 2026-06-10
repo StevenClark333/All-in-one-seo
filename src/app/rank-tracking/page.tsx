@@ -105,7 +105,9 @@ export default async function RankTrackingPage({
           <details className="group mt-5 rounded-lg border border-slate-200 bg-white shadow-sm">
             <summary className="flex items-center justify-between gap-4 p-5">
               <div>
-                <h3 className="text-lg font-semibold">Adjust rank view</h3>
+                <h3 className="text-lg font-semibold">
+                  {PRODUCT_BEGINNER_COPY.rankAdjustViewTitle}
+                </h3>
                 <p className="mt-1 text-sm text-slate-500">
                   {PRODUCT_BEGINNER_COPY.rankAdjustViewDetail}
                 </p>
@@ -166,9 +168,11 @@ export default async function RankTrackingPage({
             >
               <div className="flex flex-col gap-2 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">Rank distribution</h3>
+                  <h3 className="text-lg font-semibold">
+                    {PRODUCT_BEGINNER_COPY.rankDistributionTitle}
+                  </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Latest owned positions grouped for quick portfolio scanning.
+                    {PRODUCT_BEGINNER_COPY.rankDistributionIntro}
                   </p>
                 </div>
                 <span className="text-sm font-semibold text-slate-600">
@@ -195,12 +199,14 @@ export default async function RankTrackingPage({
             </section>
 
             <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="text-lg font-semibold">Movement monitor</h3>
+              <h3 className="text-lg font-semibold">
+                {PRODUCT_BEGINNER_COPY.rankMovementMonitorTitle}
+              </h3>
               <div className="mt-5 grid gap-3">
                 <QueueRow label="Improved" value={data.summary.improved} />
                 <QueueRow label="Worsened" value={data.summary.worsened} />
                 <QueueRow
-                  label="Needs rank data"
+                  label={PRODUCT_BEGINNER_COPY.rankMissingPositionsLabel}
                   value={
                     data.keywords.filter(
                       (keyword) => !getOwnedRank(keyword)?.position,
@@ -454,7 +460,9 @@ function KeywordTable({
         <table className="w-full min-w-[760px] text-left text-sm">
           <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
-              <th className="px-5 py-3 font-semibold">Keyword</th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.rankTableTermHeader}
+              </th>
               <th className="px-5 py-3 font-semibold">
                 {PRODUCT_BEGINNER_COPY.rankKeywordWebsiteHeader}
               </th>
@@ -624,14 +632,14 @@ function RankMovementPlan({
     },
     {
       detail: needsRankDataCount
-        ? "Add a rank observation so averages and top position groups become useful."
-        : "Rank data is ready, so focus on the best keywords near page one.",
+        ? PRODUCT_BEGINNER_COPY.rankMissingPositionsDetail
+        : PRODUCT_BEGINNER_COPY.rankReadyDetail,
       href: needsRankDataCount ? "#manage-rank-data" : "#tracked-keywords",
       label: needsRankDataCount
-        ? "Fill missing rank data"
-        : "Push page-one wins",
+        ? PRODUCT_BEGINNER_COPY.rankMissingPositionsLabel
+        : PRODUCT_BEGINNER_COPY.rankReadyLabel,
       value: needsRankDataCount
-        ? `${needsRankDataCount} need ranks`
+        ? `${needsRankDataCount} ${PRODUCT_BEGINNER_COPY.rankMissingPositionsValueSuffix}`
         : `${topTenCount} top 10`,
     },
   ];
@@ -641,7 +649,7 @@ function RankMovementPlan({
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-sm font-medium text-orange-600">
-            Rank movement plan
+            {PRODUCT_BEGINNER_COPY.rankPlanTitle}
           </p>
           <h3 className="mt-1 text-2xl font-semibold tracking-normal">
             {PRODUCT_BEGINNER_COPY.rankPlanHeading}
@@ -650,7 +658,7 @@ function RankMovementPlan({
         <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
           {averagePosition
             ? `${averagePosition} average spot`
-            : "Waiting for ranks"}
+            : PRODUCT_BEGINNER_COPY.rankStatusWaiting}
         </div>
       </div>
       <div className="mt-4 grid gap-3 lg:grid-cols-3">

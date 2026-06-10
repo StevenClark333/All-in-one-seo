@@ -159,8 +159,9 @@ export const PRODUCT_BEGINNER_COPY = {
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   rankAdjustViewDetail:
     "Save this view or narrow the page by website and search term.",
+  rankAdjustViewTitle: "Adjust Google spots",
   rankAverageHelp:
-    "Average latest owned spot across watched search terms with rank data.",
+    "Average latest owned spot across watched search terms with saved Google spots.",
   rankAddTermAction: "Add search term",
   rankChooseTermOption: "Choose search term",
   rankCompetitorGapEmpty:
@@ -188,18 +189,32 @@ export const PRODUCT_BEGINNER_COPY = {
     "See which search terms moved, what dropped, and where one page can be improved next.",
   rankHiddenTermsNote:
     "more search terms are hidden so the first view stays focused on movement.",
+  rankMissingPositionsDetail:
+    "Add one Google position so averages and top groups become useful.",
+  rankMissingPositionsLabel: "Add missing Google spots",
+  rankMissingPositionsValueSuffix: "need a Google spot",
   rankManageDataIntro:
     "Add search terms, save a Google position, or add search details when you need to update the tracker manually.",
   rankMetricHelp:
     "Active and paused search terms currently watched for movement.",
   rankMetricLabel: "Watched search terms",
+  rankMovementMonitorTitle: "Movement watch",
   rankMonthlySearchesLabel: "Monthly searches",
   rankOwnedSpotHeader: "Your Google spot",
   rankPositionTitle: "Add Google position",
   rankPositionYourSiteHint: "Leave blank for your website",
+  rankReadyDetail:
+    "Google spots are ready, so focus on the best search terms near page one.",
+  rankReadyLabel: "Improve page-one chances",
+  rankStatusWaiting: "Waiting for Google spots",
+  rankTableTermHeader: "Search term",
   rankPlanHeading: "Know which search term needs attention next.",
+  rankPlanTitle: "Rank movement plan",
   rankRecoverDetail:
     "Review the search terms that dropped and decide whether a page needs a content refresh.",
+  rankDistributionIntro:
+    "Latest Google spots grouped for quick website scanning.",
+  rankDistributionTitle: "Google spot groups",
   rankSaveDetailsAction: "Save details",
   rankSavePositionAction: "Save position",
   rankStableDetail:

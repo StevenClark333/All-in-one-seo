@@ -2398,3 +2398,19 @@ Implementation:
 - [x] Cover the exact Rank manual-data wording with unit tests.
 - [x] Browser-check Rank manual-data calmness locally.
 - [ ] Browser-check Rank manual-data calmness after deployment.
+
+### Batch EH: Rank Plan Google Spot Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose rank distribution and missing rank inputs for expert users, but a beginner-friendly rank screen should describe those as Google spots.
+- A softer Rank Movement plan should keep the same tracking power while turning missing rank data into a simple next update.
+- The product direction is to make the first rank scan feel like "what changed and what needs a saved Google spot," not a keyword database review.
+
+Implementation:
+
+- [x] Centralize Rank Movement plan, distribution, and missing-position labels in the product copy helper.
+- [x] Replace Adjust rank view, Needs rank data, Fill missing rank data, need ranks, Waiting for ranks, Rank distribution, Movement monitor, and Keyword table wording with Google-spot and search-term wording.
+- [x] Cover the exact Rank plan Google-spot wording with unit tests.
+- [x] Browser-check Rank plan Google-spot calmness locally.
+- [ ] Browser-check Rank plan Google-spot calmness after deployment.
