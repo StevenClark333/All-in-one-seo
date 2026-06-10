@@ -271,6 +271,31 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(PRODUCT_BEGINNER_COPY.workspaceHealthLabel, "Website health");
   assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceSearchClicksHelp,
+    "Visits from Google Search Console search results.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceSearchImpressionsHelp,
+    "Times this website appeared in Google Search Console search results.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceSearchIntro,
+    "Search terms and page demand from Google Search Console imports.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.workspaceSearchLabel, "Search terms");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceSearchTermsHelp,
+    "Distinct search terms found in imported Search Console rows.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceSearchTitleHelp,
+    "Imported Google Search Console search visibility and demand signals for this website.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceSearchVisibilityHelp,
+    "How visible this website is across imported Google Search Console search terms.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.passwordResetReturn,
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   );
@@ -398,6 +423,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand/,
   );
 });

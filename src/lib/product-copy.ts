@@ -225,4 +225,17 @@ export const PRODUCT_BEGINNER_COPY = {
   workspaceHealthHelp:
     "Gauge-style score from the latest website health value and website check history.",
   workspaceHealthLabel: "Website health",
+  workspaceSearchClicksHelp:
+    "Visits from Google Search Console search results.",
+  workspaceSearchImpressionsHelp:
+    "Times this website appeared in Google Search Console search results.",
+  workspaceSearchIntro:
+    "Search terms and page demand from Google Search Console imports.",
+  workspaceSearchLabel: "Search terms",
+  workspaceSearchTermsHelp:
+    "Distinct search terms found in imported Search Console rows.",
+  workspaceSearchTitleHelp:
+    "Imported Google Search Console search visibility and demand signals for this website.",
+  workspaceSearchVisibilityHelp:
+    "How visible this website is across imported Google Search Console search terms.",
 };

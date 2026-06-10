@@ -2347,3 +2347,20 @@ Implementation:
 - [x] Cover the exact Rank Movement wording with unit tests.
 - [x] Browser-check Rank Movement search-term calmness locally.
 - [ ] Browser-check Rank Movement search-term calmness after deployment.
+
+### Batch EE: Website Workspace Search Summary Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose search visibility, impressions, and query counts on overview surfaces, but their helper text assumes analytics comfort.
+- A beginner-first website workspace should keep Google Search Console evidence visible while explaining it as search results and search terms.
+- The softer product direction is to make the website overview answer "how people are finding this website" before exposing deeper performance detail.
+
+Implementation:
+
+- [x] Centralize website workspace search summary wording in the product copy helper.
+- [x] Replace average-position visibility help with plain website visibility wording.
+- [x] Replace organic-impression and query helper copy with search-result and search-term wording.
+- [x] Cover the exact website workspace search summary wording with unit tests.
+- [ ] Browser-check website workspace search summary calmness locally.
+- [ ] Browser-check website workspace search summary calmness after deployment.

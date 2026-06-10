@@ -740,12 +740,14 @@ export default async function DomainWorkspacePage({
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Imported Google Search Console visibility and demand signals for this website.">
+                      <HelpLabel
+                        help={PRODUCT_BEGINNER_COPY.workspaceSearchTitleHelp}
+                      >
                         Search performance
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Query and page demand from Google Search Console imports.
+                      {PRODUCT_BEGINNER_COPY.workspaceSearchIntro}
                     </p>
                   </div>
                   <Link
@@ -757,27 +759,27 @@ export default async function DomainWorkspacePage({
                 </div>
                 <div className="mt-4 grid gap-3 md:grid-cols-4">
                   <QueueCard
-                    help="Impression-weighted visibility based on average search position."
+                    help={PRODUCT_BEGINNER_COPY.workspaceSearchVisibilityHelp}
                     href={`/search-performance?domainId=${domain.id}`}
                     label="Visibility"
                     value={`${searchSummary.visibility}%`}
                   />
                   <QueueCard
-                    help="Organic clicks from imported Search Console metrics."
+                    help={PRODUCT_BEGINNER_COPY.workspaceSearchClicksHelp}
                     href={`/search-performance?domainId=${domain.id}`}
                     label="Clicks"
                     value={searchSummary.clicks.toLocaleString()}
                   />
                   <QueueCard
-                    help="Organic impressions from imported Search Console metrics."
+                    help={PRODUCT_BEGINNER_COPY.workspaceSearchImpressionsHelp}
                     href={`/search-performance?domainId=${domain.id}`}
                     label="Impressions"
                     value={searchSummary.impressions.toLocaleString()}
                   />
                   <QueueCard
-                    help="Distinct queries found in imported Search Console rows."
+                    help={PRODUCT_BEGINNER_COPY.workspaceSearchTermsHelp}
                     href={`/search-performance?domainId=${domain.id}`}
-                    label="Queries"
+                    label={PRODUCT_BEGINNER_COPY.workspaceSearchLabel}
                     value={searchSummary.queries}
                   />
                 </div>
