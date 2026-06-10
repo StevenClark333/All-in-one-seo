@@ -2414,3 +2414,20 @@ Implementation:
 - [x] Cover the exact Rank plan Google-spot wording with unit tests.
 - [x] Browser-check Rank plan Google-spot calmness locally.
 - [ ] Browser-check Rank plan Google-spot calmness after deployment.
+
+### Batch EI: Loading And Navigation Help Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs use expert module names like keyword research, position tracking, competitive analysis, and issue analytics because their users expect SEO tooling language.
+- A beginner-first product should keep the same power but avoid showing those expert labels during navigation help or loading states.
+- The product direction is to make every transition feel like opening a clear work area: Competitor Insights, Problems, Search Ideas, and Rank Movement.
+
+Implementation:
+
+- [x] Replace sidebar help for Rank Movement away from keyword movement wording.
+- [x] Replace Ideas help away from AI-sounding page recommendation wording.
+- [x] Replace loading states for Competitive Analysis, Problems, Search Ideas, and Rank Movement with beginner-facing labels.
+- [x] Cover navigation help and loading labels with unit tests.
+- [x] Browser-check loading and navigation help calmness locally.
+- [ ] Browser-check loading and navigation help calmness after deployment.

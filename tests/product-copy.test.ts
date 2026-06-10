@@ -39,6 +39,14 @@ test("uses softer product navigation labels for beginner scanning", () => {
     getProductNavHelp("Keyword Research"),
     "Find useful search ideas, content gaps, and easier opportunities.",
   );
+  assert.equal(
+    getProductNavHelp("Rank Tracking"),
+    "Watch search-term movement for your website and close competitors.",
+  );
+  assert.equal(
+    getProductNavHelp("AI"),
+    "Create writing ideas, fix notes, and simple next steps.",
+  );
   assert.doesNotMatch(
     Object.values({
       competitor: getProductNavLabel("Competitive Analysis"),

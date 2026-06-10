@@ -32,10 +32,10 @@ export const PRODUCT_NAV_HELP: Record<string, string> = {
   "Keyword Research":
     "Find useful search ideas, content gaps, and easier opportunities.",
   "Rank Tracking":
-    "Watch keyword movement for your website and close competitors.",
+    "Watch search-term movement for your website and close competitors.",
   Issues: "See problems that need attention and the easiest way to solve them.",
   "Fix Center": "Review, send, and check fixes without extra technical detail.",
-  AI: "Create page writing ideas, fix notes, and simple next steps.",
+  AI: "Create writing ideas, fix notes, and simple next steps.",
   Technical: "Find pages that need better links and easier paths.",
   Reports: "Create simple updates for clients, teammates, or your own records.",
   Alerts: "Get notified when something important changes.",
