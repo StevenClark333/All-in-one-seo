@@ -532,9 +532,11 @@ function CompetitorGapList({
       <div className="flex items-center gap-3 border-b border-slate-200 p-5">
         <Crosshair className="size-5 text-blue-700" aria-hidden="true" />
         <div>
-          <h3 className="text-lg font-semibold">Competitor rank gaps</h3>
+          <h3 className="text-lg font-semibold">
+            {PRODUCT_BEGINNER_COPY.rankCompetitorGapTitle}
+          </h3>
           <p className="mt-1 text-sm text-slate-500">
-            Keywords where someone else is ahead and your page may need work.
+            {PRODUCT_BEGINNER_COPY.rankCompetitorGapIntro}
           </p>
         </div>
       </div>
@@ -550,7 +552,7 @@ function CompetitorGapList({
               <div className="mt-3 grid gap-3 sm:grid-cols-3">
                 <Meta label="Competitor" value={gap.competitorDomain} />
                 <Meta
-                  label="Ranks"
+                  label={PRODUCT_BEGINNER_COPY.rankCompetitorGapPositionLabel}
                   value={`${gap.competitorPosition} vs ${
                     gap.ownedPosition ?? "none"
                   }`}
@@ -561,13 +563,13 @@ function CompetitorGapList({
           ))
         ) : (
           <p className="p-8 text-center text-sm text-slate-500">
-            Record competitor ranks to reveal competitor-led content gaps.
+            {PRODUCT_BEGINNER_COPY.rankCompetitorGapEmpty}
           </p>
         )}
       </div>
       {hiddenCount > 0 ? (
         <PreviewLimitNote
-          body={`${hiddenCount} more competitor gaps are available when you want deeper rank review.`}
+          body={`${hiddenCount} ${PRODUCT_BEGINNER_COPY.rankCompetitorGapHiddenNote}`}
         />
       ) : null}
     </section>

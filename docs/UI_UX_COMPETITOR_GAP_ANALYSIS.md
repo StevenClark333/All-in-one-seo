@@ -2364,3 +2364,20 @@ Implementation:
 - [x] Cover the exact website workspace search summary wording with unit tests.
 - [ ] Browser-check website workspace search summary calmness locally.
 - [ ] Browser-check website workspace search summary calmness after deployment.
+
+### Batch EF: Rank Competitor Gap Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose competitor rank gaps for expert comparison, but beginner users need to understand that another page is simply ahead.
+- A softer Rank Movement competitor panel should keep the same competitive evidence while saying competitor page gaps and positions.
+- The product direction is to make competitive comparison feel like a page improvement prompt, not a technical rank audit.
+
+Implementation:
+
+- [x] Centralize Rank Movement competitor-gap wording in the product copy helper.
+- [x] Replace Competitor rank gaps with Competitor page gaps.
+- [x] Replace competitor-rank empty and hidden-note copy with competitor-position and deeper-page-review wording.
+- [x] Cover the exact Rank competitor gap wording with unit tests.
+- [x] Browser-check Rank competitor gap calmness locally.
+- [ ] Browser-check Rank competitor gap calmness after deployment.

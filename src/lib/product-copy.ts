@@ -163,6 +163,14 @@ export const PRODUCT_BEGINNER_COPY = {
     "Average latest owned spot across watched search terms with rank data.",
   rankAddTermAction: "Add search term",
   rankChooseTermOption: "Choose search term",
+  rankCompetitorGapEmpty:
+    "Add competitor positions to reveal search terms where another page is ahead.",
+  rankCompetitorGapHiddenNote:
+    "more competitor comparisons are available when you want deeper page review.",
+  rankCompetitorGapIntro:
+    "Search terms where another page is ahead and your page may need work.",
+  rankCompetitorGapPositionLabel: "Positions",
+  rankCompetitorGapTitle: "Competitor page gaps",
   rankDetailEmpty:
     "No search terms are being watched yet. Add one above to begin rank movement tracking.",
   rankDetailIntro:
