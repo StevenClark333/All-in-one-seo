@@ -293,8 +293,8 @@ export default async function FixCenterPage({
                           </div>
                           <h4 className="mt-3 text-base font-semibold">
                             {suggestion.brokenUrl
-                              ? "Replace broken internal link"
-                              : "Add contextual internal link"}
+                              ? PRODUCT_BEGINNER_COPY.fixesReplaceStoppedLinkTitle
+                              : PRODUCT_BEGINNER_COPY.fixesAddHelpfulLinkTitle}
                           </h4>
                           <p className="mt-2 text-sm leading-6 text-slate-600">
                             {suggestion.reason}
@@ -315,18 +315,18 @@ export default async function FixCenterPage({
 
                       <div className="mt-4 grid gap-3 lg:grid-cols-3">
                         <DetailBlock
-                          label="Source page"
+                          label={PRODUCT_BEGINNER_COPY.fixesPageWithLinkLabel}
                           value={suggestion.sourceUrl}
                         />
                         {suggestion.brokenUrl ? (
                           <DetailBlock
-                            label="Broken URL"
+                            label={PRODUCT_BEGINNER_COPY.fixesStoppedLinkLabel}
                             value={suggestion.brokenUrl}
                             danger
                           />
                         ) : null}
                         <DetailBlock
-                          label="Suggested URL"
+                          label={PRODUCT_BEGINNER_COPY.fixesBetterPageLabel}
                           value={suggestion.suggestedUrl}
                         />
                       </div>
@@ -341,7 +341,7 @@ export default async function FixCenterPage({
                           value={suggestion.id}
                         />
                         <label className="grid gap-1 text-sm font-medium text-slate-600">
-                          Suggested URL
+                          {PRODUCT_BEGINNER_COPY.fixesBetterPageLabel}
                           <input
                             name="suggestedUrl"
                             defaultValue={suggestion.suggestedUrl}
@@ -349,7 +349,7 @@ export default async function FixCenterPage({
                           />
                         </label>
                         <label className="grid gap-1 text-sm font-medium text-slate-600">
-                          Anchor text
+                          {PRODUCT_BEGINNER_COPY.fixesLinkTextLabel}
                           <input
                             name="anchorText"
                             defaultValue={suggestion.anchorText ?? ""}
@@ -637,7 +637,7 @@ function FixComfortPlan({
             value={
               readyToReview ? `${readyToReview} ready fixes` : "No fixes ready"
             }
-            detail="Approve the fix if the suggested page and anchor text look right."
+            detail="Approve the fix if the suggested page and link text look right."
             href="#fix-list"
           />
           <PlanTile
@@ -654,7 +654,11 @@ function FixComfortPlan({
           <PlanTile
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Check"
-            value={needsCheck ? `${needsCheck} need a check` : "Nothing urgent"}
+            value={
+              needsCheck
+                ? `${needsCheck} need a check`
+                : PRODUCT_BEGINNER_COPY.fixesNoCheckNeeded
+            }
             detail="After the fix is applied, run a new check to confirm the page improved."
             href="#fix-list"
           />

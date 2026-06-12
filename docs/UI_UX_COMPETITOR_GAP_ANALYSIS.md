@@ -2833,3 +2833,19 @@ Implementation:
 - [x] Cover dashboard detail-table website wording with unit tests.
 - [x] Runtime-check dashboard detail-table website calmness locally.
 - [ ] Browser-check dashboard detail-table website calmness after deployment.
+
+### Batch FI: Fix Row Link-Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep URL-level evidence in audit and link-fix workflows so expert teams can verify the exact affected page.
+- A beginner-first Fixes page should preserve the same link evidence while saying page with the link, link that needs help, better page to use, and link text.
+- The product direction is to make each fix row feel like a short editing task, not a broken-URL diagnostic.
+
+Implementation:
+
+- [x] Centralize remaining Fixes row link labels in the product copy helper.
+- [x] Replace broken URL, suggested URL, source page, anchor text, and nothing urgent wording on the Fixes page.
+- [x] Cover Fixes row link-label wording with unit tests.
+- [x] Runtime-check Fixes row link-label calmness locally.
+- [ ] Browser-check Fixes row link-label calmness after deployment.

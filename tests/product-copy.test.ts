@@ -519,6 +519,31 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     PRODUCT_BEGINNER_COPY.firstWebsiteCarePlan,
     "Set up one workspace for your business. After this, you can add the first website and let the portal build a simple website care plan.",
   );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.fixesAddHelpfulLinkTitle,
+    "Add helpful page link",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.fixesBetterPageLabel,
+    "Better page to use",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.fixesLinkTextLabel, "Link text");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.fixesNoCheckNeeded,
+    "Nothing to check",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.fixesPageWithLinkLabel,
+    "Page with the link",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.fixesReplaceStoppedLinkTitle,
+    "Replace link that stopped working",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.fixesStoppedLinkLabel,
+    "Link that needs help",
+  );
   assert.equal(PRODUCT_BEGINNER_COPY.linksPlanLabel, "Links care plan");
   assert.equal(
     PRODUCT_BEGINNER_COPY.linksHiddenProblemsNote,

@@ -238,6 +238,13 @@ export const PRODUCT_BEGINNER_COPY = {
     "The first website starts after the workspace is ready.",
   firstWebsiteCarePlan:
     "Set up one workspace for your business. After this, you can add the first website and let the portal build a simple website care plan.",
+  fixesAddHelpfulLinkTitle: "Add helpful page link",
+  fixesBetterPageLabel: "Better page to use",
+  fixesLinkTextLabel: "Link text",
+  fixesNoCheckNeeded: "Nothing to check",
+  fixesPageWithLinkLabel: "Page with the link",
+  fixesReplaceStoppedLinkTitle: "Replace link that stopped working",
+  fixesStoppedLinkLabel: "Link that needs help",
   linksHiddenProblemsNote:
     "more link-help items are kept out of this first view so the page stays easier to scan.",
   linksPlanLabel: "Links care plan",
