@@ -2558,3 +2558,19 @@ Implementation:
 - [x] Cover the exact Rank Movement update-panel wording with unit tests.
 - [x] Browser-check Rank Movement update-panel calmness locally.
 - [ ] Browser-check Rank Movement update-panel calmness after deployment.
+
+### Batch ER: Report Change Summary Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs reporting keeps change and audit evidence visible, but tracked-change language can feel like an internal log.
+- A beginner-first report should describe important website changes in client-readable language.
+- The product direction is to make shared updates feel calm and ready to send, not like a technical audit export.
+
+Implementation:
+
+- [x] Centralize report change-summary count and empty-state wording in the product copy helper.
+- [x] Replace tracked changes, No major tracked changes, and No tracked changes wording in private and shared reports.
+- [x] Cover the exact report change-summary wording with unit tests.
+- [x] Browser-check report change-summary calmness locally.
+- [ ] Browser-check report change-summary calmness after deployment.

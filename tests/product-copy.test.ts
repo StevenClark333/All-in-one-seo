@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  formatProductReportChangeTitle,
   formatProductReportTitle,
   getProductNavHelp,
   getProductNavLabel,
@@ -114,6 +115,17 @@ test("uses soft report update wording for client handoffs", () => {
     "Important website changes found during this report period.",
   );
   assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.changeSummaryEmpty,
+    "No important website changes during this report period.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.changeSummaryQuietTitle,
+    "No major website changes",
+  );
+  assert.equal(formatProductReportChangeTitle(0), "No major website changes");
+  assert.equal(formatProductReportChangeTitle(1), "1 important change");
+  assert.equal(formatProductReportChangeTitle(12), "12 important changes");
+  assert.equal(
     getProductReportTitle("example.com"),
     "example.com website update",
   );
@@ -132,7 +144,7 @@ test("uses soft report update wording for client handoffs", () => {
       formatProductReportTitle("Northstar Dental weekly SEO report"),
       formatProductReportTitle("Urban Thread technical SEO report"),
     ].join(" "),
-    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data/,
+    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data|tracked changes|tracked change/,
   );
 });
 

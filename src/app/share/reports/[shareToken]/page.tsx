@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { formatChangeType, getPublicReportData } from "@/lib/reporting";
 import {
+  formatProductReportChangeTitle,
   formatProductReportTitle,
   PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
@@ -71,11 +72,9 @@ export default async function PublicReportPage({
             />
             <StoryTile
               label="What changed"
-              title={
-                summary.changeEvents.length
-                  ? `${summary.changeEvents.length} tracked changes`
-                  : "No major tracked changes"
-              }
+              title={formatProductReportChangeTitle(
+                summary.changeEvents.length,
+              )}
               detail={
                 summary.changeEvents.length
                   ? "The most important changes are summarized below."
@@ -140,7 +139,7 @@ export default async function PublicReportPage({
                 ))
               ) : (
                 <div className="p-8 text-center text-sm text-slate-500">
-                  No tracked changes during this report period.
+                  {PRODUCT_REPORT_UPDATE_COPY.changeSummaryEmpty}
                 </div>
               )}
             </div>

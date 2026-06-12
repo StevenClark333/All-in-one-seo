@@ -74,6 +74,9 @@ export function getProductWorkspaceToolLabel(key: string) {
 export const PRODUCT_REPORT_UPDATE_COPY = {
   changeSummaryDetail:
     "Important website changes found during this report period.",
+  changeSummaryEmpty:
+    "No important website changes during this report period.",
+  changeSummaryQuietTitle: "No major website changes",
   freshScoreDetail:
     "A fresh website progress score is still being prepared for this update.",
   listIntro:
@@ -83,6 +86,12 @@ export const PRODUCT_REPORT_UPDATE_COPY = {
   scheduledTitlePlaceholder: "Regular client website update",
   sharedHeaderLabel: "Shared website update",
 };
+
+export function formatProductReportChangeTitle(count: number) {
+  return count
+    ? `${count.toLocaleString()} important ${count === 1 ? "change" : "changes"}`
+    : PRODUCT_REPORT_UPDATE_COPY.changeSummaryQuietTitle;
+}
 
 export function getProductReportTitle(domain: string) {
   return `${domain} website update`;
