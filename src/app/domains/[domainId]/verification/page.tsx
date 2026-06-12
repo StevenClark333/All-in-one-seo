@@ -9,6 +9,7 @@ import {
   formatVerificationValue,
 } from "@/lib/domain-verification";
 import { getPrisma } from "@/lib/prisma";
+import { PRODUCT_DOMAIN_VERIFICATION_COPY } from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -20,15 +21,14 @@ type VerificationPageProps = {
 
 const verificationMethods = [
   {
-    description:
-      "Best choice for most websites. Add one DNS value and it keeps working across platforms.",
-    help: "Add the generated TXT value to DNS. This is the most durable ownership method.",
+    description: PRODUCT_DOMAIN_VERIFICATION_COPY.durableSetupDescription,
+    help: PRODUCT_DOMAIN_VERIFICATION_COPY.durableSetupHelp,
     method: "DNS_TXT",
-    name: "DNS record",
+    name: PRODUCT_DOMAIN_VERIFICATION_COPY.durableSetupName,
   },
   {
     description:
-      "Use this when you can upload a small file to the website but cannot edit DNS.",
+      "Use this when you can upload a small file to the website but cannot edit domain settings.",
     help: "Create a text file at the specified path on your website and paste in the generated file contents.",
     method: "HTML_FILE",
     name: "Website file",
@@ -374,7 +374,7 @@ export default async function DomainVerificationPage({
                 ) : (
                   <EmptyNote
                     title="No checks yet"
-                    message="Create the setup value, add it to the website or DNS, then run the first check."
+                    message={PRODUCT_DOMAIN_VERIFICATION_COPY.generatedValueEmpty}
                   />
                 )}
               </div>
@@ -401,7 +401,7 @@ function VerificationComfortPlan({
     },
     {
       done: hasGeneratedValue || isDomainVerified,
-      helper: "Copy the value into DNS, your site file, or your page head.",
+      helper: PRODUCT_DOMAIN_VERIFICATION_COPY.setupValueHelper,
       title: "Add one setup value",
     },
     {
@@ -497,9 +497,18 @@ function VerificationInstructions({
 
   return (
     <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
-      <DnsField label="Type" value="TXT" />
-      <DnsField label="Host / name" value={VERIFICATION_RECORD_NAME} />
-      <DnsField label="Value" value={value} />
+      <DnsField
+        label={PRODUCT_DOMAIN_VERIFICATION_COPY.recordKindLabel}
+        value="TXT"
+      />
+      <DnsField
+        label={PRODUCT_DOMAIN_VERIFICATION_COPY.recordNameLabel}
+        value={VERIFICATION_RECORD_NAME}
+      />
+      <DnsField
+        label={PRODUCT_DOMAIN_VERIFICATION_COPY.recordValueLabel}
+        value={value}
+      />
     </div>
   );
 }
@@ -560,7 +569,7 @@ function getVerificationErrorMessage(error: string) {
   const messages: Record<string, string> = {
     "domain-access": "You do not have access to that website.",
     "verification-check-failed":
-      "The ownership check could not run right now. DNS or website checks may fail until the value is in place.",
+      PRODUCT_DOMAIN_VERIFICATION_COPY.checkFailed,
     "verification-generate-failed":
       "A new setup value could not be generated.",
     "verification-invalid": "The ownership request was incomplete.",

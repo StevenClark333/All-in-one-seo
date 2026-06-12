@@ -20,6 +20,7 @@ import {
   PRODUCT_BEGINNER_COPY,
   PRODUCT_BRAND_NAME,
   PRODUCT_CONNECTION_COPY,
+  PRODUCT_DOMAIN_VERIFICATION_COPY,
   PRODUCT_DISPLAY_NAME,
   PRODUCT_GLOBAL_SEARCH_COPY,
   PRODUCT_LINK_FIX_COPY,
@@ -227,6 +228,40 @@ test("uses soft report update wording for client handoffs", () => {
       formatProductReportBrandingStatus("PENDING"),
     ].join(" "),
     /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data|tracked changes|tracked change|No urgent fix|Urgent open|white-label report domains|white-label hostname|Custom domain|DNS verification|Needs DNS help|Waiting for DNS|hostname|TXT record|branded domains/,
+  );
+});
+
+test("uses soft ownership setup wording", () => {
+  assert.equal(
+    PRODUCT_DOMAIN_VERIFICATION_COPY.durableSetupDescription,
+    "Best choice for most websites. Add one setup value and it keeps working across platforms.",
+  );
+  assert.equal(
+    PRODUCT_DOMAIN_VERIFICATION_COPY.durableSetupHelp,
+    "Add the generated setup value where your domain is managed. This is the most durable ownership method.",
+  );
+  assert.equal(
+    PRODUCT_DOMAIN_VERIFICATION_COPY.durableSetupName,
+    "Domain setup value",
+  );
+  assert.equal(
+    PRODUCT_DOMAIN_VERIFICATION_COPY.generatedValueEmpty,
+    "Create the setup value, add it to the website or domain settings, then run the first check.",
+  );
+  assert.equal(
+    PRODUCT_DOMAIN_VERIFICATION_COPY.setupValueHelper,
+    "Copy the value into your domain settings, site file, or page head.",
+  );
+  assert.equal(
+    PRODUCT_DOMAIN_VERIFICATION_COPY.checkFailed,
+    "The ownership check could not run right now. Website or domain-setting checks may fail until the value is in place.",
+  );
+  assert.equal(PRODUCT_DOMAIN_VERIFICATION_COPY.recordKindLabel, "Setup kind");
+  assert.equal(PRODUCT_DOMAIN_VERIFICATION_COPY.recordNameLabel, "Setup name");
+  assert.equal(PRODUCT_DOMAIN_VERIFICATION_COPY.recordValueLabel, "Setup value");
+  assert.doesNotMatch(
+    Object.values(PRODUCT_DOMAIN_VERIFICATION_COPY).join(" "),
+    /DNS|TXT|hostname|Host \/ name|DNS record|generated TXT|edit DNS/i,
   );
 });
 

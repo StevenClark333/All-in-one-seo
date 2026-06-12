@@ -193,6 +193,23 @@ export const PRODUCT_GLOBAL_SEARCH_COPY = {
   importantChangeLabel: "Important change",
 };
 
+export const PRODUCT_DOMAIN_VERIFICATION_COPY = {
+  durableSetupDescription:
+    "Best choice for most websites. Add one setup value and it keeps working across platforms.",
+  durableSetupHelp:
+    "Add the generated setup value where your domain is managed. This is the most durable ownership method.",
+  durableSetupName: "Domain setup value",
+  generatedValueEmpty:
+    "Create the setup value, add it to the website or domain settings, then run the first check.",
+  setupValueHelper:
+    "Copy the value into your domain settings, site file, or page head.",
+  checkFailed:
+    "The ownership check could not run right now. Website or domain-setting checks may fail until the value is in place.",
+  recordKindLabel: "Setup kind",
+  recordNameLabel: "Setup name",
+  recordValueLabel: "Setup value",
+};
+
 export const PRODUCT_BEGINNER_COPY = {
   addWebsiteIntro:
     "Add the website first. After it is saved, the portal will guide you through ownership, check rhythm, and the first website check.",

@@ -3110,3 +3110,19 @@ Implementation:
 - [x] Cover the Search Ideas opportunity reason with a unit test.
 - [x] Runtime-check Search Ideas opportunity reason calmness locally.
 - [ ] Browser-check Search Ideas opportunity reason calmness after deployment.
+
+### Batch FZ: Website Ownership Setup Calmness
+
+Competitive evidence:
+
+- Ahrefs ownership verification asks users to add a TXT record in domain DNS settings, which is precise but technical for first-time users.
+- Semrush domain authentication similarly exposes DNS records and recommends forwarding setup instructions to a technical helper when needed.
+- A beginner-first ownership screen should preserve the exact setup kind, name, and value while saying setup value, domain settings, and ownership check before DNS record, TXT value, host/name, or DNS troubleshooting language.
+
+Implementation:
+
+- [x] Centralize ownership setup helper, method, empty-state, and record-label wording in the product copy helper.
+- [x] Replace visible ownership setup helper text and record labels on the website ownership screen with softer setup language.
+- [x] Cover ownership setup wording with unit tests.
+- [x] Runtime-check ownership setup wording locally.
+- [ ] Browser-check ownership setup wording after deployment.
