@@ -1535,7 +1535,7 @@ function buildAuditOverview(domain: DomainWorkspace) {
         ? "Healthy"
         : latestScore >= 65
           ? "Needs attention"
-          : "High risk",
+          : "Needs care",
     healthDelta:
       previousScore === undefined ? undefined : latestScore - previousScore,
     healthScore: latestScore,
