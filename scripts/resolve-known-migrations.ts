@@ -23,7 +23,9 @@ for (const migration of knownAppliedMigrations) {
   }
 
   if (output.includes("P3008")) {
-    process.stdout.write(output);
+    process.stdout.write(
+      `Migration ${migration} is already marked as applied; continuing.\n`,
+    );
     continue;
   }
 
