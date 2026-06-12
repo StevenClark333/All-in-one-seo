@@ -530,7 +530,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 </span>
                 <div>
                   <h3 className="text-lg font-semibold">
-                    <HelpLabel help="Configure a branded hostname for report share links, such as reports.client.com.">
+                    <HelpLabel help={PRODUCT_REPORT_UPDATE_COPY.brandedLinkHelp}>
                       Branded report link
                     </HelpLabel>
                   </h3>
@@ -553,8 +553,8 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
             >
               <label className="grid gap-2">
                 <span className="text-sm font-medium text-slate-500">
-                  <HelpLabel help="Custom domain where shared reports should be served after DNS verification.">
-                    Hostname
+                  <HelpLabel help={PRODUCT_REPORT_UPDATE_COPY.brandedLinkAddressHelp}>
+                    {PRODUCT_REPORT_UPDATE_COPY.brandedLinkAddressLabel}
                   </HelpLabel>
                 </span>
                 <input
@@ -574,9 +574,9 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
               </Select>
               <div className="flex items-end">
                 <button className="inline-flex h-10 items-center rounded-md bg-orange-600 px-4 text-sm font-medium text-white transition hover:bg-orange-700">
-                  Add branded domain
+                  {PRODUCT_REPORT_UPDATE_COPY.addBrandedLinkAction}
                   <InfoTooltip
-                    label="Create a white-label report hostname and show DNS verification values."
+                    label={PRODUCT_REPORT_UPDATE_COPY.brandedLinkSetupHelp}
                     passive
                     side="left"
                   />
@@ -612,13 +612,13 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                       ) : null}
                     </div>
                     <Meta
-                      help="DNS verification status for this white-label hostname."
+                      help={PRODUCT_REPORT_UPDATE_COPY.brandedLinkStatusHelp}
                       label="Status"
                       value={formatBrandingStatus(domain.status)}
                     />
                     <Meta
                       label="Verified"
-                      help="Date the white-label hostname passed DNS verification."
+                      help={PRODUCT_REPORT_UPDATE_COPY.brandedLinkVerifiedHelp}
                       value={
                         domain.verifiedAt
                           ? domain.verifiedAt.toLocaleDateString()
@@ -652,7 +652,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                 ))
               ) : (
                 <div className="py-8 text-center text-sm text-slate-500">
-                  No white-label report domains yet.
+                  {PRODUCT_REPORT_UPDATE_COPY.brandedLinkEmpty}
                 </div>
               )}
             </div>
@@ -786,7 +786,9 @@ function ReportPlan({
           </h3>
         </div>
         <div className="inline-flex w-fit items-center rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
-          {domainCount ? `${domainCount} branded domains` : "Branding optional"}
+          {domainCount
+            ? `${domainCount} ${PRODUCT_REPORT_UPDATE_COPY.brandedLinkCountLabel}`
+            : "Branding optional"}
         </div>
       </div>
       <div className="mt-4 grid gap-3 lg:grid-cols-3">

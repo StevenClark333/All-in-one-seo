@@ -2881,3 +2881,19 @@ Implementation:
 - [x] Cover Page Detail this-page wording with unit tests.
 - [x] Runtime-check Page Detail this-page calmness locally.
 - [ ] Browser-check Page Detail this-page calmness after deployment.
+
+### Batch FL: Report Branding Share-Link Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep branded report delivery and white-label setup available for agencies, but the setup can feel like infrastructure work.
+- A beginner-first Reports page should say branded share link, share link address, and setup values before white-label domain, hostname, or DNS verification language.
+- The product direction is to make report branding feel like choosing a prettier client link, not configuring a technical domain.
+
+Implementation:
+
+- [x] Centralize Reports branded-link setup labels in the report copy helper.
+- [x] Replace visible white-label domain, hostname, and DNS-verification helper wording in the Reports branding panel.
+- [x] Cover Reports branded-link wording with unit tests.
+- [x] Runtime-check Reports branded-link calmness locally.
+- [ ] Browser-check Reports branded-link calmness after deployment.

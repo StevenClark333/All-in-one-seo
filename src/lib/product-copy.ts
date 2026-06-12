@@ -72,6 +72,20 @@ export function getProductWorkspaceToolLabel(key: string) {
 }
 
 export const PRODUCT_REPORT_UPDATE_COPY = {
+  brandedLinkCountLabel: "branded share links",
+  brandedLinkEmpty: "No branded share links yet.",
+  brandedLinkHelp:
+    "Set up a branded report share link, such as reports.client.com.",
+  brandedLinkSetupHelp:
+    "Create a branded report share link and show the setup values to copy.",
+  brandedLinkStatusHelp:
+    "Setup status for this branded report share link.",
+  brandedLinkVerifiedHelp:
+    "Date the branded report share link became active.",
+  brandedLinkAddressHelp:
+    "Address where shared reports should open after setup is confirmed.",
+  brandedLinkAddressLabel: "Share link address",
+  addBrandedLinkAction: "Add branded link",
   changeSummaryDetail:
     "Important website changes found during this report period.",
   changeSummaryEmpty:

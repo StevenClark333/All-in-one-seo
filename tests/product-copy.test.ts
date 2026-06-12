@@ -93,6 +93,42 @@ test("uses the same soft labels inside website tool navigation", () => {
 
 test("uses soft report update wording for client handoffs", () => {
   assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkCountLabel,
+    "branded share links",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkEmpty,
+    "No branded share links yet.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkHelp,
+    "Set up a branded report share link, such as reports.client.com.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkSetupHelp,
+    "Create a branded report share link and show the setup values to copy.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkStatusHelp,
+    "Setup status for this branded report share link.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkVerifiedHelp,
+    "Date the branded report share link became active.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkAddressHelp,
+    "Address where shared reports should open after setup is confirmed.",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.brandedLinkAddressLabel,
+    "Share link address",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.addBrandedLinkAction,
+    "Add branded link",
+  );
+  assert.equal(
     PRODUCT_REPORT_UPDATE_COPY.listIntro,
     "Turn the latest website progress into a short update someone can read without opening the full website workspace.",
   );
@@ -165,7 +201,7 @@ test("uses soft report update wording for client handoffs", () => {
       formatProductReportTitle("Northstar Dental weekly SEO report"),
       formatProductReportTitle("Urban Thread technical SEO report"),
     ].join(" "),
-    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data|tracked changes|tracked change|No urgent fix|Urgent open/,
+    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data|tracked changes|tracked change|No urgent fix|Urgent open|white-label report domains|white-label hostname|Custom domain|DNS verification|branded domains/,
   );
 });
 
