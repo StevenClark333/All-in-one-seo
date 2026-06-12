@@ -82,15 +82,34 @@ export const PRODUCT_REPORT_UPDATE_COPY = {
   listIntro:
     "Turn the latest website progress into a short update someone can read without opening the full website workspace.",
   manualTitlePlaceholder: "Weekly website update",
+  nextFixQuietTitle: "No quick fix to highlight",
   planHeading: "Send clearer website updates with fewer steps.",
   scheduledTitlePlaceholder: "Regular client website update",
   sharedHeaderLabel: "Shared website update",
+  issueMovementNeedsCareLabel: "Needs care",
+  issueMovementImportantChangesLabel: "Important changes",
 };
 
 export function formatProductReportChangeTitle(count: number) {
   return count
     ? `${count.toLocaleString()} important ${count === 1 ? "change" : "changes"}`
     : PRODUCT_REPORT_UPDATE_COPY.changeSummaryQuietTitle;
+}
+
+export function formatProductReportImportance(value: string) {
+  if (value === "CRITICAL") {
+    return "Needs quick care";
+  }
+
+  if (value === "WARNING") {
+    return "Planned";
+  }
+
+  return value
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 export function getProductReportTitle(domain: string) {

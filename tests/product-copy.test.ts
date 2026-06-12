@@ -4,6 +4,7 @@ import {
   formatProductPageDetailType,
   formatProductPagesFirstAction,
   formatProductReportChangeTitle,
+  formatProductReportImportance,
   formatProductReportTitle,
   getProductNavHelp,
   getProductNavLabel,
@@ -124,9 +125,24 @@ test("uses soft report update wording for client handoffs", () => {
     PRODUCT_REPORT_UPDATE_COPY.changeSummaryQuietTitle,
     "No major website changes",
   );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.nextFixQuietTitle,
+    "No quick fix to highlight",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.issueMovementNeedsCareLabel,
+    "Needs care",
+  );
+  assert.equal(
+    PRODUCT_REPORT_UPDATE_COPY.issueMovementImportantChangesLabel,
+    "Important changes",
+  );
   assert.equal(formatProductReportChangeTitle(0), "No major website changes");
   assert.equal(formatProductReportChangeTitle(1), "1 important change");
   assert.equal(formatProductReportChangeTitle(12), "12 important changes");
+  assert.equal(formatProductReportImportance("CRITICAL"), "Needs quick care");
+  assert.equal(formatProductReportImportance("WARNING"), "Planned");
+  assert.equal(formatProductReportImportance("INFO_NOTE"), "Info Note");
   assert.equal(
     getProductReportTitle("example.com"),
     "example.com website update",
@@ -146,7 +162,7 @@ test("uses soft report update wording for client handoffs", () => {
       formatProductReportTitle("Northstar Dental weekly SEO report"),
       formatProductReportTitle("Urban Thread technical SEO report"),
     ].join(" "),
-    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data|tracked changes|tracked change/,
+    /SEO workspace|SEO update|SEO report|SEO changes|Fresh audit data|tracked changes|tracked change|No urgent fix|Urgent open/,
   );
 });
 

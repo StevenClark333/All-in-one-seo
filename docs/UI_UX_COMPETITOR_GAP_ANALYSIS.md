@@ -2590,3 +2590,19 @@ Implementation:
 - [x] Cover the exact Pages care wording with unit tests.
 - [x] Browser-check Pages care language calmness locally.
 - [ ] Browser-check Pages care language calmness after deployment.
+
+### Batch ET: Report Issue Movement Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit and Ahrefs Site Audit keep audit issues grouped by severity, including error-style priority tabs that help trained SEO teams decide what to fix first.
+- A beginner-first client report should keep the same priority signal while saying needs care and quick fixes instead of urgent open or urgent fix.
+- The product direction is to make report sharing feel like a calm client handoff, not a severity dashboard.
+
+Implementation:
+
+- [x] Centralize report next-fix, issue-movement, and importance badge wording in the product copy helper.
+- [x] Replace urgent fix, urgent open, and urgent severity badge wording in private and shared reports.
+- [x] Cover the exact report issue-movement wording with unit tests.
+- [x] Browser-check report issue-movement calmness locally.
+- [ ] Browser-check report issue-movement calmness after deployment.

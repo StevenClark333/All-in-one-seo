@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { formatChangeType, getPublicReportData } from "@/lib/reporting";
 import {
   formatProductReportChangeTitle,
+  formatProductReportImportance,
   formatProductReportTitle,
   PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
@@ -83,7 +84,10 @@ export default async function PublicReportPage({
             />
             <StoryTile
               label="Next fix"
-              title={topRecommendation?.title ?? "No urgent fix to highlight"}
+              title={
+                topRecommendation?.title ??
+                PRODUCT_REPORT_UPDATE_COPY.nextFixQuietTitle
+              }
               detail={
                 topRecommendation?.recommendation ??
                 "There are no active recommendations in this report scope."
@@ -118,7 +122,7 @@ export default async function PublicReportPage({
                   <article key={change.id} className="p-5">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                        {formatImportance(change.severity)}
+                        {formatProductReportImportance(change.severity)}
                       </span>
                       <span className="text-xs text-slate-500">
                         {change.createdAt.toLocaleDateString()}
@@ -209,11 +213,16 @@ export default async function PublicReportPage({
               <dl className="mt-4 grid gap-4 sm:grid-cols-2">
                 <Meta label="New items" value={summary.newIssues.length} />
                 <Meta label="Fixed items" value={summary.fixedIssues.length} />
-                <Meta label="Urgent open" value={summary.criticalIssues.length} />
+                <Meta
+                  label={PRODUCT_REPORT_UPDATE_COPY.issueMovementNeedsCareLabel}
+                  value={summary.criticalIssues.length}
+                />
                 <Meta label="Planned open" value={summary.warningIssues.length} />
                 {summary.sections.changeSummary ? (
                   <Meta
-                    label="Important changes"
+                    label={
+                      PRODUCT_REPORT_UPDATE_COPY.issueMovementImportantChangesLabel
+                    }
                     value={summary.criticalChanges.length}
                   />
                 ) : null}
@@ -232,18 +241,6 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
-}
-
-function formatImportance(value: string) {
-  if (value === "CRITICAL") {
-    return "Urgent";
-  }
-
-  if (value === "WARNING") {
-    return "Planned";
-  }
-
-  return formatEnum(value);
 }
 
 function formatWebsiteCheckStatus(value: string) {

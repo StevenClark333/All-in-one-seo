@@ -9,6 +9,7 @@ import {
 } from "@/lib/reporting";
 import {
   formatProductReportChangeTitle,
+  formatProductReportImportance,
   formatProductReportTitle,
   PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
@@ -172,7 +173,10 @@ export default async function ReportDetailPage({
               />
               <StoryTile
                 label="Next fix to mention"
-                title={topRecommendation?.title ?? "No urgent fix to highlight"}
+                title={
+                  topRecommendation?.title ??
+                  PRODUCT_REPORT_UPDATE_COPY.nextFixQuietTitle
+                }
                 detail={
                   topRecommendation?.recommendation ??
                   "The report is ready to share once the summary looks right."
@@ -215,7 +219,7 @@ export default async function ReportDetailPage({
                         <article key={change.id} className="p-5">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                              {formatImportance(change.severity)}
+                              {formatProductReportImportance(change.severity)}
                             </span>
                             <span className="text-xs text-slate-500">
                               {change.createdAt.toLocaleDateString()}
@@ -321,7 +325,7 @@ export default async function ReportDetailPage({
                       value={summary.fixedIssues.length}
                     />
                     <Meta
-                      label="Urgent open"
+                      label={PRODUCT_REPORT_UPDATE_COPY.issueMovementNeedsCareLabel}
                       value={summary.criticalIssues.length}
                     />
                     <Meta
@@ -330,7 +334,9 @@ export default async function ReportDetailPage({
                     />
                     {summary.sections.changeSummary ? (
                       <Meta
-                        label="Important changes"
+                        label={
+                          PRODUCT_REPORT_UPDATE_COPY.issueMovementImportantChangesLabel
+                        }
                         value={summary.criticalChanges.length}
                       />
                     ) : null}
@@ -413,18 +419,6 @@ function formatEnum(value: string) {
 
 function getSingle(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
-}
-
-function formatImportance(value: string) {
-  if (value === "CRITICAL") {
-    return "Urgent";
-  }
-
-  if (value === "WARNING") {
-    return "Planned";
-  }
-
-  return formatEnum(value);
 }
 
 function formatReportStatus(value: string) {
