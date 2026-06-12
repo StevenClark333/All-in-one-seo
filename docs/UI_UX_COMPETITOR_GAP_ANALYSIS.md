@@ -2768,7 +2768,7 @@ Implementation:
 - [x] Replace urgent filter, plan, count, and regression wording on the Problems list.
 - [x] Cover Problems list quick-care wording with unit tests.
 - [x] Runtime-check Problems list quick-care calmness locally.
-- [ ] Browser-check Problems list quick-care calmness after deployment.
+- [x] Browser-check Problems list quick-care calmness after deployment.
 
 ### Batch FE: WordPress Connection Retry Calmness
 
@@ -2785,3 +2785,19 @@ Implementation:
 - [x] Cover stored and fallback WordPress connection messages with unit tests.
 - [x] Runtime-check WordPress connection retry calmness locally.
 - [ ] Browser-check WordPress connection retry calmness after deployment.
+
+### Batch FF: Website Check Recap Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep crawl and site-audit recaps organized by severity and changed-page signals for expert triage.
+- A beginner-first recap should keep the same signal while saying needs quick care and nothing needs quick care instead of urgent follow-up.
+- The product direction is to make each finished website check feel like a calm recap with an obvious next step.
+
+Implementation:
+
+- [x] Centralize the quiet website-check recap next-step copy in the product copy helper.
+- [x] Replace urgent follow-up and urgent change-badge wording in the Website check recap.
+- [x] Cover Website check recap quick-care wording with unit tests.
+- [x] Runtime-check Website check recap quick-care calmness locally.
+- [ ] Browser-check Website check recap quick-care calmness after deployment.

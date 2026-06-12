@@ -188,6 +188,8 @@ export const PRODUCT_BEGINNER_COPY = {
   dashboardOpenWebsites: "Open websites",
   dashboardPlanFirstStep: "Handle quick-care problems before browsing reports.",
   connectInConnections: "Connect in Connections",
+  crawlRecapQuietNextStep:
+    "Nothing needs quick care right now. You can move on or open details only if you want them.",
   dashboardProjectListDetail:
     "Start with your website list to see which websites need attention today.",
   dashboardRankShortcut: "Watch search terms",

@@ -10,6 +10,10 @@ import {
   formatPageMetaText,
   formatPageWordCount,
 } from "@/lib/page-display-labels";
+import {
+  formatProductWorkspaceProblemSeverity,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 import { getPrisma } from "@/lib/prisma";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
@@ -66,7 +70,7 @@ export default async function CrawlRunPage({ params }: CrawlRunPageProps) {
         ? "Start with the page changes before opening every detail."
         : crawlRun.pagesFailed > 0
           ? "Review the pages that need another look, then run a fresh check."
-          : "No urgent follow-up is needed right now.";
+          : PRODUCT_BEGINNER_COPY.crawlRecapQuietNextStep;
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] px-5 py-6 text-slate-950 sm:px-8 lg:px-10">
@@ -450,13 +454,7 @@ function formatSetupFileType(value: string) {
 }
 
 function formatChangeImportance(severity: string) {
-  const importanceLabels: Record<string, string> = {
-    CRITICAL: "Urgent",
-    WARNING: "Planned",
-    INFO: "Idea",
-  };
-
-  return importanceLabels[severity] ?? "Idea";
+  return formatProductWorkspaceProblemSeverity(severity);
 }
 
 function formatChangeType(value: string) {

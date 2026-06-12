@@ -484,6 +484,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Start with your website list to see which websites need attention today.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.crawlRecapQuietNextStep,
+    "Nothing needs quick care right now. You can move on or open details only if you want them.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardRankShortcut,
     "Watch search terms",
   );
