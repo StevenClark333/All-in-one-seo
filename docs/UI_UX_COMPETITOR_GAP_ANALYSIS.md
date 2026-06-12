@@ -3195,4 +3195,5 @@ Implementation:
 - [x] Preserve the exact update-link and key values needed by the plugin.
 - [x] Cover WordPress update-link wording with unit tests.
 - [x] Runtime-check WordPress update-link calmness locally.
+- [x] Browser-check WordPress update-link calmness locally.
 - [ ] Browser-check WordPress update-link calmness after deployment.

@@ -1919,8 +1919,11 @@ function readConfigString(value: unknown, key: string) {
 function getFriendlyInstallLabel(label: string) {
   const labels: Record<string, string> = {
     "callback url": "UPDATE LINK",
+    "connection key": "CONNECTION KEY",
     "receiver api key": "CONNECTION KEY",
     "receiver endpoint": "WORDPRESS UPDATE LINK",
+    "return link": "RETURN LINK",
+    "wordpress update link": "WORDPRESS UPDATE LINK",
   };
 
   return labels[label.toLowerCase()] ?? label;
@@ -1930,9 +1933,15 @@ function getFriendlyInstallHelp(label: string) {
   const help: Record<string, string> = {
     "callback url":
       "This is where WordPress tells the portal that a fix was applied or reviewed.",
+    "connection key":
+      "Paste this key in WordPress so the portal knows the message came from the right site.",
     "receiver api key":
       "Paste this key in WordPress so the portal knows the message came from the right site.",
     "receiver endpoint":
+      "Save this WordPress update link here, then test the connection before sending fixes.",
+    "return link":
+      "This is where WordPress tells the portal that a fix was applied or reviewed.",
+    "wordpress update link":
       "Save this WordPress update link here, then test the connection before sending fixes.",
   };
 
@@ -1953,6 +1962,7 @@ function getFriendlyInstallValue(value: string) {
 
 function getFriendlyWordPressStepLabel(label: string) {
   const labels: Record<string, string> = {
+    "Connection key generated": "Connection key ready",
     "Fix delivery enabled": "Fix sending ready",
     "Receiver endpoint saved": "Update link saved",
     "Receiver key generated": "Connection key ready",
@@ -1968,7 +1978,10 @@ function getFriendlyWordPressStepDetail(detail: string) {
     .replaceAll("receiver test", "connection test")
     .replaceAll("receiver", "connection")
     .replaceAll("endpoint", "update link")
-    .replaceAll("key", "connection key")
+    .replaceAll("API key", "connection key")
+    .replaceAll("api key", "connection key")
+    .replaceAll("receiver key", "connection key")
+    .replaceAll("Receiver key", "Connection key")
     .replaceAll("Run Test connection", "Run Test connection")
     .replaceAll("Fix Center", "Fixes");
 }
