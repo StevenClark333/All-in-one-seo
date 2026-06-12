@@ -2431,3 +2431,19 @@ Implementation:
 - [x] Cover navigation help and loading labels with unit tests.
 - [x] Browser-check loading and navigation help calmness locally.
 - [ ] Browser-check loading and navigation help calmness after deployment.
+
+### Batch EJ: Search Ideas Keyword Wording Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs use keyword research, tracked keyword, and rank-tracking language because their workflows are built for trained marketers.
+- A beginner-first Search Ideas page should keep the same demand and competitor evidence while saying search ideas, search terms, and Google spots.
+- The product direction is to make the page feel like choosing one helpful writing idea, not managing a keyword research database.
+
+Implementation:
+
+- [x] Centralize Search Ideas filter, setup, visibility, empty-state, and competitor-gap wording in the product copy helper.
+- [x] Replace keyword opportunities, Adjust keyword filters, Import keyword data, Choose keywords to watch, Pick one keyword to improve, and Rank Tracking references with search-idea/search-term wording.
+- [x] Cover the exact Search Ideas keyword wording with unit tests.
+- [x] Browser-check Search Ideas keyword wording calmness locally.
+- [ ] Browser-check Search Ideas keyword wording calmness after deployment.

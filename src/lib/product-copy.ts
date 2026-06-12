@@ -235,16 +235,32 @@ export const PRODUCT_BEGINNER_COPY = {
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
   searchIdeasContentGapHelp:
     "Search terms with impressions but weak clicks or rankings.",
+  searchIdeasCompetitorGapEmpty:
+    "Add competitors and Google spots in Rank Movement to reveal search terms they win.",
+  searchIdeasCompetitorGapIntro:
+    "Watched search terms where another page is ahead and yours may need a clearer answer.",
   searchIdeasDetailEmpty:
     "No Search Console search terms match this view.",
   searchIdeasDetailIntro:
     "Imported search terms kept for optional deeper review.",
+  searchIdeasDemandEmpty:
+    "Connect Google Search Console search-term data to show what people want most.",
+  searchIdeasFilterTitle: "Adjust search idea filters",
   searchIdeasHiddenTermsNote:
     "more search terms are available through filters or exported reporting.",
   searchIdeasMetricOpportunityHelp:
     "High-demand search ideas found from current and declining search terms.",
+  searchIdeasNoOpportunity:
+    "No search ideas match this view yet. Try a wider date range or website filter.",
   searchIdeasPlanIntro:
     "Pick one useful search idea, create a simple brief, then compare pages only when it helps. Deeper search-term detail is optional.",
+  searchIdeasSetupDetail:
+    "Connect Google Search Console so search ideas come from real searches instead of guesswork.",
+  searchIdeasSetupTitle: "Connect search data",
+  searchIdeasTrackTermsTitle: "Choose search terms to watch",
+  searchIdeasImproveTitle: "Pick one search idea to improve",
+  searchIdeasVisibilityHelp:
+    "How visible the selected website is across these search terms.",
   searchIdeasSearchTermGroupsHelp:
     "Unique search-term groups with imported Search Console metrics.",
   searchIdeasSearchTermsLabel: "Search terms",

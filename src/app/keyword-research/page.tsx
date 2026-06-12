@@ -199,7 +199,7 @@ export default async function KeywordResearchPage({
               value={data.contentGaps.length}
             />
             <Metric
-              help="Organic visibility for the selected keyword set."
+              help={PRODUCT_BEGINNER_COPY.searchIdeasVisibilityHelp}
               label="Visibility"
               suffix="%"
               value={data.summary.visibility}
@@ -233,8 +233,7 @@ export default async function KeywordResearchPage({
                     ))
                 ) : (
                   <p className="rounded-md bg-slate-50 p-5 text-sm text-slate-500">
-                    Import Search Console search-term data to populate intent
-                    demand.
+                    {PRODUCT_BEGINNER_COPY.searchIdeasDemandEmpty}
                   </p>
                 )}
               </div>
@@ -268,7 +267,7 @@ export default async function KeywordResearchPage({
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-lg font-semibold">
-                    Adjust keyword filters
+                    {PRODUCT_BEGINNER_COPY.searchIdeasFilterTitle}
                   </h3>
                   <p className="mt-1 text-sm text-slate-500">
                     Open this only when you want a specific website, search
@@ -465,7 +464,7 @@ function OpportunityList({
           ))
         ) : (
           <p className="p-8 text-center text-sm text-slate-500">
-            No keyword opportunities are available for this filter set.
+            {PRODUCT_BEGINNER_COPY.searchIdeasNoOpportunity}
           </p>
         )}
       </div>
@@ -595,8 +594,7 @@ function CompetitorGapList({
       <div className="border-b border-slate-200 p-5">
         <h3 className="text-lg font-semibold">Competitor content gap</h3>
         <p className="mt-1 text-sm text-slate-500">
-          Tracked keywords where a competitor ranks and your website trails or
-          has no owned position.
+          {PRODUCT_BEGINNER_COPY.searchIdeasCompetitorGapIntro}
         </p>
       </div>
       <div className="divide-y divide-slate-100">
@@ -620,8 +618,7 @@ function CompetitorGapList({
           ))
         ) : (
           <p className="p-8 text-center text-sm text-slate-500">
-            Add competitors and competitor rank observations in Rank Tracking to
-            reveal competitor gaps.
+            {PRODUCT_BEGINNER_COPY.searchIdeasCompetitorGapEmpty}
           </p>
         )}
       </div>
@@ -805,11 +802,10 @@ function buildKeywordPlan({
         badge: "Setup",
         badgeClass:
           "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
-        detail:
-          "Connect Google Search Console so keyword ideas come from real searches instead of guesswork.",
+        detail: PRODUCT_BEGINNER_COPY.searchIdeasSetupDetail,
         href: "/integrations",
         icon: Search,
-        title: "Import keyword data",
+        title: PRODUCT_BEGINNER_COPY.searchIdeasSetupTitle,
       },
       {
         action: "Track terms",
@@ -820,7 +816,7 @@ function buildKeywordPlan({
           "Add the search terms that matter to your business, then compare them with new Search Console imports.",
         href: `/rank-tracking${domainSuffix}`,
         icon: Target,
-        title: "Choose keywords to watch",
+        title: PRODUCT_BEGINNER_COPY.searchIdeasTrackTermsTitle,
       },
     ];
   }
@@ -836,7 +832,7 @@ function buildKeywordPlan({
         : "Use the best demand signals to choose the next page or post to improve.",
       href: `/recommendations${domainSuffix}`,
       icon: Sparkles,
-      title: "Pick one keyword to improve",
+      title: PRODUCT_BEGINNER_COPY.searchIdeasImproveTitle,
     },
     {
       action: "Create brief",
@@ -858,7 +854,7 @@ function buildKeywordPlan({
         "rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700",
       detail: competitorGap
         ? `${competitorGap.competitorDomain} is ahead for "${competitorGap.keyword}". Use that page as a reference, then make yours clearer.`
-        : "Add competitors in Rank Tracking to reveal search terms they win and you can target.",
+        : PRODUCT_BEGINNER_COPY.searchIdeasCompetitorGapEmpty,
       href: `/competitive-analysis${domainSuffix}`,
       icon: MousePointerClick,
       title: "Learn from competitor wins",
