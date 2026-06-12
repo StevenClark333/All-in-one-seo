@@ -1,7 +1,11 @@
 import { Bell, CheckCircle2, Clock, Play, ShieldCheck } from "lucide-react";
 import { createAlertRuleAction, evaluateAlertsAction } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
-import { formatAlertDeliveryStatus } from "@/lib/alert-display-labels";
+import {
+  formatAlertDeliveryStatus,
+  formatAlertImportance,
+  formatAlertWatchedChange,
+} from "@/lib/alert-display-labels";
 import { getAlertCenterData } from "@/lib/alerts";
 
 export const dynamic = "force-dynamic";
@@ -114,14 +118,14 @@ export default async function AlertsPage() {
               <Select label="Change to watch" name="eventType">
                 {eventTypes.map((eventType) => (
                   <option key={eventType} value={eventType}>
-                    {formatWatchedChange(eventType)}
+                    {formatAlertWatchedChange(eventType)}
                   </option>
                 ))}
               </Select>
               <Select label="Importance" name="severityThreshold">
                 {severities.map((severity) => (
                   <option key={severity} value={severity}>
-                    {formatImportance(severity)}
+                    {formatAlertImportance(severity)}
                   </option>
                 ))}
               </Select>
@@ -215,12 +219,12 @@ export default async function AlertsPage() {
                           {rule.client?.name ??
                             rule.domain?.domain ??
                             "Workspace-wide"}{" "}
-                          - {formatWatchedChange(rule.eventType)}
+                          - {formatAlertWatchedChange(rule.eventType)}
                         </p>
                       </div>
                       <Meta
                         label="Importance"
-                        value={formatImportance(rule.severityThreshold)}
+                        value={formatAlertImportance(rule.severityThreshold)}
                       />
                       <Meta
                         label="Sends by"
@@ -446,29 +450,6 @@ function EmptyState({ body, title }: { body: string; title: string }) {
       </p>
     </div>
   );
-}
-
-function formatWatchedChange(value: string) {
-  const labels: Record<string, string> = {
-    ANY_CRITICAL_CHANGE: "Any urgent change",
-    CANONICAL_CHANGED: "Preferred page changed",
-    META_DESCRIPTION_CHANGED: "Description changed",
-    ROBOTS_CHANGED: "Search access changed",
-    STATUS_CODE_CHANGED: "Page availability changed",
-    TITLE_CHANGED: "Title changed",
-  };
-
-  return labels[value] ?? formatEnum(value);
-}
-
-function formatImportance(value: string) {
-  const labels: Record<string, string> = {
-    CRITICAL: "Urgent",
-    SUGGESTION: "Idea",
-    WARNING: "Planned",
-  };
-
-  return labels[value] ?? formatEnum(value);
 }
 
 function formatSendChannel(value: string) {

@@ -2671,3 +2671,36 @@ Implementation:
 - [x] Cover the exact dashboard quick-care wording with unit tests.
 - [x] Browser-check dashboard quick-care calmness locally.
 - [ ] Browser-check dashboard quick-care calmness after deployment.
+
+### Batch EY: Report Export Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep severity and issue movement visible in report and export workflows for expert triage.
+- A beginner-first client handoff should keep the same priority signal while saying quick-care problems, important changes, and needs quick care.
+- The product direction is to make report PDFs and CSV handoffs feel client-ready instead of like a severity export.
+
+Implementation:
+
+- [x] Replace urgent problem and urgent change wording in generated report PDF text.
+- [x] Replace urgent importance wording in problem CSV exports.
+- [x] Cover report PDF text and CSV importance wording with unit tests.
+- [x] Runtime-check report/export quick-care calmness locally.
+- [ ] Runtime-check report/export quick-care calmness after deployment.
+
+
+### Batch EZ: Alert Rule Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs alerting patterns preserve important change monitoring, but expert severity names can make every alert feel like an emergency.
+- A beginner-first alert setup should say important change and needs quick care before raw critical or urgent labels.
+- The product direction is to make alert rules feel like helpful watching, not an incident console.
+
+Implementation:
+
+- [x] Centralize alert importance and watched-change labels in the alert display helper.
+- [x] Replace urgent change and urgent importance wording in alert rule setup and saved-rule rows.
+- [x] Cover alert rule labels with unit tests.
+- [x] Browser-check alert rule quick-care calmness locally.
+- [ ] Browser-check alert rule quick-care calmness after deployment.

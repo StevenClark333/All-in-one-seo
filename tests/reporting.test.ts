@@ -109,7 +109,10 @@ test("summarizes report issues, scores, crawls, and recommendations", () => {
   assert.ok(
     pdfLines.some((line) => line.includes("Problems ready to review: 1")),
   );
-  assert.ok(pdfLines.some((line) => line.includes("Urgent problems: 1")));
+  assert.ok(
+    pdfLines.some((line) => line.includes("Quick-care problems: 1")),
+  );
+  assert.ok(pdfLines.some((line) => line.includes("Important changes: 1")));
   assert.ok(pdfLines.some((line) => line.includes("Website changes found: 1")));
   assert.ok(pdfLines.some((line) => line.includes("Prepared for: Client Co")));
   assert.ok(
@@ -122,6 +125,7 @@ test("summarizes report issues, scores, crawls, and recommendations", () => {
   );
   assert.ok(!pdfLines.some((line) => line.includes("Client/domain")));
   assert.ok(!pdfLines.some((line) => line.includes("Open issues")));
+  assert.ok(!pdfLines.some((line) => line.includes("Urgent")));
   assert.ok(!pdfLines.some((line) => line.includes("empty")));
 });
 

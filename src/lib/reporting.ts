@@ -539,7 +539,7 @@ export function buildReportPdfText(report: ReportDetail) {
   if (summary.sections.issueMovement) {
     lines.push(
       `Problems ready to review: ${summary.openIssues.length}`,
-      `Urgent problems: ${summary.criticalIssues.length}`,
+      `Quick-care problems: ${summary.criticalIssues.length}`,
       `New problems: ${summary.newIssues.length}`,
       `Fixed problems: ${summary.fixedIssues.length}`,
     );
@@ -548,7 +548,7 @@ export function buildReportPdfText(report: ReportDetail) {
   if (summary.sections.changeSummary) {
     lines.push(
       `Website changes found: ${summary.changeEvents.length}`,
-      `Urgent changes: ${summary.criticalChanges.length}`,
+      `Important changes: ${summary.criticalChanges.length}`,
       "",
       "Website change summary",
       ...summary.changeEvents

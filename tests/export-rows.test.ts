@@ -32,7 +32,7 @@ test("builds problem export rows with beginner-friendly headers", () => {
     "website",
   ]);
   assert.equal(row.website, "urbanthread.store");
-  assert.equal(row.importance, "Urgent");
+  assert.equal(row.importance, "Needs quick care");
   assert.equal(row.progress, "Ready to review");
   assert.ok(!Object.hasOwn(row, "domain"));
   assert.ok(!Object.hasOwn(row, "issueType"));

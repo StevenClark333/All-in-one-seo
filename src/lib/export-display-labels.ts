@@ -11,7 +11,7 @@ export function formatExportOwner(value: string | null | undefined) {
 
 export function formatExportImportance(value: string | null | undefined) {
   if (value === "CRITICAL") {
-    return "Urgent";
+    return "Needs quick care";
   }
 
   if (value === "WARNING") {

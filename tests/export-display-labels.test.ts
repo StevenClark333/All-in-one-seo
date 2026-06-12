@@ -32,7 +32,7 @@ test("formats exported ownership gaps as calm setup labels", () => {
 });
 
 test("formats exported problem importance as plain action labels", () => {
-  assert.equal(formatExportImportance("CRITICAL"), "Urgent");
+  assert.equal(formatExportImportance("CRITICAL"), "Needs quick care");
   assert.equal(formatExportImportance("WARNING"), "Planned");
   assert.equal(formatExportImportance("SUGGESTION"), "Idea");
   assert.equal(formatExportImportance(null), "Idea");
