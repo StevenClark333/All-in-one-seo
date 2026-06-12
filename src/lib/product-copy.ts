@@ -282,8 +282,15 @@ export const PRODUCT_BEGINNER_COPY = {
     "Use search ideas to create or improve pages before the next search import.",
   searchGrowthNoDropDetail:
     "No clear search-term drop in this range. Keep watching the next import.",
+  searchGrowthMoreDetailHidden:
+    "more search items are available through filters or saved reporting.",
+  searchGrowthMoreDetailIntro:
+    "Open the full search-term and page tables when you want to compare more details.",
+  searchGrowthMoreDetailTitle: "More search detail",
+  searchGrowthShowTablesAction: "Show details",
   searchGrowthSetupDetail:
     "Connect Google Search Console so this page can show clicks, visits, Google spots, and easy growth opportunities.",
+  searchGrowthTableClickRateLabel: "Click rate",
   searchGrowthTrackAction: "Watch search terms",
   searchGrowthTrackDetail:
     "Choose the search terms you care about first, then compare them with Search Console data after import.",

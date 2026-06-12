@@ -590,8 +590,28 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "No clear search-term drop in this range. Keep watching the next import.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.searchGrowthMoreDetailHidden,
+    "more search items are available through filters or saved reporting.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchGrowthMoreDetailIntro,
+    "Open the full search-term and page tables when you want to compare more details.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchGrowthMoreDetailTitle,
+    "More search detail",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchGrowthShowTablesAction,
+    "Show details",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.searchGrowthSetupDetail,
     "Connect Google Search Console so this page can show clicks, visits, Google spots, and easy growth opportunities.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchGrowthTableClickRateLabel,
+    "Click rate",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchGrowthTrackAction,
@@ -607,6 +627,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available/,
   );
 });

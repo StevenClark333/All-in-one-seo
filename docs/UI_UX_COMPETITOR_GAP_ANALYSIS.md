@@ -2510,3 +2510,19 @@ Implementation:
 - [x] Cover the exact Search Growth plan wording with unit tests.
 - [x] Browser-check Search Growth plan keyword calmness locally.
 - [ ] Browser-check Search Growth plan keyword calmness after deployment.
+
+### Batch EO: Search Growth Detail Table Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep CTR, position, and deeper search tables available for analysis, but those labels assume the user already knows marketing shorthand.
+- A beginner-first Search Growth page should preserve the deeper table while using plain labels like click rate and search detail.
+- The product direction is to make optional search tables feel like helpful detail, not an expert analytics report.
+
+Implementation:
+
+- [x] Centralize Search Growth detail-table wording in the product copy helper.
+- [x] Replace CTR, More search data, Show tables, and more rows wording with softer detail language.
+- [x] Cover the exact Search Growth detail-table wording with unit tests.
+- [x] Browser-check Search Growth detail-table calmness locally.
+- [ ] Browser-check Search Growth detail-table calmness after deployment.

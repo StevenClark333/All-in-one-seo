@@ -320,14 +320,15 @@ export default async function SearchPerformancePage({
             <summary className="cursor-pointer list-none border-b border-slate-100 p-5">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold">More search data</h3>
+                  <h3 className="text-lg font-semibold">
+                    {PRODUCT_BEGINNER_COPY.searchGrowthMoreDetailTitle}
+                  </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Open the full search-term and page tables when you want to
-                    compare the deeper numbers.
+                    {PRODUCT_BEGINNER_COPY.searchGrowthMoreDetailIntro}
                   </p>
                 </div>
                 <span className="mt-2 text-sm font-semibold text-orange-700 sm:mt-0">
-                  Show tables
+                  {PRODUCT_BEGINNER_COPY.searchGrowthShowTablesAction}
                 </span>
               </div>
             </summary>
@@ -480,7 +481,9 @@ function RankingTable({
               <th className="px-5 py-3 font-semibold">{label}</th>
               <th className="px-5 py-3 font-semibold">Visits</th>
               <th className="px-5 py-3 font-semibold">Times seen</th>
-              <th className="px-5 py-3 font-semibold">CTR</th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.searchGrowthTableClickRateLabel}
+              </th>
               <th className="px-5 py-3 font-semibold">Spot</th>
             </tr>
           </thead>
@@ -512,8 +515,8 @@ function RankingTable({
                       className="px-5 py-4 text-sm text-slate-500"
                       colSpan={5}
                     >
-                      {hiddenCount} more rows are available through filters or
-                      saved reporting.
+                      {hiddenCount}{" "}
+                      {PRODUCT_BEGINNER_COPY.searchGrowthMoreDetailHidden}
                     </td>
                   </tr>
                 ) : null}
