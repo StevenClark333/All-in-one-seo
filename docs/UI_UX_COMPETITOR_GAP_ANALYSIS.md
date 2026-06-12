@@ -3095,3 +3095,18 @@ Implementation:
 - [x] Cover local recommendation label calmness with unit tests.
 - [x] Runtime-check local recommendation label calmness locally.
 - [ ] Browser-check local recommendation label calmness after deployment.
+
+### Batch FY: Search Ideas Opportunity Reason Calmness
+
+Competitive evidence:
+
+- Ahrefs treats ranking positions just below the top results as practical low-hanging-fruit opportunities for trained teams.
+- Semrush keeps internal linking as an expert optimization tactic for improving page performance.
+- A beginner-first Search Ideas opportunity should preserve that same growth signal while saying helpful page links before internal links or link-building terminology.
+
+Implementation:
+
+- [x] Replace the Search Ideas opportunity reason phrase "internal links" with "helpful page links."
+- [x] Cover the Search Ideas opportunity reason with a unit test.
+- [x] Runtime-check Search Ideas opportunity reason calmness locally.
+- [ ] Browser-check Search Ideas opportunity reason calmness after deployment.

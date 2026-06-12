@@ -42,7 +42,12 @@ test("builds keyword opportunities from high-demand low-ctr query groups", () =>
 
   assert.equal(opportunities[0].key, "best seo audit tool");
   assert.equal(opportunities[0].intent, "commercial");
+  assert.equal(
+    opportunities[0].reason,
+    "Close enough to improve with focused content and helpful page links.",
+  );
   assert.ok(opportunities[0].opportunityScore > 20);
+  assert.doesNotMatch(opportunities[0].reason, /internal links/i);
 });
 
 test("detects content gaps for visible queries with weak clicks or rankings", () => {

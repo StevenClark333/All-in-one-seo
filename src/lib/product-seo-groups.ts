@@ -491,7 +491,7 @@ function buildOpportunityReason(group: SearchPerformanceGroup) {
   }
 
   if (group.avgPosition >= 4 && group.avgPosition <= 20) {
-    return "Close enough to improve with focused content and internal links.";
+    return "Close enough to improve with focused content and helpful page links.";
   }
 
   if (group.ctr < 0.02) {
