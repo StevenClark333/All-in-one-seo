@@ -18,6 +18,10 @@ import {
   formatPageResponse,
   formatPageWordCount,
 } from "@/lib/page-display-labels";
+import {
+  formatProductPageDetailType,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +39,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
 
   const latestSnapshot = page.snapshots.at(0);
   const openIssues = page.issues.filter((issue) => issue.status !== "FIXED");
-  const criticalIssues = openIssues.filter(
+  const importantIssues = openIssues.filter(
     (issue) => issue.severity === "CRITICAL",
   ).length;
   const firstIssue = openIssues.at(0);
@@ -99,7 +103,10 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
               value={formatPageResponse(latestSnapshot?.statusCode)}
             />
             <Metric label="Open problems" value={openIssues.length} />
-            <Metric label="Urgent problems" value={criticalIssues} />
+            <Metric
+              label={PRODUCT_BEGINNER_COPY.pagesImportantCountLabel}
+              value={importantIssues}
+            />
             <Metric
               label="Helpful links"
               value={`${page.incomingLinks.length} in / ${page.outgoingLinks.length} out`}
@@ -177,7 +184,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                         <div>
                           <p className="font-semibold">{issue.title}</p>
                           <p className="mt-1 text-sm text-slate-500">
-                            {formatIssueType(issue.issueType)}
+                            {formatProductPageDetailType(issue.issueType)}
                           </p>
                         </div>
                         <Meta
@@ -279,7 +286,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                             className="rounded-md border border-slate-200 bg-slate-50 p-3"
                           >
                             <p className="text-sm font-semibold">
-                              {formatIssueType(event.changeType)}
+                              {formatProductPageDetailType(event.changeType)}
                             </p>
                             <p className="mt-1 text-xs text-slate-500">
                               {event.createdAt.toLocaleString()}
@@ -288,7 +295,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                         ))
                       ) : (
                         <p className="text-sm text-slate-500">
-                          No tracked page changes yet.
+                          {PRODUCT_BEGINNER_COPY.pagesPageChangesEmpty}
                         </p>
                       )}
                     </div>
@@ -391,7 +398,7 @@ function PageFocusPlan({
   const plan = [
     {
       detail: firstIssue
-        ? `${getImportanceLabel(firstIssue.severity)}: ${formatIssueType(
+        ? `${getImportanceLabel(firstIssue.severity)}: ${formatProductPageDetailType(
             firstIssue.issueType,
           )}`
         : "No open page problem is waiting right now.",
@@ -402,7 +409,7 @@ function PageFocusPlan({
         <CheckCircle2 className="size-4" aria-hidden="true" />
       ),
       label: firstIssue ? "Fix this first" : "Page looks calm",
-      value: firstIssue?.title ?? "No urgent fix",
+      value: firstIssue?.title ?? PRODUCT_BEGINNER_COPY.pagesNoQuickFix,
     },
     {
       detail: pageBasicsReady
@@ -491,7 +498,7 @@ function Meta({ label, value }: { label: string; value: React.ReactNode }) {
 
 function getImportanceLabel(value: string) {
   if (value === "CRITICAL") {
-    return "Urgent";
+    return "Needs quick care";
   }
 
   if (value === "WARNING") {
@@ -526,13 +533,6 @@ function getSearchVisibilityLabel(value: string | null | undefined) {
 function formatEnum(value: string) {
   return value
     .toLowerCase()
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
-function formatIssueType(value: string) {
-  return value
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");

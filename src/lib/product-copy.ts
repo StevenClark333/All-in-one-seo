@@ -176,6 +176,19 @@ export const PRODUCT_BEGINNER_COPY = {
   openConnections: "Open Connections",
   pagesContentCheckDetail:
     "Page titles are the easiest place to check before reviewing the rest of the page details.",
+  pagesFirstActionQuiet: "No page needs quick care",
+  pagesFirstActionSomeProblems: "pages have fixable items",
+  pagesFirstActionNeedsCare: "pages need quick care",
+  pagesImportantCountLabel: "Need care",
+  pagesImportantGroupLabel: "need care",
+  pagesMetricNeedsCare: "Pages needing care",
+  pagesNoQuickFix: "No quick fix waiting",
+  pagesOpenProblemsLabel: "Open problems",
+  pagesPageChangesEmpty: "No important page changes yet.",
+  pagesPlanDetail:
+    "Open the page list and start with pages that need the quickest care.",
+  pagesPlanIntro:
+    "This view is focused on {scope}. Check the pages needing care first, then use patterns when one repeated fix can help a whole group.",
   passwordResetReturn:
     "Use at least 8 characters. Once saved, you can sign in again and keep working from your website care workspace.",
   rankAdjustViewDetail:
@@ -339,3 +352,52 @@ export const PRODUCT_BEGINNER_COPY = {
   workspaceSearchVisibilityHelp:
     "How visible this website is across imported Google Search Console search terms.",
 };
+
+export function formatProductPagesFirstAction(input: {
+  pagesNeedingCare: number;
+  pagesWithProblems: number;
+}) {
+  if (input.pagesNeedingCare > 0) {
+    return `${input.pagesNeedingCare.toLocaleString()} ${
+      PRODUCT_BEGINNER_COPY.pagesFirstActionNeedsCare
+    }`;
+  }
+
+  if (input.pagesWithProblems > 0) {
+    return `${input.pagesWithProblems.toLocaleString()} ${
+      PRODUCT_BEGINNER_COPY.pagesFirstActionSomeProblems
+    }`;
+  }
+
+  return PRODUCT_BEGINNER_COPY.pagesFirstActionQuiet;
+}
+
+export function formatProductPageDetailType(value: string) {
+  const normalized = value.toLowerCase();
+
+  if (normalized.includes("critical") || normalized.includes("regression")) {
+    return "Important page change";
+  }
+
+  if (normalized.includes("noindex") || normalized.includes("robots")) {
+    return "Search visibility setting";
+  }
+
+  if (normalized.includes("canonical")) {
+    return "Preferred page setting";
+  }
+
+  if (normalized.includes("schema")) {
+    return "Page detail";
+  }
+
+  if (normalized.includes("title") || normalized.includes("description")) {
+    return "Search result text";
+  }
+
+  return value
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}

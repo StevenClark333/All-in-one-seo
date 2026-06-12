@@ -2574,3 +2574,19 @@ Implementation:
 - [x] Cover the exact report change-summary wording with unit tests.
 - [x] Browser-check report change-summary calmness locally.
 - [ ] Browser-check report change-summary calmness after deployment.
+
+### Batch ES: Pages Care Language Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs surface critical issues and urgent page groups for trained SEO teams, but that framing can feel alarming to a beginner.
+- A beginner-first Pages area should still preserve the same priority signal while saying pages needing care and important page changes.
+- The product direction is to make page review feel like a short care plan, not a technical severity dashboard.
+
+Implementation:
+
+- [x] Centralize Pages plan, metric, importance, and page-change empty-state wording in the product copy helper.
+- [x] Replace critical-pages, urgent-pages, urgent-problems, and tracked-page-change language in Pages list and detail views.
+- [x] Cover the exact Pages care wording with unit tests.
+- [x] Browser-check Pages care language calmness locally.
+- [ ] Browser-check Pages care language calmness after deployment.

@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  formatProductPageDetailType,
+  formatProductPagesFirstAction,
   formatProductReportChangeTitle,
   formatProductReportTitle,
   getProductNavHelp,
@@ -282,6 +284,70 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   assert.equal(
     PRODUCT_BEGINNER_COPY.pagesContentCheckDetail,
     "Page titles are the easiest place to check before reviewing the rest of the page details.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesFirstActionQuiet,
+    "No page needs quick care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesFirstActionSomeProblems,
+    "pages have fixable items",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesFirstActionNeedsCare,
+    "pages need quick care",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.pagesImportantCountLabel, "Need care");
+  assert.equal(PRODUCT_BEGINNER_COPY.pagesImportantGroupLabel, "need care");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesMetricNeedsCare,
+    "Pages needing care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesNoQuickFix,
+    "No quick fix waiting",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.pagesOpenProblemsLabel, "Open problems");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesPageChangesEmpty,
+    "No important page changes yet.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesPlanDetail,
+    "Open the page list and start with pages that need the quickest care.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pagesPlanIntro,
+    "This view is focused on {scope}. Check the pages needing care first, then use patterns when one repeated fix can help a whole group.",
+  );
+  assert.equal(
+    formatProductPagesFirstAction({ pagesNeedingCare: 0, pagesWithProblems: 0 }),
+    "No page needs quick care",
+  );
+  assert.equal(
+    formatProductPagesFirstAction({ pagesNeedingCare: 0, pagesWithProblems: 4 }),
+    "4 pages have fixable items",
+  );
+  assert.equal(
+    formatProductPagesFirstAction({ pagesNeedingCare: 2, pagesWithProblems: 4 }),
+    "2 pages need quick care",
+  );
+  assert.equal(
+    formatProductPageDetailType("critical_regression"),
+    "Important page change",
+  );
+  assert.equal(
+    formatProductPageDetailType("page_noindex"),
+    "Search visibility setting",
+  );
+  assert.equal(
+    formatProductPageDetailType("missing_canonical"),
+    "Preferred page setting",
+  );
+  assert.equal(formatProductPageDetailType("missing_schema"), "Page detail");
+  assert.equal(
+    formatProductPageDetailType("duplicate_meta_description"),
+    "Search result text",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardProjectListDetail,
@@ -684,6 +750,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet|Manage tracking data|Add data|Recover lost positions|No drops to fix/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|critical pages|Critical Regression|Urgent pages|Urgent problems|No urgent fix|No tracked page changes|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet|Manage tracking data|Add data|Recover lost positions|No drops to fix/,
   );
 });

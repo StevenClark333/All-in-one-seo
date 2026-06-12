@@ -9,7 +9,10 @@ import {
   formatPageMetaText,
   formatPageResponse,
 } from "@/lib/page-display-labels";
-import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
+import {
+  formatProductPagesFirstAction,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 import { getTemplateLabel, inferPageTemplate } from "@/lib/template-detection";
 
 export const dynamic = "force-dynamic";
@@ -33,7 +36,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
     (domain) => domain.id === selectedDomainId,
   );
 
-  const criticalPages = pages.filter((page) =>
+  const pagesNeedingCare = pages.filter((page) =>
     page.issues.some((issue) => issue.severity === "CRITICAL"),
   ).length;
   const pagesWithTitles = pages.filter(
@@ -77,7 +80,7 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
           </header>
 
           <PageCarePlan
-            criticalPages={criticalPages}
+            pagesNeedingCare={pagesNeedingCare}
             pagesMissingTitles={pagesMissingTitles}
             pagesWithIssues={pagesWithIssues}
             selectedDomain={selectedDomain?.domain}
@@ -88,7 +91,10 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
           <section className="mt-6 grid gap-4 md:grid-cols-4">
             <Metric label="Pages checked" value={pages.length} />
             <Metric label="Page patterns" value={templateGroups.length} />
-            <Metric label="Urgent pages" value={criticalPages} />
+            <Metric
+              label={PRODUCT_BEGINNER_COPY.pagesMetricNeedsCare}
+              value={pagesNeedingCare}
+            />
             <Metric label="Titles ready" value={pagesWithTitles} />
           </section>
 
@@ -247,14 +253,14 @@ export default async function PagesPage({ searchParams }: PagesPageProps) {
 }
 
 function PageCarePlan({
-  criticalPages,
+  pagesNeedingCare,
   pagesMissingTitles,
   pagesWithIssues,
   selectedDomain,
   topTemplateIssues,
   topTemplateLabel,
 }: {
-  criticalPages: number;
+  pagesNeedingCare: number;
   pagesMissingTitles: number;
   pagesWithIssues: number;
   selectedDomain?: string;
@@ -262,12 +268,10 @@ function PageCarePlan({
   topTemplateLabel?: string;
 }) {
   const scope = selectedDomain ?? "all websites";
-  const firstAction =
-    criticalPages > 0
-      ? `${criticalPages} critical pages need care`
-      : pagesWithIssues > 0
-        ? `${pagesWithIssues} pages have fixable problems`
-        : "No urgent page problems";
+  const firstAction = formatProductPagesFirstAction({
+    pagesNeedingCare,
+    pagesWithProblems: pagesWithIssues,
+  });
 
   return (
     <section className="mt-6 rounded-lg border border-orange-100 bg-orange-50/60 p-5 shadow-sm">
@@ -280,8 +284,7 @@ function PageCarePlan({
             Start with the pages that can move results.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            This view is focused on {scope}. Check critical pages first, then
-            use templates when one repeated fix can help a whole group.
+            {PRODUCT_BEGINNER_COPY.pagesPlanIntro.replace("{scope}", scope)}
           </p>
         </div>
 
@@ -290,7 +293,7 @@ function PageCarePlan({
             icon={<FileSearch className="size-4" aria-hidden="true" />}
             label="Check first"
             value={firstAction}
-            detail="Open the page list and work from the highest-risk pages."
+            detail={PRODUCT_BEGINNER_COPY.pagesPlanDetail}
             href="#page-inventory"
           />
           <PlanTile
@@ -390,7 +393,8 @@ function TemplateGroupCard({
         </span>
       </div>
       <p className="mt-3 text-sm text-slate-600">
-        {group.issueCount} open problems, {group.criticalCount} urgent
+        {group.issueCount} {PRODUCT_BEGINNER_COPY.pagesOpenProblemsLabel.toLowerCase()}
+        , {group.criticalCount} {PRODUCT_BEGINNER_COPY.pagesImportantGroupLabel}
       </p>
     </Link>
   );
@@ -443,6 +447,10 @@ function PageRow({ page }: { page: InventoryPage }) {
           <span className="font-medium text-red-600">{critical}</span>
           <span className="text-slate-400"> / </span>
           <span className="font-medium text-amber-600">{warnings}</span>
+        </span>
+        <span className="sr-only">
+          {critical} {PRODUCT_BEGINNER_COPY.pagesImportantCountLabel},{" "}
+          {warnings} planned
         </span>
       </MetaBlock>
 
