@@ -194,6 +194,20 @@ export const PRODUCT_BEGINNER_COPY = {
   dashboardStartPlanBody:
     "Follow these in order. Each card takes you to one focused screen, so you do not need to understand technical website wording first.",
   dashboardStartPlanTitle: "Today's website plan",
+  issuesCareFilterHelp:
+    "Quick-care problems go first, planned work can follow, and ideas are optional improvements.",
+  issuesCareFilterLabel: "Care level",
+  issuesCareFilterPlaceholder: "All care levels",
+  issuesPlanBody:
+    "Start with the first quick-care problem, open its guided solution, then use filters only when you want a narrower list.",
+  issuesPlanQuickCareDetail:
+    "planned work can wait until quick-care work is handled.",
+  issuesPlanQuickCareLabel: "Care level",
+  issuesPlanQuickCareValueSuffix: "quick care",
+  issuesPlanVisibleWorkDetail:
+    "important work visible and hides lower-priority items until you ask for them.",
+  issuesPriorityHelp:
+    "Care order blends care level, page importance, and fix impact. Higher numbers should be handled sooner.",
   clientSetupDetail:
     "Connect a website before website checks can begin.",
   clientCarePlanIntro:

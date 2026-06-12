@@ -2753,3 +2753,35 @@ Implementation:
 - [x] Cover Websites list quick-care wording with unit tests.
 - [x] Browser-check Websites list quick-care calmness locally.
 - [ ] Browser-check Websites list quick-care calmness after deployment.
+
+### Batch FD: Problems List Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep issue severity, priority, and regression language visible so expert teams can triage fast.
+- A beginner-first Problems list should keep the same ordering power while saying care level, quick-care problems, planned work, and important changes.
+- The product direction is to make problem solving feel like one calm next step, not a severity queue.
+
+Implementation:
+
+- [x] Centralize Problems list care-level and quick-care plan wording in the product copy helper.
+- [x] Replace urgent filter, plan, count, and regression wording on the Problems list.
+- [x] Cover Problems list quick-care wording with unit tests.
+- [x] Runtime-check Problems list quick-care calmness locally.
+- [ ] Browser-check Problems list quick-care calmness after deployment.
+
+### Batch FE: WordPress Connection Retry Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep integration and site-audit setup states explicit so expert users can troubleshoot quickly.
+- A beginner-first connection setup should preserve the same test result while saying needs another try and what to check next.
+- The product direction is to make WordPress setup feel like a guided connection checklist, not a failed receiver diagnostic.
+
+Implementation:
+
+- [x] Centralize WordPress connection-test message softening in the WordPress helper.
+- [x] Replace visible receiver-test failure wording on the Integrations page with calmer connection wording.
+- [x] Cover stored and fallback WordPress connection messages with unit tests.
+- [x] Runtime-check WordPress connection retry calmness locally.
+- [ ] Browser-check WordPress connection retry calmness after deployment.

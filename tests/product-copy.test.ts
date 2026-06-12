@@ -377,6 +377,36 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Handle quick-care problems before browsing reports.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesCareFilterHelp,
+    "Quick-care problems go first, planned work can follow, and ideas are optional improvements.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.issuesCareFilterLabel, "Care level");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesCareFilterPlaceholder,
+    "All care levels",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesPlanBody,
+    "Start with the first quick-care problem, open its guided solution, then use filters only when you want a narrower list.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesPlanQuickCareDetail,
+    "planned work can wait until quick-care work is handled.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.issuesPlanQuickCareLabel, "Care level");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesPlanQuickCareValueSuffix,
+    "quick care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesPlanVisibleWorkDetail,
+    "important work visible and hides lower-priority items until you ask for them.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.issuesPriorityHelp,
+    "Care order blends care level, page importance, and fix impact. Higher numbers should be handled sooner.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.connectInConnections,
     "Connect in Connections",
   );

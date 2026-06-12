@@ -109,7 +109,7 @@ export async function testWordPressReceiver(integrationId: string) {
   const testedAt = new Date();
   let status = "FAILED";
   let statusCode = 0;
-  let message = "Receiver test failed before the request completed.";
+  let message = "Connection test needs another try before sending fixes.";
 
   try {
     const response = await fetch(config.receiverUrl, {
@@ -129,13 +129,13 @@ export async function testWordPressReceiver(integrationId: string) {
     statusCode = response.status;
     status = response.ok ? "PASSED" : "FAILED";
     message = response.ok
-      ? "WordPress receiver accepted the test payload."
-      : `WordPress receiver returned HTTP ${response.status}.`;
+      ? "WordPress connection accepted the test message."
+      : `WordPress connection needs another try. HTTP ${response.status}.`;
   } catch (error) {
     message =
       error instanceof Error
-        ? `Receiver test failed: ${error.message}`
-        : "Receiver test failed with an unknown error.";
+        ? `Connection test needs another try: ${error.message}`
+        : "Connection test needs another try.";
   }
 
   const configJson = encryptIntegrationConfig({
@@ -270,7 +270,7 @@ export function buildWordPressOnboardingSteps(input: {
       detail: receiverTestPassed
         ? "The WordPress site accepted a signed test event."
         : receiverTestFailed
-          ? input.lastTestMessage || "The latest receiver test failed."
+          ? formatWordPressConnectionMessage(input.lastTestMessage)
           : "Run Test receiver after saving endpoint and key.",
       label: "Receiver tested",
       status: receiverTestPassed
@@ -355,10 +355,7 @@ export function getWordPressReceiverReadinessMessage(config: {
   }
 
   if (config.lastTestStatus === "FAILED") {
-    return (
-      config.lastTestMessage ||
-      "The latest WordPress receiver test failed. Fix the endpoint or key, then test again."
-    );
+    return formatWordPressConnectionMessage(config.lastTestMessage);
   }
 
   if (config.lastTestStatus !== "PASSED") {
@@ -366,6 +363,30 @@ export function getWordPressReceiverReadinessMessage(config: {
   }
 
   return "WordPress receiver is ready.";
+}
+
+export function formatWordPressConnectionMessage(message?: string) {
+  if (!message) {
+    return "The latest WordPress connection needs another try. Check the update link or connection key, then test again.";
+  }
+
+  return message
+    .replaceAll("Receiver test failed", "Connection test needs another try")
+    .replaceAll("receiver test failed", "connection test needs another try")
+    .replaceAll(
+      "The latest WordPress receiver test failed. Fix the endpoint or key, then test again.",
+      "The latest WordPress connection needs another try. Check the update link or connection key, then test again.",
+    )
+    .replaceAll("WordPress receiver returned", "WordPress connection returned")
+    .replaceAll("WordPress receiver accepted", "WordPress connection accepted")
+    .replaceAll("receiver endpoint", "WordPress update link")
+    .replaceAll("Receiver endpoint", "WordPress update link")
+    .replaceAll("receiver API key", "connection key")
+    .replaceAll("Receiver API key", "Connection key")
+    .replaceAll("receiver", "connection")
+    .replaceAll("endpoint", "update link")
+    .replaceAll("failed", "needs another try")
+    .replaceAll("Failed", "Needs another try");
 }
 
 function readString(value: unknown) {

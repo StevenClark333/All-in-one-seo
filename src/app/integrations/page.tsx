@@ -28,6 +28,7 @@ import { findMatchingWebflowSite, readWebflowSites } from "@/lib/webflow";
 import {
   buildWordPressInstallValues,
   buildWordPressOnboardingSteps,
+  formatWordPressConnectionMessage,
   readWordPressReceiverConfig,
 } from "@/lib/wordpress";
 
@@ -777,8 +778,11 @@ export default async function IntegrationsPage({
                           <Meta
                             label="Test detail"
                             value={
-                              receiverConfig.lastTestMessage ||
-                              "Run a connection test after saving the site values."
+                              receiverConfig.lastTestMessage
+                                ? formatWordPressConnectionMessage(
+                                    receiverConfig.lastTestMessage,
+                                  )
+                                : "Run a connection test after saving the site values."
                             }
                           />
                         </div>

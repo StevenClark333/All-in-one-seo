@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildWordPressInstallValues,
   buildWordPressOnboardingSteps,
+  formatWordPressConnectionMessage,
   generateWordPressReceiverKey,
   getWordPressReceiverReadinessMessage,
   isWordPressReceiverReady,
@@ -79,7 +80,7 @@ test("builds WordPress onboarding checklist states", () => {
   );
 
   const pendingSteps = buildWordPressOnboardingSteps({
-    lastTestMessage: "Unauthorized",
+    lastTestMessage: "Receiver test failed: Unauthorized",
     lastTestStatus: "FAILED",
     receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     scriptStatus: "NOT_INSTALLED",
@@ -93,6 +94,10 @@ test("builds WordPress onboarding checklist states", () => {
   assert.equal(
     pendingSteps.find((step) => step.label === "Receiver tested")?.status,
     "WARNING",
+  );
+  assert.equal(
+    pendingSteps.find((step) => step.label === "Receiver tested")?.detail,
+    "Connection test needs another try: Unauthorized",
   );
   assert.equal(
     pendingSteps.find((step) => step.label === "Fix delivery enabled")?.status,
@@ -194,7 +199,7 @@ test("explains why a WordPress receiver is unavailable", () => {
       receiverKey: "aioseo_wp_example",
       receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     }),
-    "The latest WordPress receiver test failed. Fix the endpoint or key, then test again.",
+    "The latest WordPress connection needs another try. Check the update link or connection key, then test again.",
   );
   assert.equal(
     getWordPressReceiverReadinessMessage({
@@ -203,5 +208,20 @@ test("explains why a WordPress receiver is unavailable", () => {
       receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     }),
     "WordPress receiver is ready.",
+  );
+});
+
+test("softens WordPress connection test messages for beginners", () => {
+  assert.equal(
+    formatWordPressConnectionMessage("Receiver test failed: Unauthorized"),
+    "Connection test needs another try: Unauthorized",
+  );
+  assert.equal(
+    formatWordPressConnectionMessage("WordPress receiver returned HTTP 401."),
+    "WordPress connection returned HTTP 401.",
+  );
+  assert.equal(
+    formatWordPressConnectionMessage(),
+    "The latest WordPress connection needs another try. Check the update link or connection key, then test again.",
   );
 });

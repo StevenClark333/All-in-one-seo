@@ -7,6 +7,11 @@ import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getIssueListData, getIssueTypeGroupKey } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
+import {
+  formatProductWorkspaceProblemSeverity,
+  PRODUCT_BEGINNER_COPY,
+  PRODUCT_GLOBAL_SEARCH_COPY,
+} from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -192,12 +197,14 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                 </FilterSelect>
 
                 <FilterSelect
-                  label="Urgency"
-                  help="Urgent problems should be handled first, planned work can follow, and ideas are optional improvements."
+                  label={PRODUCT_BEGINNER_COPY.issuesCareFilterLabel}
+                  help={PRODUCT_BEGINNER_COPY.issuesCareFilterHelp}
                   name="severity"
                   value={filters.severity}
                 >
-                  <option value="">All urgency levels</option>
+                  <option value="">
+                    {PRODUCT_BEGINNER_COPY.issuesCareFilterPlaceholder}
+                  </option>
                   {severityOptions.map((severity) => (
                     <option key={severity} value={severity}>
                       {getImportanceLabel(severity)}
@@ -499,8 +506,7 @@ function ProblemSolvingPlan({
             Fix the clearest problem first.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Start with the first urgent problem, open its guided solution, then
-            use filters only when you want a narrower list.
+            {PRODUCT_BEGINNER_COPY.issuesPlanBody}
           </p>
         </div>
 
@@ -520,17 +526,16 @@ function ProblemSolvingPlan({
             detail="These problems have a recommended path in this portal."
           />
           <PlanCard
-            label="Urgency"
-            value={`${criticalCount} urgent`}
-            detail={`${warningCount} planned ${pluralize(warningCount, "item")} can wait until urgent work is handled.`}
+            label={PRODUCT_BEGINNER_COPY.issuesPlanQuickCareLabel}
+            value={`${criticalCount} ${PRODUCT_BEGINNER_COPY.issuesPlanQuickCareValueSuffix}`}
+            detail={`${warningCount} planned ${pluralize(warningCount, "item")} ${PRODUCT_BEGINNER_COPY.issuesPlanQuickCareDetail}`}
           />
         </div>
 
         {issueCount ? (
           <p className="rounded-md bg-white px-4 py-3 text-sm leading-6 text-slate-600 xl:col-span-2">
             You have {issueCount} matching problems. The page keeps the most
-            important work visible and hides lower-priority items until you ask
-            for them.
+            {` ${PRODUCT_BEGINNER_COPY.issuesPlanVisibleWorkDetail}`}
           </p>
         ) : null}
       </div>
@@ -599,7 +604,7 @@ function IssueRow({
             {solution.effort}
           </span>
           <span className="text-xs font-medium text-slate-500">
-            <HelpLabel help="Priority blends severity, page importance, and fix impact. Higher numbers should be handled sooner.">
+            <HelpLabel help={PRODUCT_BEGINNER_COPY.issuesPriorityHelp}>
               Priority {issue.priorityScore}
             </HelpLabel>
           </span>
@@ -733,13 +738,7 @@ function formatIssueType(value: string) {
 }
 
 function getImportanceLabel(value: string) {
-  const labels: Record<string, string> = {
-    CRITICAL: "Urgent",
-    SUGGESTION: "Idea",
-    WARNING: "Planned",
-  };
-
-  return labels[value] ?? formatEnum(value);
+  return formatProductWorkspaceProblemSeverity(value);
 }
 
 function getProgressLabel(value: string) {
@@ -796,7 +795,7 @@ function softenProblemTitle(value: string) {
       "Product template points to a broken preferred page",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
-    "Critical Regression": "Urgent change",
+    "Critical Regression": PRODUCT_GLOBAL_SEARCH_COPY.importantChangeLabel,
   };
 
   const exactMatch = exactMatches[value];
@@ -830,7 +829,7 @@ function softenProblemTitle(value: string) {
     .replace(/\bHomepage Blocked By Robots\b/gi, exactMatches["Homepage Blocked By Robots"])
     .replace(/\bHomepage blocked by robots\.txt\b/gi, exactMatches["Homepage blocked by robots.txt"])
     .replace(/\bCritical Regression\b/gi, exactMatches["Critical Regression"])
-    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
+    .replace(/\bCritical SEO regression\b/gi, "Important website change")
     .replace(/\bProduct template canonical points to non-200 URLs\b/gi, exactMatches["Product template canonical points to non-200 URLs"])
     .replace(/\bHomepage became noindex after latest deploy\b/gi, exactMatches["Homepage became noindex after latest deploy"])
     .replace(/\bURLs?\b/g, "pages")
@@ -848,8 +847,8 @@ function softenProblemTitle(value: string) {
 function softenProblemText(value: string) {
   return value
     .replace(/\banalyzer-generated\b/gi, "website-check")
-    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
-    .replace(/\bcritical regression\b/gi, "urgent change")
+    .replace(/\bCritical SEO regression\b/gi, "Important website change")
+    .replace(/\bcritical regression\b/gi, "important change")
     .replace(/\banalyzer pass\b/gi, "website check")
     .replace(/\blatest crawl\b/gi, "latest website check")
     .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")
