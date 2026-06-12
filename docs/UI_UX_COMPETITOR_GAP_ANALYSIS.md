@@ -2447,3 +2447,18 @@ Implementation:
 - [x] Cover the exact Search Ideas keyword wording with unit tests.
 - [x] Browser-check Search Ideas keyword wording calmness locally.
 - [ ] Browser-check Search Ideas keyword wording calmness after deployment.
+
+### Batch EK: Website Workspace Search Visibility Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep search visibility close to project and site-audit summaries, but their helper text assumes the reader already knows the data source.
+- A beginner-first website workspace should keep the same Google Search Console evidence while explaining visibility as how visible the website is across search terms.
+- The product direction is to make the first website workspace scan feel like plain website care before a user opens deeper search growth detail.
+
+Implementation:
+
+- [x] Reuse the centralized website workspace search visibility helper on the main workspace metric card.
+- [x] Guard against the older Search Console visibility phrase in product copy tests.
+- [x] Browser-check website workspace search visibility calmness locally.
+- [ ] Browser-check website workspace search visibility calmness after deployment.

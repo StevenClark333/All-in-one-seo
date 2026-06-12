@@ -381,7 +381,7 @@ export default async function DomainWorkspacePage({
                 value={domain.healthScore ?? latestScore?.score ?? 0}
               />
               <AnalyticsMetricCard
-                help="Search Console visibility"
+                help={PRODUCT_BEGINNER_COPY.workspaceSearchVisibilityHelp}
                 href={`/search-performance?domainId=${domain.id}`}
                 icon={BarChart3}
                 label="Search visibility"
