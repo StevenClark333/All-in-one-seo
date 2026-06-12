@@ -3076,6 +3076,7 @@ Implementation:
 - [x] Keep the same website editor/site helper ownership and repair intent intact.
 - [x] Cover Google detail, preferred-page, and Google-visibility solution wording with unit tests.
 - [x] Runtime-check issue solution Google-settings calmness locally.
+- [x] Browser-check Problems list/detail Google-settings calmness locally.
 - [ ] Browser-check deployed Problems list care-level calmness before opening the softened solution detail.
 - [ ] Browser-check issue solution Google-settings calmness after deployment.
 
