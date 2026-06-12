@@ -3,6 +3,7 @@ import type { IssueStatus, Workspace } from "@prisma/client";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import type { Issue, Severity, Site } from "@/lib/dashboard-data";
 import { formatOverviewOwner } from "@/lib/overview-display-labels";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 import {
   formatWebsiteClient,
   formatWebsiteHealth,
@@ -38,7 +39,7 @@ const emptyStats: AgencyStat[] = [
     icon: BarChart3,
   },
   {
-    label: "Urgent problems",
+    label: PRODUCT_BEGINNER_COPY.dashboardImportantWorkLabel,
     value: "0",
     detail: "No website check has run yet",
     icon: AlertTriangle,
@@ -157,9 +158,9 @@ export async function getDashboardData(): Promise<DashboardData> {
         icon: BarChart3,
       },
       {
-        label: "Urgent problems",
+        label: PRODUCT_BEGINNER_COPY.dashboardImportantWorkLabel,
         value: criticalCount.toString(),
-        detail: "Urgent problems across all clients",
+        detail: "Quick-care problems across all clients",
         icon: AlertTriangle,
       },
       {

@@ -29,6 +29,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
 import {
+  formatProductWorkspaceProblemSeverity,
   formatProductReportTitle,
   getProductWorkspaceToolLabel,
   getProductReportTitle,
@@ -349,7 +350,7 @@ export default async function DomainWorkspacePage({
                   What needs attention now
                 </h3>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Health, search visibility, checked pages, and priority work
+                  Health, search visibility, checked pages, and care work
                   stay together here. Each card opens the next useful place to
                   review or fix.
                 </p>
@@ -401,10 +402,10 @@ export default async function DomainWorkspacePage({
                 )}
               />
               <AnalyticsMetricCard
-                help="Open urgent and planned problems"
+                help={PRODUCT_BEGINNER_COPY.workspaceCareProblemsHelp}
                 href={`/issues?domainId=${domain.id}`}
                 icon={AlertTriangle}
-                label="Priority problems"
+                label={PRODUCT_BEGINNER_COPY.workspaceCareProblemsLabel}
                 value={`${criticalIssues} / ${warningIssues}`}
               />
             </div>
@@ -470,8 +471,8 @@ export default async function DomainWorkspacePage({
               value={domain.pages.length}
             />
             <Metric
-              help="Urgent problems first, planned work second."
-              label="Urgent / planned"
+              help={PRODUCT_BEGINNER_COPY.workspaceCareProblemsMetricHelp}
+              label={PRODUCT_BEGINNER_COPY.workspaceCareProblemsMetricLabel}
               value={`${criticalIssues} / ${warningIssues}`}
             />
             <Metric
@@ -569,7 +570,7 @@ export default async function DomainWorkspacePage({
             <div className="grid gap-4">
               <SignalCard
                 detail={auditOverview.errorTrend}
-                label="Urgent"
+                label={PRODUCT_BEGINNER_COPY.workspaceQuickCareSignalLabel}
                 tone="error"
                 value={criticalIssues}
               />
@@ -789,12 +790,16 @@ export default async function DomainWorkspacePage({
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Highest-priority problems for this website only.">
-                        Priority problems
+                      <HelpLabel
+                        help={
+                          PRODUCT_BEGINNER_COPY.workspaceCareProblemsSectionHelp
+                        }
+                      >
+                        {PRODUCT_BEGINNER_COPY.workspaceCareProblemsSectionTitle}
                       </HelpLabel>
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
-                      Urgent and high-priority website findings.
+                      {PRODUCT_BEGINNER_COPY.workspaceCareProblemsSectionIntro}
                     </p>
                   </div>
                   <Link
@@ -1283,19 +1288,19 @@ function buildProjectFocusItems({
       }
     : criticalIssues > 0
       ? {
-          detail: "These are the problems most likely to hurt visitors or search visibility.",
+          detail: PRODUCT_BEGINNER_COPY.workspaceFocusQuickCareDetail,
           href: `/issues?domainId=${domainId}&severity=CRITICAL`,
           label: "Do first",
           tone: "critical" as const,
-          value: `${criticalIssues} urgent fixes`,
+          value: `${criticalIssues} ${PRODUCT_BEGINNER_COPY.workspaceFocusQuickCareValueSuffix}`,
         }
       : warningIssues > 0
         ? {
-            detail: "No urgent problems are blocking you. Review the planned list next.",
+            detail: PRODUCT_BEGINNER_COPY.workspaceFocusPlannedDetail,
             href: `/issues?domainId=${domainId}&severity=WARNING`,
             label: "Do first",
             tone: "warning" as const,
-            value: `${warningIssues} planned fixes`,
+            value: `${warningIssues} ${PRODUCT_BEGINNER_COPY.workspaceFocusPlannedValueSuffix}`,
           }
         : {
             detail: "The website looks calm. Keep watching it and share a fresh update.",
@@ -1408,7 +1413,7 @@ function buildCommandQueue({
     {
       count: criticalIssues,
       href: `/issues?domainId=${domainId}&severity=CRITICAL`,
-      label: "Fix urgent problems",
+      label: PRODUCT_BEGINNER_COPY.workspaceCommandQuickCareLabel,
     },
     {
       count: warningIssues,
@@ -1913,13 +1918,7 @@ function formatChangeType(value: string) {
 }
 
 function formatProblemSeverity(value: string) {
-  const labels: Record<string, string> = {
-    CRITICAL: "Urgent",
-    WARNING: "Planned",
-    INFO: "Idea",
-  };
-
-  return labels[value] ?? formatEnum(value);
+  return formatProductWorkspaceProblemSeverity(value);
 }
 
 function formatIssueType(value: string) {

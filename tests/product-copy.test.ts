@@ -5,6 +5,7 @@ import {
   formatProductPagesFirstAction,
   formatProductRecommendationImportance,
   formatProductRecommendationPriority,
+  formatProductWorkspaceProblemSeverity,
   formatProductReportChangeTitle,
   formatProductReportImportance,
   formatProductReportTitle,
@@ -295,6 +296,35 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(PRODUCT_BEGINNER_COPY.dashboardOpenWebsites, "Open websites");
   assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardFixImportantDetail,
+    "{domain} has a problem that needs quick care. Open it and follow the clearest fix steps.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardFixImportantTitle,
+    "Fix the problem needing care first",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardHealthRiskLabel,
+    "Below 60 needs care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardImportantChangeLabel,
+    "Important change",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardImportantProblemsHelp,
+    "Problems that can meaningfully hurt search visibility and should be fixed first.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.dashboardImportantWorkLabel, "Needs care");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardNoImportantProblems,
+    "No quick-care problems are showing. Run a fresh website check to keep progress current.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardPlanFirstStep,
+    "Handle quick-care problems before browsing reports.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.connectInConnections,
     "Connect in Connections",
   );
@@ -434,6 +464,72 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   assert.equal(
     PRODUCT_BEGINNER_COPY.workspaceSearchVisibilityHelp,
     "How visible this website is across imported Google Search Console search terms.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsDetail,
+    "Quick-care and planned problems for this website.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsHelp,
+    "Open quick-care and planned problems.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsLabel,
+    "Care priorities",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsMetricHelp,
+    "Quick-care problems first, planned work second.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsMetricLabel,
+    "Quick care / planned",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsSectionHelp,
+    "Problems that need attention for this website only.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsSectionIntro,
+    "Website findings ordered by what needs care first.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCareProblemsSectionTitle,
+    "Care priorities",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceCommandQuickCareLabel,
+    "Fix quick-care problems",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceQuickCareSignalLabel,
+    "Needs care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceFocusQuickCareDetail,
+    "These are the problems most likely to affect visitors or search visibility.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceFocusQuickCareValueSuffix,
+    "need quick care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceFocusPlannedDetail,
+    "No quick-care problems are blocking you. Review the planned list next.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.workspaceFocusPlannedValueSuffix,
+    "planned fixes",
+  );
+  assert.equal(
+    formatProductWorkspaceProblemSeverity("CRITICAL"),
+    "Needs quick care",
+  );
+  assert.equal(formatProductWorkspaceProblemSeverity("WARNING"), "Planned");
+  assert.equal(formatProductWorkspaceProblemSeverity("INFO"), "Idea");
+  assert.equal(
+    formatProductWorkspaceProblemSeverity("CUSTOM_NOTE"),
+    "Custom Note",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.passwordResetReturn,
@@ -798,6 +894,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|critical pages|Critical Regression|Urgent pages|Urgent problems|Urgent priority|\burgent\b|No urgent fix|No tracked page changes|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet|Manage tracking data|Add data|Recover lost positions|No drops to fix/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|critical pages|Critical Regression|Urgent pages|Urgent problems|Urgent work|Urgent priority|\burgent\b|high risk|Priority problems|Urgent \/ planned|urgent fixes|Fix the most urgent problem|Fix urgent problems|No urgent fix|No tracked page changes|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet|Manage tracking data|Add data|Recover lost positions|No drops to fix/,
   );
 });

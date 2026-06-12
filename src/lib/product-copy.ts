@@ -174,7 +174,18 @@ export const PRODUCT_BEGINNER_COPY = {
     "Key workspace metric used to understand everyday website care.",
   dashboardAverageHealthHelp:
     "Average website health across websites that have finished setup.",
+  dashboardFixImportantDetail:
+    "{domain} has a problem that needs quick care. Open it and follow the clearest fix steps.",
+  dashboardFixImportantTitle: "Fix the problem needing care first",
+  dashboardHealthRiskLabel: "Below 60 needs care",
+  dashboardImportantChangeLabel: "Important change",
+  dashboardImportantProblemsHelp:
+    "Problems that can meaningfully hurt search visibility and should be fixed first.",
+  dashboardImportantWorkLabel: "Needs care",
+  dashboardNoImportantProblems:
+    "No quick-care problems are showing. Run a fresh website check to keep progress current.",
   dashboardOpenWebsites: "Open websites",
+  dashboardPlanFirstStep: "Handle quick-care problems before browsing reports.",
   connectInConnections: "Connect in Connections",
   dashboardProjectListDetail:
     "Start with your website list to see which websites need attention today.",
@@ -376,6 +387,27 @@ export const PRODUCT_BEGINNER_COPY = {
     "Imported Google Search Console search visibility and demand signals for this website.",
   workspaceSearchVisibilityHelp:
     "How visible this website is across imported Google Search Console search terms.",
+  workspaceCareProblemsDetail:
+    "Quick-care and planned problems for this website.",
+  workspaceCareProblemsHelp:
+    "Open quick-care and planned problems.",
+  workspaceCareProblemsLabel: "Care priorities",
+  workspaceCareProblemsMetricHelp:
+    "Quick-care problems first, planned work second.",
+  workspaceCareProblemsMetricLabel: "Quick care / planned",
+  workspaceCareProblemsSectionHelp:
+    "Problems that need attention for this website only.",
+  workspaceCareProblemsSectionIntro:
+    "Website findings ordered by what needs care first.",
+  workspaceCareProblemsSectionTitle: "Care priorities",
+  workspaceCommandQuickCareLabel: "Fix quick-care problems",
+  workspaceQuickCareSignalLabel: "Needs care",
+  workspaceFocusQuickCareDetail:
+    "These are the problems most likely to affect visitors or search visibility.",
+  workspaceFocusQuickCareValueSuffix: "need quick care",
+  workspaceFocusPlannedDetail:
+    "No quick-care problems are blocking you. Review the planned list next.",
+  workspaceFocusPlannedValueSuffix: "planned fixes",
 };
 
 export function formatProductPagesFirstAction(input: {
@@ -453,4 +485,24 @@ export function formatProductRecommendationPriority(score: number) {
   }
 
   return PRODUCT_BEGINNER_COPY.recommendationsPriorityPlanned;
+}
+
+export function formatProductWorkspaceProblemSeverity(value: string) {
+  if (value === "CRITICAL") {
+    return "Needs quick care";
+  }
+
+  if (value === "WARNING") {
+    return "Planned";
+  }
+
+  if (value === "INFO") {
+    return "Idea";
+  }
+
+  return value
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }

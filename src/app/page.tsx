@@ -121,7 +121,7 @@ export default async function Home() {
                 </p>
                 <div className="mt-5 grid gap-2 text-sm text-slate-700">
                   <span className="rounded-md bg-white/80 px-3 py-2">
-                    Fix urgent problems before browsing reports.
+                    {PRODUCT_BEGINNER_COPY.dashboardPlanFirstStep}
                   </span>
                   <span className="rounded-md bg-white/80 px-3 py-2">
                     Use reports when you are ready to share progress.
@@ -250,7 +250,7 @@ export default async function Home() {
               <AnalyticsMetricCard
                 href="/issues?severity=CRITICAL"
                 icon={AlertTriangle}
-                label="Urgent work"
+                label={PRODUCT_BEGINNER_COPY.dashboardImportantWorkLabel}
                 tone="red"
                 value={sites.reduce((total, site) => total + site.critical, 0)}
               />
@@ -297,7 +297,7 @@ export default async function Home() {
                   />
                   <HorizontalBar
                     color="red"
-                    label="Below 60 high risk"
+                    label={PRODUCT_BEGINNER_COPY.dashboardHealthRiskLabel}
                     max={Math.max(1, sites.length)}
                     value={sites.filter((site) => site.score < 60).length}
                   />
@@ -388,7 +388,7 @@ export default async function Home() {
                           </HelpLabel>
                         </th>
                         <th className="px-5 py-3 font-semibold">
-                          <HelpLabel help="Urgent problems first, planned problems second. Use this to choose what to fix first.">
+                          <HelpLabel help="Quick-care problems first, planned problems second. Use this to choose what to fix first.">
                             Problems
                           </HelpLabel>
                         </th>
@@ -528,7 +528,7 @@ export default async function Home() {
             <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-semibold">
-                  <HelpLabel help="The most important website problems across clients, ranked by urgency and likely impact.">
+                  <HelpLabel help="The most important website problems across clients, sorted by care order and likely impact.">
                     Top problems to review
                   </HelpLabel>
                 </h3>
@@ -633,8 +633,8 @@ function getStatHelp(label: string) {
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
     Clients:
       "Clients managed inside this workspace, useful for agency portfolio tracking.",
-    "Urgent problems":
-      "Problems that can meaningfully hurt search visibility and should be fixed first.",
+    [PRODUCT_BEGINNER_COPY.dashboardImportantWorkLabel]:
+      PRODUCT_BEGINNER_COPY.dashboardImportantProblemsHelp,
     "Verified domains":
       "Websites with ownership confirmed and ready for full checks.",
     "Pages crawled":
@@ -675,7 +675,7 @@ function QuickAction({ href, label }: { href: string; label: string }) {
 
 function formatDashboardSeverity(severity: Severity) {
   if (severity === "critical") {
-    return "Urgent";
+    return "Needs quick care";
   }
 
   if (severity === "warning") {
@@ -718,7 +718,7 @@ function softenDashboardProblemTitle(value: string) {
       "Product template points to a broken preferred page",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
-    "Critical Regression": "Urgent change",
+    "Critical Regression": PRODUCT_BEGINNER_COPY.dashboardImportantChangeLabel,
   };
 
   const exactMatch = exactMatches[value];
@@ -861,12 +861,15 @@ function buildDashboardNextSteps({
         },
     criticalIssue
       ? {
-          action: "Fix now",
+          action: "Fix first",
           badge: "Important",
-          detail: `${criticalIssue.domain} has an urgent problem. Open it and follow the clearest fix steps.`,
+          detail: PRODUCT_BEGINNER_COPY.dashboardFixImportantDetail.replace(
+            "{domain}",
+            criticalIssue.domain,
+          ),
           href: "/issues?severity=CRITICAL",
           icon: AlertTriangle,
-          title: "Fix the most urgent problem",
+          title: PRODUCT_BEGINNER_COPY.dashboardFixImportantTitle,
         }
       : warningIssue
         ? {
@@ -880,8 +883,7 @@ function buildDashboardNextSteps({
         : {
             action: "Run check",
             badge: "Refresh",
-            detail:
-              "No urgent problems are showing. Run a fresh website check to keep progress current.",
+            detail: PRODUCT_BEGINNER_COPY.dashboardNoImportantProblems,
             href: "/domains",
             icon: Play,
             title: "Refresh the latest check",

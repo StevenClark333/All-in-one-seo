@@ -2622,3 +2622,35 @@ Implementation:
 - [x] Cover the exact Ideas and Fixes priority wording with unit tests.
 - [x] Browser-check Ideas and Fixes priority calmness locally.
 - [ ] Browser-check Ideas and Fixes priority calmness after deployment.
+
+### Batch EV: Website Workspace Care Priority Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit and Ahrefs Site Audit keep errors, warnings, notices, and priority triage visible because trained SEO users expect that hierarchy.
+- Screaming Frog exposes dense crawl tabs and issue data for expert review, which is powerful but not a calming first screen for a beginner.
+- A beginner-first Website workspace should keep the same signal while saying care priorities, quick-care problems, and planned work.
+
+Implementation:
+
+- [x] Centralize Website workspace care-priority, severity, and first-action wording in the product copy helper.
+- [x] Replace priority problems, urgent/planned, urgent fixes, and urgent-problem wording in the Website workspace.
+- [x] Cover the exact Website workspace care-priority wording with unit tests.
+- [ ] Browser-check Website workspace care-priority calmness locally.
+- [ ] Browser-check Website workspace care-priority calmness after deployment.
+
+### Batch EW: Dashboard Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs put urgent errors and site-audit severity directly on their dashboards for expert triage.
+- A beginner-first dashboard should keep the first-fix signal but frame it as needs care and quick-care work before reports.
+- The product direction is to make the first screen feel like a calm daily plan, not a pressure-heavy audit queue.
+
+Implementation:
+
+- [x] Centralize dashboard quick-care labels, helper text, and first-action wording in the product copy helper.
+- [x] Replace urgent work, urgent-problem, high-risk, and urgent-change wording on the home dashboard.
+- [x] Cover the exact dashboard quick-care wording with unit tests.
+- [x] Browser-check dashboard quick-care calmness locally.
+- [ ] Browser-check dashboard quick-care calmness after deployment.
