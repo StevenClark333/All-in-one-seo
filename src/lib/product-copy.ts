@@ -278,6 +278,16 @@ export const PRODUCT_BEGINNER_COPY = {
   searchIdeasSearchTermsLabel: "Search terms",
   searchIdeasWorkspaceNote:
     "Search ideas use imported Google Search Console search-term data.",
+  searchGrowthIdeasFallback:
+    "Use search ideas to create or improve pages before the next search import.",
+  searchGrowthNoDropDetail:
+    "No clear search-term drop in this range. Keep watching the next import.",
+  searchGrowthSetupDetail:
+    "Connect Google Search Console so this page can show clicks, visits, Google spots, and easy growth opportunities.",
+  searchGrowthTrackAction: "Watch search terms",
+  searchGrowthTrackDetail:
+    "Choose the search terms you care about first, then compare them with Search Console data after import.",
+  searchGrowthTrackTitle: "Choose search terms to watch",
   websitesPageHeading: "Websites",
   workspaceHealthDetail: "Latest website health score.",
   workspaceHealthFocusPrefix: "Website health is",

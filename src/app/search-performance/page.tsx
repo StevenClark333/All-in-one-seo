@@ -21,6 +21,7 @@ import {
   getSearchPerformanceData,
   type SearchPerformanceGroup,
 } from "@/lib/search-performance";
+import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -622,22 +623,20 @@ function buildSearchGrowthSteps({
         badge: "Setup",
         badgeClass:
           "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700",
-        detail:
-          "Connect Google Search Console so this page can show clicks, impressions, rankings, and easy growth opportunities.",
+        detail: PRODUCT_BEGINNER_COPY.searchGrowthSetupDetail,
         href: "/integrations",
         icon: Search,
         title: "Import search data",
       },
       {
-        action: "Add keywords",
+        action: PRODUCT_BEGINNER_COPY.searchGrowthTrackAction,
         badge: "Next",
         badgeClass:
           "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
-        detail:
-          "Track the search terms you care about first, then compare them with Search Console data after import.",
+        detail: PRODUCT_BEGINNER_COPY.searchGrowthTrackDetail,
         href: `/keyword-research${querySuffix}`,
         icon: Sparkles,
-        title: "Choose keywords to watch",
+        title: PRODUCT_BEGINNER_COPY.searchGrowthTrackTitle,
       },
     ];
   }
@@ -667,7 +666,7 @@ function buildSearchGrowthSteps({
           ).toFixed(
             1,
           )} positions. Refresh the page title, headings, and answer quality.`
-        : "No clear ranking drop in this range. Keep watching the next import.",
+        : PRODUCT_BEGINNER_COPY.searchGrowthNoDropDetail,
       href: `/pages${querySuffix}`,
       icon: ArrowDown,
       title: "Fix search terms that slipped",
@@ -679,7 +678,7 @@ function buildSearchGrowthSteps({
         "rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 text-xs font-medium text-orange-700",
       detail: topPage
         ? `${topPage.key} has ${topPage.impressions.toLocaleString()} impressions. Improve the title and intro to earn more clicks.`
-        : "Use keyword ideas to create or improve pages before the next search import.",
+        : PRODUCT_BEGINNER_COPY.searchGrowthIdeasFallback,
       href: `/keyword-research${querySuffix}`,
       icon: MousePointerClick,
       title: "Turn impressions into clicks",

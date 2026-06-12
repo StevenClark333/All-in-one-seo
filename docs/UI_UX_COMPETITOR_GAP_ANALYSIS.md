@@ -2494,3 +2494,19 @@ Implementation:
 - [x] Cover the exact global-search website and competitor shortcut wording with unit tests.
 - [x] Browser-check global-search website label consistency locally.
 - [ ] Browser-check global-search website label consistency after deployment.
+
+### Batch EN: Search Growth Plan Keyword Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs put keyword and ranking setup inside search-performance workflows, but a beginner-first Search Growth page should keep the path in search terms and Google spots.
+- A nontechnical user should be guided to connect data, watch search terms, and use search ideas without seeing keyword database language.
+- The product direction is to make Search Growth feel like improving Google visits, not managing rankings.
+
+Implementation:
+
+- [x] Centralize Search Growth setup and plan fallback wording in the product copy helper.
+- [x] Replace Add keywords, Choose keywords to watch, ranking drop, and keyword ideas wording with search-term and search-idea language.
+- [x] Cover the exact Search Growth plan wording with unit tests.
+- [x] Browser-check Search Growth plan keyword calmness locally.
+- [ ] Browser-check Search Growth plan keyword calmness after deployment.
