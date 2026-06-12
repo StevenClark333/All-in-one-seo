@@ -10,7 +10,11 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getAiRecommendationCenterData } from "@/lib/ai";
-import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
+import {
+  formatProductRecommendationImportance,
+  formatProductRecommendationPriority,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -180,7 +184,10 @@ export default async function RecommendationsPage({
                             {issue.title}
                           </Link>
                           <p className="mt-1 text-sm text-slate-500">
-                            {formatImportance(issue.severity)} - Website:{" "}
+                            {formatProductRecommendationImportance(
+                              issue.severity,
+                            )}{" "}
+                            - Website:{" "}
                             {issue.domain.domain}
                           </p>
                           <p className="mt-2 text-sm text-slate-500">
@@ -251,7 +258,9 @@ export default async function RecommendationsPage({
                             {group.label} page group
                           </Link>
                           <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                            {formatPriority(group.priorityScore)}
+                            {formatProductRecommendationPriority(
+                              group.priorityScore,
+                            )}
                           </span>
                         </div>
                         <p className="mt-1 text-sm text-slate-500">
@@ -262,7 +271,9 @@ export default async function RecommendationsPage({
                           {group.issueCount}{" "}
                           {pluralize(group.issueCount, "problem")} across{" "}
                           {group.pageCount} {pluralize(group.pageCount, "page")}
-                          , {group.criticalCount} urgent,{" "}
+                          , {group.criticalCount}{" "}
+                          {PRODUCT_BEGINNER_COPY.recommendationsRepeatedNeedsCareLabel}
+                          ,{" "}
                           {group.recommendations.length}{" "}
                           {pluralize(group.recommendations.length, "saved note")}
                         </p>
@@ -514,30 +525,6 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
-}
-
-function formatImportance(value: string) {
-  if (value === "CRITICAL") {
-    return "Urgent";
-  }
-
-  if (value === "WARNING") {
-    return "Planned";
-  }
-
-  return formatEnum(value);
-}
-
-function formatPriority(score: number) {
-  if (score >= 80) {
-    return "Urgent priority";
-  }
-
-  if (score >= 50) {
-    return "High priority";
-  }
-
-  return "Planned priority";
 }
 
 function formatRecommendationType(value: string) {

@@ -2606,3 +2606,19 @@ Implementation:
 - [x] Cover the exact report issue-movement wording with unit tests.
 - [x] Browser-check report issue-movement calmness locally.
 - [ ] Browser-check report issue-movement calmness after deployment.
+
+### Batch EU: Ideas And Fixes Priority Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose recommendations and site-audit fixes with severity labels that help expert users triage, but urgent priority language can feel stressful for a beginner.
+- A beginner-first Ideas and Fixes page should keep the same priority signal while saying needs care first, high care priority, and needs quick care.
+- The product direction is to make generated notes feel like helpful writing and fix support, not an AI-powered severity console.
+
+Implementation:
+
+- [x] Centralize Ideas and Fixes importance and priority wording in the product copy helper.
+- [x] Replace urgent severity and urgent priority wording in fix-note and repeated-page note rows.
+- [x] Cover the exact Ideas and Fixes priority wording with unit tests.
+- [x] Browser-check Ideas and Fixes priority calmness locally.
+- [ ] Browser-check Ideas and Fixes priority calmness after deployment.

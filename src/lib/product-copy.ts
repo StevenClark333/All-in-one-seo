@@ -292,6 +292,12 @@ export const PRODUCT_BEGINNER_COPY = {
     "Rank movement keeps owned and competitor positions focused on this website.",
   recommendationsIntro:
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
+  recommendationsNeedsCareLabel: "Needs quick care",
+  recommendationsPlannedLabel: "Planned",
+  recommendationsPriorityNeedsCare: "Needs care first",
+  recommendationsPriorityHigh: "High care priority",
+  recommendationsPriorityPlanned: "Planned care",
+  recommendationsRepeatedNeedsCareLabel: "need care",
   searchIdeasContentGapHelp:
     "Search terms with many views but weak visits or Google spots.",
   searchIdeasCompetitorGapEmpty:
@@ -419,4 +425,32 @@ export function formatProductPageDetailType(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+export function formatProductRecommendationImportance(value: string) {
+  if (value === "CRITICAL") {
+    return PRODUCT_BEGINNER_COPY.recommendationsNeedsCareLabel;
+  }
+
+  if (value === "WARNING") {
+    return PRODUCT_BEGINNER_COPY.recommendationsPlannedLabel;
+  }
+
+  return value
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+export function formatProductRecommendationPriority(score: number) {
+  if (score >= 80) {
+    return PRODUCT_BEGINNER_COPY.recommendationsPriorityNeedsCare;
+  }
+
+  if (score >= 50) {
+    return PRODUCT_BEGINNER_COPY.recommendationsPriorityHigh;
+  }
+
+  return PRODUCT_BEGINNER_COPY.recommendationsPriorityPlanned;
 }
