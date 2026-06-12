@@ -608,7 +608,9 @@ function softenProblemTitle(value: string) {
     "Missing Title": "Page title missing",
     "Missing page title": "Page title missing",
     "Multiple H1": "Too many main headings",
+    "Page noindex": "Page hidden from Google",
     "Poor Heading Hierarchy": "Heading order needs attention",
+    "Product schema missing": "Product details for Google missing",
     "Product template canonical points to non-200 URLs":
       "Product template points to a broken preferred page",
     "Robots Txt Unavailable Or Malformed": "Robots file needs attention",
@@ -647,6 +649,7 @@ function softenProblemText(value: string) {
     )
     .replace(/\bCritical SEO regression\b/gi, "Important website change")
     .replace(/\bcritical regression\b/gi, "important change")
+    .replace(/\bstructured data\b/gi, "page details for Google")
     .replace(/\blatest crawl\b/gi, "latest website check")
     .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")
     .replace(/\ballow crawling\b/gi, "allow search-engine access")
@@ -661,6 +664,8 @@ function softenProblemText(value: string) {
     .replace(/\bcrawler\b/gi, "search engine")
     .replace(/\bindexable\b/gi, "visible in Google")
     .replace(/\bcanonical signals\b/gi, "preferred page settings")
+    .replace(/\bcanonical URL\b/gi, "preferred page link")
+    .replace(/\bnoindex rule\b/gi, "Google visibility setting")
     .replace(/\bindexability\b/gi, "visibility in Google")
     .replace(/\bissue\b/gi, "problem");
 }

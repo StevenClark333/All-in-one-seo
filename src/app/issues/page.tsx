@@ -791,6 +791,8 @@ function softenProblemTitle(value: string) {
     "Poor Heading Hierarchy": "Heading order needs attention",
     "Homepage Blocked By Robots": "Homepage blocked from Google",
     "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Page noindex": "Page hidden from Google",
+    "Product schema missing": "Product details for Google missing",
     "Product template canonical points to non-200 URLs":
       "Product template points to a broken preferred page",
     "Homepage became noindex after latest deploy":
@@ -849,6 +851,7 @@ function softenProblemText(value: string) {
     .replace(/\banalyzer-generated\b/gi, "website-check")
     .replace(/\bCritical SEO regression\b/gi, "Important website change")
     .replace(/\bcritical regression\b/gi, "important change")
+    .replace(/\bstructured data\b/gi, "page details for Google")
     .replace(/\banalyzer pass\b/gi, "website check")
     .replace(/\blatest crawl\b/gi, "latest website check")
     .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")
@@ -868,6 +871,8 @@ function softenProblemText(value: string) {
     )
     .replace(/\bindexable\b/gi, "visible in Google")
     .replace(/\bcanonical signals\b/gi, "preferred page settings")
+    .replace(/\bcanonical URL\b/gi, "preferred page link")
+    .replace(/\bnoindex rule\b/gi, "Google visibility setting")
     .replace(/\bindexability\b/gi, "visibility in Google")
     .replace(/\bmeta description\b/gi, "page description")
     .replace(/\bmeta descriptions\b/gi, "page descriptions")

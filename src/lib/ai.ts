@@ -593,7 +593,7 @@ export function buildLocalPageRecommendations(input: {
 
   return {
     title: {
-      title: "SEO title suggestion",
+      title: "Page title suggestion",
       summary:
         "Use a specific, search-friendly title with the primary topic and brand.",
       suggestedValue: `${topic} | ${input.domain}`,
@@ -601,7 +601,7 @@ export function buildLocalPageRecommendations(input: {
         "Clear page titles improve relevance and click-through from search results.",
     },
     metaDescription: {
-      title: "Meta description suggestion",
+      title: "Page description suggestion",
       summary:
         "Add a concise description that states the page value and next action.",
       suggestedValue: `Explore ${topic.toLowerCase()} from ${input.domain}. Clear details, helpful context, and a simple next step for visitors.`,
@@ -609,21 +609,21 @@ export function buildLocalPageRecommendations(input: {
         "Descriptions do not directly rank pages, but they influence search snippets and clicks.",
     },
     h1: {
-      title: "H1 suggestion",
+      title: "Main heading suggestion",
       summary:
-        "Use one plain-language H1 aligned with the page's search intent.",
+        "Use one plain-language main heading aligned with what visitors are looking for.",
       suggestedValue: topic,
       rationale:
-        "A clear H1 helps users and crawlers understand the page topic quickly.",
+        "A clear main heading helps visitors and search engines understand the page topic quickly.",
     },
     schema: {
       title: "Google details suggestion",
       summary: `Add page details for Google that match the ${topic.toLowerCase()} page intent.`,
       suggestedValue: chooseSchemaType(input.url),
       implementation:
-        "Add JSON-LD to the page HTML and check it with a structured data testing tool before running a new website check.",
+        "Add the page details for Google to the live page and check them with a Google results testing tool before running a new website check.",
       rationale:
-        "Relevant structured data helps search engines understand entities, breadcrumbs, products, articles, and organization details.",
+        "Relevant page details help search engines understand entities, breadcrumbs, products, articles, and organization details.",
     },
     internalLinking: {
       title: "Helpful page links suggestion",
@@ -634,7 +634,7 @@ export function buildLocalPageRecommendations(input: {
         "Helpful page links improve discovery and clarify topical relationships across the site.",
     },
     contentGap: {
-      title: "Content gap recommendation",
+      title: "Page content idea",
       summary: `Expand the page with missing proof points, FAQs, comparisons, examples, or next-step content around ${topic.toLowerCase()}.`,
       implementation:
         "Review competing search results, add sections that answer unresolved user questions, and refresh metadata after the copy changes.",
@@ -652,14 +652,14 @@ export function buildLocalIssueRecommendations(input: {
 }) {
   const baseRecommendation =
     input.recommendation ??
-    "Review the affected page and update the SEO configuration.";
+    "Review the affected page and update the website settings.";
 
   return {
     explanation: {
       title: "Plain-language issue explanation",
       summary: input.description,
       rationale:
-        "This issue can reduce crawlability, indexability, relevance, or search result click-through depending on the affected page.",
+        "This problem can make the page harder to find, understand, or choose from Google results.",
     },
     developerBrief: {
       title: "Website helper fix note",
@@ -674,11 +674,11 @@ export function buildLocalIssueRecommendations(input: {
       summary: `Recommended workflow for ${input.platform.toLowerCase()} and common CMS setups.`,
       cmsInstructions: {
         WordPress:
-          "Edit the page SEO panel in the SEO plugin, update the affected field, clear cache, and preview the rendered page.",
+          "Edit the page settings in the website plugin, update the affected field, clear cache, and preview the live page.",
         Shopify:
-          "Update the product, collection, page, or theme SEO fields, then confirm the storefront HTML renders the change.",
+          "Update the product, collection, page, or theme search settings, then confirm the storefront shows the change.",
         Webflow:
-          "Edit page settings or collection template SEO fields, publish, and verify the live page source.",
+          "Edit page settings or collection template search settings, publish, and verify the live page.",
         Custom:
           "Update the route metadata or template component, deploy, and verify with a new website check.",
       },
@@ -719,11 +719,11 @@ export function buildLocalTemplateFixBriefs(input: {
       summary: `Recommended workflow for ${input.platform.toLowerCase()} and shared template-driven pages.`,
       cmsInstructions: {
         WordPress:
-          "Review the theme template, page builder layout, archive template, or SEO plugin defaults for this content type. Update shared SEO fields and schema settings, clear cache, then verify several affected URLs.",
+          "Review the theme template, page builder layout, archive template, or website plugin defaults for this content type. Update shared search fields and Google details, clear cache, then verify several affected pages.",
         Shopify:
           "Update the product, collection, article, or theme Liquid template responsible for this group. Publish the theme change and verify rendered storefront HTML on sample URLs.",
         Webflow:
-          "Edit the CMS Collection Template settings, dynamic SEO fields, schema embed, and heading structure. Publish and verify sample collection items.",
+          "Edit the collection template settings, dynamic search fields, Google details, and heading structure. Publish and verify sample collection items.",
         Custom:
           "Update the route metadata factory, shared page component, layout, or serializer for this template. Deploy and verify sample live HTML before running a new website check.",
       },

@@ -17,11 +17,17 @@ test("builds deterministic page SEO recommendations", () => {
   });
 
   assert.equal(recommendations.title.suggestedValue, "Local Seo | example.com");
+  assert.equal(recommendations.title.title, "Page title suggestion");
   assert.match(
     recommendations.metaDescription.suggestedValue ?? "",
     /local seo/i,
   );
+  assert.equal(
+    recommendations.metaDescription.title,
+    "Page description suggestion",
+  );
   assert.equal(recommendations.h1.suggestedValue, "Local Seo");
+  assert.equal(recommendations.h1.title, "Main heading suggestion");
   assert.equal(recommendations.schema.title, "Google details suggestion");
   assert.equal(
     recommendations.schema.suggestedValue,
@@ -37,11 +43,13 @@ test("builds deterministic page SEO recommendations", () => {
     [
       recommendations.schema.title,
       recommendations.schema.implementation,
+      recommendations.schema.rationale,
       recommendations.internalLinking.title,
       recommendations.internalLinking.summary,
       recommendations.internalLinking.implementation,
+      recommendations.contentGap.title,
     ].join(" "),
-    /Schema recommendation|Internal linking recommendation|anchor text|recrawling|canonical|sitemap|crawlable/,
+    /SEO title suggestion|Meta description suggestion|H1 suggestion|Schema recommendation|Internal linking recommendation|anchor text|recrawling|canonical|sitemap|crawlable|JSON-LD|structured data|Content gap recommendation/,
   );
 });
 
@@ -65,16 +73,20 @@ test("builds deterministic issue fix briefs", () => {
   assert.equal(recommendations.cmsBrief.title, "Website editor fix note");
   assert.match(
     recommendations.cmsBrief.cmsInstructions?.WordPress ?? "",
-    /SEO plugin/i,
+    /website plugin/i,
   );
   assert.doesNotMatch(
     [
       recommendations.developerBrief.title,
       recommendations.developerBrief.implementation,
+      recommendations.explanation.rationale,
       recommendations.cmsBrief.title,
+      recommendations.cmsBrief.cmsInstructions?.WordPress,
+      recommendations.cmsBrief.cmsInstructions?.Shopify,
+      recommendations.cmsBrief.cmsInstructions?.Webflow,
       recommendations.cmsBrief.rationale,
     ].join(" "),
-    /Developer fix brief|CMS-specific fix brief|rerun the crawl|technical accuracy/,
+    /Developer fix brief|CMS-specific fix brief|SEO fields|SEO panel|SEO plugin|rendered page|live page source|crawlability|indexability|rerun the crawl|technical accuracy/,
   );
 });
 
@@ -100,7 +112,7 @@ test("rejects unsafe AI recommendation payloads", () => {
     fallback,
   );
 
-  assert.equal(sanitized.title.title, "SEO title suggestion");
+  assert.equal(sanitized.title.title, "Page title suggestion");
   assert.equal(sanitized.schema.suggestedValue, "Product");
   assert.equal(
     sanitized.internalLinking.title,
@@ -146,8 +158,10 @@ test("builds deterministic template-level fix briefs", () => {
       recommendations.developerBrief.summary,
       recommendations.developerBrief.implementation,
       recommendations.developerBrief.rationale,
+      recommendations.cmsBrief.cmsInstructions?.WordPress,
+      recommendations.cmsBrief.cmsInstructions?.Webflow,
       recommendations.cmsBrief.cmsInstructions?.Custom,
     ].join(" "),
-    /template fix brief|active issues|mixed SEO issues|SEO defects|recrawl|recrawling|internal links|canonicals|robots directives/,
+    /template fix brief|active issues|mixed SEO issues|SEO defects|recrawl|recrawling|internal links|canonicals|robots directives|SEO plugin|SEO fields|schema settings|schema embed|CMS Collection Template/,
   );
 });

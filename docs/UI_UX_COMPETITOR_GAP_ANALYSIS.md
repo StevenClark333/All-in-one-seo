@@ -3071,8 +3071,26 @@ Competitive evidence:
 Implementation:
 
 - [x] Soften issue solution titles, action labels, details, steps, and rationale for Google detail, preferred-page, and Google-visibility problems.
+- [x] Soften stored Problems list/detail titles and descriptions for Google detail, preferred-page, and Google-visibility problems.
+- [x] Soften local AI fix-note and page-idea wording away from SEO plugin, SEO panel, JSON-LD, and structured-data labels.
 - [x] Keep the same website editor/site helper ownership and repair intent intact.
 - [x] Cover Google detail, preferred-page, and Google-visibility solution wording with unit tests.
 - [x] Runtime-check issue solution Google-settings calmness locally.
 - [ ] Browser-check deployed Problems list care-level calmness before opening the softened solution detail.
 - [ ] Browser-check issue solution Google-settings calmness after deployment.
+
+### Batch FX: Content Ideas Local Recommendation Label Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs teach page titles, meta descriptions, headings, and structured data as important content and search-result improvements for expert teams.
+- A beginner-first Content Ideas fallback should preserve the same recommendation types while saying page title, page description, main heading, page content idea, website settings, and page details for Google before SEO title, meta description, H1, JSON-LD, structured data, SEO fields, or schema wording.
+- The product direction is to make local fallback recommendations feel like simple page-improvement notes instead of technical SEO labels when AI output is unavailable.
+
+Implementation:
+
+- [x] Soften local page recommendation titles, Google-detail instructions, content-gap label, and issue/template CMS fallback instructions.
+- [x] Preserve the same recommendation payload shape and technical intent for downstream consumers.
+- [x] Cover local recommendation label calmness with unit tests.
+- [x] Runtime-check local recommendation label calmness locally.
+- [ ] Browser-check local recommendation label calmness after deployment.
