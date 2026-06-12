@@ -2737,3 +2737,19 @@ Implementation:
 - [x] Cover global-search problem-title softening with unit tests.
 - [ ] Runtime-check global-search problem-title calmness locally.
 - [ ] Runtime-check global-search problem-title calmness after deployment.
+
+### Batch FC: Websites List Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep error and warning counts visible on website and project lists for fast expert triage.
+- A beginner-first Websites list should preserve the same ordering signal while saying quick care and planned work.
+- The product direction is to make the first website list feel like choosing who needs care next, not reading a severity table.
+
+Implementation:
+
+- [x] Centralize Websites list quick-care labels in the product copy helper.
+- [x] Replace urgent shortlist, table, ready-group, and card labels on the Websites list.
+- [x] Cover Websites list quick-care wording with unit tests.
+- [x] Browser-check Websites list quick-care calmness locally.
+- [ ] Browser-check Websites list quick-care calmness after deployment.

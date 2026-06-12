@@ -150,8 +150,7 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                     Open these websites first
                   </h3>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
-                    Sorted by setup needs, urgent problems, and lower health
-                    so you do not have to scan the full table.
+                    {PRODUCT_BEGINNER_COPY.websitesCareShortlistIntro}
                   </p>
                 </div>
                 {hiddenProjectCount > 0 ? (
@@ -259,7 +258,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                             {PRODUCT_BEGINNER_COPY.workspaceHealthLabel}
                           </HelpLabel>
                         </TableHead>
-                        <TableHead>Urgent</TableHead>
+                        <TableHead>
+                          {PRODUCT_BEGINNER_COPY.websitesCareTableQuickCareHeader}
+                        </TableHead>
                         <TableHead>Planned</TableHead>
                         <TableHead>
                           <HelpLabel help="Share of checked pages that answered normally and were not hidden from Google.">
@@ -616,7 +617,7 @@ function ProjectCarePlan({
             icon={<CheckCircle2 className="size-4" aria-hidden="true" />}
             label="Ready"
             value={`${readyProjects} of ${visibleCount} websites`}
-            detail="Websites with ownership confirmed and no urgent problems are the calm group."
+            detail={PRODUCT_BEGINNER_COPY.websitesCareReadyDetail}
             href="#project-details"
           />
         </div>
@@ -698,7 +699,9 @@ function ProjectSummaryCard({
           </p>
         </div>
         <div>
-          <p className="font-medium text-slate-500">Urgent</p>
+          <p className="font-medium text-slate-500">
+            {PRODUCT_BEGINNER_COPY.websitesCareCardQuickCareLabel}
+          </p>
           <p
             className={
               errors
