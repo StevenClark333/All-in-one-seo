@@ -2801,3 +2801,35 @@ Implementation:
 - [x] Cover Website check recap quick-care wording with unit tests.
 - [x] Runtime-check Website check recap quick-care calmness locally.
 - [ ] Browser-check Website check recap quick-care calmness after deployment.
+
+### Batch FG: Problem Detail Quick-Care Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep issue severity visible on detail pages because expert users need triage context.
+- A beginner-first problem detail should keep the same importance signal while saying needs quick care and important change.
+- The product direction is to make an individual problem feel like one guided fix, not an urgent incident page.
+
+Implementation:
+
+- [x] Reuse the shared quick-care importance formatter on the Problem detail page.
+- [x] Replace urgent change and urgent SEO regression wording in Problem detail title and body softening.
+- [x] Cover the shared importance and important-change wording with existing product copy tests.
+- [x] Runtime-check Problem detail quick-care calmness locally.
+- [ ] Browser-check Problem detail quick-care calmness after deployment.
+
+### Batch FH: Dashboard Detail Table Website Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project and crawl tables available for expert review, but those tables often use domain and URL language.
+- A beginner-first dashboard should keep portfolio comparison available while saying website and pages checked before domain or URL phrasing.
+- The product direction is to make the optional dashboard detail feel like a website list, not an expert audit table.
+
+Implementation:
+
+- [x] Centralize dashboard detail-table website labels and helper text in the product copy helper.
+- [x] Replace the dashboard detail table Domain header and monitored-domain helper with website language.
+- [x] Cover dashboard detail-table website wording with unit tests.
+- [x] Runtime-check dashboard detail-table website calmness locally.
+- [ ] Browser-check dashboard detail-table website calmness after deployment.

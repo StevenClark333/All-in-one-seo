@@ -352,7 +352,9 @@ export default async function Home() {
                 <div className="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-lg font-semibold">
-                      <HelpLabel help="Portfolio table showing ownership, recent check status, pages, and problem volume across monitored websites.">
+                      <HelpLabel
+                        help={PRODUCT_BEGINNER_COPY.dashboardDetailTableHelp}
+                      >
                         {isAgency ? "Client site detail" : "Website detail"}
                       </HelpLabel>
                     </h3>
@@ -376,15 +378,19 @@ export default async function Home() {
                     <thead className="bg-slate-50 text-xs text-slate-500">
                       <tr>
                         <th className="px-5 py-3 font-semibold">Client</th>
-                        <th className="px-5 py-3 font-semibold">Domain</th>
+                        <th className="px-5 py-3 font-semibold">
+                          {PRODUCT_BEGINNER_COPY.dashboardDetailWebsiteColumn}
+                        </th>
                         <th className="px-5 py-3 font-semibold">
                           <HelpLabel help="Latest website health score from recent checks and open problems.">
                             Score
                           </HelpLabel>
                         </th>
                         <th className="px-5 py-3 font-semibold">
-                          <HelpLabel help="Number of URLs currently known for this monitored domain.">
-                            Pages
+                          <HelpLabel
+                            help={PRODUCT_BEGINNER_COPY.dashboardDetailPagesHelp}
+                          >
+                            Pages checked
                           </HelpLabel>
                         </th>
                         <th className="px-5 py-3 font-semibold">

@@ -13,6 +13,10 @@ import { getIssueDetailData } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 import { formatOverviewOwner } from "@/lib/overview-display-labels";
 import { formatPageMetaText } from "@/lib/page-display-labels";
+import {
+  formatProductWorkspaceProblemSeverity,
+  PRODUCT_GLOBAL_SEARCH_COPY,
+} from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -524,13 +528,7 @@ function formatIssueType(value: string) {
 }
 
 function getImportanceLabel(value: string) {
-  const labels: Record<string, string> = {
-    CRITICAL: "Urgent",
-    SUGGESTION: "Idea",
-    WARNING: "Planned",
-  };
-
-  return labels[value] ?? formatEnum(value);
+  return formatProductWorkspaceProblemSeverity(value);
 }
 
 function getProgressLabel(value: string) {
@@ -599,7 +597,7 @@ function softenProblemTitle(value: string) {
     "Homepage Blocked By Robots": "Homepage blocked from Google",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
-    "Critical Regression": "Urgent change",
+    "Critical Regression": PRODUCT_GLOBAL_SEARCH_COPY.importantChangeLabel,
     "Internally Linked Url Missing From Sitemap":
       "Linked page missing from page list",
     "Missing Canonical": "Preferred page link missing",
@@ -631,7 +629,7 @@ function softenProblemTitle(value: string) {
     .replace(/\bURLs?\b/g, "pages")
     .replace(/\bUrl\b/g, "page")
     .replace(/\bSitemap\b/g, "page list")
-    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
+    .replace(/\bCritical SEO regression\b/gi, "Important website change")
     .replace(/\bRobots Txt\b/g, "robots file")
     .replace(/\bH1\b/g, "main heading")
     .replace(/\bMeta Description\b/g, "page description")
@@ -647,8 +645,8 @@ function softenProblemText(value: string) {
       /\brestore indexable canonical signals\b/gi,
       "restore the right visibility and preferred page settings",
     )
-    .replace(/\bCritical SEO regression\b/gi, "Urgent SEO change")
-    .replace(/\bcritical regression\b/gi, "urgent change")
+    .replace(/\bCritical SEO regression\b/gi, "Important website change")
+    .replace(/\bcritical regression\b/gi, "important change")
     .replace(/\blatest crawl\b/gi, "latest website check")
     .replace(/\bdisallows crawling\b/gi, "blocks search-engine access to")
     .replace(/\ballow crawling\b/gi, "allow search-engine access")

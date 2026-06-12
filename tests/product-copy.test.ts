@@ -331,6 +331,18 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Ownership, check status, and problem volume when you need to compare websites.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardDetailTableHelp,
+    "Website table showing ownership, recent check status, pages, and problem volume across saved websites.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardDetailWebsiteColumn,
+    "Website",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.dashboardDetailPagesHelp,
+    "Pages currently known for this saved website.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardFirstWebsiteBody,
     "Websites keep each check, problem, and update in one place.",
   );

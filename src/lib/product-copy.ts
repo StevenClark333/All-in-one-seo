@@ -168,6 +168,11 @@ export const PRODUCT_BEGINNER_COPY = {
     "Optional website tables and setup notes for deeper review.",
   dashboardDetailSummary:
     "Ownership, check status, and problem volume when you need to compare websites.",
+  dashboardDetailTableHelp:
+    "Website table showing ownership, recent check status, pages, and problem volume across saved websites.",
+  dashboardDetailWebsiteColumn: "Website",
+  dashboardDetailPagesHelp:
+    "Pages currently known for this saved website.",
   dashboardFirstWebsiteBody:
     "Websites keep each check, problem, and update in one place.",
   dashboardLatestCheckHelp: "Most recent website check for this website.",
