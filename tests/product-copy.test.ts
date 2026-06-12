@@ -507,7 +507,7 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasContentGapHelp,
-    "Search terms with impressions but weak clicks or rankings.",
+    "Search terms with many views but weak visits or Google spots.",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasCompetitorGapEmpty,
@@ -516,6 +516,14 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasCompetitorGapIntro,
     "Watched search terms where another page is ahead and yours may need a clearer answer.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasCompetitorSpotLabel,
+    "Their Google spot",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasClickRateLabel,
+    "Click rate",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasDetailEmpty,
@@ -566,6 +574,18 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Pick one search idea to improve",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasMonthlySearchesLabel,
+    "Monthly searches",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasMonthlySearchesMissing,
+    "No monthly searches yet",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasPositionLabel,
+    "Google spot",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasVisibilityHelp,
     "How visible the selected website is across these search terms.",
   );
@@ -578,8 +598,24 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Search terms",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasTimesSeenLabel,
+    "Times seen",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasVisitsLabel,
+    "Visits",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasWorkspaceNote,
     "Search ideas use imported Google Search Console search-term data.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasYourSpotFallback,
+    "not in view yet",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.searchIdeasYourSpotLabel,
+    "Your Google spot",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchGrowthIdeasFallback,
@@ -627,6 +663,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|deeper SEO fields|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet/,
   );
 });

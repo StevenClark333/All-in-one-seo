@@ -2526,3 +2526,19 @@ Implementation:
 - [x] Cover the exact Search Growth detail-table wording with unit tests.
 - [x] Browser-check Search Growth detail-table calmness locally.
 - [ ] Browser-check Search Growth detail-table calmness after deployment.
+
+### Batch EP: Search Ideas Detail Metric Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose keyword detail with impressions, CTR, positions, owned rank, and volume because their users expect SEO analytics shorthand.
+- A beginner-first Search Ideas page should keep the same evidence while saying times seen, click rate, Google spot, and monthly searches.
+- The product direction is to make deeper Search Ideas feel like choosing a writing opportunity, not reading a keyword metrics table.
+
+Implementation:
+
+- [x] Centralize Search Ideas detail metric labels in the product copy helper.
+- [x] Replace CTR, impressions, position, owned rank, not ranking, and volume wording in visible Search Ideas detail sections.
+- [x] Cover the exact Search Ideas detail metric wording with unit tests.
+- [x] Browser-check Search Ideas detail metric calmness locally.
+- [ ] Browser-check Search Ideas detail metric calmness after deployment.

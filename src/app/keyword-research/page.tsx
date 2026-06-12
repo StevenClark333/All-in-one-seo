@@ -457,7 +457,7 @@ function OpportunityList({
               </div>
               <Meta label="Score" value={item.opportunityScore.toString()} />
               <Meta
-                label="Position"
+                label={PRODUCT_BEGINNER_COPY.searchIdeasPositionLabel}
                 value={formatKeywordPosition(item.avgPosition)}
               />
             </article>
@@ -510,9 +510,12 @@ function IntentPanel({
                   {item.queries} search-term groups
                 </p>
               </div>
-              <Meta label="Clicks" value={item.clicks.toLocaleString()} />
               <Meta
-                label="Impressions"
+                label={PRODUCT_BEGINNER_COPY.searchIdeasVisitsLabel}
+                value={item.clicks.toLocaleString()}
+              />
+              <Meta
+                label={PRODUCT_BEGINNER_COPY.searchIdeasTimesSeenLabel}
                 value={item.impressions.toLocaleString()}
               />
             </article>
@@ -551,8 +554,14 @@ function ContentGapList({
                 <p className="mt-1 text-sm text-slate-500">{item.reason}</p>
               </div>
               <div className="flex flex-wrap gap-3 text-sm">
-                <span>{item.impressions.toLocaleString()} impressions</span>
-                <span>{formatCtr(item.ctr)} CTR</span>
+                <span>
+                  {item.impressions.toLocaleString()}{" "}
+                  {PRODUCT_BEGINNER_COPY.searchIdeasTimesSeenLabel.toLowerCase()}
+                </span>
+                <span>
+                  {formatCtr(item.ctr)}{" "}
+                  {PRODUCT_BEGINNER_COPY.searchIdeasClickRateLabel.toLowerCase()}
+                </span>
                 <span>{formatKeywordPositionInline(item.avgPosition)}</span>
                 <Link
                   href={item.actionHref}
@@ -610,8 +619,15 @@ function CompetitorGapList({
               </div>
               <div className="flex flex-wrap gap-3 text-sm">
                 <span>{item.competitorDomain}</span>
-                <span>Competitor #{item.competitorPosition}</span>
-                <span>Owned {item.ownedPosition ?? "not ranking"}</span>
+                <span>
+                  {PRODUCT_BEGINNER_COPY.searchIdeasCompetitorSpotLabel} #
+                  {item.competitorPosition}
+                </span>
+                <span>
+                  {PRODUCT_BEGINNER_COPY.searchIdeasYourSpotLabel}{" "}
+                  {item.ownedPosition ??
+                    PRODUCT_BEGINNER_COPY.searchIdeasYourSpotFallback}
+                </span>
                 <span>{formatKeywordGapVolume(item.volume)}</span>
               </div>
             </article>
@@ -633,10 +649,12 @@ function CompetitorGapList({
 
 function formatKeywordGapVolume(value: number | null) {
   if (typeof value !== "number") {
-    return formatRankVolume(value);
+    return PRODUCT_BEGINNER_COPY.searchIdeasMonthlySearchesMissing;
   }
 
-  return `${formatRankVolume(value)} volume`;
+  return `${PRODUCT_BEGINNER_COPY.searchIdeasMonthlySearchesLabel}: ${formatRankVolume(
+    value,
+  )}`;
 }
 
 function QueryTable({
@@ -659,10 +677,18 @@ function QueryTable({
           <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th className="px-5 py-3 font-semibold">Search term</th>
-              <th className="px-5 py-3 font-semibold">Clicks</th>
-              <th className="px-5 py-3 font-semibold">Impressions</th>
-              <th className="px-5 py-3 font-semibold">CTR</th>
-              <th className="px-5 py-3 font-semibold">Position</th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.searchIdeasVisitsLabel}
+              </th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.searchIdeasTimesSeenLabel}
+              </th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.searchIdeasClickRateLabel}
+              </th>
+              <th className="px-5 py-3 font-semibold">
+                {PRODUCT_BEGINNER_COPY.searchIdeasPositionLabel}
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

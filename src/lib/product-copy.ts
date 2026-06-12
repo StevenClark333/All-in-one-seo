@@ -246,11 +246,13 @@ export const PRODUCT_BEGINNER_COPY = {
   recommendationsIntro:
     "Create simple page copy ideas and clear fix notes without needing technical wording or prompt writing.",
   searchIdeasContentGapHelp:
-    "Search terms with impressions but weak clicks or rankings.",
+    "Search terms with many views but weak visits or Google spots.",
   searchIdeasCompetitorGapEmpty:
     "Add competitors and Google spots in Rank Movement to reveal search terms they win.",
   searchIdeasCompetitorGapIntro:
     "Watched search terms where another page is ahead and yours may need a clearer answer.",
+  searchIdeasCompetitorSpotLabel: "Their Google spot",
+  searchIdeasClickRateLabel: "Click rate",
   searchIdeasDetailEmpty:
     "No Search Console search terms match this view.",
   searchIdeasDetailIntro:
@@ -271,13 +273,20 @@ export const PRODUCT_BEGINNER_COPY = {
   searchIdeasSetupTitle: "Connect search data",
   searchIdeasTrackTermsTitle: "Choose search terms to watch",
   searchIdeasImproveTitle: "Pick one search idea to improve",
+  searchIdeasMonthlySearchesLabel: "Monthly searches",
+  searchIdeasMonthlySearchesMissing: "No monthly searches yet",
+  searchIdeasPositionLabel: "Google spot",
+  searchIdeasVisitsLabel: "Visits",
   searchIdeasVisibilityHelp:
     "How visible the selected website is across these search terms.",
   searchIdeasSearchTermGroupsHelp:
     "Unique search-term groups with imported Search Console metrics.",
   searchIdeasSearchTermsLabel: "Search terms",
+  searchIdeasTimesSeenLabel: "Times seen",
   searchIdeasWorkspaceNote:
     "Search ideas use imported Google Search Console search-term data.",
+  searchIdeasYourSpotFallback: "not in view yet",
+  searchIdeasYourSpotLabel: "Your Google spot",
   searchGrowthIdeasFallback:
     "Use search ideas to create or improve pages before the next search import.",
   searchGrowthNoDropDetail:
