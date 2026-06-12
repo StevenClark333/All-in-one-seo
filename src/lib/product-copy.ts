@@ -195,6 +195,23 @@ export const PRODUCT_BEGINNER_COPY = {
   dashboardStartPlanTitle: "Today's website plan",
   clientSetupDetail:
     "Connect a website before website checks can begin.",
+  clientCarePlanIntro:
+    "Start with the client that has no website connected or has quick-care fixes. Keep the full client table as detail below.",
+  clientNeedsReviewValueSuffix: "need review",
+  clientNoQuickCareClients: "No quick-care clients",
+  clientQuickCareDetail: "Open the client with quick-care work first.",
+  clientDetailIntro:
+    "Keep this client easy to manage: confirm their website setup, review quick-care fixes, then send a report when there is progress to share.",
+  clientDetailMetricLabel: "Quick care / planned",
+  clientDetailPlanIntro:
+    "Check website setup first, then handle quick-care fixes, then use reports to show progress in plain language.",
+  clientDetailNoQuickCareTitle: "Nothing needs quick care today",
+  clientDetailNoQuickCareBody:
+    "This client does not have quick-care open fixes right now.",
+  clientDetailQuickCareDetail:
+    "Open the highest-impact fix before reviewing details.",
+  clientDetailQuickCareValueSuffix: "need quick care",
+  clientDetailQuickCareEmptyValue: "Nothing needs quick care",
   firstWebsiteAfterWorkspace:
     "The first website starts after the workspace is ready.",
   firstWebsiteCarePlan:

@@ -16,7 +16,11 @@ import {
 } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
 import { getClientDetailData } from "@/lib/management-queries";
-import { formatProductReportTitle } from "@/lib/product-copy";
+import {
+  formatProductReportTitle,
+  formatProductWorkspaceProblemSeverity,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 import { formatWebsiteHealth } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -77,9 +81,7 @@ export default async function ClientDetailPage({
               {client.name}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-              Keep this client easy to manage: confirm their website setup,
-              review urgent fixes, then send a report when there is progress to
-              share.
+              {PRODUCT_BEGINNER_COPY.clientDetailIntro}
             </p>
             <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-600">
               <span className="inline-flex items-center gap-2">
@@ -107,7 +109,7 @@ export default async function ClientDetailPage({
             <Metric label="Websites" value={client.domains.length} />
             <Metric label="Pages checked" value={totalPages} />
             <Metric
-              label="Urgent / planned"
+              label={PRODUCT_BEGINNER_COPY.clientDetailMetricLabel}
               value={`${criticalIssues} / ${warningIssues}`}
             />
           </section>
@@ -300,8 +302,8 @@ export default async function ClientDetailPage({
                     ))
                   ) : (
                     <EmptyNote
-                      title="Nothing urgent today"
-                      body="This client does not have urgent open fixes right now."
+                      title={PRODUCT_BEGINNER_COPY.clientDetailNoQuickCareTitle}
+                      body={PRODUCT_BEGINNER_COPY.clientDetailNoQuickCareBody}
                     />
                   )}
                 </div>
@@ -368,8 +370,7 @@ function ClientDetailPlan({
             Keep this account moving without extra digging.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Check website setup first, then handle urgent fixes, then use
-            reports to show progress in plain language.
+            {PRODUCT_BEGINNER_COPY.clientDetailPlanIntro}
           </p>
         </div>
 
@@ -397,9 +398,11 @@ function ClientDetailPlan({
             }
             label="Attention"
             value={
-              criticalIssues ? `${criticalIssues} urgent` : "Nothing urgent"
+              criticalIssues
+                ? `${criticalIssues} ${PRODUCT_BEGINNER_COPY.clientDetailQuickCareValueSuffix}`
+                : PRODUCT_BEGINNER_COPY.clientDetailQuickCareEmptyValue
             }
-            detail="Open the highest-impact fix before reviewing details."
+            detail={PRODUCT_BEGINNER_COPY.clientDetailQuickCareDetail}
             href="#client-attention"
           />
           <PlanTile
@@ -502,15 +505,7 @@ function formatEnum(value: string) {
 }
 
 function formatImportance(value: string) {
-  if (value === "CRITICAL") {
-    return "Urgent";
-  }
-
-  if (value === "WARNING") {
-    return "Planned";
-  }
-
-  return formatEnum(value);
+  return formatProductWorkspaceProblemSeverity(value);
 }
 
 function formatPlatform(value: string) {

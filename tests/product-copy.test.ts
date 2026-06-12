@@ -263,6 +263,54 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Connect a website before website checks can begin.",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.clientCarePlanIntro,
+    "Start with the client that has no website connected or has quick-care fixes. Keep the full client table as detail below.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientNeedsReviewValueSuffix,
+    "need review",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientNoQuickCareClients,
+    "No quick-care clients",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientQuickCareDetail,
+    "Open the client with quick-care work first.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailIntro,
+    "Keep this client easy to manage: confirm their website setup, review quick-care fixes, then send a report when there is progress to share.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailMetricLabel,
+    "Quick care / planned",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailPlanIntro,
+    "Check website setup first, then handle quick-care fixes, then use reports to show progress in plain language.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailNoQuickCareTitle,
+    "Nothing needs quick care today",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailNoQuickCareBody,
+    "This client does not have quick-care open fixes right now.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailQuickCareDetail,
+    "Open the highest-impact fix before reviewing details.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailQuickCareValueSuffix,
+    "need quick care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.clientDetailQuickCareEmptyValue,
+    "Nothing needs quick care",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardCompareIntro,
     "Use this when you want to compare websites, review search visibility, or prepare a report after the top plan is handled.",
   );

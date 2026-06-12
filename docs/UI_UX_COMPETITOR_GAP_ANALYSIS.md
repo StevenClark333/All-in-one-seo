@@ -360,7 +360,7 @@ Competitive evidence:
 Implementation:
 
 - [x] Add a plain-language client care plan above the client list.
-- [x] Surface setup gaps, urgent clients, and report readiness as the first three choices.
+- [x] Surface setup gaps, quick-care clients, and report readiness as the first three choices.
 - [x] Rename "Agency clients" to "Client list" and soften list helper text.
 - [x] Collapse bulk client import behind an optional "Add many clients at once" panel.
 - [x] Add an easy setup guide on the new-client screen.
@@ -369,6 +369,23 @@ Implementation:
 - [x] Rename "Client domains" to "Client websites".
 - [x] Collapse client settings behind an optional detail panel.
 - [x] Add friendlier empty states for no clients, no websites, no priority issues, and no reports.
+
+### Batch EX: Client Quick-Care Wording
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep agency work tied to projects, reports, and client-facing outcomes, but their expert-first labels can make account care feel stressful.
+- A beginner-friendly client area should keep priority visible while describing it as quick-care work.
+- The product direction is to help a nontechnical user choose the right client without feeling like every account is in crisis.
+
+Implementation:
+
+- [x] Centralize client quick-care labels, plan copy, and empty states in the product copy helper.
+- [x] Replace urgent client language on the client list and client detail pages.
+- [x] Reuse the shared quick-care severity label for client problem rows.
+- [x] Cover client quick-care wording with unit tests.
+- [x] Browser-check client quick-care wording locally.
+- [ ] Browser-check client quick-care wording after deployment.
 
 ### Batch Q: Content Ideas Calmness
 

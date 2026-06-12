@@ -216,8 +216,7 @@ function ClientCarePlan({
             Know who needs setup, attention, or a report.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Start with the client that has no website connected or open urgent
-            fixes. Keep the full client table as detail below.
+            {PRODUCT_BEGINNER_COPY.clientCarePlanIntro}
           </p>
         </div>
 
@@ -244,10 +243,10 @@ function ClientCarePlan({
             label="Attention"
             value={
               clientsWithCriticalIssues
-                ? `${clientsWithCriticalIssues} need review`
-                : "No urgent clients"
+                ? `${clientsWithCriticalIssues} ${PRODUCT_BEGINNER_COPY.clientNeedsReviewValueSuffix}`
+                : PRODUCT_BEGINNER_COPY.clientNoQuickCareClients
             }
-            detail="Open the client with urgent work first."
+            detail={PRODUCT_BEGINNER_COPY.clientQuickCareDetail}
             href="#client-list"
           />
           <PlanTile
