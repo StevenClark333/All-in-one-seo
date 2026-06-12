@@ -1878,6 +1878,7 @@ function formatReceiverTestStatus(value: string) {
 function formatSetupStepStatus(value: string) {
   const labels: Record<string, string> = {
     COMPLETE: "Done",
+    NEEDS_ACTION: "Needs a look",
     READY: "Ready",
     TODO: "To do",
     WARNING: "Needs a look",
@@ -1982,7 +1983,7 @@ function getFriendlyWordPressStepDetail(detail: string) {
     .replaceAll("api key", "connection key")
     .replaceAll("receiver key", "connection key")
     .replaceAll("Receiver key", "Connection key")
-    .replaceAll("Run Test connection", "Run Test connection")
+    .replaceAll("Run Test connection", "Run the connection test")
     .replaceAll("Fix Center", "Fixes");
 }
 
