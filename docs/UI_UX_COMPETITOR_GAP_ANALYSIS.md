@@ -1560,7 +1560,7 @@ Implementation:
 
 - [x] Translate Website workspace platform, ownership, monitoring, check, report, and change-event labels into plain-language wording.
 - [x] Browser-check Website workspace status labels desktop and mobile locally.
-- [ ] Browser-check Website workspace status labels after deployment.
+- [x] Browser-check Website workspace status labels after deployment.
 
 ### Batch CF: Connections Label Calmness
 
@@ -1574,7 +1574,7 @@ Implementation:
 
 - [x] Translate Connections provider, setup status, Google permission, WordPress script/test/step, and launch-check labels into plain-language wording.
 - [x] Browser-check Connections labels desktop and mobile locally.
-- [ ] Browser-check Connections labels after deployment.
+- [x] Browser-check Connections labels after deployment.
 
 ### Batch CG: Fix Confirmation Label Calmness
 
@@ -1999,7 +1999,7 @@ Implementation:
 - [x] Rename visible app framing from SEO Ops to Website Care across the sidebar and auth screens.
 - [x] Update metadata and product source-of-truth docs to the softer name.
 - [x] Cover the product copy contract with unit tests.
-- [ ] Browser-check product name calmness after deployment.
+- [x] Browser-check product name calmness after deployment.
 
 ### Batch DI: Plan Copy Calmness
 
@@ -2014,7 +2014,7 @@ Implementation:
 - [x] Rewrite plan catalog descriptions from monitoring language to website-care language.
 - [x] Soften email confirmation copy away from SEO issue wording.
 - [x] Cover the exact plan descriptions and old monitoring phrases with unit tests.
-- [ ] Browser-check plan copy calmness after deployment.
+- [x] Browser-check plan copy calmness after deployment.
 
 ### Batch DJ: Navigation Label Calmness
 
@@ -2030,7 +2030,7 @@ Implementation:
 - [x] Rename visible sidebar labels away from expert module wording while preserving existing routes.
 - [x] Cover the exact beginner-facing navigation labels with unit tests.
 - [x] Browser-check navigation label calmness locally.
-- [ ] Browser-check navigation label calmness after deployment.
+- [x] Browser-check navigation label calmness after deployment.
 
 ### Batch DK: Website Tool Label Consistency
 
@@ -2192,7 +2192,7 @@ Implementation:
 - [x] Replace project wording in website loading and business onboarding setup copy.
 - [x] Cover the exact dashboard website wording with unit tests.
 - [x] Browser-check dashboard website wording locally.
-- [ ] Browser-check dashboard website wording after deployment.
+- [x] Browser-check dashboard website wording after deployment.
 
 ### Batch DU: Website Workspace Label Calmness
 
@@ -2210,7 +2210,7 @@ Implementation:
 - [x] Rename site-health wording in the workspace summary to website-health wording.
 - [x] Cover the exact workspace health wording with unit tests.
 - [x] Browser-check website workspace label calmness locally.
-- [ ] Browser-check website workspace label calmness after deployment.
+- [x] Browser-check website workspace label calmness after deployment.
 
 ### Batch DV: First-Impression Plan Copy Calmness
 
@@ -2228,7 +2228,7 @@ Implementation:
 - [x] Replace business onboarding simple SEO plan copy with simple website care plan copy.
 - [x] Cover the exact first-impression wording with unit tests.
 - [x] Browser-check first-impression plan copy locally.
-- [ ] Browser-check first-impression plan copy after deployment.
+- [x] Browser-check first-impression plan copy after deployment.
 
 ### Batch DW: Rank Movement Website Label Calmness
 
@@ -2263,7 +2263,7 @@ Implementation:
 - [x] Replace the website workspace Fix receiver prompt with Connect in Connections.
 - [x] Cover the exact Connections action wording with unit tests.
 - [x] Browser-check Connections action label calmness locally.
-- [ ] Browser-check Connections action label calmness after deployment.
+- [x] Browser-check Connections action label calmness after deployment.
 
 ### Batch DY: Dashboard Metric Help Calmness
 
@@ -2280,7 +2280,7 @@ Implementation:
 - [x] Replace the generic SEO operations fallback with everyday website care.
 - [x] Cover the exact dashboard metric help wording with unit tests.
 - [x] Browser-check dashboard metric help calmness locally.
-- [ ] Browser-check dashboard metric help calmness after deployment.
+- [x] Browser-check dashboard metric help calmness after deployment.
 
 ### Batch DZ: Links Page Plan Calmness
 
@@ -2720,7 +2720,7 @@ Implementation:
 - [x] Reuse the shared quick-care problem severity formatter.
 - [x] Cover saved-website care-priority wording with unit tests.
 - [x] Runtime-check saved-website care-priority calmness locally.
-- [ ] Browser-check saved-website care-priority calmness after deployment.
+- [x] Browser-check saved-website care-priority calmness after deployment.
 
 ### Batch FB: Global Search Problem Title Calmness
 
