@@ -3196,4 +3196,4 @@ Implementation:
 - [x] Cover WordPress update-link wording with unit tests.
 - [x] Runtime-check WordPress update-link calmness locally.
 - [x] Browser-check WordPress update-link calmness locally.
-- [ ] Browser-check WordPress update-link calmness after deployment.
+- [x] Browser-check WordPress update-link calmness after deployment.
