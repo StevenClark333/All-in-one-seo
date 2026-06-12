@@ -20,6 +20,7 @@ import {
 } from "@/lib/page-display-labels";
 import {
   formatProductPageDetailType,
+  formatProductPageSearchVisibility,
   PRODUCT_BEGINNER_COPY,
 } from "@/lib/product-copy";
 
@@ -117,46 +118,46 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                 id="page-basics"
                 className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
               >
-                <h3 className="text-lg font-semibold">What Google sees</h3>
+                <h3 className="text-lg font-semibold">
+                  {PRODUCT_BEGINNER_COPY.pageDetailBasicsTitle}
+                </h3>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  These are the page basics that usually shape the search result
-                  and whether the page can be shown.
+                  {PRODUCT_BEGINNER_COPY.pageDetailBasicsIntro}
                 </p>
                 {latestSnapshot ? (
                   <dl className="mt-5 grid gap-4 md:grid-cols-2">
                     <Meta
-                      label="Page title"
+                      label={PRODUCT_BEGINNER_COPY.pageDetailTitleLabel}
                       value={formatPageMetaText(latestSnapshot.title)}
                     />
                     <Meta
-                      label="Search description"
+                      label={PRODUCT_BEGINNER_COPY.pageDetailDescriptionLabel}
                       value={formatPageMetaText(
                         latestSnapshot.metaDescription,
                       )}
                     />
                     <Meta
-                      label="Main heading"
+                      label={PRODUCT_BEGINNER_COPY.pageDetailHeadingLabel}
                       value={formatPageMetaText(latestSnapshot.h1)}
                     />
                     <Meta
-                      label="Preferred page"
+                      label={PRODUCT_BEGINNER_COPY.pageDetailPreferredPageLabel}
                       value={formatPageMetaText(latestSnapshot.canonical)}
                     />
                     <Meta
-                      label="Search visibility"
-                      value={getSearchVisibilityLabel(
+                      label={PRODUCT_BEGINNER_COPY.pageDetailVisibilityLabel}
+                      value={formatProductPageSearchVisibility(
                         latestSnapshot.robotsDirective,
                       )}
                     />
                     <Meta
-                      label="Page copy"
+                      label={PRODUCT_BEGINNER_COPY.pageDetailCopyLabel}
                       value={formatPageWordCount(latestSnapshot.wordCount)}
                     />
                   </dl>
                 ) : (
                   <p className="mt-3 text-sm text-slate-500">
-                    This page has not been checked yet. Run a website check to
-                    see the title, description, heading, and visibility status.
+                    {PRODUCT_BEGINNER_COPY.pageDetailNotChecked}
                   </p>
                 )}
               </section>
@@ -416,11 +417,11 @@ function PageFocusPlan({
     },
     {
       detail: pageBasicsReady
-        ? "Title, description, and visibility are ready."
-        : "Check the title, description, and search visibility before deeper work.",
+        ? PRODUCT_BEGINNER_COPY.pageDetailBasicsReady
+        : PRODUCT_BEGINNER_COPY.pageDetailBasicsNeedsLook,
       href: "#page-basics",
       icon: <FileText className="size-4" aria-hidden="true" />,
-      label: "Search result basics",
+      label: PRODUCT_BEGINNER_COPY.pageDetailBasicsPlanLabel,
       value: pageBasicsReady ? "Looks ready" : "Needs a quick look",
     },
     {
@@ -521,16 +522,6 @@ function getProgressLabel(value: string) {
   };
 
   return labels[value] ?? formatEnum(value);
-}
-
-function getSearchVisibilityLabel(value: string | null | undefined) {
-  if (!value) {
-    return "Allowed unless the page says otherwise";
-  }
-
-  return value.toLowerCase().includes("noindex")
-    ? "Blocked from search"
-    : "Allowed in search";
 }
 
 function formatEnum(value: string) {

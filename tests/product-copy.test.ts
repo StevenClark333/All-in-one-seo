@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   formatProductPageDetailType,
+  formatProductPageSearchVisibility,
   formatProductPagesFirstAction,
   formatProductProblemArea,
   formatProductReportBrandingStatus,
@@ -602,7 +603,61 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.pageDetailHeaderIntro,
-    "Start with the next page fix, then review what search engines see on this page. More link and change detail is still available when you need it.",
+    "Start with the next page fix, then review what Google can use for this page. More link and change detail is still available when you need it.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailBasicsTitle,
+    "Google result basics",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailBasicsIntro,
+    "These page basics usually shape the Google result and whether the page can be shown.",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.pageDetailTitleLabel, "Page title");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailDescriptionLabel,
+    "Google description",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailHeadingLabel,
+    "Main page heading",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailPreferredPageLabel,
+    "Preferred page",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailVisibilityLabel,
+    "Google visibility",
+  );
+  assert.equal(PRODUCT_BEGINNER_COPY.pageDetailCopyLabel, "Page copy");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailNotChecked,
+    "This page has not been checked yet. Run a website check to see the title, description, heading, and Google visibility.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailBasicsReady,
+    "Title, description, and Google visibility look ready.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailBasicsNeedsLook,
+    "Check the title, description, and Google visibility before deeper work.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailBasicsPlanLabel,
+    "Google result basics",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailVisibilityUnknown,
+    "Looks allowed unless page settings say otherwise",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailVisibilityBlocked,
+    "Hidden from Google",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailVisibilityAllowed,
+    "Can show in Google",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.pageDetailMoreIntro,
@@ -665,6 +720,18 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   assert.equal(
     formatProductPageDetailType("duplicate_meta_description"),
     "Search result text",
+  );
+  assert.equal(
+    formatProductPageSearchVisibility(null),
+    "Looks allowed unless page settings say otherwise",
+  );
+  assert.equal(
+    formatProductPageSearchVisibility("noindex,nofollow"),
+    "Hidden from Google",
+  );
+  assert.equal(
+    formatProductPageSearchVisibility("index,follow"),
+    "Can show in Google",
   );
   assert.equal(
     formatProductProblemArea("broken_internal_link:https://example.com/old"),

@@ -3160,3 +3160,21 @@ Implementation:
 - [x] Runtime-check alert message-link calmness locally.
 - [x] Browser-check alert message-link calmness locally.
 - [ ] Browser-check alert message-link calmness after deployment.
+
+### Batch GC: Page Detail Google-Basics Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit keeps page-level checks for title, meta description, headings, canonical status, robots/noindex rules, and crawlability visible for trained SEO teams.
+- Ahrefs Site Audit similarly exposes canonical, indexability, headings, and page-link detail because technical users need exact diagnostics.
+- A beginner-first page detail screen should preserve the same page evidence while saying Google result basics, Google description, Google visibility, preferred page, and website check before meta description, H1, robots, noindex, canonical, crawlability, or indexability wording.
+
+Implementation:
+
+- [x] Centralize Page Detail Google-basics labels and visibility states in the product copy helper.
+- [x] Replace visible Page Detail basics and care-plan labels with softer Google-result wording.
+- [x] Preserve the underlying page title, description, heading, preferred-page, and visibility values.
+- [x] Cover Page Detail Google-basics wording with unit tests.
+- [x] Runtime-check Page Detail Google-basics calmness locally.
+- [x] Browser-check Page Detail Google-basics calmness locally.
+- [ ] Browser-check Page Detail Google-basics calmness after deployment.

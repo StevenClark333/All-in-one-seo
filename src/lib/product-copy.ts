@@ -331,7 +331,26 @@ export const PRODUCT_BEGINNER_COPY = {
   pagesImportantGroupLabel: "need care",
   pagesMetricNeedsCare: "Pages needing care",
   pageDetailHeaderIntro:
-    "Start with the next page fix, then review what search engines see on this page. More link and change detail is still available when you need it.",
+    "Start with the next page fix, then review what Google can use for this page. More link and change detail is still available when you need it.",
+  pageDetailBasicsTitle: "Google result basics",
+  pageDetailBasicsIntro:
+    "These page basics usually shape the Google result and whether the page can be shown.",
+  pageDetailTitleLabel: "Page title",
+  pageDetailDescriptionLabel: "Google description",
+  pageDetailHeadingLabel: "Main page heading",
+  pageDetailPreferredPageLabel: "Preferred page",
+  pageDetailVisibilityLabel: "Google visibility",
+  pageDetailCopyLabel: "Page copy",
+  pageDetailNotChecked:
+    "This page has not been checked yet. Run a website check to see the title, description, heading, and Google visibility.",
+  pageDetailBasicsReady:
+    "Title, description, and Google visibility look ready.",
+  pageDetailBasicsNeedsLook:
+    "Check the title, description, and Google visibility before deeper work.",
+  pageDetailBasicsPlanLabel: "Google result basics",
+  pageDetailVisibilityUnknown: "Looks allowed unless page settings say otherwise",
+  pageDetailVisibilityBlocked: "Hidden from Google",
+  pageDetailVisibilityAllowed: "Can show in Google",
   pageDetailMoreIntro:
     "Open this for page changes and helpful-link detail.",
   pageDetailMoreTitle: "More page detail",
@@ -611,6 +630,18 @@ export function formatProductPageDetailType(value: string) {
   }
 
   return formatEnumLabel(value);
+}
+
+export function formatProductPageSearchVisibility(
+  value: string | null | undefined,
+) {
+  if (!value) {
+    return PRODUCT_BEGINNER_COPY.pageDetailVisibilityUnknown;
+  }
+
+  return value.toLowerCase().includes("noindex")
+    ? PRODUCT_BEGINNER_COPY.pageDetailVisibilityBlocked
+    : PRODUCT_BEGINNER_COPY.pageDetailVisibilityAllowed;
 }
 
 export function formatProductProblemArea(value: string) {
