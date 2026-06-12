@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 
-test("maps broken internal links to Fix Center actions", () => {
+test("maps stopped page links to Fixes actions", () => {
   const solution = buildIssueSolution({
     issueType: "broken_internal_link:https://example.com/old",
     platform: "SHOPIFY",
@@ -10,10 +10,48 @@ test("maps broken internal links to Fix Center actions", () => {
   });
 
   assert.equal(solution.primaryAction, "fix-center");
-  assert.equal(solution.actionLabel, "Generate link fix");
+  assert.equal(solution.actionLabel, "Create link note");
+  assert.equal(solution.title, "Replace link that stopped working");
   assert.equal(solution.effort, "Quick fix");
   assert.equal(solution.fixAvailability.label, "Can prepare here");
-  assert.match(solution.whyMatters, /Broken links/i);
+  assert.match(solution.whyMatters, /Links that stop working/i);
+  assert.match(solution.steps.join(" "), /Open Fixes/i);
+  assert.doesNotMatch(
+    [
+      solution.actionLabel,
+      solution.detail,
+      solution.fixAvailability.detail,
+      solution.steps.join(" "),
+      solution.title,
+      solution.whyMatters,
+    ].join(" "),
+    /broken internal link|Fix Center|replacement URL|internal URL/i,
+  );
+});
+
+test("maps page-list link gaps to helpful page-link notes", () => {
+  const solution = buildIssueSolution({
+    issueType: "sitemap_url_not_internally_linked:https://example.com/services",
+    platform: "WORDPRESS",
+    title: "Page list gap",
+  });
+
+  assert.equal(solution.primaryAction, "fix-center");
+  assert.equal(solution.actionLabel, "Create helpful link note");
+  assert.equal(solution.title, "Add helpful page link");
+  assert.match(solution.detail, /helpful link/i);
+  assert.match(solution.fixAvailability.detail, /visible link words/i);
+  assert.doesNotMatch(
+    [
+      solution.actionLabel,
+      solution.detail,
+      solution.fixAvailability.detail,
+      solution.steps.join(" "),
+      solution.title,
+      solution.whyMatters,
+    ].join(" "),
+    /internal link fix|source page|target page|anchor text|sitemap\/internal link|Fix Center/i,
+  );
 });
 
 test("maps schema problems to generated fix notes", () => {

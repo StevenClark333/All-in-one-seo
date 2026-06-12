@@ -23,6 +23,7 @@ import {
   REPORT_WHITE_LABEL_RECORD_NAME,
 } from "@/lib/reporting";
 import {
+  formatProductReportBrandingStatus,
   formatProductReportTitle,
   PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
@@ -599,11 +600,11 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                       {domain.status !== "VERIFIED" ? (
                         <div className="mt-3 grid gap-2 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
                           <DnsField
-                            label="TXT name"
+                            label={PRODUCT_REPORT_UPDATE_COPY.brandedLinkSetupNameLabel}
                             value={REPORT_WHITE_LABEL_RECORD_NAME}
                           />
                           <DnsField
-                            label="TXT value"
+                            label={PRODUCT_REPORT_UPDATE_COPY.brandedLinkSetupValueLabel}
                             value={formatReportWhiteLabelVerificationValue(
                               domain.verificationToken,
                             )}
@@ -614,7 +615,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                     <Meta
                       help={PRODUCT_REPORT_UPDATE_COPY.brandedLinkStatusHelp}
                       label="Status"
-                      value={formatBrandingStatus(domain.status)}
+                      value={formatProductReportBrandingStatus(domain.status)}
                     />
                     <Meta
                       label="Verified"
@@ -634,9 +635,9 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
                             value={domain.id}
                           />
                           <button className="inline-flex h-10 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50">
-                            Check branding
+                            {PRODUCT_REPORT_UPDATE_COPY.brandedLinkCheckAction}
                             <InfoTooltip
-                              label="Look up the required TXT record and activate the hostname if it matches."
+                              label={PRODUCT_REPORT_UPDATE_COPY.brandedLinkCheckHelp}
                               passive
                               side="left"
                             />
@@ -887,16 +888,6 @@ function formatReportStatus(value: string) {
     FAILED: "Needs review",
     GENERATED: "Ready to share",
     PUBLISHED: "Shared",
-  };
-
-  return labels[value] ?? formatEnum(value);
-}
-
-function formatBrandingStatus(value: string) {
-  const labels: Record<string, string> = {
-    FAILED: "Needs DNS help",
-    PENDING: "Waiting for DNS",
-    VERIFIED: "Active",
   };
 
   return labels[value] ?? formatEnum(value);

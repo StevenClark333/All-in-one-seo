@@ -85,6 +85,11 @@ export const PRODUCT_REPORT_UPDATE_COPY = {
   brandedLinkAddressHelp:
     "Address where shared reports should open after setup is confirmed.",
   brandedLinkAddressLabel: "Share link address",
+  brandedLinkCheckAction: "Check branding",
+  brandedLinkCheckHelp:
+    "Check the copied setup values and turn on the branded share link when they match.",
+  brandedLinkSetupNameLabel: "Setup name",
+  brandedLinkSetupValueLabel: "Setup value",
   addBrandedLinkAction: "Add branded link",
   changeSummaryDetail:
     "Important website changes found during this report period.",
@@ -103,6 +108,20 @@ export const PRODUCT_REPORT_UPDATE_COPY = {
   issueMovementNeedsCareLabel: "Needs care",
   issueMovementImportantChangesLabel: "Important changes",
 };
+
+export function formatProductReportBrandingStatus(value: string) {
+  const labels: Record<string, string> = {
+    FAILED: "Needs setup help",
+    PENDING: "Waiting for setup",
+    VERIFIED: "Active",
+  };
+
+  return labels[value] ?? value
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
 
 export function formatProductReportChangeTitle(count: number) {
   return count

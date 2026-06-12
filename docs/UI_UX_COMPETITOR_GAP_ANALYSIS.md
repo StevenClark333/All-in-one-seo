@@ -3027,3 +3027,35 @@ Implementation:
 - [x] Cover Search Ideas content-gap link wording with unit tests.
 - [x] Runtime-check Search Ideas content-gap link wording locally.
 - [ ] Browser-check Search Ideas content-gap link wording after deployment.
+
+### Batch FU: Issue Solution Link-Note Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit keeps broken-link reports detailed, including the pages where broken links appear and the returned status codes.
+- Ahrefs Link Opportunities keeps source page, keyword context, and target page detail visible so trained teams can approve internal-link work.
+- A beginner-first issue solution should preserve the same repair workflow while saying link that stopped working, page with the link, page to link to, and visible link words before broken internal link, source page, target page, anchor text, or Fix Center wording.
+
+Implementation:
+
+- [x] Soften broken-link and page-link issue solution titles, action labels, details, steps, and rationale.
+- [x] Keep the Fixes workflow and exact repair intent intact while translating the visible handoff language.
+- [x] Cover stopped-link and helpful-page-link issue solution wording with unit tests.
+- [x] Runtime-check issue solution link-note calmness locally.
+- [ ] Browser-check issue solution link-note calmness after deployment.
+
+### Batch FV: Report Branding Setup-State Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep branded report sharing and custom report links available for agencies, but setup status should not lead with DNS or hostname troubleshooting language.
+- A beginner-first report branding panel should preserve the exact setup values while saying setup name, setup value, waiting for setup, and needs setup help before TXT, DNS, or hostname wording.
+- The product direction is to make branded report links feel like a small sharing setup task, not a domain-management chore.
+
+Implementation:
+
+- [x] Centralize branded-link setup status, setup-value labels, and check helper copy in the report copy helper.
+- [x] Replace visible DNS/TXT/hostname status and helper wording in the Reports branded-link panel.
+- [x] Cover branded-link setup-state wording with unit tests.
+- [x] Runtime-check branded-link setup-state calmness locally.
+- [ ] Browser-check branded-link setup-state calmness after deployment.

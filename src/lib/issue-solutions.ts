@@ -29,26 +29,26 @@ export function buildIssueSolution(input: {
 
   if (type.startsWith("broken_internal_link:")) {
     return {
-      actionLabel: "Generate link fix",
+      actionLabel: "Create link note",
       detail:
-        "Replace the broken destination with a live internal URL. The portal can suggest the closest matching page and prepare a simple fix note.",
+        "Replace the link that stopped working with a live page on this website. The portal can suggest the closest matching page and prepare a simple fix note.",
       effort: "Quick fix",
       fixAvailability: {
         detail:
-          "The portal can suggest the replacement URL and prepare the fix note from Fix Center.",
+          "The portal can suggest the page to use instead and prepare the fix note from Fixes.",
         label: "Can prepare here",
         tone: "emerald",
       },
       primaryAction: "fix-center",
       steps: [
-        "Open Fix Center for this website.",
-        "Create or refresh link fixes.",
-        "Approve the suggested replacement URL.",
+        "Open Fixes for this website.",
+        "Create or refresh link notes.",
+        "Approve the suggested page to use instead.",
         "Send, download, or mark applied, then run a new website check.",
       ],
-      title: "Replace the broken internal link",
+      title: "Replace link that stopped working",
       whyMatters:
-        "Broken links send visitors to dead pages and make it harder for search engines to trust the site structure.",
+        "Links that stop working send visitors to dead pages and make it harder for search engines to trust the website structure.",
     };
   }
 
@@ -58,24 +58,24 @@ export function buildIssueSolution(input: {
     type.startsWith("deep_page:")
   ) {
     return {
-      actionLabel: "Create internal link fix",
+      actionLabel: "Create helpful link note",
       detail:
-        "Improve discovery by adding a contextual link from a stronger page or by fixing the sitemap/internal link mismatch.",
+        "Help people and search engines find this page by adding a helpful link from a stronger page or by fixing the page-list mismatch.",
       effort: "Quick fix",
       fixAvailability: {
         detail:
-          "The portal can suggest the source page, target page, and anchor text in Fix Center.",
+          "The portal can suggest the page with the link, the page to link to, and the visible link words in Fixes.",
         label: "Can prepare here",
         tone: "emerald",
       },
       primaryAction: "fix-center",
       steps: [
-        "Open Fix Center for this website.",
-        "Create internal link ideas.",
-        "Approve the best source page and anchor text.",
-        "Publish and run a new website check to confirm the links.",
+        "Open Fixes for this website.",
+        "Create helpful page-link ideas.",
+        "Approve the best page with the link and visible link words.",
+        "Publish and run a new website check to confirm the helpful links.",
       ],
-      title: "Improve internal discovery",
+      title: "Add helpful page link",
       whyMatters:
         "Important pages need clear paths from the rest of the website so people and search engines can find them.",
     };
@@ -183,7 +183,7 @@ export function buildIssueSolution(input: {
     return {
       actionLabel: "Fix heading",
       detail:
-        "Make the page’s main heading clear, unique, and aligned with the search intent.",
+        "Make the page's main heading clear, unique, and aligned with the search intent.",
       effort: "Content fix",
       fixAvailability: {
         detail:
@@ -194,8 +194,8 @@ export function buildIssueSolution(input: {
       primaryAction: "recommendations",
       steps: [
         "Create a suggested heading.",
-        "Update the visible page H1.",
-        "Avoid duplicate or empty H1s.",
+        "Update the visible main heading.",
+        "Avoid duplicate or empty main headings.",
         "Publish and run a new website check.",
       ],
       title: "Fix the main heading",
