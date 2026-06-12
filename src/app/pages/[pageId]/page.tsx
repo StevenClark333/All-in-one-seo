@@ -83,9 +83,7 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
               {page.url}
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
-              Start with the next page fix, then review what search engines see
-              on this URL. Deeper link and change detail is still available when
-              you need it.
+              {PRODUCT_BEGINNER_COPY.pageDetailHeaderIntro}
             </p>
           </header>
 
@@ -257,9 +255,11 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
               <details className="group rounded-lg border border-slate-200 bg-white shadow-sm">
                 <summary className="flex items-center justify-between gap-4 p-5">
                   <div>
-                    <h3 className="font-semibold">More page detail</h3>
+                    <h3 className="font-semibold">
+                      {PRODUCT_BEGINNER_COPY.pageDetailMoreTitle}
+                    </h3>
                     <p className="mt-1 text-sm leading-6 text-slate-500">
-                      Open this for page changes and internal-link detail.
+                      {PRODUCT_BEGINNER_COPY.pageDetailMoreIntro}
                     </p>
                   </div>
                   <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">

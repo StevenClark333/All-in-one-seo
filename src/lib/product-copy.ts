@@ -258,6 +258,11 @@ export const PRODUCT_BEGINNER_COPY = {
   pagesImportantCountLabel: "Need care",
   pagesImportantGroupLabel: "need care",
   pagesMetricNeedsCare: "Pages needing care",
+  pageDetailHeaderIntro:
+    "Start with the next page fix, then review what search engines see on this page. More link and change detail is still available when you need it.",
+  pageDetailMoreIntro:
+    "Open this for page changes and helpful-link detail.",
+  pageDetailMoreTitle: "More page detail",
   pagesNoQuickFix: "No quick fix waiting",
   pagesOpenProblemsLabel: "Open problems",
   pagesPageChangesEmpty: "No important page changes yet.",

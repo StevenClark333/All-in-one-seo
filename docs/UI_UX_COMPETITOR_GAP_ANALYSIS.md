@@ -2865,3 +2865,19 @@ Implementation:
 - [x] Cover Rank Movement update-field wording with unit tests.
 - [x] Runtime-check Rank Movement update-field calmness locally.
 - [ ] Browser-check Rank Movement update-field calmness after deployment.
+
+### Batch FK: Page Detail This-Page Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep URL-level page evidence available for audit review, but beginner users need the detail framed as the page they are improving.
+- A beginner-first Page Detail view should say this page and helpful links before URL or internal-link terminology.
+- The product direction is to make the page detail feel like a page-care guide, not a raw URL inspection view.
+
+Implementation:
+
+- [x] Centralize Page Detail intro and deeper-detail helper copy in the product copy helper.
+- [x] Replace the Page Detail header phrase "on this URL" and internal-link helper wording with softer page language.
+- [x] Cover Page Detail this-page wording with unit tests.
+- [x] Runtime-check Page Detail this-page calmness locally.
+- [ ] Browser-check Page Detail this-page calmness after deployment.
