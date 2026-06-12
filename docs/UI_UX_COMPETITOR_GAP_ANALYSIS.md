@@ -2946,3 +2946,19 @@ Implementation:
 - [x] Cover the Websites link-health helper with unit tests.
 - [x] Runtime-check Websites link-health helper calmness locally.
 - [ ] Browser-check Websites link-health helper calmness after deployment.
+
+### Batch FP: Exported Fix-Note Instruction Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep fix exports and platform instructions useful for teams that send work to editors or developers.
+- A beginner-first exported fix note should keep the exact URLs and snippets while saying note, page with the link, link that stopped working, and new website check before handoff, source page, broken URL, internal link, crawl, or issue status wording.
+- The product direction is to make downloaded fix notes feel ready to share with a helper, not like a technical diagnostic brief.
+
+Implementation:
+
+- [x] Replace platform fix-note delivery modes, summaries, steps, and validation labels with softer note language.
+- [x] Keep technical snippets available while softening surrounding instructions.
+- [x] Cover exported fix-note instruction wording with unit tests.
+- [x] Runtime-check exported fix-note instruction calmness locally.
+- [ ] Browser-check exported fix-note instruction calmness after deployment.
