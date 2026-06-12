@@ -2784,7 +2784,7 @@ Implementation:
 - [x] Replace visible receiver-test failure wording on the Integrations page with calmer connection wording.
 - [x] Cover stored and fallback WordPress connection messages with unit tests.
 - [x] Runtime-check WordPress connection retry calmness locally.
-- [ ] Browser-check WordPress connection retry calmness after deployment.
+- [x] Browser-check WordPress connection retry calmness after deployment.
 
 ### Batch FF: Website Check Recap Quick-Care Calmness
 
@@ -2800,7 +2800,7 @@ Implementation:
 - [x] Replace urgent follow-up and urgent change-badge wording in the Website check recap.
 - [x] Cover Website check recap quick-care wording with unit tests.
 - [x] Runtime-check Website check recap quick-care calmness locally.
-- [ ] Browser-check Website check recap quick-care calmness after deployment.
+- [x] Browser-check Website check recap quick-care calmness after deployment.
 
 ### Batch FG: Problem Detail Quick-Care Calmness
 
@@ -2816,7 +2816,7 @@ Implementation:
 - [x] Replace urgent change and urgent SEO regression wording in Problem detail title and body softening.
 - [x] Cover the shared importance and important-change wording with existing product copy tests.
 - [x] Runtime-check Problem detail quick-care calmness locally.
-- [ ] Browser-check Problem detail quick-care calmness after deployment.
+- [x] Browser-check Problem detail quick-care calmness after deployment.
 
 ### Batch FH: Dashboard Detail Table Website Calmness
 
@@ -2832,7 +2832,7 @@ Implementation:
 - [x] Replace the dashboard detail table Domain header and monitored-domain helper with website language.
 - [x] Cover dashboard detail-table website wording with unit tests.
 - [x] Runtime-check dashboard detail-table website calmness locally.
-- [ ] Browser-check dashboard detail-table website calmness after deployment.
+- [x] Browser-check dashboard detail-table website calmness after deployment.
 
 ### Batch FI: Fix Row Link-Label Calmness
 
@@ -2849,6 +2849,7 @@ Implementation:
 - [x] Cover Fixes row link-label wording with unit tests.
 - [x] Runtime-check Fixes row link-label calmness locally.
 - [ ] Browser-check Fixes row link-label calmness after deployment.
+- [x] Browser-check deployed Fix Center empty/check state: Nothing to check is visible and the old Nothing urgent, Broken URL, Suggested URL, and Anchor text labels are absent. The live account has no ready fix rows, so row-specific label rendering still needs a deployed data-backed check.
 
 ### Batch FJ: Rank Update Field Calmness
 
