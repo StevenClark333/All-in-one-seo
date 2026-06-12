@@ -731,8 +731,8 @@ export default async function IntegrationsPage({
                           />
                           <div className="grid gap-3">
                             <Meta
-                              help="The plugin tells this portal when a WordPress fix has been applied."
-                              label="Update link"
+                              help="The plugin uses this return link after a WordPress fix has been applied or reviewed."
+                              label="Return link"
                               value={`${appUrl}/api/integrations/wordpress/link-fix-status`}
                             />
                             {receiverIntegration ? (
@@ -1918,7 +1918,7 @@ function readConfigString(value: unknown, key: string) {
 
 function getFriendlyInstallLabel(label: string) {
   const labels: Record<string, string> = {
-    "callback url": "UPDATE LINK",
+    "callback url": "RETURN LINK",
     "connection key": "CONNECTION KEY",
     "receiver api key": "CONNECTION KEY",
     "receiver endpoint": "WORDPRESS UPDATE LINK",
@@ -1957,7 +1957,7 @@ function getFriendlyInstallValue(value: string) {
     .replaceAll("Receiver endpoint", "WordPress update link")
     .replaceAll("Receiver API key", "Connection key")
     .replaceAll("receiver", "connection")
-    .replaceAll("callback", "update");
+    .replaceAll("callback", "return");
 }
 
 function getFriendlyWordPressStepLabel(label: string) {
