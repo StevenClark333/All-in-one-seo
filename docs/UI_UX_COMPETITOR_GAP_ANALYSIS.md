@@ -2297,7 +2297,7 @@ Implementation:
 - [x] Replace page-link problems preview copy with link-help items.
 - [x] Cover the exact Links page wording with unit tests.
 - [x] Browser-check Links page plan calmness locally.
-- [ ] Browser-check Links page plan calmness after deployment.
+- [x] Browser-check Links page plan calmness after deployment.
 
 ### Batch EA: Pages Content Check Calmness
 
@@ -2313,7 +2313,7 @@ Implementation:
 - [x] Replace deeper SEO fields wording with rest-of-page-details wording.
 - [x] Cover the exact Pages content-check wording with unit tests.
 - [x] Browser-check Pages content check calmness locally.
-- [ ] Browser-check Pages content check calmness after deployment.
+- [x] Browser-check Pages content check calmness after deployment.
 
 ### Batch EB: Dashboard Search-Term Shortcut Calmness
 
@@ -2606,7 +2606,7 @@ Implementation:
 - [x] Replace critical-pages, urgent-pages, urgent-problems, and tracked-page-change language in Pages list and detail views.
 - [x] Cover the exact Pages care wording with unit tests.
 - [x] Browser-check Pages care language calmness locally.
-- [ ] Browser-check Pages care language calmness after deployment.
+- [x] Browser-check Pages care language calmness after deployment.
 
 ### Batch ET: Report Issue Movement Calmness
 
@@ -2670,7 +2670,7 @@ Implementation:
 - [x] Replace urgent work, urgent-problem, high-risk, and urgent-change wording on the home dashboard.
 - [x] Cover the exact dashboard quick-care wording with unit tests.
 - [x] Browser-check dashboard quick-care calmness locally.
-- [ ] Browser-check dashboard quick-care calmness after deployment.
+- [x] Browser-check dashboard quick-care calmness after deployment.
 
 ### Batch EY: Report Export Quick-Care Calmness
 
