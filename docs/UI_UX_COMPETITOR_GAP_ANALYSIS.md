@@ -2849,3 +2849,19 @@ Implementation:
 - [x] Cover Fixes row link-label wording with unit tests.
 - [x] Runtime-check Fixes row link-label calmness locally.
 - [ ] Browser-check Fixes row link-label calmness after deployment.
+
+### Batch FJ: Rank Update Field Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep rank, competitor, and provider detail available for teams that import search-position data.
+- A beginner-first Rank Movement page should keep the same update fields while saying Google spot, other website, and where this came from before position, competitor domain, provider, or vendor examples.
+- The product direction is to make adding a search-term update feel like a simple note, not a keyword-rank data import form.
+
+Implementation:
+
+- [x] Centralize Rank Movement update-field labels in the product copy helper.
+- [x] Replace Position, Competitor domain, Provider, and vendor placeholder wording in the Rank Movement update forms.
+- [x] Cover Rank Movement update-field wording with unit tests.
+- [x] Runtime-check Rank Movement update-field calmness locally.
+- [ ] Browser-check Rank Movement update-field calmness after deployment.

@@ -326,7 +326,7 @@ export default async function RankTrackingPage({
                     </select>
                   </FilterLabel>
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <FilterLabel label="Position">
+                    <FilterLabel label={PRODUCT_BEGINNER_COPY.rankOwnedSpotHeader}>
                       <input
                         name="position"
                         min="1"
@@ -344,7 +344,9 @@ export default async function RankTrackingPage({
                       />
                     </FilterLabel>
                   </div>
-                  <FilterLabel label="Competitor domain">
+                  <FilterLabel
+                    label={PRODUCT_BEGINNER_COPY.rankCompetitorWebsiteFieldLabel}
+                  >
                     <input
                       name="competitorDomain"
                       placeholder={PRODUCT_BEGINNER_COPY.rankPositionYourSiteHint}
@@ -398,10 +400,10 @@ export default async function RankTrackingPage({
                       />
                     </FilterLabel>
                   </div>
-                  <FilterLabel label="Provider">
+                  <FilterLabel label={PRODUCT_BEGINNER_COPY.rankProviderFieldLabel}>
                     <input
                       name="provider"
-                      placeholder="Semrush, Ahrefs, DataForSEO"
+                      placeholder={PRODUCT_BEGINNER_COPY.rankProviderPlaceholder}
                       className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     />
                   </FilterLabel>

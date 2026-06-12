@@ -282,6 +282,7 @@ export const PRODUCT_BEGINNER_COPY = {
     "Search terms where another page is ahead and your page may need work.",
   rankCompetitorGapPositionLabel: "Positions",
   rankCompetitorGapTitle: "Competitor page gaps",
+  rankCompetitorWebsiteFieldLabel: "Other website",
   rankCompetitionLabel: "Competition",
   rankDetailEmpty:
     "No search terms are being watched yet. Add one above to begin rank movement tracking.",
@@ -316,6 +317,8 @@ export const PRODUCT_BEGINNER_COPY = {
   rankOwnedSpotHeader: "Your Google spot",
   rankPositionTitle: "Add Google position",
   rankPositionYourSiteHint: "Leave blank for your website",
+  rankProviderFieldLabel: "Where this came from",
+  rankProviderPlaceholder: "Optional source name",
   rankReadyDetail:
     "Google spots are ready, so focus on the best search terms near page one.",
   rankReadyLabel: "Improve page-one chances",
