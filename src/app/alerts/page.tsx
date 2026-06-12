@@ -7,6 +7,7 @@ import {
   formatAlertWatchedChange,
 } from "@/lib/alert-display-labels";
 import { getAlertCenterData } from "@/lib/alerts";
+import { PRODUCT_ALERT_COPY } from "@/lib/product-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -146,11 +147,11 @@ export default async function AlertsPage() {
                 />
               </label>
               <label className="grid gap-2 md:col-span-2">
-                <FieldLabel>Slack, Teams, or webhook URL</FieldLabel>
+                <FieldLabel>{PRODUCT_ALERT_COPY.messageLinkLabel}</FieldLabel>
                 <input
                   name="targetUrl"
                   type="url"
-                  placeholder="https://hooks.slack.com/services/..."
+                  placeholder={PRODUCT_ALERT_COPY.messageLinkPlaceholder}
                   className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                 />
               </label>
@@ -177,11 +178,15 @@ export default async function AlertsPage() {
                     />
                   </label>
                   <label className="grid gap-2">
-                    <FieldLabel>Backup URL</FieldLabel>
+                    <FieldLabel>
+                      {PRODUCT_ALERT_COPY.backupMessageLinkLabel}
+                    </FieldLabel>
                     <input
                       name="escalationTargetUrl"
                       type="url"
-                      placeholder="https://hooks.slack.com/services/..."
+                      placeholder={
+                        PRODUCT_ALERT_COPY.backupMessageLinkPlaceholder
+                      }
                       className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                     />
                   </label>

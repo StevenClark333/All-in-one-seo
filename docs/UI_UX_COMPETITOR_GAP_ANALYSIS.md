@@ -3126,3 +3126,37 @@ Implementation:
 - [x] Cover ownership setup wording with unit tests.
 - [x] Runtime-check ownership setup wording locally.
 - [ ] Browser-check ownership setup wording after deployment.
+
+### Batch GA: Link Update Handoff Calmness
+
+Competitive evidence:
+
+- Semrush Site Audit guidance keeps broken links, internal links, and technical on-page issues visible so trained teams can identify and replace problem URLs.
+- Ahrefs Site Audit similarly lists pages that link to broken pages and treats internal links as an SEO structure/discovery lever.
+- A beginner-first link update handoff should preserve exact source and destination URLs while saying link that stopped working, helpful page link, visible link words, and website check before broken internal link, anchor text, source page, recrawl, or link graph wording.
+
+Implementation:
+
+- [x] Soften link-update manual instructions for replacement and add-link workflows.
+- [x] Soften link-fix lifecycle and verification messages away from crawl/source-page/link-graph language.
+- [x] Preserve exact URL fields and automation payload structure for delivery workflows.
+- [x] Cover link-update handoff wording with unit tests.
+- [x] Runtime-check link-update handoff calmness locally.
+- [ ] Browser-check link-update handoff calmness after deployment.
+
+### Batch GB: Alert Message-Link Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs-style monitoring tools keep alert destinations flexible for Slack, Teams, and webhook workflows used by trained teams.
+- A beginner-first alert setup should preserve the same delivery power while saying message link and backup message link before webhook URL, incoming webhook, or raw Slack hook examples.
+- The product direction is to make notifications feel like choosing where messages should arrive, not configuring an integration endpoint.
+
+Implementation:
+
+- [x] Centralize alert message-link labels and placeholders in the product copy helper.
+- [x] Replace visible alert destination and backup URL labels with message-link wording.
+- [x] Cover alert message-link wording with unit tests.
+- [x] Runtime-check alert message-link calmness locally.
+- [x] Browser-check alert message-link calmness locally.
+- [ ] Browser-check alert message-link calmness after deployment.

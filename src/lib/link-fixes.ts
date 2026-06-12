@@ -99,16 +99,16 @@ export function buildLinkFixLifecycleSteps(input: {
       detail:
         input.verificationMessage ||
         (verificationComplete
-          ? "The latest crawl checked this fix."
+          ? "The latest website check reviewed this update."
           : appliedComplete
-            ? "Waiting for a crawl to verify the website change."
-            : "Verification starts after the fix is applied."),
+            ? "Waiting for the next website check to review this update."
+            : "The website check starts after the update is applied."),
       label:
         input.verificationStatus === "VERIFIED_FIXED"
           ? "Verified fixed"
           : input.verificationStatus === "STILL_FAILING"
             ? "Still failing"
-            : "Crawl verification",
+            : "Website check",
       status: verificationComplete
         ? ("COMPLETE" as const)
         : appliedComplete
@@ -384,7 +384,7 @@ export async function updateLinkFixSuggestion(input: {
             verificationCheckedAt: null,
             verificationCrawlRunId: null,
             verificationMessage:
-              "Waiting for the next crawl to verify this fix.",
+              "Waiting for the next website check to review this update.",
             verificationStatus: "PENDING" as const,
           }
         : {}),
@@ -553,7 +553,8 @@ export async function confirmWordPressLinkFixStatus(input: {
       status: "APPLIED",
       verificationCheckedAt: null,
       verificationCrawlRunId: null,
-      verificationMessage: "Waiting for the next crawl to verify this fix.",
+      verificationMessage:
+        "Waiting for the next website check to review this update.",
       verificationStatus: "PENDING",
     },
   });
@@ -669,7 +670,8 @@ async function verifyAppliedLinkFix({
 } | null> {
   if (!sourcePageId) {
     return {
-      message: "Source page is no longer mapped, so verification needs review.",
+      message:
+        "The page with this update is no longer matched, so it needs a quick review.",
       status: "STILL_FAILING",
     };
   }
@@ -696,20 +698,20 @@ async function verifyAppliedLinkFix({
     if (!brokenLink) {
       return {
         message:
-          "The previous broken URL was not found on the crawled source page.",
+          "The old link was not found on the checked page.",
         status: "VERIFIED_FIXED",
       };
     }
 
     if (brokenLink.statusCode && brokenLink.statusCode < 400) {
       return {
-        message: "The previous URL is now returning a healthy status.",
+        message: "The old link is now opening successfully.",
         status: "VERIFIED_FIXED",
       };
     }
 
     return {
-      message: `The broken URL still appears on the source page${
+      message: `The old link still appears on the page${
         brokenLink.statusCode ? ` with HTTP ${brokenLink.statusCode}` : ""
       }.`,
       status: "STILL_FAILING",
@@ -731,14 +733,14 @@ async function verifyAppliedLinkFix({
   ) {
     return {
       message:
-        "The suggested internal link was found on the crawled source page.",
+        "The helpful page link was found on the checked page.",
       status: "VERIFIED_FIXED",
     };
   }
 
   return {
     message:
-      "The suggested internal link was not found on the crawled source page.",
+      "The helpful page link was not found on the checked page.",
     status: "STILL_FAILING",
   };
 }
@@ -797,7 +799,7 @@ function buildSuggestionForIssue(input: {
       domainId: input.domain.id,
       issueId: input.issue.id,
       reason:
-        "The crawler found a broken internal destination. This replacement is the closest live URL by path, slug, and page title.",
+        "The website check found a link that stopped working. This replacement is the closest live page by path, page slug, and page title.",
       sourcePageId: input.issue.pageId,
       sourceUrl,
       suggestedUrl: replacement.url,
@@ -830,7 +832,7 @@ function buildSuggestionForIssue(input: {
       domainId: input.domain.id,
       issueId: input.issue.id,
       reason:
-        "This target page needs stronger discovery. Add a contextual internal link from a stronger source page to reduce crawl depth and improve discoverability.",
+        "This page needs an easier path from another useful page. Add a helpful page link from a stronger page so visitors and checks can find it sooner.",
       sourcePageId: source.id,
       sourceUrl: source.url,
       suggestedUrl: target.url,
@@ -937,17 +939,19 @@ function sourceScore(page: { importance: string; pageType: string | null }) {
   return importance + (page.pageType === "homepage" ? 25 : 0);
 }
 
-function buildManualInstructions(input: {
+export function buildManualInstructions(input: {
   sourceUrl: string;
   brokenUrl?: string | null;
   suggestedUrl: string;
   anchorText?: string | null;
 }) {
+  const visibleWords = input.anchorText ?? "Learn more";
+
   if (input.brokenUrl) {
-    return `On ${input.sourceUrl}, replace the internal link ${input.brokenUrl} with ${input.suggestedUrl}. Use anchor text "${input.anchorText ?? "Learn more"}" if it fits naturally. Recrawl the site after publishing to confirm the issue is fixed.`;
+    return `On ${input.sourceUrl}, replace the link that stopped working, ${input.brokenUrl}, with ${input.suggestedUrl}. Use the visible link words "${visibleWords}" if they fit naturally. Run a fresh website check after publishing to confirm the update.`;
   }
 
-  return `On ${input.sourceUrl}, add a contextual internal link to ${input.suggestedUrl}. Use anchor text "${input.anchorText ?? "Learn more"}" if it fits naturally. Recrawl the site after publishing to confirm the link graph updated.`;
+  return `On ${input.sourceUrl}, add a helpful page link to ${input.suggestedUrl}. Use the visible link words "${visibleWords}" if they fit naturally. Run a fresh website check after publishing to confirm the update.`;
 }
 
 function buildStatusDates(status?: LinkFixStatus) {

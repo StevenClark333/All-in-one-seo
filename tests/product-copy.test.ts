@@ -17,6 +17,7 @@ import {
   getProductWorkspaceToolLabel,
   getProductReportTitle,
   PRODUCT_AREA_NAME,
+  PRODUCT_ALERT_COPY,
   PRODUCT_BEGINNER_COPY,
   PRODUCT_BRAND_NAME,
   PRODUCT_CONNECTION_COPY,
@@ -262,6 +263,29 @@ test("uses soft ownership setup wording", () => {
   assert.doesNotMatch(
     Object.values(PRODUCT_DOMAIN_VERIFICATION_COPY).join(" "),
     /DNS|TXT|hostname|Host \/ name|DNS record|generated TXT|edit DNS/i,
+  );
+});
+
+test("uses soft alert message-link wording", () => {
+  assert.equal(
+    PRODUCT_ALERT_COPY.messageLinkLabel,
+    "Slack, Teams, or message link",
+  );
+  assert.equal(
+    PRODUCT_ALERT_COPY.messageLinkPlaceholder,
+    "Paste a Slack or Teams message link",
+  );
+  assert.equal(
+    PRODUCT_ALERT_COPY.backupMessageLinkLabel,
+    "Backup message link",
+  );
+  assert.equal(
+    PRODUCT_ALERT_COPY.backupMessageLinkPlaceholder,
+    "Paste a backup message link",
+  );
+  assert.doesNotMatch(
+    Object.values(PRODUCT_ALERT_COPY).join(" "),
+    /webhook URL|Backup URL|hooks\.slack\.com|incoming webhook/i,
   );
 });
 

@@ -210,6 +210,13 @@ export const PRODUCT_DOMAIN_VERIFICATION_COPY = {
   recordValueLabel: "Setup value",
 };
 
+export const PRODUCT_ALERT_COPY = {
+  messageLinkLabel: "Slack, Teams, or message link",
+  messageLinkPlaceholder: "Paste a Slack or Teams message link",
+  backupMessageLinkLabel: "Backup message link",
+  backupMessageLinkPlaceholder: "Paste a backup message link",
+};
+
 export const PRODUCT_BEGINNER_COPY = {
   addWebsiteIntro:
     "Add the website first. After it is saved, the portal will guide you through ownership, check rhythm, and the first website check.",
