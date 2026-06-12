@@ -54,7 +54,7 @@ test("maps page-list link gaps to helpful page-link notes", () => {
   );
 });
 
-test("maps schema problems to generated fix notes", () => {
+test("maps Google detail problems to generated fix notes", () => {
   const solution = buildIssueSolution({
     issueType: "product_schema_missing",
     platform: "SHOPIFY",
@@ -64,20 +64,68 @@ test("maps schema problems to generated fix notes", () => {
   assert.equal(solution.primaryAction, "recommendations");
   assert.equal(solution.effort, "Template fix");
   assert.equal(solution.fixAvailability.label, "Needs site helper");
-  assert.match(solution.detail, /structured data/i);
-  assert.match(solution.whyMatters, /Schema/i);
+  assert.equal(solution.actionLabel, "Add Google details note");
+  assert.equal(solution.title, "Add page details for Google");
+  assert.match(solution.detail, /page details for Google/i);
+  assert.doesNotMatch(
+    [
+      solution.actionLabel,
+      solution.detail,
+      solution.fixAvailability.detail,
+      solution.steps.join(" "),
+      solution.title,
+      solution.whyMatters,
+    ].join(" "),
+    /schema|structured data|JSON-LD/i,
+  );
 });
 
-test("maps canonical issues to platform-specific guidance", () => {
+test("maps preferred page issues to platform-specific guidance", () => {
   const solution = buildIssueSolution({
     issueType: "missing_canonical",
     platform: "CUSTOM",
     title: "Missing canonical",
   });
 
-  assert.equal(solution.title, "Correct the canonical URL");
+  assert.equal(solution.actionLabel, "Fix preferred page note");
+  assert.equal(solution.title, "Correct the preferred page");
   assert.equal(solution.fixAvailability.label, "Needs website editor");
   assert.match(solution.detail, /Custom/i);
+  assert.doesNotMatch(
+    [
+      solution.actionLabel,
+      solution.detail,
+      solution.fixAvailability.detail,
+      solution.steps.join(" "),
+      solution.title,
+      solution.whyMatters,
+    ].join(" "),
+    /canonical|indexable URL/i,
+  );
+});
+
+test("maps Google visibility problems to site helper notes", () => {
+  const solution = buildIssueSolution({
+    issueType: "page_noindex",
+    platform: "CUSTOM",
+    title: "Page hidden from Google",
+  });
+
+  assert.equal(solution.actionLabel, "Fix Google visibility note");
+  assert.equal(solution.title, "Restore Google visibility");
+  assert.equal(solution.fixAvailability.label, "Needs site helper");
+  assert.match(solution.detail, /appear in Google/i);
+  assert.doesNotMatch(
+    [
+      solution.actionLabel,
+      solution.detail,
+      solution.fixAvailability.detail,
+      solution.steps.join(" "),
+      solution.title,
+      solution.whyMatters,
+    ].join(" "),
+    /indexability|noindex|indexable/i,
+  );
 });
 
 test("falls back to recommendation text for unknown issues", () => {

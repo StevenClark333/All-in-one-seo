@@ -83,49 +83,49 @@ export function buildIssueSolution(input: {
 
   if (type.includes("schema") || type.includes("markup")) {
     return {
-      actionLabel: "Build schema fix",
-      detail: `Add valid structured data in ${platform}. Use the affected page type to choose Product, Article, BreadcrumbList, Organization, or WebPage schema.`,
+      actionLabel: "Add Google details note",
+      detail: `Add page details for Google in ${platform}. Use the affected page type to choose the right details for a product, article, breadcrumb, organization, or regular web page.`,
       effort: "Template fix",
       fixAvailability: {
         detail:
-          "Create the fix note here, then add the schema in the website editor, template, or code.",
+          "Create the fix note here, then add the page details for Google in the website editor, template, or code.",
         label: "Needs site helper",
         tone: "blue",
       },
       primaryAction: "recommendations",
       steps: [
         "Create a fix note for this problem.",
-        "Add JSON-LD to the page or shared template.",
-        "Validate the rendered schema.",
+        "Add the page details for Google to the page or shared template.",
+        "Check the published page details with a Google results testing tool.",
         "Run a new website check after publishing.",
       ],
-      title: "Add valid structured data",
+      title: "Add page details for Google",
       whyMatters:
-        "Schema helps search engines understand the page and can improve how the result appears in Google.",
+        "Clear page details help search engines understand the page and can improve how the result appears in Google.",
     };
   }
 
   if (type.includes("canonical")) {
     return {
-      actionLabel: "Fix canonical",
-      detail: `Set the canonical URL in ${platform} so search engines know the preferred indexable page.`,
+      actionLabel: "Fix preferred page note",
+      detail: `Set the preferred page in ${platform} so search engines know which live page should represent this content.`,
       effort: "Template fix",
       fixAvailability: {
         detail:
-          "Create the fix note here, then update the canonical field in the website editor or template.",
+          "Create the fix note here, then update the preferred page field in the website editor or template.",
         label: "Needs website editor",
         tone: "amber",
       },
       primaryAction: "recommendations",
       steps: [
         "Create a fix note for this problem.",
-        "Update the canonical tag on the affected page or template.",
-        "Confirm it points to a live indexable URL.",
+        "Update the preferred page setting on the affected page or template.",
+        "Confirm it points to a live page that should appear in Google.",
         "Run a new website check to confirm it is fixed.",
       ],
-      title: "Correct the canonical URL",
+      title: "Correct the preferred page",
       whyMatters:
-        "A wrong canonical can make Google choose the wrong page or ignore the page you actually want to rank.",
+        "A wrong preferred page setting can make Google choose the wrong page or ignore the page you actually want to show.",
     };
   }
 
@@ -206,9 +206,9 @@ export function buildIssueSolution(input: {
 
   if (type.includes("noindex") || type.includes("robots")) {
     return {
-      actionLabel: "Fix indexability",
+      actionLabel: "Fix Google visibility note",
       detail:
-        "Remove accidental blocking rules or noindex directives if the page should appear in search results.",
+        "Remove accidental blocking rules if the page should appear in Google search results.",
       effort: "Specialist fix",
       fixAvailability: {
         detail:
@@ -218,12 +218,12 @@ export function buildIssueSolution(input: {
       },
       primaryAction: "recommendations",
       steps: [
-        "Check robots meta tags, X-Robots-Tag headers, and robots.txt rules.",
-        "Remove the blocking directive for indexable pages.",
+        "Check the page visibility settings, response headers, and robots file rules.",
+        "Remove the blocking setting for pages that should appear in Google.",
         "Publish or deploy the change.",
-        "Run a new website check and confirm the page can be indexed.",
+        "Run a new website check and confirm the page can appear in Google.",
       ],
-      title: "Restore indexability",
+      title: "Restore Google visibility",
       whyMatters:
         "If an important page is blocked, it may not appear in Google even when the content is useful.",
     };

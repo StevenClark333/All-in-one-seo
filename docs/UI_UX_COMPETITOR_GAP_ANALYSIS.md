@@ -3059,3 +3059,20 @@ Implementation:
 - [x] Cover branded-link setup-state wording with unit tests.
 - [x] Runtime-check branded-link setup-state calmness locally.
 - [ ] Browser-check branded-link setup-state calmness after deployment.
+
+### Batch FW: Issue Solution Google-Settings Calmness
+
+Competitive evidence:
+
+- Ahrefs Site Audit surfaces structured-data, canonical, and noindex/indexability issues for trained teams that need precise technical diagnosis.
+- Semrush Site Audit documents canonical checks and broader technical SEO checks such as robots, noindex, headings, and canonical problems.
+- A beginner-first issue solution should preserve those exact repair paths while saying page details for Google, preferred page, and Google visibility before schema, canonical URL, indexability, noindex, or JSON-LD wording.
+
+Implementation:
+
+- [x] Soften issue solution titles, action labels, details, steps, and rationale for Google detail, preferred-page, and Google-visibility problems.
+- [x] Keep the same website editor/site helper ownership and repair intent intact.
+- [x] Cover Google detail, preferred-page, and Google-visibility solution wording with unit tests.
+- [x] Runtime-check issue solution Google-settings calmness locally.
+- [ ] Browser-check deployed Problems list care-level calmness before opening the softened solution detail.
+- [ ] Browser-check issue solution Google-settings calmness after deployment.

@@ -33,7 +33,7 @@ test("builds plain-language website editor fix note markdown for a problem", () 
   assert.match(brief.markdown, /Run a fresh website check/);
 });
 
-test("builds site helper fix note markdown for indexability problems", () => {
+test("builds site helper fix note markdown for Google visibility problems", () => {
   const solution = buildIssueSolution({
     issueType: "homepage_blocked_by_robots",
     platform: "CUSTOM",
