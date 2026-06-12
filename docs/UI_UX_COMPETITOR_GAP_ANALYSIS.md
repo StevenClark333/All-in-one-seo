@@ -2462,3 +2462,19 @@ Implementation:
 - [x] Guard against the older Search Console visibility phrase in product copy tests.
 - [x] Browser-check website workspace search visibility calmness locally.
 - [ ] Browser-check website workspace search visibility calmness after deployment.
+
+### Batch EL: Global Search Shortcut Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep keyword and rank tools quick to reach, but their shortcut wording assumes a trained marketer knows those feature names.
+- A beginner-first global search should still open Search Ideas and Rank Movement quickly while describing the action as search ideas and watched search terms.
+- The product direction is to make Ctrl K feel like a helpful website-care shortcut, not a command palette full of expert SEO labels.
+
+Implementation:
+
+- [x] Centralize the Search Ideas and Rank Movement global-search action wording.
+- [x] Replace Open keywords, keyword positions, and Open rank shortcut wording with search-idea and rank-movement language.
+- [x] Cover the exact global-search shortcut wording with unit tests.
+- [x] Browser-check global-search shortcut calmness locally.
+- [ ] Browser-check global-search shortcut calmness after deployment.

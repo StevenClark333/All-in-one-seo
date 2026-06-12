@@ -11,6 +11,7 @@ import {
   PRODUCT_BRAND_NAME,
   PRODUCT_CONNECTION_COPY,
   PRODUCT_DISPLAY_NAME,
+  PRODUCT_GLOBAL_SEARCH_COPY,
   PRODUCT_META_DESCRIPTION,
   PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
@@ -172,6 +173,29 @@ test("uses soft connection wording for automation handoffs", () => {
   assert.doesNotMatch(
     Object.values(PRODUCT_CONNECTION_COPY).join(" "),
     /SEO step|SEO pages|SEO messages|store SEO|All In One SEO/,
+  );
+});
+
+test("uses soft global search action wording", () => {
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.searchIdeasDescription,
+    "Find useful search ideas and content ideas.",
+  );
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.searchIdeasTitle,
+    "Open search ideas",
+  );
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.rankMovementDescription,
+    "See how watched search terms are moving.",
+  );
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.rankMovementTitle,
+    "Open rank movement",
+  );
+  assert.doesNotMatch(
+    Object.values(PRODUCT_GLOBAL_SEARCH_COPY).join(" "),
+    /Open keywords|keyword positions|Find useful keyword|Open rank$/,
   );
 });
 

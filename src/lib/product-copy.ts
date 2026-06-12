@@ -112,6 +112,13 @@ export const PRODUCT_CONNECTION_COPY = {
     "Paste this website setup code in the Website Care settings screen after the plugin is active.",
 };
 
+export const PRODUCT_GLOBAL_SEARCH_COPY = {
+  searchIdeasDescription: "Find useful search ideas and content ideas.",
+  searchIdeasTitle: "Open search ideas",
+  rankMovementDescription: "See how watched search terms are moving.",
+  rankMovementTitle: "Open rank movement",
+};
+
 export const PRODUCT_BEGINNER_COPY = {
   addWebsiteIntro:
     "Add the website first. After it is saved, the portal will guide you through ownership, check rhythm, and the first website check.",

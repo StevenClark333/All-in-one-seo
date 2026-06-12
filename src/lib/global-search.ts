@@ -14,7 +14,10 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
-import { formatProductReportTitle } from "@/lib/product-copy";
+import {
+  formatProductReportTitle,
+  PRODUCT_GLOBAL_SEARCH_COPY,
+} from "@/lib/product-copy";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
@@ -64,17 +67,17 @@ const actionResults: GlobalSearchResult[] = [
   },
   {
     category: "Action",
-    description: "Find useful keyword and content ideas.",
+    description: PRODUCT_GLOBAL_SEARCH_COPY.searchIdeasDescription,
     href: "/keyword-research",
     icon: KeyRound,
-    title: "Open keywords",
+    title: PRODUCT_GLOBAL_SEARCH_COPY.searchIdeasTitle,
   },
   {
     category: "Action",
-    description: "See how keyword positions are moving.",
+    description: PRODUCT_GLOBAL_SEARCH_COPY.rankMovementDescription,
     href: "/rank-tracking",
     icon: LineChart,
-    title: "Open rank",
+    title: PRODUCT_GLOBAL_SEARCH_COPY.rankMovementTitle,
   },
   {
     category: "Action",
