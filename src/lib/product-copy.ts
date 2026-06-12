@@ -205,8 +205,11 @@ export const PRODUCT_BEGINNER_COPY = {
     "Add one Google position so averages and top groups become useful.",
   rankMissingPositionsLabel: "Add missing Google spots",
   rankMissingPositionsValueSuffix: "need a Google spot",
+  rankManageAction: "Add updates",
   rankManageDataIntro:
-    "Add search terms, save a Google position, or add search details when you need to update the tracker manually.",
+    "Add a search term, save a Google spot, or add monthly search details when you want to update this page.",
+  rankManageHideAction: "Hide updates",
+  rankManageTitle: "Update search terms",
   rankMetricHelp:
     "Active and paused search terms currently watched for movement.",
   rankMetricLabel: "Watched search terms",
@@ -222,8 +225,10 @@ export const PRODUCT_BEGINNER_COPY = {
   rankTableTermHeader: "Search term",
   rankPlanHeading: "Know which search term needs attention next.",
   rankPlanTitle: "Rank movement plan",
+  rankPlanNoDropsLabel: "Nothing slipped today",
   rankRecoverDetail:
     "Review the search terms that dropped and decide whether a page needs a content refresh.",
+  rankRecoverLabel: "Help slipped search terms",
   rankDistributionIntro:
     "Latest Google spots grouped for quick website scanning.",
   rankDistributionTitle: "Google spot groups",
@@ -234,6 +239,7 @@ export const PRODUCT_BEGINNER_COPY = {
   rankTermExample: "best website help",
   rankTermFieldLabel: "Search term",
   rankTrackTermTitle: "Watch search term",
+  rankWatchedValueSuffix: "watched",
   rankTopThreeHelp:
     "Latest owned spots in the top three organic results.",
   rankTopTenHelp:

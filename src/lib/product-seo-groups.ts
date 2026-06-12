@@ -411,8 +411,8 @@ export function buildCompetitorContentGaps(
             ),
             reason:
               ownedPosition === null
-                ? "Competitor ranks and this project has no tracked position yet."
-                : "Competitor outranks this project for a tracked keyword.",
+                ? "Competitor has a Google spot and this website does not have one yet."
+                : "Competitor is ahead for this watched search term.",
             volume,
           };
         });

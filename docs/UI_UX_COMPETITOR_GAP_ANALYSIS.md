@@ -2542,3 +2542,19 @@ Implementation:
 - [x] Cover the exact Search Ideas detail metric wording with unit tests.
 - [x] Browser-check Search Ideas detail metric calmness locally.
 - [ ] Browser-check Search Ideas detail metric calmness after deployment.
+
+### Batch EQ: Rank Movement Update Panel Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep manual rank and keyword metric updates available, but those controls are framed as tracking data for trained SEO operators.
+- A beginner-first Rank Movement page should keep those controls while presenting them as simple search-term updates.
+- The product direction is to make optional Rank Movement updates feel like a calm helper, not a data-management console.
+
+Implementation:
+
+- [x] Centralize Rank Movement update-panel and plan-card labels in the product copy helper.
+- [x] Replace Manage tracking data, Add data, tracked, Recover lost positions, No drops to fix, and tracked-keyword competitor-gap reasons with softer update language.
+- [x] Cover the exact Rank Movement update-panel wording with unit tests.
+- [x] Browser-check Rank Movement update-panel calmness locally.
+- [ ] Browser-check Rank Movement update-panel calmness after deployment.

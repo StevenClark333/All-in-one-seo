@@ -114,6 +114,10 @@ test("builds competitor content gaps when competitors outrank owned pages", () =
   assert.equal(gaps.length, 1);
   assert.equal(gaps[0].competitorDomain, "competitor.com");
   assert.equal(gaps[0].ownedPosition, 12);
+  assert.equal(
+    gaps[0].reason,
+    "Competitor is ahead for this watched search term.",
+  );
   assert.ok(gaps[0].priority > 0);
 });
 

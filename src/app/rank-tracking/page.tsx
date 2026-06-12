@@ -223,16 +223,18 @@ export default async function RankTrackingPage({
           >
             <summary className="flex items-center justify-between gap-4 p-5">
               <div>
-                <h3 className="text-lg font-semibold">Manage tracking data</h3>
+                <h3 className="text-lg font-semibold">
+                  {PRODUCT_BEGINNER_COPY.rankManageTitle}
+                </h3>
                 <p className="mt-1 text-sm text-slate-500">
                   {PRODUCT_BEGINNER_COPY.rankManageDataIntro}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-orange-600 group-open:hidden">
-                Add data
+                {PRODUCT_BEGINNER_COPY.rankManageAction}
               </span>
               <span className="hidden shrink-0 text-sm font-medium text-slate-500 group-open:inline">
-                Hide
+                {PRODUCT_BEGINNER_COPY.rankManageHideAction}
               </span>
             </summary>
             <div className="grid gap-6 border-t border-slate-100 p-5 xl:grid-cols-3">
@@ -620,14 +622,18 @@ function RankMovementPlan({
       label: keywordCount
         ? "See what moved"
         : PRODUCT_BEGINNER_COPY.rankFirstStepAddLabel,
-      value: keywordCount ? `${keywordCount} tracked` : "Start here",
+      value: keywordCount
+        ? `${keywordCount} ${PRODUCT_BEGINNER_COPY.rankWatchedValueSuffix}`
+        : "Start here",
     },
     {
       detail: worsenedCount
         ? PRODUCT_BEGINNER_COPY.rankRecoverDetail
         : PRODUCT_BEGINNER_COPY.rankStableDetail,
       href: "#competitor-gaps",
-      label: worsenedCount ? "Recover lost positions" : "No drops to fix",
+      label: worsenedCount
+        ? PRODUCT_BEGINNER_COPY.rankRecoverLabel
+        : PRODUCT_BEGINNER_COPY.rankPlanNoDropsLabel,
       value: worsenedCount ? `${worsenedCount} dropped` : "Stable",
     },
     {
