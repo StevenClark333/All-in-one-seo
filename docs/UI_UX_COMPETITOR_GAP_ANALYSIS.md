@@ -2654,7 +2654,7 @@ Implementation:
 - [x] Replace priority problems, urgent/planned, urgent fixes, and urgent-problem wording in the Website workspace.
 - [x] Cover the exact Website workspace care-priority wording with unit tests.
 - [x] Browser-check Website workspace care-priority calmness locally.
-- [ ] Browser-check Website workspace care-priority calmness after deployment.
+- [x] Browser-check Website workspace care-priority calmness after deployment.
 
 ### Batch EW: Dashboard Quick-Care Calmness
 
