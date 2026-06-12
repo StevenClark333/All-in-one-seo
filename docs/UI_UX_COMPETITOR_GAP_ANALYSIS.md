@@ -3159,7 +3159,7 @@ Implementation:
 - [x] Cover alert message-link wording with unit tests.
 - [x] Runtime-check alert message-link calmness locally.
 - [x] Browser-check alert message-link calmness locally.
-- [ ] Browser-check alert message-link calmness after deployment.
+- [x] Browser-check alert message-link calmness after deployment.
 
 ### Batch GC: Page Detail Google-Basics Calmness
 
