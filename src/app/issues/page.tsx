@@ -153,8 +153,7 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                 <div>
                   <h3 className="text-lg font-semibold">Refine problem list</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Optional filters for client, website, owner, type, or
-                    repeated template problems.
+                    {PRODUCT_BEGINNER_COPY.issuesFilterSummary}
                   </p>
                 </div>
               </div>
@@ -241,12 +240,14 @@ export default async function IssuesPage({ searchParams }: IssuesPageProps) {
                 </FilterSelect>
 
                 <FilterSelect
-                  label="Type"
-                  help="Problem category, such as missing title or broken internal link."
+                  label={PRODUCT_BEGINNER_COPY.issuesTypeFilterLabel}
+                  help={PRODUCT_BEGINNER_COPY.issuesTypeFilterHelp}
                   name="issueType"
                   value={filters.issueType}
                 >
-                  <option value="">All types</option>
+                  <option value="">
+                    {PRODUCT_BEGINNER_COPY.issuesTypeFilterPlaceholder}
+                  </option>
                   {issueTypes.map((issueType) => (
                     <option key={issueType} value={issueType}>
                       {formatIssueType(issueType)}

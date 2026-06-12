@@ -2914,3 +2914,19 @@ Implementation:
 - [x] Cover connected link-fix summaries with unit tests.
 - [x] Runtime-check connected link-fix calmness locally.
 - [ ] Browser-check connected link-fix calmness after deployment.
+
+### Batch FN: Problems Filter Area Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep issue type and repeated-template filters available because trained teams need narrow audit triage.
+- A beginner-first Problems filter should keep that narrowing power while saying problem area and repeated page patterns before type, broken internal link, or template jargon.
+- The product direction is to make filtering feel like choosing the area to review, not classifying a technical audit issue.
+
+Implementation:
+
+- [x] Centralize Problems filter area label, helper, placeholder, and summary copy in the product copy helper.
+- [x] Replace visible Problems filter type wording with problem-area language and page-link wording.
+- [x] Cover Problems filter area wording with unit tests.
+- [x] Runtime-check Problems filter area calmness locally.
+- [ ] Browser-check Problems filter area calmness after deployment.

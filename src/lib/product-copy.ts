@@ -226,6 +226,12 @@ export const PRODUCT_BEGINNER_COPY = {
     "Quick-care problems go first, planned work can follow, and ideas are optional improvements.",
   issuesCareFilterLabel: "Care level",
   issuesCareFilterPlaceholder: "All care levels",
+  issuesFilterSummary:
+    "Optional filters for client, website, owner, problem area, or repeated page patterns.",
+  issuesTypeFilterHelp:
+    "Problem area, such as a missing page title or a page link that needs help.",
+  issuesTypeFilterLabel: "Problem area",
+  issuesTypeFilterPlaceholder: "All problem areas",
   issuesPlanBody:
     "Start with the first quick-care problem, open its guided solution, then use filters only when you want a narrower list.",
   issuesPlanQuickCareDetail:
