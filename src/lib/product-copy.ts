@@ -150,6 +150,7 @@ export const PRODUCT_GLOBAL_SEARCH_COPY = {
   searchIdeasTitle: "Open search ideas",
   rankMovementDescription: "See how watched search terms are moving.",
   rankMovementTitle: "Open rank movement",
+  importantChangeLabel: "Important change",
 };
 
 export const PRODUCT_BEGINNER_COPY = {
@@ -386,6 +387,12 @@ export const PRODUCT_BEGINNER_COPY = {
     "Choose the search terms you care about first, then compare them with Search Console data after import.",
   searchGrowthTrackTitle: "Choose search terms to watch",
   websitesPageHeading: "Websites",
+  websitesCareShortlistIntro:
+    "Sorted by setup needs, quick-care problems, and lower health so you do not have to scan the full table.",
+  websitesCareTableQuickCareHeader: "Quick care",
+  websitesCareReadyDetail:
+    "Websites with ownership confirmed and no quick-care problems are the calm group.",
+  websitesCareCardQuickCareLabel: "Quick care",
   workspaceHealthDetail: "Latest website health score.",
   workspaceHealthFocusPrefix: "Website health is",
   workspaceHealthHelp:

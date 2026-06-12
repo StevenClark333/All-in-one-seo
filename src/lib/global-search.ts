@@ -236,7 +236,7 @@ function filterActionResults(query: string) {
   );
 }
 
-function softenGlobalSearchProblemTitle(value: string) {
+export function softenGlobalSearchProblemTitle(value: string) {
   const exactMatches: Record<string, string> = {
     "Sitemap URL is not internally linked":
       "Page is in the page list but needs links",
@@ -270,7 +270,7 @@ function softenGlobalSearchProblemTitle(value: string) {
       "Product template points to a broken preferred page",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
-    "Critical Regression": "Urgent change",
+    "Critical Regression": PRODUCT_GLOBAL_SEARCH_COPY.importantChangeLabel,
   };
 
   const exactMatch = exactMatches[value];

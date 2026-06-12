@@ -238,9 +238,13 @@ test("uses soft global search action wording", () => {
     PRODUCT_GLOBAL_SEARCH_COPY.rankMovementTitle,
     "Open rank movement",
   );
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.importantChangeLabel,
+    "Important change",
+  );
   assert.doesNotMatch(
     Object.values(PRODUCT_GLOBAL_SEARCH_COPY).join(" "),
-    /Open Projects|Open competitors|Open keywords|keyword positions|Find useful keyword|Open rank$/,
+    /Open Projects|Open competitors|Open keywords|keyword positions|Find useful keyword|Open rank$|Urgent change/,
   );
 });
 
@@ -475,6 +479,22 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "more link-help items are kept out of this first view so the page stays easier to scan.",
   );
   assert.equal(PRODUCT_BEGINNER_COPY.websitesPageHeading, "Websites");
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websitesCareShortlistIntro,
+    "Sorted by setup needs, quick-care problems, and lower health so you do not have to scan the full table.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websitesCareTableQuickCareHeader,
+    "Quick care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websitesCareReadyDetail,
+    "Websites with ownership confirmed and no quick-care problems are the calm group.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websitesCareCardQuickCareLabel,
+    "Quick care",
+  );
   assert.equal(
     PRODUCT_BEGINNER_COPY.workspaceHealthDetail,
     "Latest website health score.",

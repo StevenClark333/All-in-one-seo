@@ -2722,19 +2722,18 @@ Implementation:
 - [x] Runtime-check saved-website care-priority calmness locally.
 - [ ] Browser-check saved-website care-priority calmness after deployment.
 
-### Batch FA: Saved Website Care Priority Calmness
+### Batch FB: Global Search Problem Title Calmness
 
 Competitive evidence:
 
-- Semrush and Ahrefs keep errors, warnings, notices, and issue priority visible on site-audit project detail pages for trained SEO users.
-- Screaming Frog keeps very deep issue and crawl evidence available, which is useful for experts but too sharp for a beginner's saved-website overview.
-- A beginner-first saved Website detail page should keep the same priority signal while saying quick care, care priorities, and planned work.
+- Semrush and Ahrefs search and issue navigation preserve priority signals, but expert severity labels can make quick search results feel alarming.
+- A beginner-first command search should keep problem results useful while describing regressions as important changes.
+- The product direction is to make Ctrl K feel like a friendly website-care shortcut, not a list of incident labels.
 
 Implementation:
 
-- [x] Centralize saved Website detail care-priority labels in the product copy helper.
-- [x] Replace urgent/planned, priority-problem, and nothing-urgent wording on the saved Website detail page.
-- [x] Reuse the shared quick-care severity formatter for saved Website problem rows.
-- [x] Cover saved Website care-priority wording with unit tests.
-- [x] Browser-check saved Website care-priority calmness locally.
-- [ ] Browser-check saved Website care-priority calmness after deployment.
+- [x] Centralize the global-search important-change label in the product copy helper.
+- [x] Replace the remaining urgent-change problem title in global search.
+- [x] Cover global-search problem-title softening with unit tests.
+- [ ] Runtime-check global-search problem-title calmness locally.
+- [ ] Runtime-check global-search problem-title calmness after deployment.
