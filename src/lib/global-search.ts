@@ -32,7 +32,7 @@ export type GlobalSearchResult = {
 const actionResults: GlobalSearchResult[] = [
   {
     category: "Action",
-    description: "Open Projects to run a fresh check for a verified website.",
+    description: PRODUCT_GLOBAL_SEARCH_COPY.checkWebsiteDescription,
     href: "/domains",
     icon: Play,
     title: "Check website",
@@ -60,10 +60,10 @@ const actionResults: GlobalSearchResult[] = [
   },
   {
     category: "Action",
-    description: "Compare your website against competitors and spot useful opportunities.",
+    description: PRODUCT_GLOBAL_SEARCH_COPY.competitorInsightsDescription,
     href: "/competitive-analysis",
     icon: Crosshair,
-    title: "Open competitors",
+    title: PRODUCT_GLOBAL_SEARCH_COPY.competitorInsightsTitle,
   },
   {
     category: "Action",

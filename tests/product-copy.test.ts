@@ -178,6 +178,18 @@ test("uses soft connection wording for automation handoffs", () => {
 
 test("uses soft global search action wording", () => {
   assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.checkWebsiteDescription,
+    "Open Websites to run a fresh check for a verified website.",
+  );
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.competitorInsightsDescription,
+    "Compare your website against competitors and spot useful opportunities.",
+  );
+  assert.equal(
+    PRODUCT_GLOBAL_SEARCH_COPY.competitorInsightsTitle,
+    "Open competitor insights",
+  );
+  assert.equal(
     PRODUCT_GLOBAL_SEARCH_COPY.searchIdeasDescription,
     "Find useful search ideas and content ideas.",
   );
@@ -195,7 +207,7 @@ test("uses soft global search action wording", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_GLOBAL_SEARCH_COPY).join(" "),
-    /Open keywords|keyword positions|Find useful keyword|Open rank$/,
+    /Open Projects|Open competitors|Open keywords|keyword positions|Find useful keyword|Open rank$/,
   );
 });
 

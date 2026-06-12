@@ -2478,3 +2478,19 @@ Implementation:
 - [x] Cover the exact global-search shortcut wording with unit tests.
 - [x] Browser-check global-search shortcut calmness locally.
 - [ ] Browser-check global-search shortcut calmness after deployment.
+
+### Batch EM: Global Search Website Label Consistency
+
+Competitive evidence:
+
+- Semrush and Ahrefs expose projects and competitor tools as quick actions, but their labels assume the user already understands the product taxonomy.
+- A beginner-first command search should use the same words as the sidebar: Websites and Competitor Insights.
+- The product direction is to make every shortcut feel like it opens the same calm product area the user already saw, not a renamed expert module.
+
+Implementation:
+
+- [x] Centralize global-search website-check and competitor-insight shortcut wording.
+- [x] Replace Open Projects and Open competitors language with Websites and Competitor Insights wording.
+- [x] Cover the exact global-search website and competitor shortcut wording with unit tests.
+- [x] Browser-check global-search website label consistency locally.
+- [ ] Browser-check global-search website label consistency after deployment.

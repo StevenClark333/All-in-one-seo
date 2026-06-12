@@ -113,6 +113,11 @@ export const PRODUCT_CONNECTION_COPY = {
 };
 
 export const PRODUCT_GLOBAL_SEARCH_COPY = {
+  checkWebsiteDescription:
+    "Open Websites to run a fresh check for a verified website.",
+  competitorInsightsDescription:
+    "Compare your website against competitors and spot useful opportunities.",
+  competitorInsightsTitle: "Open competitor insights",
   searchIdeasDescription: "Find useful search ideas and content ideas.",
   searchIdeasTitle: "Open search ideas",
   rankMovementDescription: "See how watched search terms are moving.",
