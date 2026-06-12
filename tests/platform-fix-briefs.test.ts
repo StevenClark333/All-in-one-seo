@@ -56,7 +56,8 @@ test("renders platform fix brief markdown", () => {
   });
   const markdown = renderPlatformFixBriefMarkdown(brief);
 
-  assert.ok(markdown.startsWith("# Add internal link on example.com"));
+  assert.ok(markdown.startsWith("# Add helpful page link for example.com"));
   assert.ok(markdown.includes("## Steps"));
   assert.ok(markdown.includes("## Validation"));
+  assert.doesNotMatch(markdown, /Add internal link on example.com/);
 });

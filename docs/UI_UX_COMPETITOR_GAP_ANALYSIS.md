@@ -2896,4 +2896,20 @@ Implementation:
 - [x] Replace visible white-label domain, hostname, and DNS-verification helper wording in the Reports branding panel.
 - [x] Cover Reports branded-link wording with unit tests.
 - [x] Runtime-check Reports branded-link calmness locally.
-- [ ] Browser-check Reports branded-link calmness after deployment.
+- [x] Browser-check Reports branded-link calmness after deployment.
+
+### Batch FM: Connected Fix-Note Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep link-fix evidence exportable and automation-friendly for trained teams.
+- A beginner-first connected handoff should preserve the exact fix payload while saying helpful page link and link that stopped working before broken internal link or internal-link task names.
+- The product direction is to make connected fixes feel like calm editing notes, not technical link diagnostics.
+
+Implementation:
+
+- [x] Centralize connected link-fix summary wording in the product copy helper.
+- [x] Replace automation payload and platform fix-note titles with softer link task language.
+- [x] Cover connected link-fix summaries with unit tests.
+- [x] Runtime-check connected link-fix calmness locally.
+- [ ] Browser-check connected link-fix calmness after deployment.

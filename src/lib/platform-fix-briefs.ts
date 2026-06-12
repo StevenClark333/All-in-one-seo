@@ -1,4 +1,5 @@
 import type { DomainPlatform } from "@prisma/client";
+import { PRODUCT_LINK_FIX_COPY } from "@/lib/product-copy";
 
 export type PlatformFixBriefInput = {
   anchorText?: string | null;
@@ -28,8 +29,8 @@ export function buildPlatformFixBrief(
 ): PlatformFixBrief {
   const platformLabel = formatPlatform(input.platform);
   const title = input.brokenUrl
-    ? `Replace broken link on ${input.domain}`
-    : `Add internal link on ${input.domain}`;
+    ? PRODUCT_LINK_FIX_COPY.replaceStoppedLinkSummary(input.domain)
+    : PRODUCT_LINK_FIX_COPY.addHelpfulLinkSummary(input.domain);
   const commonSteps = buildCommonSteps(input);
   const validation = [
     "Publish the website change.",

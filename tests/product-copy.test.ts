@@ -19,6 +19,7 @@ import {
   PRODUCT_CONNECTION_COPY,
   PRODUCT_DISPLAY_NAME,
   PRODUCT_GLOBAL_SEARCH_COPY,
+  PRODUCT_LINK_FIX_COPY,
   PRODUCT_META_DESCRIPTION,
   PRODUCT_REPORT_UPDATE_COPY,
 } from "@/lib/product-copy";
@@ -242,6 +243,24 @@ test("uses soft connection wording for automation handoffs", () => {
   assert.doesNotMatch(
     Object.values(PRODUCT_CONNECTION_COPY).join(" "),
     /SEO step|SEO pages|SEO messages|store SEO|All In One SEO/,
+  );
+});
+
+test("uses soft link-fix summaries for connected handoffs", () => {
+  assert.equal(
+    PRODUCT_LINK_FIX_COPY.replaceStoppedLinkSummary("example.com"),
+    "Replace link that stopped working for example.com",
+  );
+  assert.equal(
+    PRODUCT_LINK_FIX_COPY.addHelpfulLinkSummary("example.com"),
+    "Add helpful page link for example.com",
+  );
+  assert.doesNotMatch(
+    [
+      PRODUCT_LINK_FIX_COPY.replaceStoppedLinkSummary("example.com"),
+      PRODUCT_LINK_FIX_COPY.addHelpfulLinkSummary("example.com"),
+    ].join(" "),
+    /broken internal link|Add internal link/,
   );
 });
 

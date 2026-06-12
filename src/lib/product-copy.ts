@@ -154,6 +154,13 @@ export const PRODUCT_CONNECTION_COPY = {
     "Paste this website setup code in the Website Care settings screen after the plugin is active.",
 };
 
+export const PRODUCT_LINK_FIX_COPY = {
+  addHelpfulLinkSummary: (website: string) =>
+    `Add helpful page link for ${website}`,
+  replaceStoppedLinkSummary: (website: string) =>
+    `Replace link that stopped working for ${website}`,
+};
+
 export const PRODUCT_GLOBAL_SEARCH_COPY = {
   checkWebsiteDescription:
     "Open Websites to run a fresh check for a verified website.",

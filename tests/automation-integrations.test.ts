@@ -102,7 +102,43 @@ test("builds link fix automation payloads", () => {
       provider: "ZAPIER",
       resourceId: "fix_123",
       source: "all-in-one-seo",
-      summary: "Replace broken internal link on example.com",
+      summary: "Replace link that stopped working for example.com",
     },
+  );
+});
+
+test("uses soft link fix automation summaries", () => {
+  const payloads = [
+    buildLinkFixAutomationPayload({
+      domain: "example.com",
+      fixId: "fix_replace",
+      manualInstructions: "Replace the old link.",
+      provider: "MAKE",
+      sourceUrl: "https://example.com/about",
+      status: "APPROVED",
+      suggestedUrl: "https://example.com/services",
+      brokenUrl: "https://example.com/old-services",
+    }),
+    buildLinkFixAutomationPayload({
+      domain: "example.com",
+      fixId: "fix_add",
+      manualInstructions: "Add the helpful page link.",
+      provider: "ZAPIER",
+      sourceUrl: "https://example.com/about",
+      status: "APPROVED",
+      suggestedUrl: "https://example.com/services",
+    }),
+  ];
+
+  assert.deepEqual(
+    payloads.map((payload) => payload.summary),
+    [
+      "Replace link that stopped working for example.com",
+      "Add helpful page link for example.com",
+    ],
+  );
+  assert.doesNotMatch(
+    payloads.map((payload) => payload.summary).join(" "),
+    /broken internal link|Add internal link/,
   );
 });

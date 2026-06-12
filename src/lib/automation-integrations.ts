@@ -5,6 +5,7 @@ import {
   decryptIntegrationConfig,
   encryptIntegrationConfig,
 } from "@/lib/integration-secrets";
+import { PRODUCT_LINK_FIX_COPY } from "@/lib/product-copy";
 import { getPrisma } from "@/lib/prisma";
 import { getPrimaryWorkspace } from "@/lib/workspace";
 
@@ -171,8 +172,8 @@ export function buildLinkFixAutomationPayload({
     resourceId: fixId,
     source: "all-in-one-seo",
     summary: brokenUrl
-      ? `Replace broken internal link on ${domain}`
-      : `Add internal link on ${domain}`,
+      ? PRODUCT_LINK_FIX_COPY.replaceStoppedLinkSummary(domain)
+      : PRODUCT_LINK_FIX_COPY.addHelpfulLinkSummary(domain),
     linkFix: {
       anchorText: anchorText ?? "",
       brokenUrl: brokenUrl ?? "",
