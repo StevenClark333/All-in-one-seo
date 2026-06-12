@@ -24,7 +24,10 @@ import {
   type KeywordContentGap,
   type KeywordOpportunity,
 } from "@/lib/product-seo-groups";
-import { PRODUCT_BEGINNER_COPY } from "@/lib/product-copy";
+import {
+  formatProductSearchIdeasContentGapDetail,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 import { formatRankVolume } from "@/lib/rank-display-labels";
 import type { SearchPerformanceGroup } from "@/lib/search-performance";
 
@@ -867,7 +870,7 @@ function buildKeywordPlan({
         ? "rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700"
         : "rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-medium text-slate-600",
       detail: contentGap
-        ? `"${contentGap.key}" gets impressions but needs a better answer, page title, or internal links.`
+        ? formatProductSearchIdeasContentGapDetail(contentGap.key)
         : "No clear content gap in this view. Keep monitoring the next import.",
       href: contentGap?.actionHref ?? `/recommendations${domainSuffix}`,
       icon: FileText,

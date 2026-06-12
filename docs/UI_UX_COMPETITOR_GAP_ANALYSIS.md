@@ -3011,3 +3011,19 @@ Implementation:
 - [x] Cover shared problem-area label wording with unit tests.
 - [x] Runtime-check shared problem-area label calmness locally.
 - [ ] Browser-check shared problem-area label calmness after deployment.
+
+### Batch FT: Search Ideas Content-Gap Link Hint Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep internal-linking and content-gap workflows visible because trained teams use them to choose the next content improvement.
+- A beginner-first Search Ideas workflow should preserve that recommendation while saying helpful page links before internal links or link-building terminology.
+- The product direction is to make a content gap feel like an easy writing and page-improvement next step, not a technical SEO assignment.
+
+Implementation:
+
+- [x] Centralize the Search Ideas content-gap detail sentence in the product copy helper.
+- [x] Replace the visible "internal links" phrase in the Search Ideas next-step card with "helpful page links."
+- [x] Cover Search Ideas content-gap link wording with unit tests.
+- [x] Runtime-check Search Ideas content-gap link wording locally.
+- [ ] Browser-check Search Ideas content-gap link wording after deployment.

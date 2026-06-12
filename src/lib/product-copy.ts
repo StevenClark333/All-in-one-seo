@@ -534,6 +534,10 @@ export function formatProductPagesFirstAction(input: {
   return PRODUCT_BEGINNER_COPY.pagesFirstActionQuiet;
 }
 
+export function formatProductSearchIdeasContentGapDetail(searchTerm: string) {
+  return `"${searchTerm}" gets impressions but needs a better answer, page title, or helpful page links.`;
+}
+
 export function formatProductPageDetailType(value: string) {
   const normalized = value.toLowerCase();
 
