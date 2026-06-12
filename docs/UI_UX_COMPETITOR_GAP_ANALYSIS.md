@@ -1469,7 +1469,7 @@ Implementation:
 - [x] Rename Website detail navigation from project wording toward website wording.
 - [x] Translate website platform, check rhythm, ownership, website tag, setup file, and latest-check statuses into softer labels.
 - [x] Browser-check Website detail setup/status labels desktop and mobile locally.
-- [ ] Browser-check Website detail setup/status labels after deployment.
+- [x] Browser-check Website detail setup/status labels after deployment.
 
 ### Batch BZ: Add Website Setup Label Calmness
 
@@ -1517,7 +1517,7 @@ Implementation:
 - [x] Translate ownership labels into ownership-confirmed and needs-setup wording.
 - [x] Translate report labels into update/share wording.
 - [x] Browser-check Websites list labels desktop and mobile locally.
-- [ ] Browser-check Websites list labels after deployment.
+- [x] Browser-check Websites list labels after deployment.
 
 ### Batch CC: Rank Keyword Status Calmness
 
@@ -1678,7 +1678,7 @@ Implementation:
 - [x] Translate website health, owner, setup-file response, page response, and percentage fallbacks into plain-language wording.
 - [x] Cover the exact website health fallback labels with unit tests.
 - [x] Browser-check website health labels desktop and mobile locally.
-- [ ] Browser-check website health labels after deployment.
+- [x] Browser-check website health labels after deployment.
 
 ### Batch CN: Overview Context Label Calmness
 
@@ -2752,7 +2752,7 @@ Implementation:
 - [x] Replace urgent shortlist, table, ready-group, and card labels on the Websites list.
 - [x] Cover Websites list quick-care wording with unit tests.
 - [x] Browser-check Websites list quick-care calmness locally.
-- [ ] Browser-check Websites list quick-care calmness after deployment.
+- [x] Browser-check Websites list quick-care calmness after deployment.
 
 ### Batch FD: Problems List Quick-Care Calmness
 
