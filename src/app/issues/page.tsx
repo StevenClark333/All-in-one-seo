@@ -8,6 +8,7 @@ import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getIssueListData, getIssueTypeGroupKey } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 import {
+  formatProductProblemArea,
   formatProductWorkspaceProblemSeverity,
   PRODUCT_BEGINNER_COPY,
   PRODUCT_GLOBAL_SEARCH_COPY,
@@ -730,12 +731,7 @@ function formatEnum(value: string) {
 }
 
 function formatIssueType(value: string) {
-  const technicalLabel = getIssueTypeGroupKey(value)
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-
-  return softenProblemTitle(technicalLabel);
+  return formatProductProblemArea(getIssueTypeGroupKey(value));
 }
 
 function getImportanceLabel(value: string) {
@@ -786,6 +782,9 @@ function softenProblemTitle(value: string) {
     "Missing Meta Description": "Page description missing",
     "Missing Title": "Page title missing",
     "Missing page title": "Page title missing",
+    "Broken Internal Link": "Page link that needs help",
+    "Broken internal link detected": "Page link that needs help",
+    "Replace the broken internal link": "Replace link that stopped working",
     "Add a unique meta description": "Write a clear page description",
     "Add a unique title tag": "Write a clear page title",
     "Restore indexability": "Make page visible to Google",

@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   formatProductPageDetailType,
   formatProductPagesFirstAction,
+  formatProductProblemArea,
   formatProductRecommendationImportance,
   formatProductRecommendationPriority,
   formatProductWorkspaceProblemSeverity,
@@ -530,6 +531,14 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "More page detail",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailMissingLinkText,
+    "No visible link words saved yet",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.pageDetailNoLinks,
+    "No helpful links recorded yet.",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.pagesNoQuickFix,
     "No quick fix waiting",
   );
@@ -574,6 +583,22 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   assert.equal(
     formatProductPageDetailType("duplicate_meta_description"),
     "Search result text",
+  );
+  assert.equal(
+    formatProductProblemArea("broken_internal_link:https://example.com/old"),
+    "Page link that needs help",
+  );
+  assert.equal(
+    formatProductProblemArea("sitemap_url_not_internally_linked:/services"),
+    "Page is in the page list but needs links",
+  );
+  assert.equal(
+    formatProductProblemArea("internally_linked_url_missing_from_sitemap"),
+    "Linked page missing from page list",
+  );
+  assert.equal(
+    formatProductProblemArea("canonical_non_200"),
+    "Preferred page is not loading",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.dashboardProjectListDetail,
@@ -1165,6 +1190,6 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.doesNotMatch(
     Object.values(PRODUCT_BEGINNER_COPY).join(" "),
-    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|internal link and page-list problems|deeper SEO fields|critical pages|Critical Regression|Urgent pages|Urgent problems|Urgent work|Urgent priority|\burgent\b|high risk|Priority problems|Urgent \/ planned|urgent fixes|Fix the most urgent problem|Fix urgent problems|No urgent fix|No tracked page changes|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet|Manage tracking data|Add data|Recover lost positions|No drops to fix|Competitor domain|Provider|Semrush, Ahrefs, DataForSEO|on this URL|internal-link detail|broken internal link/,
+    /SEO dashboard|everyday SEO work|SEO operations|SEO jargon|SEO Teammate|raw audit detail|SEO checks|first SEO check|SEO plan|SEO term|compare projects|project list|scoped to this project|by project and keyword|by website and keyword|Choose project|Go to Projects|Loading projects|\bsite health value\b|\bSite health is\b|page-link problems|Page links plan|internal link and page-list problems|deeper SEO fields|critical pages|Critical Regression|Urgent pages|Urgent problems|Urgent work|Urgent priority|\burgent\b|high risk|Priority problems|Urgent \/ planned|urgent fixes|Fix the most urgent problem|Fix urgent problems|No urgent fix|No tracked page changes|Track keywords|Deeper query data|Search Console queries|more queries are available|Unique query groups|declining queries|Queries with impressions|tracked keywords|Track keyword|Add keyword|Choose keyword|More keyword detail|Optional keyword inventory|No tracked keywords|more keywords are hidden|seo audit software|which keywords moved|keywords that already have movement|keyword drops|which keyword needs attention|Active and paused keywords|ranking positions in the top|tracked keywords with rank data|with rank data|average search position|Organic impressions from imported Search Console metrics|Distinct queries found|Query and page demand|Competitor rank gaps|Record competitor ranks|deeper rank review|\bRanks\b|Record rank|Save rank|Import metric|Save metric|Owned rank|Leave blank for owned rank|\bVolume\b|\bDifficulty\b|Adjust rank view|Needs rank data|Fill missing rank data|need ranks|Waiting for ranks|Rank distribution|Latest owned positions|Movement monitor|\bKeyword\b|keyword opportunities|Adjust keyword filters|Import keyword data|Choose keywords to watch|Pick one keyword to improve|keyword ideas come from|Rank Tracking to reveal|Tracked keywords where|Organic visibility for the selected keyword set|Search Console visibility|Add keywords|rankings, and easy growth opportunities|ranking drop|Use keyword ideas|\bCTR\b|More search data|Show tables|more rows are available|weak clicks or rankings|Owned rank|No volume yet|Manage tracking data|Add data|Recover lost positions|No drops to fix|Competitor domain|Provider|Semrush, Ahrefs, DataForSEO|on this URL|internal-link detail|broken internal link|No anchor text/,
   );
 });

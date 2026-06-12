@@ -29,6 +29,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
 import {
+  formatProductProblemArea,
   formatProductWorkspaceProblemSeverity,
   formatProductReportTitle,
   getProductWorkspaceToolLabel,
@@ -1922,29 +1923,7 @@ function formatProblemSeverity(value: string) {
 }
 
 function formatIssueType(value: string) {
-  const labels: Record<string, string> = {
-    canonical_non_200: "Preferred page is not loading",
-    duplicate_meta_description: "Page description repeats",
-    duplicate_title: "Page title repeats",
-    missing_canonical: "Preferred page missing",
-    missing_h1: "Main heading missing",
-    missing_meta_description: "Page description missing",
-    missing_title: "Page title missing",
-    page_noindex: "Page hidden from Google",
-  };
-
-  if (labels[value]) {
-    return labels[value];
-  }
-
-  return value
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ")
-    .replace(/\bMeta Description\b/g, "Page description")
-    .replace(/\bH1\b/g, "Main heading")
-    .replace(/\bCanonical\b/g, "Preferred page")
-    .replace(/\bNoindex\b/g, "Hidden from Google");
+  return formatProductProblemArea(value);
 }
 
 function formatDate(value: Date) {

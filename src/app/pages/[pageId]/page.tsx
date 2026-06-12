@@ -362,13 +362,16 @@ function LinkPanel({
                   <p className="truncate text-sm font-semibold">{link.href}</p>
                 )}
                 <p className="mt-1 truncate text-xs text-slate-500">
-                  {link.anchorText ?? "No anchor text"}
+                  {link.anchorText ??
+                    PRODUCT_BEGINNER_COPY.pageDetailMissingLinkText}
                 </p>
               </div>
             );
           })
         ) : (
-          <p className="text-sm text-slate-500">No links recorded.</p>
+          <p className="text-sm text-slate-500">
+            {PRODUCT_BEGINNER_COPY.pageDetailNoLinks}
+          </p>
         )}
       </div>
     </section>

@@ -2979,3 +2979,35 @@ Implementation:
 - [x] Cover Content Ideas fallback note wording with unit tests.
 - [x] Runtime-check Content Ideas fallback note calmness locally.
 - [ ] Browser-check Content Ideas fallback note calmness after deployment.
+
+### Batch FR: Page Detail Link-Words Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep link text and link-detail evidence visible because trained teams need to inspect how pages connect.
+- A beginner-first Page Detail view should preserve the same link evidence while saying visible link words and helpful links before anchor text or raw link-record language.
+- The product direction is to make link detail feel like reviewing words a visitor can see, not auditing a technical link graph.
+
+Implementation:
+
+- [x] Centralize Page Detail missing-link-text and no-links empty states in the product copy helper.
+- [x] Replace the visible "No anchor text" fallback and generic no-links empty state with softer page-care language.
+- [x] Cover Page Detail link-words wording with unit tests.
+- [x] Runtime-check Page Detail link-words calmness locally.
+- [ ] Browser-check Page Detail link-words calmness after deployment.
+
+### Batch FS: Problem Area Label Consistency
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep issue category labels consistent across dashboards, audit lists, and page details so trained teams can move between views without relearning terms.
+- A beginner-first product should keep that consistency while saying problem area, page link, page list, preferred page, and Google visibility before issue type, internal link, sitemap, canonical, or robots wording.
+- The product direction is to make every problem list feel like the same calm website-care language, whether the user starts from a workspace, the Problems page, or a Page Detail view.
+
+Implementation:
+
+- [x] Centralize beginner-safe problem-area labels in the product copy helper.
+- [x] Reuse the shared problem-area labels in the website workspace, Problems list, and Page Detail formatting.
+- [x] Cover shared problem-area label wording with unit tests.
+- [x] Runtime-check shared problem-area label calmness locally.
+- [ ] Browser-check shared problem-area label calmness after deployment.

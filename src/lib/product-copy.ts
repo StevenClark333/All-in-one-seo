@@ -292,6 +292,8 @@ export const PRODUCT_BEGINNER_COPY = {
   pageDetailMoreIntro:
     "Open this for page changes and helpful-link detail.",
   pageDetailMoreTitle: "More page detail",
+  pageDetailMissingLinkText: "No visible link words saved yet",
+  pageDetailNoLinks: "No helpful links recorded yet.",
   pagesNoQuickFix: "No quick fix waiting",
   pagesOpenProblemsLabel: "Open problems",
   pagesPageChangesEmpty: "No important page changes yet.",
@@ -555,11 +557,62 @@ export function formatProductPageDetailType(value: string) {
     return "Search result text";
   }
 
-  return value
-    .toLowerCase()
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+  const problemArea = formatProductProblemArea(value);
+
+  if (problemArea !== formatEnumLabel(value)) {
+    return problemArea;
+  }
+
+  return formatEnumLabel(value);
+}
+
+export function formatProductProblemArea(value: string) {
+  const groupKey = value.split(":").at(0) ?? value;
+  const normalized = groupKey.toLowerCase();
+  const labels: Record<string, string> = {
+    broken_canonical: "Preferred page link needs help",
+    broken_internal_link: "Page link that needs help",
+    canonical_non_200: "Preferred page is not loading",
+    critical_regression: "Important change",
+    deep_page: "Page is hard to reach",
+    duplicate_content_cluster: "Repeated content group",
+    duplicate_meta_description: "Repeated page description",
+    duplicate_title: "Repeated page title",
+    homepage_blocked_by_robots: "Homepage blocked from Google",
+    internally_linked_url_missing_from_sitemap:
+      "Linked page missing from page list",
+    invalid_hreflang: "Language setting needs attention",
+    missing_canonical: "Preferred page link missing",
+    missing_h1: "Main heading missing",
+    missing_image_alt: "Image description missing",
+    missing_meta_description: "Page description missing",
+    missing_pagination_links: "Page series links missing",
+    missing_schema: "Page details for Google missing",
+    missing_title: "Page title missing",
+    multiple_h1: "Too many main headings",
+    page_4xx: "Page is not loading",
+    page_5xx: "Website error page",
+    page_noindex: "Page hidden from Google",
+    poor_heading_hierarchy: "Heading order needs attention",
+    product_schema_missing: "Product details for Google missing",
+    redirect_chain: "Page redirect path needs attention",
+    robots_txt_unavailable_or_malformed: "Robots file needs attention",
+    sitemap_unavailable: "Page list needs attention",
+    sitemap_url_not_internally_linked:
+      "Page is in the page list but needs links",
+    thin_content: "Page needs more helpful content",
+    weak_meta_description: "Page description needs polish",
+    weak_title: "Page title needs polish",
+  };
+
+  return labels[normalized] ?? formatEnumLabel(groupKey)
+    .replace(/\bMeta Description\b/g, "Page description")
+    .replace(/\bH1\b/g, "Main heading")
+    .replace(/\bCanonical\b/g, "Preferred page")
+    .replace(/\bNoindex\b/g, "Hidden from Google")
+    .replace(/\bSitemap\b/g, "Page list")
+    .replace(/\bSchema\b/g, "Page details for Google")
+    .replace(/\bInternal Link\b/g, "Page link");
 }
 
 export function formatProductRecommendationImportance(value: string) {
@@ -603,6 +656,10 @@ export function formatProductWorkspaceProblemSeverity(value: string) {
     return "Idea";
   }
 
+  return formatEnumLabel(value);
+}
+
+function formatEnumLabel(value: string) {
   return value
     .toLowerCase()
     .split("_")
