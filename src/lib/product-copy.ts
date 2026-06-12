@@ -419,6 +419,20 @@ export const PRODUCT_BEGINNER_COPY = {
   workspaceCareProblemsSectionTitle: "Care priorities",
   workspaceCommandQuickCareLabel: "Fix quick-care problems",
   workspaceQuickCareSignalLabel: "Needs care",
+  websiteDetailCareMetricHelp:
+    "Quick-care problems first, planned work second.",
+  websiteDetailCareMetricLabel: "Quick care / planned",
+  websiteDetailCarePlanBody:
+    "Start with verification if the website is new. Once it is verified, run a website check and open the problem that needs care first.",
+  websiteDetailCarePlanEmpty: "Nothing needs quick care",
+  websiteDetailCarePlanProblemDetail:
+    "Open care priorities after the check finishes.",
+  websiteDetailCarePlanProblemValueSuffix: "need care",
+  websiteDetailCareSectionBody:
+    "This website does not have care-priority problems right now.",
+  websiteDetailCareSectionHelp:
+    "The first problems worth opening for this website.",
+  websiteDetailCareSectionTitle: "Care priorities",
   workspaceFocusQuickCareDetail:
     "These are the problems most likely to affect visitors or search visibility.",
   workspaceFocusQuickCareValueSuffix: "need quick care",

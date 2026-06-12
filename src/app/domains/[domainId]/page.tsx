@@ -26,6 +26,10 @@ import {
   formatWebsiteHealth,
   formatWebsiteResponse,
 } from "@/lib/website-display-labels";
+import {
+  formatProductWorkspaceProblemSeverity,
+  PRODUCT_BEGINNER_COPY,
+} from "@/lib/product-copy";
 
 export const dynamic = "force-dynamic";
 
@@ -188,8 +192,8 @@ export default async function DomainDetailPage({
               value={domain.pages.length}
             />
             <Metric
-              help="Urgent problems first, planned work second. Use this to decide what to open."
-              label="Urgent / planned"
+              help={PRODUCT_BEGINNER_COPY.websiteDetailCareMetricHelp}
+              label={PRODUCT_BEGINNER_COPY.websiteDetailCareMetricLabel}
               value={`${criticalIssues} / ${warningIssues}`}
             />
             <Metric
@@ -561,8 +565,10 @@ export default async function DomainDetailPage({
                 className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
               >
                 <h3 className="font-semibold">
-                  <HelpLabel help="The first problems worth opening for this website.">
-                    Priority problems
+                  <HelpLabel
+                    help={PRODUCT_BEGINNER_COPY.websiteDetailCareSectionHelp}
+                  >
+                    {PRODUCT_BEGINNER_COPY.websiteDetailCareSectionTitle}
                   </HelpLabel>
                 </h3>
                 <div className="mt-4 grid gap-3">
@@ -585,7 +591,7 @@ export default async function DomainDetailPage({
                   ) : (
                     <EmptyNote
                       title="No open problems"
-                      body="This website does not have priority problems right now."
+                      body={PRODUCT_BEGINNER_COPY.websiteDetailCareSectionBody}
                     />
                   )}
                   {hiddenIssueCount ? (
@@ -630,8 +636,7 @@ function ProjectDetailPlan({
             Finish setup, check, then fix the clearest problem.
           </h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Start with verification if the website is new. Once it is verified,
-            run a website check and open the highest-priority problem.
+            {PRODUCT_BEGINNER_COPY.websiteDetailCarePlanBody}
           </p>
         </div>
 
@@ -659,8 +664,12 @@ function ProjectDetailPlan({
               )
             }
             label="Problems"
-            value={issueCount ? `${issueCount} need review` : "Nothing urgent"}
-            detail="Open priority problems after the check finishes."
+            value={
+              issueCount
+                ? `${issueCount} ${PRODUCT_BEGINNER_COPY.websiteDetailCarePlanProblemValueSuffix}`
+                : PRODUCT_BEGINNER_COPY.websiteDetailCarePlanEmpty
+            }
+            detail={PRODUCT_BEGINNER_COPY.websiteDetailCarePlanProblemDetail}
             href="#project-issues"
           />
         </div>
@@ -836,15 +845,7 @@ function formatSetupFileType(value: string) {
 }
 
 function formatProblemImportance(severity: string) {
-  if (severity === "CRITICAL") {
-    return "Urgent";
-  }
-
-  if (severity === "WARNING") {
-    return "Planned";
-  }
-
-  return "Idea";
+  return formatProductWorkspaceProblemSeverity(severity);
 }
 
 function softenWebsiteProblemTitle(title: string) {

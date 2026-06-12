@@ -2704,3 +2704,37 @@ Implementation:
 - [x] Cover alert rule labels with unit tests.
 - [x] Browser-check alert rule quick-care calmness locally.
 - [ ] Browser-check alert rule quick-care calmness after deployment.
+
+### Batch FA: Saved Website Care Priority Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep project/site-audit detail organized around severity and priority so trained users can triage quickly.
+- A beginner-first saved-website page should keep the same signal while saying quick care, planned work, and care priorities.
+- The product direction is to make a saved website feel like a short care plan, not a severity dashboard.
+
+Implementation:
+
+- [x] Centralize saved-website care-priority labels and empty-state wording in the product copy helper.
+- [x] Replace urgent/planned, priority-problem, and urgent severity wording on the saved-website detail page.
+- [x] Reuse the shared quick-care problem severity formatter.
+- [x] Cover saved-website care-priority wording with unit tests.
+- [x] Runtime-check saved-website care-priority calmness locally.
+- [ ] Browser-check saved-website care-priority calmness after deployment.
+
+### Batch FA: Saved Website Care Priority Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep errors, warnings, notices, and issue priority visible on site-audit project detail pages for trained SEO users.
+- Screaming Frog keeps very deep issue and crawl evidence available, which is useful for experts but too sharp for a beginner's saved-website overview.
+- A beginner-first saved Website detail page should keep the same priority signal while saying quick care, care priorities, and planned work.
+
+Implementation:
+
+- [x] Centralize saved Website detail care-priority labels in the product copy helper.
+- [x] Replace urgent/planned, priority-problem, and nothing-urgent wording on the saved Website detail page.
+- [x] Reuse the shared quick-care severity formatter for saved Website problem rows.
+- [x] Cover saved Website care-priority wording with unit tests.
+- [x] Browser-check saved Website care-priority calmness locally.
+- [ ] Browser-check saved Website care-priority calmness after deployment.

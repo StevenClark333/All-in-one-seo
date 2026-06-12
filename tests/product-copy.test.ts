@@ -554,6 +554,42 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Needs care",
   );
   assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCareMetricHelp,
+    "Quick-care problems first, planned work second.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCareMetricLabel,
+    "Quick care / planned",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCarePlanBody,
+    "Start with verification if the website is new. Once it is verified, run a website check and open the problem that needs care first.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCarePlanEmpty,
+    "Nothing needs quick care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCarePlanProblemDetail,
+    "Open care priorities after the check finishes.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCarePlanProblemValueSuffix,
+    "need care",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCareSectionBody,
+    "This website does not have care-priority problems right now.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCareSectionHelp,
+    "The first problems worth opening for this website.",
+  );
+  assert.equal(
+    PRODUCT_BEGINNER_COPY.websiteDetailCareSectionTitle,
+    "Care priorities",
+  );
+  assert.equal(
     PRODUCT_BEGINNER_COPY.workspaceFocusQuickCareDetail,
     "These are the problems most likely to affect visitors or search visibility.",
   );
