@@ -3077,7 +3077,7 @@ Implementation:
 - [x] Cover Google detail, preferred-page, and Google-visibility solution wording with unit tests.
 - [x] Runtime-check issue solution Google-settings calmness locally.
 - [x] Browser-check Problems list/detail Google-settings calmness locally.
-- [ ] Browser-check deployed Problems list care-level calmness before opening the softened solution detail.
+- [x] Browser-check deployed Problems list care-level calmness before opening the softened solution detail.
 - [ ] Browser-check issue solution Google-settings calmness after deployment.
 
 ### Batch FX: Content Ideas Local Recommendation Label Calmness
@@ -3178,3 +3178,21 @@ Implementation:
 - [x] Runtime-check Page Detail Google-basics calmness locally.
 - [x] Browser-check Page Detail Google-basics calmness locally.
 - [ ] Browser-check Page Detail Google-basics calmness after deployment.
+
+### Batch GD: WordPress Update-Link Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs-style integration flows commonly expose connector, API key, webhook, and technical setup language for trained teams.
+- WordPress plugin setup still needs exact URLs and keys, but a beginner-first workflow should describe them as an update link, connection key, return link, and connection test before receiver endpoint, API key, callback URL, or Fix Center wording.
+- The product direction is to make WordPress setup feel like copying a few safe connection values, not configuring a developer receiver.
+
+Implementation:
+
+- [x] Soften WordPress onboarding checklist labels and details away from receiver endpoint/API wording.
+- [x] Soften WordPress install-value labels and helper text to update link, connection key, and return link.
+- [x] Soften WordPress readiness messages to point users to Connections with connection language.
+- [x] Preserve the exact update-link and key values needed by the plugin.
+- [x] Cover WordPress update-link wording with unit tests.
+- [x] Runtime-check WordPress update-link calmness locally.
+- [ ] Browser-check WordPress update-link calmness after deployment.

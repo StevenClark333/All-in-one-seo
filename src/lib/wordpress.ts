@@ -103,7 +103,9 @@ export async function testWordPressReceiver(integrationId: string) {
   const config = readWordPressReceiverConfig(integration.configJson);
 
   if (!config.receiverUrl || !config.receiverKey) {
-    throw new Error("Save the receiver endpoint and key before testing.");
+    throw new Error(
+      "Save the WordPress update link and connection key before testing.",
+    );
   }
 
   const testedAt = new Date();
@@ -252,18 +254,18 @@ export function buildWordPressOnboardingSteps(input: {
     },
     {
       detail: hasReceiverEndpoint
-        ? "A WordPress receiver endpoint is saved for this domain."
-        : "Paste the plugin receiver endpoint and save it here.",
-      label: "Receiver endpoint saved",
+        ? "A WordPress update link is saved for this website."
+        : "Paste the plugin update link and save it here.",
+      label: "Update link saved",
       status: hasReceiverEndpoint
         ? ("COMPLETE" as const)
         : ("NEEDS_ACTION" as const),
     },
     {
       detail: hasReceiverKey
-        ? "A receiver API key is available for the WordPress plugin."
-        : "Save the receiver endpoint to generate a key.",
-      label: "Receiver key generated",
+        ? "A connection key is available for the WordPress plugin."
+        : "Save the update link to generate a connection key.",
+      label: "Connection key generated",
       status: hasReceiverKey ? ("COMPLETE" as const) : ("NEEDS_ACTION" as const),
     },
     {
@@ -271,8 +273,8 @@ export function buildWordPressOnboardingSteps(input: {
         ? "The WordPress site accepted a signed test event."
         : receiverTestFailed
           ? formatWordPressConnectionMessage(input.lastTestMessage)
-          : "Run Test receiver after saving endpoint and key.",
-      label: "Receiver tested",
+          : "Run Test connection after saving the update link and connection key.",
+      label: "Connection tested",
       status: receiverTestPassed
         ? ("COMPLETE" as const)
         : receiverTestFailed
@@ -281,8 +283,8 @@ export function buildWordPressOnboardingSteps(input: {
     },
     {
       detail: fixesEnabled
-        ? "Fix Center can send approved link fixes to this WordPress site."
-        : "Complete endpoint, key, and receiver test before sending fixes.",
+        ? "Fixes can send approved link updates to this WordPress site."
+        : "Complete the update link, connection key, and connection test before sending fixes.",
       label: "Fix delivery enabled",
       status: fixesEnabled ? ("COMPLETE" as const) : ("NEEDS_ACTION" as const),
     },
@@ -311,18 +313,18 @@ export function buildWordPressInstallValues(input: {
       value: input.siteId,
     },
     {
-      help: "Paste this into the Receiver API key field in WordPress. Save the receiver endpoint first if no key exists yet.",
-      label: "Receiver API key",
-      value: input.receiverKey || "Generated after receiver endpoint is saved",
+      help: "Paste this into the connection key field in WordPress. Save the update link first if no key exists yet.",
+      label: "Connection key",
+      value: input.receiverKey || "Generated after update link is saved",
     },
     {
-      help: "Save this receiver endpoint in the portal, then test it before sending fixes from Fix Center.",
-      label: "Receiver endpoint",
+      help: "Save this WordPress update link in the portal, then test it before sending fixes.",
+      label: "WordPress update link",
       value: input.receiverUrl || suggestedReceiverUrl,
     },
     {
-      help: "The WordPress plugin calls this portal endpoint after a fix is applied or reviewed.",
-      label: "Callback URL",
+      help: "The WordPress plugin uses this return link after a fix is applied or reviewed.",
+      label: "Return link",
       value: `${normalizedAppUrl}/api/integrations/wordpress/link-fix-status`,
     },
   ];
@@ -347,11 +349,11 @@ export function getWordPressReceiverReadinessMessage(config: {
   receiverUrl?: string;
 }) {
   if (!config.receiverUrl) {
-    return "Save the WordPress receiver endpoint in Integrations.";
+    return "Save the WordPress update link in Connections.";
   }
 
   if (!config.receiverKey) {
-    return "Generate or save the WordPress receiver API key in Integrations.";
+    return "Generate or save the WordPress connection key in Connections.";
   }
 
   if (config.lastTestStatus === "FAILED") {
@@ -359,10 +361,10 @@ export function getWordPressReceiverReadinessMessage(config: {
   }
 
   if (config.lastTestStatus !== "PASSED") {
-    return "Run Test receiver in Integrations before sending fixes to WordPress.";
+    return "Run Test connection in Connections before sending fixes to WordPress.";
   }
 
-  return "WordPress receiver is ready.";
+  return "WordPress connection is ready.";
 }
 
 export function formatWordPressConnectionMessage(message?: string) {

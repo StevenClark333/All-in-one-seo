@@ -72,9 +72,9 @@ test("builds WordPress onboarding checklist states", () => {
     [
       ["Plugin package ready", "READY"],
       ["Monitoring script detected", "COMPLETE"],
-      ["Receiver endpoint saved", "COMPLETE"],
-      ["Receiver key generated", "COMPLETE"],
-      ["Receiver tested", "COMPLETE"],
+      ["Update link saved", "COMPLETE"],
+      ["Connection key generated", "COMPLETE"],
+      ["Connection tested", "COMPLETE"],
       ["Fix delivery enabled", "COMPLETE"],
     ],
   );
@@ -92,16 +92,22 @@ test("builds WordPress onboarding checklist states", () => {
     "NEEDS_ACTION",
   );
   assert.equal(
-    pendingSteps.find((step) => step.label === "Receiver tested")?.status,
+    pendingSteps.find((step) => step.label === "Connection tested")?.status,
     "WARNING",
   );
   assert.equal(
-    pendingSteps.find((step) => step.label === "Receiver tested")?.detail,
+    pendingSteps.find((step) => step.label === "Connection tested")?.detail,
     "Connection test needs another try: Unauthorized",
   );
   assert.equal(
     pendingSteps.find((step) => step.label === "Fix delivery enabled")?.status,
     "NEEDS_ACTION",
+  );
+  assert.doesNotMatch(
+    [...completeSteps, ...pendingSteps]
+      .map((step) => `${step.label} ${step.detail}`)
+      .join(" "),
+    /Receiver endpoint|receiver endpoint|Receiver API key|receiver API key|Receiver key|receiver key|Receiver tested|receiver tested|Fix Center|endpoint and key/,
   );
 });
 
@@ -127,19 +133,19 @@ test("builds copy-friendly WordPress install values", () => {
         value: "site_123",
       },
       {
-        help: "Paste this into the Receiver API key field in WordPress. Save the receiver endpoint first if no key exists yet.",
-        label: "Receiver API key",
+        help: "Paste this into the connection key field in WordPress. Save the update link first if no key exists yet.",
+        label: "Connection key",
         value: "aioseo_wp_example",
       },
       {
-        help: "Save this receiver endpoint in the portal, then test it before sending fixes from Fix Center.",
-        label: "Receiver endpoint",
+        help: "Save this WordPress update link in the portal, then test it before sending fixes.",
+        label: "WordPress update link",
         value:
           "https://client.example.com/wp-json/all-in-one-seo/v1/link-fixes",
       },
       {
-        help: "The WordPress plugin calls this portal endpoint after a fix is applied or reviewed.",
-        label: "Callback URL",
+        help: "The WordPress plugin uses this return link after a fix is applied or reviewed.",
+        label: "Return link",
         value:
           "https://allinoneseo.example.com/api/integrations/wordpress/link-fix-status",
       },
@@ -151,8 +157,19 @@ test("builds copy-friendly WordPress install values", () => {
       appUrl: "https://allinoneseo.example.com",
       domain: "client.example.com",
       siteId: "site_123",
-    }).find((item) => item.label === "Receiver endpoint")?.value,
+    }).find((item) => item.label === "WordPress update link")?.value,
     "https://client.example.com/wp-json/all-in-one-seo/v1/link-fixes",
+  );
+
+  assert.doesNotMatch(
+    buildWordPressInstallValues({
+      appUrl: "https://allinoneseo.example.com",
+      domain: "client.example.com",
+      siteId: "site_123",
+    })
+      .map((item) => `${item.label} ${item.help} ${item.value}`)
+      .join(" "),
+    /Receiver endpoint|receiver endpoint|Receiver API key|receiver API key|Callback URL|Fix Center/,
   );
 });
 
@@ -185,13 +202,13 @@ test("requires a passed receiver test before WordPress fix delivery", () => {
 test("explains why a WordPress receiver is unavailable", () => {
   assert.equal(
     getWordPressReceiverReadinessMessage({}),
-    "Save the WordPress receiver endpoint in Integrations.",
+    "Save the WordPress update link in Connections.",
   );
   assert.equal(
     getWordPressReceiverReadinessMessage({
       receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     }),
-    "Generate or save the WordPress receiver API key in Integrations.",
+    "Generate or save the WordPress connection key in Connections.",
   );
   assert.equal(
     getWordPressReceiverReadinessMessage({
@@ -207,7 +224,23 @@ test("explains why a WordPress receiver is unavailable", () => {
       receiverKey: "aioseo_wp_example",
       receiverUrl: "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
     }),
-    "WordPress receiver is ready.",
+    "WordPress connection is ready.",
+  );
+  assert.doesNotMatch(
+    [
+      getWordPressReceiverReadinessMessage({}),
+      getWordPressReceiverReadinessMessage({
+        receiverUrl:
+          "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+      }),
+      getWordPressReceiverReadinessMessage({
+        lastTestStatus: "PASSED",
+        receiverKey: "aioseo_wp_example",
+        receiverUrl:
+          "https://example.com/wp-json/all-in-one-seo/v1/link-fixes",
+      }),
+    ].join(" "),
+    /receiver endpoint|Receiver endpoint|receiver API key|Receiver API key|Test receiver|Integrations/,
   );
 });
 
