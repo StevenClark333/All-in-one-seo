@@ -269,7 +269,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                         </TableHead>
                         <TableHead>HTTPS</TableHead>
                         <TableHead>
-                          <HelpLabel help="Estimated link health based on internal link and page-list problems.">
+                          <HelpLabel
+                            help={PRODUCT_BEGINNER_COPY.dashboardLinkHealthHelp}
+                          >
                             {getProductWorkspaceToolLabel("technical")}
                           </HelpLabel>
                         </TableHead>

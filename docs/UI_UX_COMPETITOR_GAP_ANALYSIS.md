@@ -2930,3 +2930,19 @@ Implementation:
 - [x] Cover Problems filter area wording with unit tests.
 - [x] Runtime-check Problems filter area calmness locally.
 - [ ] Browser-check Problems filter area calmness after deployment.
+
+### Batch FO: Websites Link-Health Helper Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep link-health and crawlability signals visible in project tables for quick triage.
+- A beginner-first Websites table should preserve that signal while saying page links and page-list gaps before internal-link problem wording.
+- The product direction is to make the optional Websites table read like friendly website care detail, not a technical link audit.
+
+Implementation:
+
+- [x] Centralize the Websites table link-health helper in the product copy helper.
+- [x] Replace the visible internal-link helper wording in the Websites table.
+- [x] Cover the Websites link-health helper with unit tests.
+- [x] Runtime-check Websites link-health helper calmness locally.
+- [ ] Browser-check Websites link-health helper calmness after deployment.

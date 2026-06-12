@@ -194,6 +194,8 @@ export const PRODUCT_BEGINNER_COPY = {
   dashboardDetailWebsiteColumn: "Website",
   dashboardDetailPagesHelp:
     "Pages currently known for this saved website.",
+  dashboardLinkHealthHelp:
+    "Estimated link health based on page links and page-list gaps.",
   dashboardFirstWebsiteBody:
     "Websites keep each check, problem, and update in one place.",
   dashboardLatestCheckHelp: "Most recent website check for this website.",
