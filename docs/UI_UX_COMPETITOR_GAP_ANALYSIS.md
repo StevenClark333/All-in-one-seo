@@ -2962,3 +2962,19 @@ Implementation:
 - [x] Cover exported fix-note instruction wording with unit tests.
 - [x] Runtime-check exported fix-note instruction calmness locally.
 - [ ] Browser-check exported fix-note instruction calmness after deployment.
+
+### Batch FQ: Content Ideas Fallback Note Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep schema, canonical, crawl, template-fix, and AI-assisted recommendation language useful for trained teams, but generated fallback text should still match the beginner-first tone when AI keys are unavailable.
+- A beginner-first Content Ideas fallback should say helper fix note, website editor fix note, repeated-page fix note, page links, Google details, and new website check before developer brief, CMS brief, active issues, recrawl, canonical, robots, or internal-link wording.
+- The product direction is to make generated ideas feel shareable and calm even when they come from local rules.
+
+Implementation:
+
+- [x] Soften deterministic page suggestion, issue fix-note, and repeated-page fix-note fallback wording.
+- [x] Preserve useful implementation detail while translating labels and next checks into beginner-safe language.
+- [x] Cover Content Ideas fallback note wording with unit tests.
+- [x] Runtime-check Content Ideas fallback note calmness locally.
+- [ ] Browser-check Content Ideas fallback note calmness after deployment.

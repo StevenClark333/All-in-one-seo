@@ -22,12 +22,27 @@ test("builds deterministic page SEO recommendations", () => {
     /local seo/i,
   );
   assert.equal(recommendations.h1.suggestedValue, "Local Seo");
+  assert.equal(recommendations.schema.title, "Google details suggestion");
   assert.equal(
     recommendations.schema.suggestedValue,
     "WebPage, BreadcrumbList, Organization",
   );
-  assert.match(recommendations.internalLinking.summary, /Link to this page/i);
+  assert.match(recommendations.internalLinking.summary, /clear link text/i);
+  assert.equal(
+    recommendations.internalLinking.title,
+    "Helpful page links suggestion",
+  );
   assert.match(recommendations.contentGap.summary, /Expand the page/i);
+  assert.doesNotMatch(
+    [
+      recommendations.schema.title,
+      recommendations.schema.implementation,
+      recommendations.internalLinking.title,
+      recommendations.internalLinking.summary,
+      recommendations.internalLinking.implementation,
+    ].join(" "),
+    /Schema recommendation|Internal linking recommendation|anchor text|recrawling|canonical|sitemap|crawlable/,
+  );
 });
 
 test("builds deterministic issue fix briefs", () => {
@@ -39,10 +54,27 @@ test("builds deterministic issue fix briefs", () => {
   });
 
   assert.match(recommendations.explanation.summary, /no title tag/i);
-  assert.match(recommendations.developerBrief.implementation ?? "", /route/i);
+  assert.equal(
+    recommendations.developerBrief.title,
+    "Website helper fix note",
+  );
+  assert.match(
+    recommendations.developerBrief.implementation ?? "",
+    /new website check/i,
+  );
+  assert.equal(recommendations.cmsBrief.title, "Website editor fix note");
   assert.match(
     recommendations.cmsBrief.cmsInstructions?.WordPress ?? "",
     /SEO plugin/i,
+  );
+  assert.doesNotMatch(
+    [
+      recommendations.developerBrief.title,
+      recommendations.developerBrief.implementation,
+      recommendations.cmsBrief.title,
+      recommendations.cmsBrief.rationale,
+    ].join(" "),
+    /Developer fix brief|CMS-specific fix brief|rerun the crawl|technical accuracy/,
   );
 });
 
@@ -72,7 +104,7 @@ test("rejects unsafe AI recommendation payloads", () => {
   assert.equal(sanitized.schema.suggestedValue, "Product");
   assert.equal(
     sanitized.internalLinking.title,
-    "Internal linking recommendation",
+    "Helpful page links suggestion",
   );
 });
 
@@ -92,13 +124,30 @@ test("builds deterministic template-level fix briefs", () => {
     ],
   });
 
-  assert.match(recommendations.developerBrief.summary, /24 active issues/i);
+  assert.match(
+    recommendations.developerBrief.summary,
+    /24 problems ready to review/i,
+  );
   assert.match(
     recommendations.developerBrief.implementation ?? "",
-    /shared route/i,
+    /new website check/i,
+  );
+  assert.equal(
+    recommendations.developerBrief.title,
+    "Product repeated-page fix note",
   );
   assert.match(
     recommendations.cmsBrief.cmsInstructions?.Shopify ?? "",
     /Liquid template/i,
+  );
+  assert.doesNotMatch(
+    [
+      recommendations.developerBrief.title,
+      recommendations.developerBrief.summary,
+      recommendations.developerBrief.implementation,
+      recommendations.developerBrief.rationale,
+      recommendations.cmsBrief.cmsInstructions?.Custom,
+    ].join(" "),
+    /template fix brief|active issues|mixed SEO issues|SEO defects|recrawl|recrawling|internal links|canonicals|robots directives/,
   );
 });

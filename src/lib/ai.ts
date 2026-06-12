@@ -290,7 +290,7 @@ export async function generateIssueAiRecommendations(issueId: string) {
     feature: "issue_fix_recommendations",
     inputHash,
     system: "You are an expert SEO operations lead. Return concise JSON only.",
-    prompt: `Explain this SEO issue, create a developer fix brief, and provide CMS-specific instructions for WordPress, Shopify, Webflow, and custom sites. Input: ${JSON.stringify(input)}`,
+    prompt: `Explain this website problem, create a clear helper fix note, and provide website-editor instructions for WordPress, Shopify, Webflow, and custom sites. Input: ${JSON.stringify(input)}`,
     fallback: buildLocalIssueRecommendations(input),
   });
 
@@ -357,7 +357,7 @@ export async function generateTemplateAiFixBrief(input: {
   );
 
   if (!templateIssues.length) {
-    throw new Error("No active issues found for this template.");
+    throw new Error("No open problems found for this repeated page pattern.");
   }
 
   const representativeIssue = templateIssues[0];
@@ -405,7 +405,7 @@ export async function generateTemplateAiFixBrief(input: {
     feature: "template_fix_brief",
     inputHash,
     system: "You are an expert SEO operations lead. Return concise JSON only.",
-    prompt: `Create one template-level developer fix brief and one CMS-specific fix brief for this grouped SEO pattern. Focus on fixing the underlying route, CMS collection template, or theme component, not individual pages. Input: ${JSON.stringify(briefInput)}`,
+    prompt: `Create one repeated-page helper fix note and one website-editor fix note for this grouped website pattern. Focus on fixing the underlying route, CMS collection template, or theme component, not individual pages. Input: ${JSON.stringify(briefInput)}`,
     fallback: buildLocalTemplateFixBriefs(briefInput),
   });
 
@@ -617,21 +617,21 @@ export function buildLocalPageRecommendations(input: {
         "A clear H1 helps users and crawlers understand the page topic quickly.",
     },
     schema: {
-      title: "Schema recommendation",
-      summary: `Add structured data that matches the ${topic.toLowerCase()} page intent.`,
+      title: "Google details suggestion",
+      summary: `Add page details for Google that match the ${topic.toLowerCase()} page intent.`,
       suggestedValue: chooseSchemaType(input.url),
       implementation:
-        "Add JSON-LD in the rendered HTML and validate it with a structured data testing tool before recrawling.",
+        "Add JSON-LD to the page HTML and check it with a structured data testing tool before running a new website check.",
       rationale:
         "Relevant structured data helps search engines understand entities, breadcrumbs, products, articles, and organization details.",
     },
     internalLinking: {
-      title: "Internal linking recommendation",
-      summary: `Link to this page from relevant hub, navigation, or related content pages using descriptive anchor text for ${topic.toLowerCase()}.`,
+      title: "Helpful page links suggestion",
+      summary: `Link to this page from relevant hub, navigation, or related content pages using clear link text for ${topic.toLowerCase()}.`,
       implementation:
-        "Add contextual links from high-authority pages and ensure the target URL is crawlable, canonical, and present in sitemap where appropriate.",
+        "Add helpful page links from trusted pages and make sure the page is easy for search engines to read, uses the right preferred page setting, and appears in the page list where appropriate.",
       rationale:
-        "Internal links improve discovery, distribute authority, and clarify topical relationships across the site.",
+        "Helpful page links improve discovery and clarify topical relationships across the site.",
     },
     contentGap: {
       title: "Content gap recommendation",
@@ -662,15 +662,15 @@ export function buildLocalIssueRecommendations(input: {
         "This issue can reduce crawlability, indexability, relevance, or search result click-through depending on the affected page.",
     },
     developerBrief: {
-      title: "Developer fix brief",
+      title: "Website helper fix note",
       summary: baseRecommendation,
       implementation:
-        "Locate the affected template or route, update the SEO fields, verify rendered HTML, and rerun the crawl to confirm the issue is fixed.",
+        "Find the affected page template or route, update the website fields, check the live HTML, and run a new website check to confirm the problem is handled.",
       rationale:
-        "Fixing the rendered output ensures both crawlers and users see the corrected page state.",
+        "Fixing the live page output helps both visitors and search engines see the corrected page state.",
     },
     cmsBrief: {
-      title: "CMS-specific fix brief",
+      title: "Website editor fix note",
       summary: `Recommended workflow for ${input.platform.toLowerCase()} and common CMS setups.`,
       cmsInstructions: {
         WordPress:
@@ -680,10 +680,10 @@ export function buildLocalIssueRecommendations(input: {
         Webflow:
           "Edit page settings or collection template SEO fields, publish, and verify the live page source.",
         Custom:
-          "Update the route metadata or template component, deploy, and verify with a fresh crawl.",
+          "Update the route metadata or template component, deploy, and verify with a new website check.",
       },
       rationale:
-        "CMS-specific instructions make fixes easier to delegate without losing technical accuracy.",
+        "Website-editor instructions make fixes easier to share without losing accuracy.",
     },
   };
 }
@@ -707,12 +707,12 @@ export function buildLocalTemplateFixBriefs(input: {
 
   return {
     developerBrief: {
-      title: `${input.templateLabel} template fix brief`,
-      summary: `${scope} has ${input.issueCount} active issues across ${input.pageCount} pages. Main patterns: ${issueSummary || "mixed SEO issues"}.`,
+      title: `${input.templateLabel} repeated-page fix note`,
+      summary: `${scope} has ${input.issueCount} problems ready to review across ${input.pageCount} pages. Main patterns: ${issueSummary || "mixed website problems"}.`,
       implementation:
-        "Fix the shared route, layout, CMS collection template, or theme component that renders this page group. Update metadata, headings, schema, canonicals, robots directives, and shared internal links at the template level, then recrawl representative pages before closing individual issues.",
+        "Fix the shared route, layout, CMS collection template, or theme component that shows this page group. Update page titles, headings, Google details, preferred page settings, search visibility settings, and shared page links at the template level, then run a new website check on representative pages before closing individual problems.",
       rationale:
-        "A template-level fix resolves repeated SEO defects once and prevents the same issue from returning on newly published pages using this pattern.",
+        "A repeated-page fix resolves the shared pattern once and prevents the same problem from returning on newly published pages using this pattern.",
     },
     cmsBrief: {
       title: `${input.templateLabel} CMS workflow`,
@@ -725,7 +725,7 @@ export function buildLocalTemplateFixBriefs(input: {
         Webflow:
           "Edit the CMS Collection Template settings, dynamic SEO fields, schema embed, and heading structure. Publish and verify sample collection items.",
         Custom:
-          "Update the route metadata factory, shared page component, layout, or serializer for this template. Deploy and verify sample rendered HTML before recrawling.",
+          "Update the route metadata factory, shared page component, layout, or serializer for this template. Deploy and verify sample live HTML before running a new website check.",
       },
       rationale:
         "Template-aware CMS instructions let teams fix the source pattern instead of touching pages one at a time.",
