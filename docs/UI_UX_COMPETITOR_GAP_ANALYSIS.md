@@ -1903,7 +1903,7 @@ Implementation:
 - [x] Translate problem CSV and fix-note severity wording into plain importance labels.
 - [x] Cover the exact exported importance labels with unit tests.
 - [x] Verify export importance labels through local API/download checks.
-- [ ] Browser-check export importance labels after deployment.
+- [x] Browser-check export importance labels after deployment.
 
 ### Batch DC: Export Work List Label Calmness
 
@@ -1919,7 +1919,7 @@ Implementation:
 - [x] Reuse the problem-area label in fix-note handoffs.
 - [x] Cover the exact exported work-list labels with unit tests.
 - [x] Verify export work-list labels through local API/download checks.
-- [ ] Browser-check export work-list labels after deployment.
+- [x] Browser-check export work-list labels after deployment.
 
 ### Batch DD: Export Page Check Label Calmness
 
@@ -1935,7 +1935,7 @@ Implementation:
 - [x] Reuse the same page response and check-date labels used in the app.
 - [x] Cover the exact exported page-check labels with unit tests.
 - [x] Verify export page-check labels through local API/download checks.
-- [ ] Browser-check export page-check labels after deployment.
+- [x] Browser-check export page-check labels after deployment.
 
 ### Batch DE: Report PDF Story Label Calmness
 
@@ -1951,7 +1951,7 @@ Implementation:
 - [x] Reuse the same gentle not-found change placeholder used in crawl recap views.
 - [x] Cover the exact generated report PDF text with unit tests.
 - [x] Verify generated report text through local report rendering checks.
-- [ ] Browser-check report PDF story labels after deployment.
+- [x] Browser-check report PDF story labels after deployment.
 
 ### Batch DF: Download Filename Calmness
 
@@ -1967,7 +1967,7 @@ Implementation:
 - [x] Rename link-fix markdown handoff filenames to note-based language.
 - [x] Cover exported filename constants and link-fix note filenames with unit tests.
 - [x] Verify CSV attachment filenames through local authenticated HTTP checks.
-- [ ] Browser-check download filenames after deployment.
+- [x] Browser-check download filenames after deployment.
 
 ### Batch DG: Export Column Label Calmness
 
@@ -1983,7 +1983,7 @@ Implementation:
 - [x] Rename downloaded problem CSV website column away from domain.
 - [x] Rename downloaded page CSV website and problems columns away from domain and issues.
 - [x] Verify exact CSV headers through unit tests and local authenticated HTTP checks.
-- [ ] Browser-check export column labels after deployment.
+- [x] Browser-check export column labels after deployment.
 
 ### Batch DH: Product Name Calmness
 
