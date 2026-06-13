@@ -3027,7 +3027,7 @@ Implementation:
 - [x] Replace the visible "internal links" phrase in the Search Ideas next-step card with "helpful page links."
 - [x] Cover Search Ideas content-gap link wording with unit tests.
 - [x] Runtime-check Search Ideas content-gap link wording locally.
-- [ ] Browser-check Search Ideas content-gap link wording after deployment.
+- [x] Browser-check Search Ideas content-gap link wording after deployment.
 
 ### Batch FU: Issue Solution Link-Note Calmness
 
@@ -3110,7 +3110,7 @@ Implementation:
 - [x] Replace the Search Ideas opportunity reason phrase "internal links" with "helpful page links."
 - [x] Cover the Search Ideas opportunity reason with a unit test.
 - [x] Runtime-check Search Ideas opportunity reason calmness locally.
-- [ ] Browser-check Search Ideas opportunity reason calmness after deployment.
+- [x] Browser-check Search Ideas opportunity reason calmness after deployment.
 
 ### Batch FZ: Website Ownership Setup Calmness
 
@@ -3261,4 +3261,4 @@ Implementation:
 - [x] Runtime-check Page and Problem Detail saved-idea calmness locally.
 - [x] Browser-check Page Detail stored problem-title calmness after deployment.
 - [x] Browser-check Problem Detail stored problem-title calmness after deployment.
-- [ ] Browser-check Page and Problem Detail saved-idea calmness after deployment.
+- [x] Browser-check Page and Problem Detail saved-idea calmness after deployment.
