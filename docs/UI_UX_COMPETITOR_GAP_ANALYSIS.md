@@ -3241,5 +3241,21 @@ Implementation:
 - [x] Add a saved-recommendation display helper for title, summary, and type labels.
 - [x] Use the helper in the Ideas and Fixes saved ideas list.
 - [x] Cover old saved-output phrases with unit tests.
-- [ ] Runtime-check saved ideas output calmness locally.
+- [x] Runtime-check saved ideas output calmness locally.
 - [x] Browser-check saved ideas output calmness after deployment.
+
+### Batch GH: Page and Problem Detail Saved-Idea Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep page and issue detail screens dense with audit labels, recommendation types, and stored technical output.
+- A beginner-first detail workflow should preserve the same evidence while showing page titles, Google details, website editor notes, page lists, and helpful page links before raw stored wording.
+- The product direction is to make detail pages feel like a guided care note for one page or problem, not a technical archive.
+
+Implementation:
+
+- [x] Reuse the shared stored-problem title softener on Page Detail problem rows and the focus plan.
+- [x] Reuse the saved-recommendation display helper on Page Detail saved suggestions.
+- [x] Reuse the saved-recommendation display helper on Problem Detail saved fix ideas.
+- [x] Runtime-check Page and Problem Detail saved-idea calmness locally.
+- [ ] Browser-check Page and Problem Detail saved-idea calmness after deployment.

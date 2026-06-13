@@ -8,7 +8,10 @@ import {
   generateIssueRecommendations,
   updateIssueStatus,
 } from "@/app/actions";
-import { formatIssueNoteAuthor } from "@/lib/issue-display-labels";
+import {
+  formatIssueNoteAuthor,
+  softenIssueTitle,
+} from "@/lib/issue-display-labels";
 import { getIssueDetailData } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 import { formatOverviewOwner } from "@/lib/overview-display-labels";
@@ -17,6 +20,11 @@ import {
   formatProductWorkspaceProblemSeverity,
   PRODUCT_GLOBAL_SEARCH_COPY,
 } from "@/lib/product-copy";
+import {
+  formatRecommendationTypeLabel,
+  softenRecommendationSummary,
+  softenRecommendationTitle,
+} from "@/lib/recommendation-display-labels";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -293,25 +301,30 @@ export default async function IssueDetailPage({
 
               <div className="mt-4 grid gap-3 border-t border-slate-100 pt-4">
                 {issue.recommendations.length ? (
-                  issue.recommendations.map((recommendation) => (
-                    <article
-                      key={recommendation.id}
-                      className="rounded-md border border-slate-200 bg-slate-50 p-3"
-                    >
-                      <p className="text-sm font-semibold text-slate-500">
-                        {formatRecommendationType(recommendation.type)}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold">
-                        {readPayload(recommendation.recommendationJson).title}
-                      </p>
-                      <p className="mt-1 text-sm leading-6 text-slate-600">
-                        {softenProblemText(
-                          readPayload(recommendation.recommendationJson)
-                            .summary,
-                        )}
-                      </p>
-                    </article>
-                  ))
+                  issue.recommendations.map((recommendation) => {
+                    const payload = readPayload(
+                      recommendation.recommendationJson,
+                    );
+
+                    return (
+                      <article
+                        key={recommendation.id}
+                        className="rounded-md border border-slate-200 bg-slate-50 p-3"
+                      >
+                        <p className="text-sm font-semibold text-slate-500">
+                          {formatRecommendationTypeLabel(recommendation.type)}
+                        </p>
+                        <p className="mt-2 text-sm font-semibold">
+                          {softenRecommendationTitle(payload.title)}
+                        </p>
+                        <p className="mt-1 text-sm leading-6 text-slate-600">
+                          {softenRecommendationSummary(
+                            softenProblemText(payload.summary),
+                          )}
+                        </p>
+                      </article>
+                    );
+                  })
                 ) : (
                   <p className="text-sm text-slate-500">
                     No fix ideas created yet.
@@ -552,44 +565,6 @@ function formatNoteVisibility(value: string) {
   return labels[value] ?? formatEnum(value);
 }
 
-function formatRecommendationType(value: string) {
-  const normalized = value.toLowerCase();
-
-  if (normalized.includes("template")) {
-    return "Shared note";
-  }
-
-  if (normalized.includes("issue") || normalized.includes("fix")) {
-    return "Fix note";
-  }
-
-  if (normalized.includes("internal")) {
-    return "Link idea";
-  }
-
-  if (normalized.includes("schema")) {
-    return "Page detail idea";
-  }
-
-  if (normalized.includes("h1")) {
-    return "Heading idea";
-  }
-
-  if (normalized.includes("title")) {
-    return "Title idea";
-  }
-
-  if (normalized.includes("description")) {
-    return "Description idea";
-  }
-
-  if (normalized.includes("content")) {
-    return "Content idea";
-  }
-
-  return formatEnum(value);
-}
-
 function softenProblemTitle(value: string) {
   const exactMatches: Record<string, string> = {
     "Duplicate Meta Description": "Repeated page description",
@@ -621,9 +596,9 @@ function softenProblemTitle(value: string) {
       "Page is in the page list but needs links",
   };
 
-  const exactMatch = exactMatches[value];
+  const exactMatch = exactMatches[value] ?? softenIssueTitle(value);
 
-  if (exactMatch) {
+  if (exactMatch !== value) {
     return exactMatch;
   }
 

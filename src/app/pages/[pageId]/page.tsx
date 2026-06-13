@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { generatePageRecommendations } from "@/app/actions";
 import { AppSidebar } from "@/components/app-sidebar";
+import { softenIssueTitle } from "@/lib/issue-display-labels";
 import { getPageDetailData } from "@/lib/management-queries";
 import {
   formatPageClient,
@@ -23,6 +24,11 @@ import {
   formatProductPageSearchVisibility,
   PRODUCT_BEGINNER_COPY,
 } from "@/lib/product-copy";
+import {
+  formatRecommendationTypeLabel,
+  softenRecommendationSummary,
+  softenRecommendationTitle,
+} from "@/lib/recommendation-display-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -181,7 +187,9 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                         className="grid gap-3 p-5 transition hover:bg-slate-50 md:grid-cols-[minmax(0,1fr)_120px_130px]"
                       >
                         <div>
-                          <p className="font-semibold">{issue.title}</p>
+                          <p className="font-semibold">
+                            {softenIssueTitle(issue.title)}
+                          </p>
                           <p className="mt-1 text-sm text-slate-500">
                             {formatProductPageDetailType(issue.issueType)}
                           </p>
@@ -226,25 +234,32 @@ export default async function PageDetailPage({ params }: PageDetailPageProps) {
                 </form>
                 <div className="mt-4 grid gap-3 border-t border-slate-200 pt-4">
                   {page.recommendations.length ? (
-                    page.recommendations.map((recommendation) => (
-                      <div
-                        key={recommendation.id}
-                        className="rounded-md border border-slate-200 bg-slate-50 p-3"
-                      >
-                        <p className="text-xs font-semibold text-slate-500">
-                          {formatRecommendationType(recommendation.type)}
-                        </p>
-                        <p className="mt-2 text-sm font-semibold">
-                          {readPayload(recommendation.recommendationJson).title}
-                        </p>
-                        <p className="mt-1 text-sm leading-6 text-slate-600">
-                          {readPayload(recommendation.recommendationJson)
-                            .suggestedValue ??
-                            readPayload(recommendation.recommendationJson)
-                              .summary}
-                        </p>
-                      </div>
-                    ))
+                    page.recommendations.map((recommendation) => {
+                      const payload = readPayload(
+                        recommendation.recommendationJson,
+                      );
+                      const recommendationText =
+                        payload.suggestedValue ?? payload.summary;
+
+                      return (
+                        <div
+                          key={recommendation.id}
+                          className="rounded-md border border-slate-200 bg-slate-50 p-3"
+                        >
+                          <p className="text-xs font-semibold text-slate-500">
+                            {formatRecommendationTypeLabel(
+                              recommendation.type,
+                            )}
+                          </p>
+                          <p className="mt-2 text-sm font-semibold">
+                            {softenRecommendationTitle(payload.title)}
+                          </p>
+                          <p className="mt-1 text-sm leading-6 text-slate-600">
+                            {softenRecommendationSummary(recommendationText)}
+                          </p>
+                        </div>
+                      );
+                    })
                   ) : (
                     <p className="text-sm text-slate-500">
                       No suggestions generated for this page yet.
@@ -413,7 +428,9 @@ function PageFocusPlan({
         <CheckCircle2 className="size-4" aria-hidden="true" />
       ),
       label: firstIssue ? "Fix this first" : "Page looks calm",
-      value: firstIssue?.title ?? PRODUCT_BEGINNER_COPY.pagesNoQuickFix,
+      value: firstIssue
+        ? softenIssueTitle(firstIssue.title)
+        : PRODUCT_BEGINNER_COPY.pagesNoQuickFix,
     },
     {
       detail: pageBasicsReady
@@ -530,36 +547,6 @@ function formatEnum(value: string) {
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
-}
-
-function formatRecommendationType(value: string) {
-  const normalized = value.toLowerCase();
-
-  if (normalized.includes("template")) {
-    return "Shared note";
-  }
-
-  if (normalized.includes("issue") || normalized.includes("fix")) {
-    return "Fix note";
-  }
-
-  if (normalized.includes("page")) {
-    return "Page idea";
-  }
-
-  if (normalized.includes("title")) {
-    return "Title idea";
-  }
-
-  if (normalized.includes("description")) {
-    return "Description idea";
-  }
-
-  if (normalized.includes("content")) {
-    return "Content idea";
-  }
-
-  return formatEnum(value);
 }
 
 function readPayload(value: unknown) {
