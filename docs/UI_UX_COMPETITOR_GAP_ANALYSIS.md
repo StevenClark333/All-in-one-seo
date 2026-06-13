@@ -2946,7 +2946,7 @@ Implementation:
 - [x] Replace the visible internal-link helper wording in the Websites table.
 - [x] Cover the Websites link-health helper with unit tests.
 - [x] Runtime-check Websites link-health helper calmness locally.
-- [ ] Browser-check Websites link-health helper calmness after deployment.
+- [x] Browser-check Websites link-health helper calmness after deployment.
 
 ### Batch FP: Exported Fix-Note Instruction Calmness
 
