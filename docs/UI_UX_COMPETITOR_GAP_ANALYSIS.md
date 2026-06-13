@@ -1406,7 +1406,7 @@ Implementation:
 - [x] Translate page suggestion card types into title idea, description idea, page idea, and fix note wording.
 - [x] Add friendlier page problem progress labels for set-aside and needs-another-look states.
 - [x] Browser-check Page Detail suggestion labels desktop and mobile locally.
-- [ ] Browser-check Page Detail suggestion labels after deployment.
+- [x] Browser-check Page Detail suggestion labels after deployment.
 
 ### Batch BV: Client Update Status Calmness
 
@@ -3258,4 +3258,6 @@ Implementation:
 - [x] Reuse the saved-recommendation display helper on Page Detail saved suggestions.
 - [x] Reuse the saved-recommendation display helper on Problem Detail saved fix ideas.
 - [x] Runtime-check Page and Problem Detail saved-idea calmness locally.
+- [x] Browser-check Page Detail stored problem-title calmness after deployment.
+- [x] Browser-check Problem Detail stored problem-title calmness after deployment.
 - [ ] Browser-check Page and Problem Detail saved-idea calmness after deployment.
