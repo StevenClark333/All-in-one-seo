@@ -733,8 +733,8 @@ const reportSectionOptions = [
   { label: "Website health", value: "healthScore" },
   { label: "Website check summary", value: "crawlSummary" },
   { label: "Fix movement", value: "issueMovement" },
-  { label: "Change summary", value: "changeSummary" },
-  { label: "Next steps", value: "priorityRecommendations" },
+  { label: "Website changes found", value: "changeSummary" },
+  { label: "Best next steps", value: "priorityRecommendations" },
 ];
 
 function ReportPlan({

@@ -192,8 +192,11 @@ export default async function ReportDetailPage({
                 value={formatWebsiteHealth(summary.score)}
               />
             ) : null}
-            <Metric label="Pages" value={summary.pageCount} />
-            <Metric label="Needs attention" value={summary.openIssues.length} />
+            <Metric label="Pages checked" value={summary.pageCount} />
+            <Metric
+              label="Problems ready to review"
+              value={summary.openIssues.length}
+            />
             <Metric
               label="Fixed this period"
               value={summary.fixedIssues.length}
@@ -208,7 +211,9 @@ export default async function ReportDetailPage({
               {summary.sections.changeSummary ? (
                 <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
                   <div className="border-b border-slate-200 p-5">
-                    <h3 className="text-lg font-semibold">Change summary</h3>
+                    <h3 className="text-lg font-semibold">
+                      Website changes found
+                    </h3>
                     <p className="mt-1 text-sm text-slate-500">
                       {PRODUCT_REPORT_UPDATE_COPY.changeSummaryDetail}
                     </p>
@@ -250,7 +255,7 @@ export default async function ReportDetailPage({
               {summary.sections.priorityRecommendations ? (
                 <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
                   <div className="border-b border-slate-200 p-5">
-                    <h3 className="text-lg font-semibold">Next steps</h3>
+                    <h3 className="text-lg font-semibold">Best next steps</h3>
                     <p className="mt-1 text-sm text-slate-500">
                       Client-readable fixes pulled from the current problem
                       list.
