@@ -21,7 +21,7 @@ import { readDeploymentIntegrationConfig } from "@/lib/deployment-checks";
 import { readGaProperties } from "@/lib/google-analytics";
 import { findMatchingGscSite, readGscSites } from "@/lib/google-search-console";
 import { getIntegrationSettingsData } from "@/lib/management-queries";
-import { PRODUCT_CONNECTION_COPY } from "@/lib/product-copy";
+import { PRODUCT_ALERT_COPY, PRODUCT_CONNECTION_COPY } from "@/lib/product-copy";
 import { readSlackIntegrationConfig } from "@/lib/slack";
 import { readShopifyShop } from "@/lib/shopify";
 import { findMatchingWebflowSite, readWebflowSites } from "@/lib/webflow";
@@ -1142,12 +1142,12 @@ export default async function IntegrationsPage({
                 </label>
                 <label className="grid gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    Slack message URL
+                    {PRODUCT_ALERT_COPY.messageLinkLabel}
                   </span>
                   <input
                     name="webhookUrl"
                     type="url"
-                    placeholder="https://hooks.slack.com/services/..."
+                    placeholder={PRODUCT_ALERT_COPY.messageLinkPlaceholder}
                     required
                     className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-100"
                   />
@@ -1173,8 +1173,8 @@ export default async function IntegrationsPage({
                   value={slackConfig.channelName || "Not configured"}
                 />
                 <Meta
-                  label="Backup use"
-                  value="Used when a watch does not choose its own Slack URL"
+                  label={PRODUCT_ALERT_COPY.backupMessageLinkLabel}
+                  value="Used when a watch does not choose its own message link"
                 />
               </div>
             </div>
