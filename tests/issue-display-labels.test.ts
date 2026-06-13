@@ -25,6 +25,11 @@ test("softens stored issue titles for beginner-facing workspace lists", () => {
     "Page template repeats the same description",
   );
   assert.equal(
+    softenIssueTitle("Homepage blocked by robots.txt"),
+    "Homepage blocked from Google",
+  );
+  assert.equal(softenIssueTitle("Missing page title"), "Page title missing");
+  assert.equal(
     softenIssueTitle("Missing canonical tag"),
     "Preferred page link missing",
   );

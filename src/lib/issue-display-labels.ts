@@ -10,6 +10,8 @@ export function softenIssueTitle(value: string) {
       "Preferred page link points to a page that is not loading",
     "Duplicate meta descriptions across page template":
       "Page template repeats the same description",
+    "Homepage blocked by robots.txt": "Homepage blocked from Google",
+    "Missing page title": "Page title missing",
     "Missing canonical tag": "Preferred page link missing",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
@@ -37,6 +39,11 @@ export function softenIssueTitle(value: string) {
       /\bDuplicate meta descriptions across page template\b/gi,
       exactMatches["Duplicate meta descriptions across page template"],
     )
+    .replace(
+      /\bHomepage blocked by robots\.txt\b/gi,
+      exactMatches["Homepage blocked by robots.txt"],
+    )
+    .replace(/\bMissing page title\b/gi, exactMatches["Missing page title"])
     .replace(
       /\bMissing canonical tag\b/gi,
       exactMatches["Missing canonical tag"],
