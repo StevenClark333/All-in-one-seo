@@ -59,7 +59,10 @@ export function softenRecommendationSummary(value: string) {
       "Add a helpful page link to this page, or remove it from the page list if people should not find it.",
     )
     .replace(/\bstructured data\b/gi, "Google details")
+    .replace(/\bAdd Google details that matches\b/g, "Add Google details that match")
     .replace(/\bSEO title\b/gi, "page title")
+    .replace(/\bsearch engines understand\b/gi, "Google can understand")
+    .replace(/\bsearch engines\b/gi, "Google")
     .replace(/\binternal link graph\b/gi, "page links")
     .replace(/\binternal links?\b/gi, "helpful page links")
     .replace(/\bsitemap\b/gi, "page list")

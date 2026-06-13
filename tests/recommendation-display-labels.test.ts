@@ -44,6 +44,12 @@ test("softens saved recommendation summaries without changing their intent", () 
     ),
     "Add a helpful page link to this page, or remove it from the page list if people should not find it.",
   );
+  assert.equal(
+    softenRecommendationSummary(
+      "Add structured data that matches the page intent so search engines understand it.",
+    ),
+    "Add Google details that match the page intent so Google can understand it.",
+  );
 });
 
 test("formats saved recommendation types as page-care labels", () => {
