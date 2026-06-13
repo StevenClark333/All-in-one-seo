@@ -120,7 +120,16 @@ export async function getIssueListData(filters: IssueListFilters = {}) {
 }
 
 export function getIssueTypeGroupKey(issueType: string) {
-  return issueType.split(":").at(0) ?? issueType;
+  const baseType = issueType.split(":").at(0) ?? issueType;
+  const exactMatches: Record<string, string> = {
+    "Broken Internal Link": "broken_internal_link",
+    "Broken internal link detected": "broken_internal_link",
+    "Canonical points to a non-200 URL": "canonical_non_200",
+    "Homepage became noindex after latest deploy": "page_noindex",
+    "Product template canonical points to non-200 URLs": "canonical_non_200",
+  };
+
+  return exactMatches[baseType] ?? baseType;
 }
 
 export async function getIssueDetailData(issueId: string) {
@@ -262,12 +271,26 @@ function buildTemplatePageWhere(templateKey: string): Prisma.PageWhereInput {
 
 function buildIssueTypeWhere(issueType: string): Prisma.SeoIssueWhereInput {
   const key = getIssueTypeGroupKey(issueType);
+  const legacyIssueTypes: Record<string, string[]> = {
+    broken_internal_link: ["Broken Internal Link", "Broken internal link detected"],
+    canonical_non_200: [
+      "Canonical points to a non-200 URL",
+      "Product template canonical points to non-200 URLs",
+    ],
+    page_noindex: ["Homepage became noindex after latest deploy"],
+  };
 
   if (issueType.includes(":")) {
     return { issueType };
   }
 
   return {
-    OR: [{ issueType: key }, { issueType: { startsWith: `${key}:` } }],
+    OR: [
+      { issueType: key },
+      { issueType: { startsWith: `${key}:` } },
+      ...(legacyIssueTypes[key] ?? []).map((legacyIssueType) => ({
+        issueType: legacyIssueType,
+      })),
+    ],
   };
 }
