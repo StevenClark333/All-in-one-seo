@@ -329,7 +329,7 @@ body {
   [role="button"] * {
     line-height: 1.2;
     overflow-wrap: normal;
-    white-space: nowrap;
+    white-space: normal;
     word-break: normal;
   }
 
@@ -338,20 +338,15 @@ body {
   a[class^="h-"],
   a.inline-flex[class*="px-"],
   [role="button"] {
+    height: auto !important;
+    max-width: 100%;
     min-height: 2.25rem;
+    text-align: center;
   }
 
   a[class*="overflow-wrap:normal"] {
     min-width: max-content;
     white-space: nowrap;
-  }
-
-  button:not([class*="w-full"]),
-  a[class*=" h-"]:not([class*="w-full"]),
-  a[class^="h-"]:not([class*="w-full"]),
-  a.inline-flex[class*="px-"]:not([class*="w-full"]),
-  [role="button"]:not([class*="w-full"]) {
-    min-width: max-content;
   }
 
   button,
