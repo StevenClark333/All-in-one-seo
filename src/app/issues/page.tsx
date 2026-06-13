@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
+import { softenIssueDescription } from "@/lib/issue-display-labels";
 import { getIssueListData, getIssueTypeGroupKey } from "@/lib/issue-queries";
 import { buildIssueSolution } from "@/lib/issue-solutions";
 import {
@@ -847,7 +848,7 @@ function softenProblemTitle(value: string) {
 }
 
 function softenProblemText(value: string) {
-  return value
+  return softenIssueDescription(value)
     .replace(/\banalyzer-generated\b/gi, "website-check")
     .replace(/\bCritical SEO regression\b/gi, "Important website change")
     .replace(/\bcritical regression\b/gi, "important change")

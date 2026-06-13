@@ -10,6 +10,7 @@ import {
 } from "@/app/actions";
 import {
   formatIssueNoteAuthor,
+  softenIssueDescription,
   softenIssueTitle,
 } from "@/lib/issue-display-labels";
 import { getIssueDetailData } from "@/lib/issue-queries";
@@ -616,7 +617,7 @@ function softenProblemTitle(value: string) {
 }
 
 function softenProblemText(value: string) {
-  return value
+  return softenIssueDescription(value)
     .replace(/\banalyzer pass\b/gi, "website check")
     .replace(
       /\brestore indexable canonical signals\b/gi,

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   formatIssueNoteAuthor,
+  softenIssueDescription,
   softenIssueTitle,
 } from "@/lib/issue-display-labels";
 
@@ -36,5 +37,20 @@ test("softens stored issue titles for beginner-facing workspace lists", () => {
   assert.equal(
     softenIssueTitle("Homepage became noindex after latest deploy"),
     "Homepage was hidden from Google after deploy",
+  );
+});
+
+test("softens stored issue descriptions for beginner-facing problem text", () => {
+  assert.equal(
+    softenIssueDescription(
+      "Internal link https://example.com/login returned HTTP 404.",
+    ),
+    "Link that stopped working: https://example.com/login could not be opened (404).",
+  );
+  assert.equal(
+    softenIssueDescription(
+      "https://example.com/ canonical returned HTTP 403.",
+    ),
+    "https://example.com/ preferred page link could not be opened (403).",
   );
 });

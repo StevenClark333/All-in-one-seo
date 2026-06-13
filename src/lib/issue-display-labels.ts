@@ -56,3 +56,15 @@ export function softenIssueTitle(value: string) {
     .replace(/\bCanonical\b/g, "preferred page link")
     .replace(/\bnoindex\b/gi, "hidden from Google");
 }
+
+export function softenIssueDescription(value: string) {
+  return value
+    .replace(
+      /\bInternal link (https?:\/\/\S+) returned HTTP (\d+)\./gi,
+      "Link that stopped working: $1 could not be opened ($2).",
+    )
+    .replace(
+      /\b(https?:\/\/\S+) canonical returned HTTP (\d+)\./gi,
+      "$1 preferred page link could not be opened ($2).",
+    );
+}
