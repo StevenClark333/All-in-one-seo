@@ -1,3 +1,5 @@
+import { formatProductProblemArea } from "@/lib/product-copy";
+
 export const PROBLEM_EXPORT_FILENAME = "website-problems-to-review.csv";
 export const PAGE_CARE_EXPORT_FILENAME = "website-page-care-list.csv";
 
@@ -40,10 +42,7 @@ export function formatExportProblemArea(value: string | null | undefined) {
     return "Website check";
   }
 
-  return value
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+  return formatProductProblemArea(value);
 }
 
 export function formatExportProgress(value: string | null | undefined) {

@@ -41,7 +41,19 @@ test("formats exported problem importance as plain action labels", () => {
 test("formats exported problem details as a readable work list", () => {
   assert.equal(
     formatExportProblemArea("missing_meta_description"),
-    "Missing Meta Description",
+    "Page description missing",
+  );
+  assert.equal(
+    formatExportProblemArea("broken_internal_link:https://example.com/login"),
+    "Page link that needs help",
+  );
+  assert.equal(
+    formatExportProblemArea("canonical_non_200"),
+    "Preferred page is not loading",
+  );
+  assert.equal(
+    formatExportProblemArea("critical_regression"),
+    "Important change",
   );
   assert.equal(formatExportProblemArea(null), "Website check");
   assert.equal(formatExportPriority(92), "Start here");
