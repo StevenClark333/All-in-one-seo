@@ -2447,7 +2447,7 @@ Implementation:
 - [x] Replace loading states for Competitive Analysis, Problems, Search Ideas, and Rank Movement with beginner-facing labels.
 - [x] Cover navigation help and loading labels with unit tests.
 - [x] Browser-check loading and navigation help calmness locally.
-- [ ] Browser-check loading and navigation help calmness after deployment.
+- [x] Browser-check loading and navigation help calmness after deployment.
 
 ### Batch EJ: Search Ideas Keyword Wording Calmness
 
@@ -2686,7 +2686,7 @@ Implementation:
 - [x] Replace urgent importance wording in problem CSV exports.
 - [x] Cover report PDF text and CSV importance wording with unit tests.
 - [x] Runtime-check report/export quick-care calmness locally.
-- [ ] Runtime-check report/export quick-care calmness after deployment.
+- [x] Runtime-check report/export quick-care calmness after deployment.
 
 
 ### Batch EZ: Alert Rule Quick-Care Calmness
