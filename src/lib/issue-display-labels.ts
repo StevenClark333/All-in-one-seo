@@ -1,3 +1,40 @@
 export function formatIssueNoteAuthor(value: string | null | undefined) {
   return value?.trim() ? value : "No author yet";
 }
+
+export function softenIssueTitle(value: string) {
+  const exactMatches: Record<string, string> = {
+    "Broken Internal Link": "Page link that needs help",
+    "Broken internal link detected": "Page link that needs help",
+    "Canonical points to a non-200 URL":
+      "Preferred page link points to a page that is not loading",
+    "Homepage became noindex after latest deploy":
+      "Homepage was hidden from Google after deploy",
+    "Product template canonical points to non-200 URLs":
+      "Product template points to a broken preferred page",
+  };
+
+  const exactMatch = exactMatches[value];
+
+  if (exactMatch) {
+    return exactMatch;
+  }
+
+  return value
+    .replace(/\bBroken Internal Link\b/gi, exactMatches["Broken Internal Link"])
+    .replace(
+      /\bBroken internal link detected\b/gi,
+      exactMatches["Broken internal link detected"],
+    )
+    .replace(
+      /\bCanonical points to a non-200 URL\b/gi,
+      exactMatches["Canonical points to a non-200 URL"],
+    )
+    .replace(
+      /\bProduct template canonical points to non-200 URLs\b/gi,
+      exactMatches["Product template canonical points to non-200 URLs"],
+    )
+    .replace(/\bURLs?\b/g, "pages")
+    .replace(/\bCanonical\b/g, "preferred page link")
+    .replace(/\bnoindex\b/gi, "hidden from Google");
+}

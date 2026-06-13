@@ -27,6 +27,7 @@ import {
 } from "@/components/analytics-widgets";
 import { AppSidebar } from "@/components/app-sidebar";
 import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
+import { softenIssueTitle } from "@/lib/issue-display-labels";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
 import {
   formatProductProblemArea,
@@ -819,7 +820,9 @@ export default async function DomainWorkspacePage({
                         className="grid gap-2 px-5 py-4 transition hover:bg-slate-50 lg:grid-cols-[minmax(0,1fr)_120px]"
                       >
                         <div className="min-w-0">
-                          <p className="font-semibold">{issue.title}</p>
+                          <p className="font-semibold">
+                            {softenIssueTitle(issue.title)}
+                          </p>
                           <p className="mt-1 truncate text-sm text-slate-500">
                             {issue.page?.url ?? "Whole website problem"}
                           </p>

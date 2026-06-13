@@ -2046,7 +2046,7 @@ Implementation:
 - [x] Rename the active website toolbar labels to match the softer sidebar language.
 - [x] Cover the exact website tool labels with unit tests.
 - [x] Browser-check website tool label consistency locally.
-- [ ] Browser-check website tool label consistency after deployment.
+- [x] Browser-check website tool label consistency after deployment.
 
 ### Batch DL: Report Update Copy Calmness
 
@@ -2478,7 +2478,7 @@ Implementation:
 - [x] Reuse the centralized website workspace search visibility helper on the main workspace metric card.
 - [x] Guard against the older Search Console visibility phrase in product copy tests.
 - [x] Browser-check website workspace search visibility calmness locally.
-- [ ] Browser-check website workspace search visibility calmness after deployment.
+- [x] Browser-check website workspace search visibility calmness after deployment.
 
 ### Batch EL: Global Search Shortcut Calmness
 
@@ -2494,7 +2494,7 @@ Implementation:
 - [x] Replace Open keywords, keyword positions, and Open rank shortcut wording with search-idea and rank-movement language.
 - [x] Cover the exact global-search shortcut wording with unit tests.
 - [x] Browser-check global-search shortcut calmness locally.
-- [ ] Browser-check global-search shortcut calmness after deployment.
+- [x] Browser-check global-search shortcut calmness after deployment.
 
 ### Batch EM: Global Search Website Label Consistency
 
@@ -2510,7 +2510,7 @@ Implementation:
 - [x] Replace Open Projects and Open competitors language with Websites and Competitor Insights wording.
 - [x] Cover the exact global-search website and competitor shortcut wording with unit tests.
 - [x] Browser-check global-search website label consistency locally.
-- [ ] Browser-check global-search website label consistency after deployment.
+- [x] Browser-check global-search website label consistency after deployment.
 
 ### Batch EN: Search Growth Plan Keyword Calmness
 
@@ -3197,3 +3197,19 @@ Implementation:
 - [x] Runtime-check WordPress update-link calmness locally.
 - [x] Browser-check WordPress update-link calmness locally.
 - [x] Browser-check WordPress update-link calmness after deployment.
+
+### Batch GE: Workspace Stored Problem Title Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs preserve raw audit issue names for trained users, including canonical and broken-link wording.
+- A beginner-first website workspace should keep the same stored problem evidence while translating the first visible care-priority titles into page links, preferred pages, and Google visibility language.
+- The product direction is to make the website workspace feel like a clear care list, not a technical audit export.
+
+Implementation:
+
+- [x] Add a shared stored-problem title softener for beginner-facing workspace lists.
+- [x] Replace raw workspace care-priority titles with the softened display helper.
+- [x] Cover broken-link, preferred-page, and Google-visibility stored titles with unit tests.
+- [x] Runtime-check workspace stored problem title calmness locally.
+- [ ] Browser-check workspace stored problem title calmness after deployment.
