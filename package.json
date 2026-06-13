@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && tsx scripts/resolve-known-migrations.ts && prisma migrate deploy && next build",
+    "build": "prisma generate && tsx scripts/run-migrations-with-retry.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "launch:handoff": "tsx scripts/print-launch-handoff.ts",

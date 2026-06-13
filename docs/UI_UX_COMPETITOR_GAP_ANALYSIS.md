@@ -1484,7 +1484,7 @@ Implementation:
 - [x] Translate Add Website platform options into website-type labels.
 - [x] Translate Add Website check rhythm options and helper copy into every-week/every-day/manual-start wording.
 - [x] Browser-check Add Website setup labels desktop and mobile locally.
-- [ ] Browser-check Add Website setup labels after deployment.
+- [x] Browser-check Add Website setup labels after deployment.
 
 ### Batch CA: Ownership Verification Label Calmness
 
@@ -1618,7 +1618,7 @@ Implementation:
 - [x] Translate Search Performance average spot, movement rows, and deeper tables away from pending/new wording.
 - [x] Cover the exact search position and movement labels with unit tests.
 - [x] Browser-check Search Performance position labels desktop and mobile locally.
-- [ ] Browser-check Search Performance position labels after deployment.
+- [x] Browser-check Search Performance position labels after deployment.
 
 ### Batch CJ: Competitor Metric Label Calmness
 
@@ -1633,7 +1633,7 @@ Implementation:
 - [x] Translate competitor rank, website health, and owner fallback labels into plain-language wording.
 - [x] Cover the exact competitor comparison labels with unit tests.
 - [x] Browser-check Competitor insights metric labels desktop and mobile locally.
-- [ ] Browser-check Competitor insights metric labels after deployment.
+- [x] Browser-check Competitor insights metric labels after deployment.
 
 ### Batch CK: Rank Metric Label Calmness
 
@@ -1648,7 +1648,7 @@ Implementation:
 - [x] Translate Rank Tracking rank, volume, difficulty, client, average, and distribution labels into plain-language wording.
 - [x] Cover the exact rank-tracking fallback labels with unit tests.
 - [x] Browser-check Rank Tracking metric labels desktop and mobile locally.
-- [ ] Browser-check Rank Tracking metric labels after deployment.
+- [x] Browser-check Rank Tracking metric labels after deployment.
 
 ### Batch CL: Page Snapshot Label Calmness
 
@@ -2175,7 +2175,7 @@ Implementation:
 - [x] Replace the visible first SEO check phrase with first website check.
 - [x] Cover the exact Add Website intro wording with unit tests.
 - [x] Browser-check Add Website first-check calmness locally.
-- [ ] Browser-check Add Website first-check calmness after deployment.
+- [x] Browser-check Add Website first-check calmness after deployment.
 
 ### Batch DT: Dashboard Website Wording Calmness
 
@@ -2246,7 +2246,7 @@ Implementation:
 - [x] Replace the tracked keyword table Project header with Website.
 - [x] Cover the exact rank website wording with unit tests.
 - [x] Browser-check rank movement website labels locally.
-- [ ] Browser-check rank movement website labels after deployment.
+- [x] Browser-check rank movement website labels after deployment.
 
 ### Batch DX: Connections Action Label Calmness
 
@@ -2329,7 +2329,7 @@ Implementation:
 - [x] Replace the Track keywords shortcut with Watch search terms.
 - [x] Cover the exact shortcut wording with unit tests.
 - [x] Browser-check dashboard search-term shortcut calmness locally.
-- [ ] Browser-check dashboard search-term shortcut calmness after deployment.
+- [x] Browser-check dashboard search-term shortcut calmness after deployment.
 
 ### Batch EC: Search Ideas Search-Term Calmness
 
@@ -2346,7 +2346,7 @@ Implementation:
 - [x] Replace Search Console query/queries wording with search-term wording in metrics, workspace notes, and detail states.
 - [x] Cover the exact Search Ideas wording with unit tests.
 - [x] Browser-check Search Ideas search-term calmness locally.
-- [ ] Browser-check Search Ideas search-term calmness after deployment.
+- [x] Browser-check Search Ideas search-term calmness after deployment.
 
 ### Batch ED: Rank Movement Search-Term Calmness
 
@@ -2363,7 +2363,7 @@ Implementation:
 - [x] Replace the manage-tracking panel labels and placeholders with search-term wording.
 - [x] Cover the exact Rank Movement wording with unit tests.
 - [x] Browser-check Rank Movement search-term calmness locally.
-- [ ] Browser-check Rank Movement search-term calmness after deployment.
+- [x] Browser-check Rank Movement search-term calmness after deployment.
 
 ### Batch EE: Website Workspace Search Summary Calmness
 
@@ -2397,7 +2397,7 @@ Implementation:
 - [x] Replace competitor-rank empty and hidden-note copy with competitor-position and deeper-page-review wording.
 - [x] Cover the exact Rank competitor gap wording with unit tests.
 - [x] Browser-check Rank competitor gap calmness locally.
-- [ ] Browser-check Rank competitor gap calmness after deployment.
+- [x] Browser-check Rank competitor gap calmness after deployment.
 
 ### Batch EG: Rank Manual Data Calmness
 
@@ -2430,7 +2430,7 @@ Implementation:
 - [x] Replace Adjust rank view, Needs rank data, Fill missing rank data, need ranks, Waiting for ranks, Rank distribution, Movement monitor, and Keyword table wording with Google-spot and search-term wording.
 - [x] Cover the exact Rank plan Google-spot wording with unit tests.
 - [x] Browser-check Rank plan Google-spot calmness locally.
-- [ ] Browser-check Rank plan Google-spot calmness after deployment.
+- [x] Browser-check Rank plan Google-spot calmness after deployment.
 
 ### Batch EI: Loading And Navigation Help Calmness
 
@@ -2463,7 +2463,7 @@ Implementation:
 - [x] Replace keyword opportunities, Adjust keyword filters, Import keyword data, Choose keywords to watch, Pick one keyword to improve, and Rank Tracking references with search-idea/search-term wording.
 - [x] Cover the exact Search Ideas keyword wording with unit tests.
 - [x] Browser-check Search Ideas keyword wording calmness locally.
-- [ ] Browser-check Search Ideas keyword wording calmness after deployment.
+- [x] Browser-check Search Ideas keyword wording calmness after deployment.
 
 ### Batch EK: Website Workspace Search Visibility Calmness
 
