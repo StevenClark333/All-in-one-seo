@@ -619,6 +619,10 @@ export function formatProductPageDetailType(value: string) {
     return "Page detail";
   }
 
+  if (normalized.includes("internal") && normalized.includes("link")) {
+    return "Helpful links changed";
+  }
+
   if (normalized.includes("title") || normalized.includes("description")) {
     return "Search result text";
   }

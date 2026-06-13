@@ -2379,8 +2379,8 @@ Implementation:
 - [x] Replace average-position visibility help with plain website visibility wording.
 - [x] Replace organic-impression and query helper copy with search-result and search-term wording.
 - [x] Cover the exact website workspace search summary wording with unit tests.
-- [ ] Browser-check website workspace search summary calmness locally.
-- [ ] Browser-check website workspace search summary calmness after deployment.
+- [x] Browser-check website workspace search summary calmness locally.
+- [x] Browser-check website workspace search summary calmness after deployment.
 
 ### Batch EF: Rank Competitor Gap Calmness
 
@@ -2992,6 +2992,7 @@ Implementation:
 
 - [x] Centralize Page Detail missing-link-text and no-links empty states in the product copy helper.
 - [x] Replace the visible "No anchor text" fallback and generic no-links empty state with softer page-care language.
+- [x] Soften Page Detail page-change history from internal-link wording to helpful-link wording.
 - [x] Cover Page Detail link-words wording with unit tests.
 - [x] Runtime-check Page Detail link-words calmness locally.
 - [ ] Browser-check Page Detail link-words calmness after deployment.
@@ -3177,7 +3178,7 @@ Implementation:
 - [x] Cover Page Detail Google-basics wording with unit tests.
 - [x] Runtime-check Page Detail Google-basics calmness locally.
 - [x] Browser-check Page Detail Google-basics calmness locally.
-- [ ] Browser-check Page Detail Google-basics calmness after deployment.
+- [x] Browser-check Page Detail Google-basics calmness after deployment.
 
 ### Batch GD: WordPress Update-Link Calmness
 

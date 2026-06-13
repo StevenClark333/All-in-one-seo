@@ -718,6 +718,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(formatProductPageDetailType("missing_schema"), "Page detail");
   assert.equal(
+    formatProductPageDetailType("internal_links_changed"),
+    "Helpful links changed",
+  );
+  assert.equal(
     formatProductPageDetailType("duplicate_meta_description"),
     "Search result text",
   );
