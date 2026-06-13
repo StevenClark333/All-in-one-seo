@@ -1263,7 +1263,7 @@ export default async function IntegrationsPage({
 
                   <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                     <Meta
-                      label="Message URL"
+                      label="Message link"
                       value={`${appUrl}/api/integrations/vercel/webhook`}
                     />
                     <Meta
@@ -1420,7 +1420,7 @@ export default async function IntegrationsPage({
 
                   <div className="grid gap-4 rounded-md border border-slate-200 bg-slate-50 p-4 md:grid-cols-3">
                     <Meta
-                      label="Message URL"
+                      label="Message link"
                       value={`${appUrl}/api/integrations/netlify/webhook`}
                     />
                     <Meta
@@ -1543,7 +1543,7 @@ export default async function IntegrationsPage({
                     </label>
                     <label className="grid gap-2">
                       <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
-                        Message URL
+                        Message link
                       </span>
                       <input
                         name="webhookUrl"
