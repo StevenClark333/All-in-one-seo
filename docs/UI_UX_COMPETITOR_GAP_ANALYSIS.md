@@ -1546,7 +1546,7 @@ Implementation:
 - [x] Translate Website check recap status labels into finished/checking/waiting/stopped/needs-another-try wording.
 - [x] Translate check trigger labels into scheduled, manual, and automatic check wording.
 - [x] Browser-check Website check recap labels desktop and mobile locally.
-- [ ] Browser-check Website check recap labels after deployment.
+- [x] Browser-check Website check recap labels after deployment.
 
 ### Batch CE: Website Workspace Status Calmness
 
@@ -1723,7 +1723,7 @@ Implementation:
 - [x] Translate website-check recap client, response, change-value, metadata, and word-count fallbacks into plain-language wording.
 - [x] Cover the exact crawl recap response and change-value fallback labels with unit tests.
 - [x] Browser-check website-check recap labels desktop and mobile locally.
-- [ ] Browser-check website-check recap labels after deployment.
+- [x] Browser-check website-check recap labels after deployment.
 
 ### Batch CQ: Client Health Label Calmness
 
