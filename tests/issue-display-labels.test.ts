@@ -21,6 +21,10 @@ test("softens stored issue titles for beginner-facing workspace lists", () => {
     "Preferred page link points to a page that is not loading",
   );
   assert.equal(
+    softenIssueTitle("Missing canonical tag"),
+    "Preferred page link missing",
+  );
+  assert.equal(
     softenIssueTitle("Homepage became noindex after latest deploy"),
     "Homepage was hidden from Google after deploy",
   );

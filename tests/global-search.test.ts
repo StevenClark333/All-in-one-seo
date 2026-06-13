@@ -19,6 +19,10 @@ test("softens global search problem titles for beginner scanning", () => {
     softenGlobalSearchProblemTitle("Canonical points to a non-200 URL"),
     "Preferred page link points to a page that is not loading",
   );
+  assert.equal(
+    softenGlobalSearchProblemTitle("Missing canonical tag"),
+    "Preferred page link missing",
+  );
   assert.doesNotMatch(
     softenGlobalSearchProblemTitle("Critical Regression"),
     /urgent/i,

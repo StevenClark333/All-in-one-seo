@@ -8,6 +8,7 @@ export function softenIssueTitle(value: string) {
     "Broken internal link detected": "Page link that needs help",
     "Canonical points to a non-200 URL":
       "Preferred page link points to a page that is not loading",
+    "Missing canonical tag": "Preferred page link missing",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
     "Product template canonical points to non-200 URLs":
@@ -29,6 +30,10 @@ export function softenIssueTitle(value: string) {
     .replace(
       /\bCanonical points to a non-200 URL\b/gi,
       exactMatches["Canonical points to a non-200 URL"],
+    )
+    .replace(
+      /\bMissing canonical tag\b/gi,
+      exactMatches["Missing canonical tag"],
     )
     .replace(
       /\bProduct template canonical points to non-200 URLs\b/gi,
