@@ -206,7 +206,7 @@ export async function ProjectWorkspaceBar({
               href={tool.buildHref(selectedDomain.id)}
               className={`inline-flex h-9 items-center rounded-md px-3 text-sm font-semibold transition ${
                 tool.key === active
-                  ? "bg-orange-50 text-orange-700 shadow-[inset_0_-2px_0_#ff642f]"
+                  ? "bg-orange-50 text-orange-700 shadow-[inset_0_-2px_0_#8b5cf6]"
                   : "text-slate-600 hover:bg-orange-50 hover:text-slate-950"
               }`}
             >

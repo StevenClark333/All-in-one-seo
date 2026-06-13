@@ -69,7 +69,7 @@ export async function AppSidebar({
   const { activeWorkspaceId, memberships } = await getWorkspaceSwitcherData();
 
   return (
-    <aside className="border-b border-slate-200 bg-white/98 lg:border-b-0 lg:border-r">
+    <aside className="border-b border-slate-200 bg-white/98 shadow-sm lg:border-b-0 lg:border-r">
       <GlobalSearchShortcut />
       <div className="flex min-h-full">
         <nav
@@ -93,8 +93,8 @@ export async function AppSidebar({
                 title={getProductNavLabel(label)}
                 className={`inline-flex size-10 items-center justify-center rounded-md transition ${
                   label === active
-                    ? "bg-white text-orange-600 shadow-sm"
-                    : "text-slate-400 hover:bg-white hover:text-slate-700 hover:shadow-sm"
+                    ? "bg-white text-orange-600 shadow-md"
+                    : "text-slate-400 hover:bg-white hover:text-slate-700 hover:shadow-md"
                 }`}
               >
                 <Icon className="size-4" aria-hidden="true" />
@@ -105,7 +105,7 @@ export async function AppSidebar({
 
         <div className="min-w-0 flex-1 px-5 py-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-500 text-white shadow-sm lg:hidden">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-500 text-white shadow-md lg:hidden">
               <Search className="size-5" aria-hidden="true" />
             </div>
             <div>
@@ -132,7 +132,7 @@ export async function AppSidebar({
                 name="q"
                 type="search"
                 placeholder="Search or run action"
-                className="h-10 w-full rounded-md border border-slate-200 bg-slate-50 pl-9 pr-16 text-sm outline-none transition focus:border-orange-300 focus:bg-white focus:ring-4 focus:ring-orange-100"
+                className="h-10 w-full rounded-md border border-slate-200 bg-slate-50 pl-9 pr-16 text-sm shadow-sm outline-none transition focus:border-orange-300 focus:bg-white focus:ring-4 focus:ring-orange-100"
               />
               <span className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 sm:inline">
                 Ctrl K
@@ -153,7 +153,7 @@ export async function AppSidebar({
                   key={group.label}
                   className={
                     isMainPath
-                      ? "rounded-lg border border-orange-100 bg-white p-2 shadow-sm"
+                      ? "rounded-lg border border-orange-100 bg-white p-2 shadow-md"
                       : "hidden border-t border-slate-100 pt-3 lg:block"
                   }
                 >
@@ -184,10 +184,10 @@ export async function AppSidebar({
                           href={hrefs[item.label]?.(activeDomainId) ?? "/"}
                           className={`flex items-center gap-3 rounded-md px-3 font-medium transition ${
                             isActive
-                              ? "bg-orange-50 text-orange-700 shadow-[inset_3px_0_0_#ff642f]"
+                              ? "bg-orange-50 text-orange-700 shadow-[inset_3px_0_0_#8b5cf6]"
                               : mutedItem
                                 ? "h-8 text-xs text-slate-500 hover:bg-white hover:text-slate-800 hover:shadow-sm"
-                                : "h-10 text-sm text-slate-600 hover:bg-orange-50 hover:text-slate-950"
+                                : "h-10 text-sm text-slate-600 hover:bg-orange-50 hover:text-slate-950 hover:shadow-sm"
                           }`}
                         >
                           <Icon

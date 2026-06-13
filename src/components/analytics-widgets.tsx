@@ -32,9 +32,7 @@ export function AnalyticsMetricCard({
     <>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-medium text-slate-500">
-            {label}
-          </p>
+          <p className="text-sm font-medium text-slate-500">{label}</p>
           <p className="mt-2 text-2xl font-semibold tracking-normal text-slate-950">
             {typeof value === "number" ? value.toLocaleString() : value}
             {suffix}
@@ -106,10 +104,10 @@ export function Sparkline({ points }: { points: SparkPoint[] }) {
       className="h-10 w-24 shrink-0 overflow-visible"
       viewBox="0 0 100 40"
     >
-      <path d={path || "M 0 36"} fill="none" stroke="#ff642f" strokeWidth="3" />
+      <path d={path || "M 0 36"} fill="none" stroke="#8b5cf6" strokeWidth="3" />
       <path
         d={`${path || "M 0 36"} L 100 40 L 0 40 Z`}
-        fill="#fff2ec"
+        fill="#f1e9ff"
         opacity="0.8"
       />
     </svg>
@@ -144,7 +142,10 @@ export function HorizontalBar({
         </span>
       </div>
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-        <div className={`h-full rounded-full ${barColor}`} style={{ width: `${width}%` }} />
+        <div
+          className={`h-full rounded-full ${barColor}`}
+          style={{ width: `${width}%` }}
+        />
       </div>
     </div>
   );
