@@ -1768,7 +1768,7 @@ Implementation:
 - [x] Translate PDF health score and branded-domain verification fallbacks away from pending wording.
 - [x] Cover the exact PDF health fallback label with report unit tests.
 - [x] Browser-check report export labels desktop and mobile locally.
-- [ ] Browser-check report export labels after deployment.
+- [x] Browser-check report export labels after deployment.
 
 ### Batch CT: Alert Delivery Label Calmness
 
@@ -1888,7 +1888,7 @@ Implementation:
 - [x] Translate pages CSV, problems CSV, and fix-note ownership fallbacks away from unassigned wording.
 - [x] Cover the exact exported ownership labels with unit tests.
 - [x] Verify export ownership labels through local API/download checks.
-- [ ] Browser-check export ownership labels after deployment.
+- [x] Browser-check export ownership labels after deployment.
 
 ### Batch DB: Export Importance Label Calmness
 
@@ -2848,7 +2848,7 @@ Implementation:
 - [x] Replace broken URL, suggested URL, source page, anchor text, and nothing urgent wording on the Fixes page.
 - [x] Cover Fixes row link-label wording with unit tests.
 - [x] Runtime-check Fixes row link-label calmness locally.
-- [ ] Browser-check Fixes row link-label calmness after deployment.
+- [x] Browser-check Fixes row link-label calmness after deployment.
 - [x] Browser-check deployed Fix Center empty/check state: Nothing to check is visible and the old Nothing urgent, Broken URL, Suggested URL, and Anchor text labels are absent. The live account has no ready fix rows, so row-specific label rendering still needs a deployed data-backed check.
 
 ### Batch FJ: Rank Update Field Calmness
@@ -2913,7 +2913,7 @@ Implementation:
 - [x] Replace automation payload and platform fix-note titles with softer link task language.
 - [x] Cover connected link-fix summaries with unit tests.
 - [x] Runtime-check connected link-fix calmness locally.
-- [ ] Browser-check connected link-fix calmness after deployment.
+- [x] Browser-check connected link-fix calmness after deployment.
 
 ### Batch FN: Problems Filter Area Calmness
 
@@ -2962,7 +2962,7 @@ Implementation:
 - [x] Keep technical snippets available while softening surrounding instructions.
 - [x] Cover exported fix-note instruction wording with unit tests.
 - [x] Runtime-check exported fix-note instruction calmness locally.
-- [ ] Browser-check exported fix-note instruction calmness after deployment.
+- [x] Browser-check exported fix-note instruction calmness after deployment.
 
 ### Batch FQ: Content Ideas Fallback Note Calmness
 
@@ -3143,7 +3143,7 @@ Implementation:
 - [x] Preserve exact URL fields and automation payload structure for delivery workflows.
 - [x] Cover link-update handoff wording with unit tests.
 - [x] Runtime-check link-update handoff calmness locally.
-- [ ] Browser-check link-update handoff calmness after deployment.
+- [x] Browser-check link-update handoff calmness after deployment.
 
 ### Batch GB: Alert Message-Link Calmness
 
