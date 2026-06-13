@@ -1873,7 +1873,7 @@ Implementation:
 - [x] Translate settings invitation headings, seat summary, plan tile, and cancel action away from pending/revoke wording.
 - [x] Cover the exact invite-waiting labels with unit tests.
 - [x] Browser-check settings invite labels desktop and mobile locally.
-- [ ] Browser-check settings invite labels after deployment.
+- [x] Browser-check settings invite labels after deployment.
 
 ### Batch DA: Export Ownership Label Calmness
 
@@ -2094,7 +2094,7 @@ Implementation:
 - [x] Rename visible Connections page phrases away from SEO jargon while preserving existing providers and routes.
 - [x] Cover the exact connection-page wording with unit tests.
 - [x] Browser-check connection page SEO phrase calmness locally.
-- [ ] Browser-check connection page SEO phrase calmness after deployment.
+- [x] Browser-check connection page SEO phrase calmness after deployment.
 
 ### Batch DO: Everyday Beginner Phrase Calmness
 
@@ -2110,7 +2110,7 @@ Implementation:
 - [x] Replace visible beginner-surface SEO phrases in Ideas, Settings, and password reset copy.
 - [x] Cover the exact broad beginner wording with unit tests.
 - [x] Browser-check broad beginner phrase calmness locally.
-- [ ] Browser-check broad beginner phrase calmness after deployment.
+- [x] Browser-check broad beginner phrase calmness after deployment.
 
 ### Batch DP: Client Report Detail Calmness
 
@@ -2126,7 +2126,7 @@ Implementation:
 - [x] Replace visible agency onboarding and shared-report audit phrases with softer progress wording.
 - [x] Cover the exact client-report wording with unit tests.
 - [x] Browser-check client-report detail calmness locally.
-- [ ] Browser-check client-report detail calmness after deployment.
+- [x] Browser-check client-report detail calmness after deployment.
 
 ### Batch DQ: Stored Report Title Calmness
 
@@ -2143,7 +2143,7 @@ Implementation:
 - [x] Update seed demo report titles so future local data starts with website-update language.
 - [x] Cover the exact title softening with unit tests.
 - [x] Browser-check stored report title calmness locally.
-- [ ] Browser-check stored report title calmness after deployment.
+- [x] Browser-check stored report title calmness after deployment.
 
 ### Batch DR: Client Setup Check Calmness
 
@@ -2526,7 +2526,7 @@ Implementation:
 - [x] Replace Add keywords, Choose keywords to watch, ranking drop, and keyword ideas wording with search-term and search-idea language.
 - [x] Cover the exact Search Growth plan wording with unit tests.
 - [x] Browser-check Search Growth plan keyword calmness locally.
-- [ ] Browser-check Search Growth plan keyword calmness after deployment.
+- [x] Browser-check Search Growth plan keyword calmness after deployment.
 
 ### Batch EO: Search Growth Detail Table Calmness
 
@@ -2542,7 +2542,7 @@ Implementation:
 - [x] Replace CTR, More search data, Show tables, and more rows wording with softer detail language.
 - [x] Cover the exact Search Growth detail-table wording with unit tests.
 - [x] Browser-check Search Growth detail-table calmness locally.
-- [ ] Browser-check Search Growth detail-table calmness after deployment.
+- [x] Browser-check Search Growth detail-table calmness after deployment.
 
 ### Batch EP: Search Ideas Detail Metric Calmness
 
@@ -2574,7 +2574,7 @@ Implementation:
 - [x] Replace Manage tracking data, Add data, tracked, Recover lost positions, No drops to fix, and tracked-keyword competitor-gap reasons with softer update language.
 - [x] Cover the exact Rank Movement update-panel wording with unit tests.
 - [x] Browser-check Rank Movement update-panel calmness locally.
-- [ ] Browser-check Rank Movement update-panel calmness after deployment.
+- [x] Browser-check Rank Movement update-panel calmness after deployment.
 
 ### Batch ER: Report Change Summary Calmness
 
