@@ -1454,7 +1454,7 @@ Implementation:
 - [x] Replace template priority shorthand with a readable priority label.
 - [x] Translate Problem detail badges, progress options, note visibility, and fix idea types into softer wording.
 - [x] Browser-check Problems list and Problem detail status labels desktop and mobile locally.
-- [ ] Browser-check Problems list and Problem detail status labels after deployment.
+- [x] Browser-check Problems list and Problem detail status labels after deployment.
 
 ### Batch BY: Website Detail Setup Label Calmness
 
@@ -1501,7 +1501,7 @@ Implementation:
 - [x] Soften setup field labels for file, homepage tag, and Search Console instructions.
 - [x] Prevent hidden help tooltips from widening mobile pages before hover or focus.
 - [x] Browser-check Ownership Verification labels desktop and mobile locally.
-- [ ] Browser-check Ownership Verification labels after deployment.
+- [x] Browser-check Ownership Verification labels after deployment.
 
 ### Batch CB: Website List Label Calmness
 
@@ -1663,7 +1663,7 @@ Implementation:
 - [x] Translate Pages list and page-detail response, owner, metadata, copy-count, and last-check labels into plain-language wording.
 - [x] Cover the exact page snapshot fallback labels with unit tests.
 - [x] Browser-check page snapshot labels desktop and mobile locally.
-- [ ] Browser-check page snapshot labels after deployment.
+- [x] Browser-check page snapshot labels after deployment.
 
 ### Batch CM: Website Health Label Calmness
 
@@ -1693,7 +1693,7 @@ Implementation:
 - [x] Translate shared active-website context, overview client, overview owner, and overview score labels into plain-language fallback wording.
 - [x] Cover the exact overview owner fallback label with unit tests.
 - [x] Browser-check overview context labels desktop and mobile locally.
-- [ ] Browser-check overview context labels after deployment.
+- [x] Browser-check overview context labels after deployment.
 
 ### Batch CO: Problem Detail Label Calmness
 
@@ -1708,7 +1708,7 @@ Implementation:
 - [x] Translate Problems list/detail client, owner, note-author, and latest-page metadata fallbacks into plain-language wording.
 - [x] Cover the exact problem note-author fallback label with unit tests.
 - [x] Browser-check problem detail labels desktop and mobile locally.
-- [ ] Browser-check problem detail labels after deployment.
+- [x] Browser-check problem detail labels after deployment.
 
 ### Batch CP: Website Check Recap Label Calmness
 
@@ -2881,7 +2881,7 @@ Implementation:
 - [x] Replace the Page Detail header phrase "on this URL" and internal-link helper wording with softer page language.
 - [x] Cover Page Detail this-page wording with unit tests.
 - [x] Runtime-check Page Detail this-page calmness locally.
-- [ ] Browser-check Page Detail this-page calmness after deployment.
+- [x] Browser-check Page Detail this-page calmness after deployment.
 
 ### Batch FL: Report Branding Share-Link Calmness
 
@@ -3010,7 +3010,7 @@ Implementation:
 - [x] Reuse the shared problem-area labels in the website workspace, Problems list, and Page Detail formatting.
 - [x] Cover shared problem-area label wording with unit tests.
 - [x] Runtime-check shared problem-area label calmness locally.
-- [ ] Browser-check shared problem-area label calmness after deployment.
+- [x] Browser-check shared problem-area label calmness after deployment.
 
 ### Batch FT: Search Ideas Content-Gap Link Hint Calmness
 
@@ -3078,7 +3078,7 @@ Implementation:
 - [x] Runtime-check issue solution Google-settings calmness locally.
 - [x] Browser-check Problems list/detail Google-settings calmness locally.
 - [x] Browser-check deployed Problems list care-level calmness before opening the softened solution detail.
-- [ ] Browser-check issue solution Google-settings calmness after deployment.
+- [x] Browser-check issue solution Google-settings calmness after deployment.
 
 ### Batch FX: Content Ideas Local Recommendation Label Calmness
 
@@ -3125,7 +3125,7 @@ Implementation:
 - [x] Replace visible ownership setup helper text and record labels on the website ownership screen with softer setup language.
 - [x] Cover ownership setup wording with unit tests.
 - [x] Runtime-check ownership setup wording locally.
-- [ ] Browser-check ownership setup wording after deployment.
+- [x] Browser-check ownership setup wording after deployment.
 
 ### Batch GA: Link Update Handoff Calmness
 
