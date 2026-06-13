@@ -107,15 +107,27 @@ body {
 
   p,
   a,
-  span,
+  span {
+    overflow-wrap: break-word;
+  }
+
   code,
   pre {
     overflow-wrap: anywhere;
   }
 
-  th,
+  th {
+    line-height: 1.25;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  th.whitespace-nowrap {
+    white-space: normal !important;
+  }
+
   td {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     vertical-align: top;
   }
 }
@@ -303,6 +315,43 @@ body {
   button,
   a {
     text-underline-offset: 4px;
+  }
+
+  button,
+  button *,
+  a[class*=" h-"],
+  a[class*=" h-"] *,
+  a[class^="h-"],
+  a[class^="h-"] *,
+  a.inline-flex[class*="px-"],
+  a.inline-flex[class*="px-"] *,
+  [role="button"],
+  [role="button"] * {
+    line-height: 1.2;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
+  }
+
+  button,
+  a[class*=" h-"],
+  a[class^="h-"],
+  a.inline-flex[class*="px-"],
+  [role="button"] {
+    min-height: 2.25rem;
+  }
+
+  a[class*="overflow-wrap:normal"] {
+    min-width: max-content;
+    white-space: nowrap;
+  }
+
+  button:not([class*="w-full"]),
+  a[class*=" h-"]:not([class*="w-full"]),
+  a[class^="h-"]:not([class*="w-full"]),
+  a.inline-flex[class*="px-"]:not([class*="w-full"]),
+  [role="button"]:not([class*="w-full"]) {
+    min-width: max-content;
   }
 
   button,
