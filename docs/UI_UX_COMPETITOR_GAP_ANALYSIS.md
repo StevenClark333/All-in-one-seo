@@ -2736,7 +2736,7 @@ Implementation:
 - [x] Replace the remaining urgent-change problem title in global search.
 - [x] Cover global-search problem-title softening with unit tests.
 - [x] Runtime-check global-search problem-title calmness locally.
-- [ ] Runtime-check global-search problem-title calmness after deployment.
+- [x] Runtime-check global-search problem-title calmness after deployment.
 
 ### Batch FC: Websites List Quick-Care Calmness
 
