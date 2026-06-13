@@ -4,6 +4,7 @@ import {
   formatExportImportance,
   formatExportProblemArea,
 } from "@/lib/export-display-labels";
+import { softenIssueDescription } from "@/lib/issue-display-labels";
 import type { IssueSolution } from "@/lib/issue-solutions";
 
 export type IssueHandoffInput = {
@@ -60,7 +61,7 @@ function renderIssueHandoffMarkdown(
     `Target: ${input.target}`,
     "",
     "## What is wrong",
-    input.description,
+    softenIssueDescription(input.description),
     "",
     "## Why it matters",
     input.solution.whyMatters,

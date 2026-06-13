@@ -54,3 +54,26 @@ test("builds site helper fix note markdown for Google visibility problems", () =
   assert.match(brief.markdown, /Site helper or website admin/);
   assert.match(brief.markdown, /Whole-website problem on example\.com/);
 });
+
+test("softens raw HTTP issue descriptions in exported fix notes", () => {
+  const solution = buildIssueSolution({
+    issueType: "canonical_non_200",
+    platform: "CUSTOM",
+    title: "Canonical points to a non-200 URL",
+  });
+  const brief = buildIssueHandoffBrief({
+    description: "https://example.com/ canonical returned HTTP 403.",
+    domain: "example.com",
+    issueType: "canonical_non_200",
+    platform: "CUSTOM",
+    severity: "CRITICAL",
+    solution,
+    title: "Canonical points to a non-200 URL",
+  });
+
+  assert.match(
+    brief.markdown,
+    /https:\/\/example\.com\/ preferred page link could not be opened \(403\)\./,
+  );
+  assert.doesNotMatch(brief.markdown, /canonical returned HTTP/);
+});
