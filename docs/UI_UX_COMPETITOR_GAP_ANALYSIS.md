@@ -3226,4 +3226,4 @@ Implementation:
 
 - [x] Reuse the shared stored-problem title softener in the Ideas and Fixes fix-note list.
 - [x] Runtime-check Ideas fix-note stored title calmness locally.
-- [ ] Browser-check Ideas fix-note stored title calmness after deployment.
+- [x] Browser-check Ideas fix-note stored title calmness after deployment.
