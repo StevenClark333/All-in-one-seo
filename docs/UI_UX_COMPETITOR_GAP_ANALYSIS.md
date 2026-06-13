@@ -1858,7 +1858,7 @@ Implementation:
 - [x] Translate competitor content-gap missing volume away from unknown wording.
 - [x] Reuse the shared rank-volume label unit coverage for the exact no-volume-yet text.
 - [x] Browser-check keyword gap volume labels desktop and mobile locally.
-- [ ] Browser-check keyword gap volume labels after deployment.
+- [x] Browser-check keyword gap volume labels after deployment.
 
 ### Batch CZ: Settings Invite Label Calmness
 
@@ -3059,7 +3059,7 @@ Implementation:
 - [x] Replace visible DNS/TXT/hostname status and helper wording in the Reports branded-link panel.
 - [x] Cover branded-link setup-state wording with unit tests.
 - [x] Runtime-check branded-link setup-state calmness locally.
-- [ ] Browser-check branded-link setup-state calmness after deployment.
+- [x] Browser-check branded-link setup-state calmness after deployment.
 
 ### Batch FW: Issue Solution Google-Settings Calmness
 

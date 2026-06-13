@@ -192,6 +192,9 @@ export default async function DomainsPage({ searchParams }: DomainsPageProps) {
                   Optional full table for searching, comparing, and reporting
                   across all websites.
                 </p>
+                <p className="mt-2 text-sm text-slate-500">
+                  {PRODUCT_BEGINNER_COPY.dashboardLinkHealthHelp}
+                </p>
               </div>
               <span className="shrink-0 rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700">
                 Open table
