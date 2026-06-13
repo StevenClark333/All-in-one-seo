@@ -2735,7 +2735,7 @@ Implementation:
 - [x] Centralize the global-search important-change label in the product copy helper.
 - [x] Replace the remaining urgent-change problem title in global search.
 - [x] Cover global-search problem-title softening with unit tests.
-- [ ] Runtime-check global-search problem-title calmness locally.
+- [x] Runtime-check global-search problem-title calmness locally.
 - [ ] Runtime-check global-search problem-title calmness after deployment.
 
 ### Batch FC: Websites List Quick-Care Calmness

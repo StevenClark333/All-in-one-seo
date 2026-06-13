@@ -13,6 +13,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { softenIssueTitle } from "@/lib/issue-display-labels";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import {
   formatProductReportTitle,
@@ -237,6 +238,12 @@ function filterActionResults(query: string) {
 }
 
 export function softenGlobalSearchProblemTitle(value: string) {
+  const softenedIssueTitle = softenIssueTitle(value);
+
+  if (softenedIssueTitle !== value) {
+    return softenedIssueTitle;
+  }
+
   const exactMatches: Record<string, string> = {
     "Sitemap URL is not internally linked":
       "Page is in the page list but needs links",
