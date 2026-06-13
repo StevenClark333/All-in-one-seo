@@ -2414,7 +2414,7 @@ Implementation:
 - [x] Replace Import metric, Save metric, Volume, Difficulty, and Owned rank with softer search-detail wording.
 - [x] Cover the exact Rank manual-data wording with unit tests.
 - [x] Browser-check Rank manual-data calmness locally.
-- [ ] Browser-check Rank manual-data calmness after deployment.
+- [x] Browser-check Rank manual-data calmness after deployment.
 
 ### Batch EH: Rank Plan Google Spot Calmness
 
@@ -2865,7 +2865,7 @@ Implementation:
 - [x] Replace Position, Competitor domain, Provider, and vendor placeholder wording in the Rank Movement update forms.
 - [x] Cover Rank Movement update-field wording with unit tests.
 - [x] Runtime-check Rank Movement update-field calmness locally.
-- [ ] Browser-check Rank Movement update-field calmness after deployment.
+- [x] Browser-check Rank Movement update-field calmness after deployment.
 
 ### Batch FK: Page Detail This-Page Calmness
 
@@ -3043,7 +3043,7 @@ Implementation:
 - [x] Keep the Fixes workflow and exact repair intent intact while translating the visible handoff language.
 - [x] Cover stopped-link and helpful-page-link issue solution wording with unit tests.
 - [x] Runtime-check issue solution link-note calmness locally.
-- [ ] Browser-check issue solution link-note calmness after deployment.
+- [x] Browser-check issue solution link-note calmness after deployment.
 
 ### Batch FV: Report Branding Setup-State Calmness
 
@@ -3095,7 +3095,7 @@ Implementation:
 - [x] Preserve the same recommendation payload shape and technical intent for downstream consumers.
 - [x] Cover local recommendation label calmness with unit tests.
 - [x] Runtime-check local recommendation label calmness locally.
-- [ ] Browser-check local recommendation label calmness after deployment.
+- [x] Browser-check local recommendation label calmness after deployment.
 
 ### Batch FY: Search Ideas Opportunity Reason Calmness
 
