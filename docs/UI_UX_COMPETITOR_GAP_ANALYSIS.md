@@ -2995,7 +2995,7 @@ Implementation:
 - [x] Soften Page Detail page-change history from internal-link wording to helpful-link wording.
 - [x] Cover Page Detail link-words wording with unit tests.
 - [x] Runtime-check Page Detail link-words calmness locally.
-- [ ] Browser-check Page Detail link-words calmness after deployment.
+- [x] Browser-check Page Detail link-words calmness after deployment.
 
 ### Batch FS: Problem Area Label Consistency
 
