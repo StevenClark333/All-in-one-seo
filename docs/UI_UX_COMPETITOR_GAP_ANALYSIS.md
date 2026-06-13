@@ -1531,7 +1531,7 @@ Implementation:
 
 - [x] Translate keyword tracking statuses into watching, paused-for-now, and set-aside wording.
 - [x] Browser-check Rank keyword status labels desktop and mobile locally.
-- [ ] Browser-check Rank keyword status labels after deployment.
+- [x] Browser-check Rank keyword status labels after deployment.
 
 ### Batch CD: Website Check Recap Label Calmness
 
@@ -1588,7 +1588,7 @@ Implementation:
 
 - [x] Translate Fix Center verification labels and lifecycle waiting wording into plain-language confirmation states.
 - [x] Browser-check Fix Center confirmation labels desktop and mobile locally.
-- [ ] Browser-check Fix Center confirmation labels after deployment.
+- [x] Browser-check Fix Center confirmation labels after deployment.
 
 ### Batch CH: Keyword Intent Label Calmness
 
@@ -1603,7 +1603,7 @@ Implementation:
 - [x] Translate Search ideas intent groups and opportunity intent labels into plain-language search reasons.
 - [x] Replace missing keyword position labels with not-ranking-yet wording.
 - [x] Browser-check Search ideas page desktop and mobile locally; local database has no Search Console rows, so exact label rules are covered by unit tests.
-- [ ] Browser-check Search ideas intent and position labels after deployment.
+- [x] Browser-check Search ideas intent and position labels after deployment.
 
 ### Batch CI: Search Position Label Calmness
 
@@ -1783,7 +1783,7 @@ Implementation:
 - [x] Translate alert delivery status and sent-at fallbacks into plain-language wording.
 - [x] Cover the exact alert delivery labels with unit tests.
 - [x] Browser-check alert delivery labels desktop and mobile locally.
-- [ ] Browser-check alert delivery labels after deployment.
+- [x] Browser-check alert delivery labels after deployment.
 
 ### Batch CU: Website Ownership Label Calmness
 
@@ -1798,7 +1798,7 @@ Implementation:
 - [x] Translate Add Website and global search ownership fallbacks away from unassigned wording.
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check website ownership labels desktop and mobile locally.
-- [ ] Browser-check website ownership labels after deployment.
+- [x] Browser-check website ownership labels after deployment.
 
 ### Batch CV: Verification Ownership Label Calmness
 
@@ -1813,7 +1813,7 @@ Implementation:
 - [x] Translate ownership confirmation client fallback away from unassigned wording.
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check verification ownership label desktop and mobile locally.
-- [ ] Browser-check verification ownership label after deployment.
+- [x] Browser-check verification ownership label after deployment.
 
 ### Batch CW: Recommendation Ownership Label Calmness
 
@@ -1843,7 +1843,7 @@ Implementation:
 - [x] Translate technical-audit issue, page, and link-opportunity ownership fallbacks away from unassigned wording.
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check technical-audit ownership labels desktop and mobile locally.
-- [ ] Browser-check technical-audit ownership labels after deployment.
+- [x] Browser-check technical-audit ownership labels after deployment.
 
 ### Batch CY: Keyword Gap Volume Label Calmness
 

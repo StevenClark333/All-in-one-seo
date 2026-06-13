@@ -6,12 +6,28 @@ import {
   buildReportShareUrl,
   buildReportSummary,
   evaluateReportSchedulesWithPrisma,
+  formatChangeType,
   formatReportWhiteLabelVerificationValue,
   normalizeReportHostname,
   parseReportSections,
   publishReportWithPrisma,
   type ReportDetail,
 } from "@/lib/reporting";
+
+test("formats report change types for nontechnical readers", () => {
+  assert.equal(
+    formatChangeType("internal_links_changed"),
+    "Helpful links changed",
+  );
+  assert.equal(
+    formatChangeType("schema_count_changed"),
+    "Google details changed",
+  );
+  assert.equal(
+    formatChangeType("template_regression:blog:robots_directive_changed"),
+    "Search visibility setting",
+  );
+});
 
 test("summarizes report issues, scores, crawls, and recommendations", () => {
   const periodStart = new Date("2026-05-01T00:00:00Z");
@@ -120,7 +136,9 @@ test("summarizes report issues, scores, crawls, and recommendations", () => {
   );
   assert.ok(
     pdfLines.some((line) =>
-      line.includes("Title Changed on example.com: Not found yet -> New title"),
+      line.includes(
+        "Search result text on example.com: Not found yet -> New title",
+      ),
     ),
   );
   assert.ok(!pdfLines.some((line) => line.includes("Client/domain")));

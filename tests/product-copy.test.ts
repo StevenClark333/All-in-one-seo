@@ -722,6 +722,10 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
     "Helpful links changed",
   );
   assert.equal(
+    formatProductPageDetailType("schema_count_changed"),
+    "Google details changed",
+  );
+  assert.equal(
     formatProductPageDetailType("duplicate_meta_description"),
     "Search result text",
   );

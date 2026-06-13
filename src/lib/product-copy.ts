@@ -615,6 +615,10 @@ export function formatProductPageDetailType(value: string) {
     return "Preferred page setting";
   }
 
+  if (normalized.includes("schema") && normalized.includes("changed")) {
+    return "Google details changed";
+  }
+
   if (normalized.includes("schema")) {
     return "Page detail";
   }

@@ -7,7 +7,10 @@ import {
 } from "@prisma/client";
 import { getPrisma, hasDatabaseUrl } from "@/lib/prisma";
 import { formatCrawlRunChangeValue } from "@/lib/crawl-run-display-labels";
-import { formatProductReportTitle } from "@/lib/product-copy";
+import {
+  formatProductPageDetailType,
+  formatProductReportTitle,
+} from "@/lib/product-copy";
 import {
   buildPublicReportAccessWhere,
   buildWorkspaceIsolationWhere,
@@ -647,12 +650,14 @@ function buildReportBrand(report: ReportDetail) {
 }
 
 export function formatChangeType(value: string) {
-  return value
-    .split(":")
-    .at(-1)!
+  const changeType = value.split(":").at(-1)!;
+  const productLabel = formatProductPageDetailType(changeType);
+  const enumLabel = changeType
     .split("_")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+
+  return productLabel !== enumLabel ? productLabel : enumLabel;
 }
 
 function averageScore(scores: Array<number | null>) {

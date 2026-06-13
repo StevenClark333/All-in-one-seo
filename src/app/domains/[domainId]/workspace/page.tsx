@@ -30,6 +30,7 @@ import { HelpLabel, InfoTooltip } from "@/components/info-tooltip";
 import { softenIssueTitle } from "@/lib/issue-display-labels";
 import { getDomainWorkspaceData } from "@/lib/management-queries";
 import {
+  formatProductPageDetailType,
   formatProductProblemArea,
   formatProductWorkspaceProblemSeverity,
   formatProductReportTitle,
@@ -1918,7 +1919,13 @@ function formatChangeType(value: string) {
     TITLE_CHANGED: "Page title changed",
   };
 
-  return labels[value] ?? formatEnum(value);
+  if (labels[value]) {
+    return labels[value];
+  }
+
+  const productLabel = formatProductPageDetailType(value);
+
+  return productLabel !== formatEnum(value) ? productLabel : formatEnum(value);
 }
 
 function formatProblemSeverity(value: string) {

@@ -11,6 +11,7 @@ import {
   formatPageWordCount,
 } from "@/lib/page-display-labels";
 import {
+  formatProductPageDetailType,
   formatProductWorkspaceProblemSeverity,
   PRODUCT_BEGINNER_COPY,
 } from "@/lib/product-copy";
@@ -477,6 +478,12 @@ function formatChangeType(value: string) {
 
   if (changeTypeLabels[value]) {
     return changeTypeLabels[value];
+  }
+
+  const productLabel = formatProductPageDetailType(value);
+
+  if (productLabel !== formatEnum(value)) {
+    return productLabel;
   }
 
   return formatEnum(value)
