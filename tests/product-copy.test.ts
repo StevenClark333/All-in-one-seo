@@ -1243,7 +1243,7 @@ test("uses beginner-safe wording for broad account and ideas surfaces", () => {
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasNoOpportunity,
-    "No search ideas match this view yet. Try a wider date range or website filter.",
+    "No search ideas match this view yet. Try a wider date range or website filter; when data appears, start with terms that need a clearer answer or helpful page links.",
   );
   assert.equal(
     PRODUCT_BEGINNER_COPY.searchIdeasPlanIntro,

@@ -577,7 +577,9 @@ function ContentGapList({
           ))
         ) : (
           <p className="p-8 text-center text-sm text-slate-500">
-            No content gaps match this range.
+            No page ideas match this range yet. Try a wider date range or
+            website filter; when data appears, look for pages that need a
+            clearer answer, title, snippet, or helpful page links.
           </p>
         )}
       </div>

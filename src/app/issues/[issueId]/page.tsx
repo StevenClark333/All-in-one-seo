@@ -326,6 +326,20 @@ export default async function IssueDetailPage({
                       </article>
                     );
                   })
+                ) : issue.recommendation ? (
+                  <article className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                    <p className="text-sm font-semibold text-slate-500">
+                      Fix note
+                    </p>
+                    <p className="mt-2 text-sm font-semibold">
+                      Saved fix note
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">
+                      {softenRecommendationSummary(
+                        softenProblemText(issue.recommendation),
+                      )}
+                    </p>
+                  </article>
                 ) : (
                   <p className="text-sm text-slate-500">
                     No fix ideas created yet.

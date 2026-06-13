@@ -476,7 +476,7 @@ export const PRODUCT_BEGINNER_COPY = {
   searchIdeasMetricOpportunityHelp:
     "High-demand search ideas found from current and declining search terms.",
   searchIdeasNoOpportunity:
-    "No search ideas match this view yet. Try a wider date range or website filter.",
+    "No search ideas match this view yet. Try a wider date range or website filter; when data appears, start with terms that need a clearer answer or helpful page links.",
   searchIdeasPlanIntro:
     "Pick one useful search idea, create a simple brief, then compare pages only when it helps. Deeper search-term detail is optional.",
   searchIdeasSetupDetail:
