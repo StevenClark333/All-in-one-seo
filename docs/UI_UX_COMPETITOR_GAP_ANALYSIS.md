@@ -3227,3 +3227,19 @@ Implementation:
 - [x] Reuse the shared stored-problem title softener in the Ideas and Fixes fix-note list.
 - [x] Runtime-check Ideas fix-note stored title calmness locally.
 - [x] Browser-check Ideas fix-note stored title calmness after deployment.
+
+### Batch GG: Saved Ideas Output Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs keep saved recommendations in expert vocabulary such as schema, SEO title, CMS, sitemap, and internal-link graph.
+- A beginner-first Ideas page should preserve old saved output while translating the displayed title, type, and summary into page title, Google details, website editor, page list, and helpful page links.
+- The product direction is to make saved ideas feel reusable and readable, not like archived technical output.
+
+Implementation:
+
+- [x] Add a saved-recommendation display helper for title, summary, and type labels.
+- [x] Use the helper in the Ideas and Fixes saved ideas list.
+- [x] Cover old saved-output phrases with unit tests.
+- [ ] Runtime-check saved ideas output calmness locally.
+- [ ] Browser-check saved ideas output calmness after deployment.

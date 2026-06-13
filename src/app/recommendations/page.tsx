@@ -16,6 +16,11 @@ import {
   formatProductRecommendationPriority,
   PRODUCT_BEGINNER_COPY,
 } from "@/lib/product-copy";
+import {
+  formatRecommendationTypeLabel,
+  softenRecommendationSummary,
+  softenRecommendationTitle,
+} from "@/lib/recommendation-display-labels";
 import { formatWebsiteClient } from "@/lib/website-display-labels";
 
 export const dynamic = "force-dynamic";
@@ -329,17 +334,22 @@ export default async function RecommendationsPage({
                     <article key={recommendation.id} className="p-5">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                          {formatRecommendationType(recommendation.type)}
+                          {formatRecommendationTypeLabel(recommendation.type)}
                         </span>
                         <span className="text-xs text-slate-500">
                           {recommendation.createdAt.toLocaleString()}
                         </span>
                       </div>
                       <p className="mt-3 font-semibold">
-                        {readPayload(recommendation.recommendationJson).title}
+                        {softenRecommendationTitle(
+                          readPayload(recommendation.recommendationJson).title,
+                        )}
                       </p>
                       <p className="mt-2 text-sm leading-6 text-slate-600">
-                        {readPayload(recommendation.recommendationJson).summary}
+                        {softenRecommendationSummary(
+                          readPayload(recommendation.recommendationJson)
+                            .summary,
+                        )}
                       </p>
                     </article>
                   ))}
@@ -518,32 +528,6 @@ function readPayload(value: unknown) {
   }
 
   return { title: "Recommendation", summary: "Stored recommendation output." };
-}
-
-function formatEnum(value: string) {
-  return value
-    .toLowerCase()
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
-function formatRecommendationType(value: string) {
-  const normalized = value.toLowerCase();
-
-  if (normalized.includes("template")) {
-    return "Shared note";
-  }
-
-  if (normalized.includes("issue") || normalized.includes("fix")) {
-    return "Fix note";
-  }
-
-  if (normalized.includes("page")) {
-    return "Page idea";
-  }
-
-  return formatEnum(value);
 }
 
 function pluralize(count: number, singular: string, plural = `${singular}s`) {
