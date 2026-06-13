@@ -10,6 +10,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
 import { ProjectWorkspaceBar } from "@/components/project-workspace-bar";
 import { getAiRecommendationCenterData } from "@/lib/ai";
+import { softenIssueTitle } from "@/lib/issue-display-labels";
 import {
   formatProductRecommendationImportance,
   formatProductRecommendationPriority,
@@ -181,7 +182,7 @@ export default async function RecommendationsPage({
                             href={`/issues/${issue.id}`}
                             className="font-semibold underline-offset-4 hover:underline"
                           >
-                            {issue.title}
+                            {softenIssueTitle(issue.title)}
                           </Link>
                           <p className="mt-1 text-sm text-slate-500">
                             {formatProductRecommendationImportance(

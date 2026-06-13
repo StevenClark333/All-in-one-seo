@@ -21,6 +21,10 @@ test("softens stored issue titles for beginner-facing workspace lists", () => {
     "Preferred page link points to a page that is not loading",
   );
   assert.equal(
+    softenIssueTitle("Duplicate meta descriptions across page template"),
+    "Page template repeats the same description",
+  );
+  assert.equal(
     softenIssueTitle("Missing canonical tag"),
     "Preferred page link missing",
   );

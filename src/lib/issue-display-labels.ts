@@ -8,6 +8,8 @@ export function softenIssueTitle(value: string) {
     "Broken internal link detected": "Page link that needs help",
     "Canonical points to a non-200 URL":
       "Preferred page link points to a page that is not loading",
+    "Duplicate meta descriptions across page template":
+      "Page template repeats the same description",
     "Missing canonical tag": "Preferred page link missing",
     "Homepage became noindex after latest deploy":
       "Homepage was hidden from Google after deploy",
@@ -30,6 +32,10 @@ export function softenIssueTitle(value: string) {
     .replace(
       /\bCanonical points to a non-200 URL\b/gi,
       exactMatches["Canonical points to a non-200 URL"],
+    )
+    .replace(
+      /\bDuplicate meta descriptions across page template\b/gi,
+      exactMatches["Duplicate meta descriptions across page template"],
     )
     .replace(
       /\bMissing canonical tag\b/gi,

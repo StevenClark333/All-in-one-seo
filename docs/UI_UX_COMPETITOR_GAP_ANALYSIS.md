@@ -3213,3 +3213,17 @@ Implementation:
 - [x] Cover broken-link, preferred-page, and Google-visibility stored titles with unit tests.
 - [x] Runtime-check workspace stored problem title calmness locally.
 - [x] Browser-check workspace stored problem title calmness after deployment.
+
+### Batch GF: Ideas Fix-Note Stored Title Calmness
+
+Competitive evidence:
+
+- Semrush and Ahrefs recommendation areas keep raw audit issue names visible because trained users expect direct technical diagnostics.
+- A beginner-first Ideas and Fixes page should keep the same problem links while translating stored fix-note titles into page-link, preferred-page, and Google-visibility language.
+- The product direction is to make fix-note creation feel like choosing a clear next writing or repair task, not selecting from raw audit issue names.
+
+Implementation:
+
+- [x] Reuse the shared stored-problem title softener in the Ideas and Fixes fix-note list.
+- [x] Runtime-check Ideas fix-note stored title calmness locally.
+- [ ] Browser-check Ideas fix-note stored title calmness after deployment.
