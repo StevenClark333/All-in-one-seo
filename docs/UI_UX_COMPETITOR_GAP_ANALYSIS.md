@@ -3212,4 +3212,4 @@ Implementation:
 - [x] Replace raw workspace care-priority titles with the softened display helper.
 - [x] Cover broken-link, preferred-page, and Google-visibility stored titles with unit tests.
 - [x] Runtime-check workspace stored problem title calmness locally.
-- [ ] Browser-check workspace stored problem title calmness after deployment.
+- [x] Browser-check workspace stored problem title calmness after deployment.
