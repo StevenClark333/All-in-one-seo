@@ -3242,4 +3242,4 @@ Implementation:
 - [x] Use the helper in the Ideas and Fixes saved ideas list.
 - [x] Cover old saved-output phrases with unit tests.
 - [ ] Runtime-check saved ideas output calmness locally.
-- [ ] Browser-check saved ideas output calmness after deployment.
+- [x] Browser-check saved ideas output calmness after deployment.
