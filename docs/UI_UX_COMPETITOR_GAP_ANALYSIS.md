@@ -1828,7 +1828,7 @@ Implementation:
 - [x] Translate page-idea and repeated-page recommendation ownership fallbacks away from unassigned wording.
 - [x] Reuse the shared website-client label unit coverage for the exact no-client-yet text.
 - [x] Browser-check recommendation ownership labels desktop and mobile locally.
-- [ ] Browser-check recommendation ownership labels after deployment.
+- [x] Browser-check recommendation ownership labels after deployment.
 
 ### Batch CX: Technical Audit Ownership Label Calmness
 
@@ -2558,7 +2558,7 @@ Implementation:
 - [x] Replace CTR, impressions, position, owned rank, not ranking, and volume wording in visible Search Ideas detail sections.
 - [x] Cover the exact Search Ideas detail metric wording with unit tests.
 - [x] Browser-check Search Ideas detail metric calmness locally.
-- [ ] Browser-check Search Ideas detail metric calmness after deployment.
+- [x] Browser-check Search Ideas detail metric calmness after deployment.
 
 ### Batch EQ: Rank Movement Update Panel Calmness
 
@@ -2638,7 +2638,7 @@ Implementation:
 - [x] Replace urgent severity and urgent priority wording in fix-note and repeated-page note rows.
 - [x] Cover the exact Ideas and Fixes priority wording with unit tests.
 - [x] Browser-check Ideas and Fixes priority calmness locally.
-- [ ] Browser-check Ideas and Fixes priority calmness after deployment.
+- [x] Browser-check Ideas and Fixes priority calmness after deployment.
 
 ### Batch EV: Website Workspace Care Priority Calmness
 
@@ -2703,7 +2703,7 @@ Implementation:
 - [x] Replace urgent change and urgent importance wording in alert rule setup and saved-rule rows.
 - [x] Cover alert rule labels with unit tests.
 - [x] Browser-check alert rule quick-care calmness locally.
-- [ ] Browser-check alert rule quick-care calmness after deployment.
+- [x] Browser-check alert rule quick-care calmness after deployment.
 
 ### Batch FA: Saved Website Care Priority Calmness
 
@@ -2978,7 +2978,7 @@ Implementation:
 - [x] Preserve useful implementation detail while translating labels and next checks into beginner-safe language.
 - [x] Cover Content Ideas fallback note wording with unit tests.
 - [x] Runtime-check Content Ideas fallback note calmness locally.
-- [ ] Browser-check Content Ideas fallback note calmness after deployment.
+- [x] Browser-check Content Ideas fallback note calmness after deployment.
 
 ### Batch FR: Page Detail Link-Words Calmness
 
