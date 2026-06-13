@@ -2078,7 +2078,7 @@ Implementation:
 - [x] Rename Zapier and Make helper text away from SEO updates toward website care updates.
 - [x] Cover the exact automation connection copy contract with unit tests.
 - [x] Browser-check automation connection copy calmness locally.
-- [ ] Browser-check automation connection copy calmness after deployment.
+- [x] Browser-check automation connection copy calmness after deployment.
 
 ### Batch DN: Connection Page SEO Phrase Calmness
 
