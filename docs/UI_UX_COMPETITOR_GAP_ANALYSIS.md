@@ -385,7 +385,7 @@ Implementation:
 - [x] Reuse the shared quick-care severity label for client problem rows.
 - [x] Cover client quick-care wording with unit tests.
 - [x] Browser-check client quick-care wording locally.
-- [ ] Browser-check client quick-care wording after deployment.
+- [x] Browser-check client quick-care wording after deployment.
 
 ### Batch Q: Content Ideas Calmness
 
@@ -1422,7 +1422,7 @@ Implementation:
 - [x] Translate branded report link statuses into waiting-for-DNS, active, and needs-DNS-help wording.
 - [x] Translate scheduled update frequency into every-week/every-month wording.
 - [x] Browser-check Client updates status labels desktop and mobile locally.
-- [ ] Browser-check Client updates status labels after deployment.
+- [x] Browser-check Client updates status labels after deployment.
 
 ### Batch BW: Report Detail Status Calmness
 
@@ -1438,7 +1438,7 @@ Implementation:
 - [x] Translate private and shared website-check statuses into finished, checking-now, waiting-to-start, stopped, and needs-review wording.
 - [x] Rename the public report header from published report to shared SEO update.
 - [x] Browser-check private and shared report detail status labels desktop and mobile locally.
-- [ ] Browser-check private and shared report detail status labels after deployment.
+- [x] Browser-check private and shared report detail status labels after deployment.
 
 ### Batch BX: Problem Progress Label Calmness
 
@@ -1738,7 +1738,7 @@ Implementation:
 - [x] Translate Clients list, client detail summary, and client website health fallbacks into no-score-yet wording.
 - [x] Cover the exact health fallback label through the shared website health label unit tests.
 - [x] Browser-check client health labels desktop and mobile locally.
-- [ ] Browser-check client health labels after deployment.
+- [x] Browser-check client health labels after deployment.
 
 ### Batch CR: Report Health Label Calmness
 
@@ -1753,7 +1753,7 @@ Implementation:
 - [x] Translate report detail and shared report health score fallbacks into no-score-yet and fresh-score wording.
 - [x] Cover the exact health fallback label through the shared website health label unit tests.
 - [x] Browser-check report health labels desktop and mobile locally.
-- [ ] Browser-check report health labels after deployment.
+- [x] Browser-check report health labels after deployment.
 
 ### Batch CS: Report Export Label Calmness
 
@@ -2062,7 +2062,7 @@ Implementation:
 - [x] Rename report list, schedule, share, detail, and generated website report title copy away from SEO report/update phrasing.
 - [x] Cover the exact report update copy contract with unit tests.
 - [x] Browser-check report update copy calmness locally.
-- [ ] Browser-check report update copy calmness after deployment.
+- [x] Browser-check report update copy calmness after deployment.
 
 ### Batch DM: Automation Connection Copy Calmness
 
@@ -2159,7 +2159,7 @@ Implementation:
 - [x] Replace the visible client-list SEO checks phrase with website checks.
 - [x] Cover the exact client setup wording with unit tests.
 - [x] Browser-check client setup check calmness locally.
-- [ ] Browser-check client setup check calmness after deployment.
+- [x] Browser-check client setup check calmness after deployment.
 
 ### Batch DS: Add Website First Check Calmness
 
@@ -2590,7 +2590,7 @@ Implementation:
 - [x] Replace tracked changes, No major tracked changes, and No tracked changes wording in private and shared reports.
 - [x] Cover the exact report change-summary wording with unit tests.
 - [x] Browser-check report change-summary calmness locally.
-- [ ] Browser-check report change-summary calmness after deployment.
+- [x] Browser-check report change-summary calmness after deployment.
 
 ### Batch ES: Pages Care Language Calmness
 
@@ -2622,7 +2622,7 @@ Implementation:
 - [x] Replace urgent fix, urgent open, and urgent severity badge wording in private and shared reports.
 - [x] Cover the exact report issue-movement wording with unit tests.
 - [x] Browser-check report issue-movement calmness locally.
-- [ ] Browser-check report issue-movement calmness after deployment.
+- [x] Browser-check report issue-movement calmness after deployment.
 
 ### Batch EU: Ideas And Fixes Priority Calmness
 
