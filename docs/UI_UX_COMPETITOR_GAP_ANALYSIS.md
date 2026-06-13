@@ -2930,7 +2930,7 @@ Implementation:
 - [x] Cover Problems filter area wording with unit tests.
 - [x] Runtime-check Problems filter area calmness locally.
 - [x] Browser-check Problems filter label calmness after deployment: live Problems filters show "problem area" and "All problem areas" instead of the old type labels.
-- [ ] Browser-check live problem-area option data after issue-type display labels are softened; the live account still includes stored/generated options such as "Broken Internal Link."
+- [x] Browser-check live problem-area option data after issue-type display labels are softened; the live account now shows "Page link that needs help" and "Preferred page is not loading" instead of stored/generated options such as "Broken Internal Link."
 
 ### Batch FO: Websites Link-Health Helper Calmness
 
